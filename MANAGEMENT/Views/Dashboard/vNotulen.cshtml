@@ -1,0 +1,1144 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+
+
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+    
+.modal-header {
+    cursor: move;
+}
+
+.modal-footer {
+    cursor: move;
+}
+    
+    hr { background-color: red; height: 1px; border: 0; }
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Notulen</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" onclick="addNotulen();">Add New Notulen</button>
+                </div>
+            </div>
+            <br />
+            <table id="tblNotulen" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Subject Matter</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Participants</th>
+                        <th>Issue</th>
+                        <th>DL</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblNotulen"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <hr>
+        <div id="noteFrm2" class="form-horizontal">
+            <div class="row">
+                <div class="col-md-10">
+                    <div align="center"> <h5 style="color:firebrick">Participants Form</h5></div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-xs" id="btnCloseNote2" data-dismiss="modal" title="Close Form Participants" onclick="CloseNote2();">X</button>
+                </div>
+            </div>
+
+            <input type="hidden" class="form-control" id="id_1" placeholder="Id_1" disabled="disabled" />
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-sm btn-block" onclick="addNotulen2();">Add New Participants</button>
+                </div>
+            </div>
+            <br />
+            <table id="tblNote2" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Agency</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblNote2"></tbody>
+            </table>
+        </div>
+
+        <div id="noteFrm3" class="form-horizontal">
+            <div class="row">
+                <div class="col-md-10">
+                    <div align="center"> <h5 style="color:firebrick">Issue Form</h5></div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-xs" id="btnCloseNote3" data-dismiss="modal" title="Close Form Issue" onclick="CloseNote3();">X</button>
+                </div>
+            </div>
+
+            <input type="hidden" class="form-control" id="id_1_3" placeholder="Id_1_3" disabled="disabled" />
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-sm btn-block" onclick="addNotulen3();">Add New Issue</button>
+                </div>
+            </div>
+            <br />
+            <table id="tblNote3" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Principal / Description / Discussion</th>
+                        <th>PIC</th>
+                        <th>Target</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblNote3"></tbody>
+            </table>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />      
+    </section>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Notulen</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="id">ID</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="id" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="desc">Subject Matter:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="5" id="desc" name="desc" placeholder="Subject Matter"></textarea>                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="ddate">Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="ddate" placeholder="Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="desc">Location:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="location" name="location" placeholder="Location"  />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="cbtype">Type:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="cbtype">
+                                        <option value="QM">Quality meeting</option>
+                                        <option value="BM">Purchasing meeting</option>
+                                        <option value="MM">Marketing meeting</option>
+                                        <option value="KM">KPI meeting</option>
+                                        <option value="GM">General meeting</option>
+                                        <option value="EM">Engineering meeting</option>
+                                        <option value="PM">Production meeting</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" data-dismiss="modal" onclick="CRUDnotulen('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" onclick="CRUDnotulen('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnClose" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="modal fade" id="myModalNotulen2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabelNotulen2">Participants</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="id_2">ID</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="id_2" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="nama">Name :</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="nama"  name="nama" placeholder="Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="agensi">Agency:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="agensi" name="agensi" placeholder="Agency" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd2" data-dismiss="modal" onclick="CRUDnotulen2('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate2" data-dismiss="modal" onclick="CRUDnotulen2('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnClose2" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModalNotulen3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabelNotulen3">Issue</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                @*<div class="col-sm-4">
+                                    <label for="id_3">ID</label>
+                                </div>*@
+                                <div class="col-sm-12">
+                                    <input type="hidden" class="form-control input-sm" id="id_3" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                @*<div class="col-sm-4">
+                                    <label for="principal">Discussion :</label>
+                                </div>*@
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control input-sm" id="principal" name="principal" placeholder="Discussion" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                @*<div class="col-sm-4">
+                                    <label for="rtl">PDCA:</label>
+                                </div>*@
+                                <div class="col-sm-12">
+                                    <textarea name="rtl" id="rtl" rows="5" cols="120">
+                                        Rencana Tindak Lanjut
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control input-sm" id="pic" name="pic" placeholder="PIC" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control input-sm" id="target" placeholder="Target Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>                         
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="pdca">
+                                        <label class="custom-control-label" for="completedact">PDCA</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control input-sm" id="valCB" placeholder="PDCA" disabled="disabled" />
+                                </div>
+                                <div class="col-sm-5">
+                                    <select class="form-control input-sm" id="cbPDCA"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" id="btnAdd3" data-dismiss="modal" onclick="CRUDnotulen3('I');">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnUpdate3" data-dismiss="modal" onclick="CRUDnotulen3('U');">Update</button>
+                    <button type="button" class="btn btn-sm btn-default" id="btnClose3" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="loader"></div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var update = 0, update2 = 0, update3 = 0;
+    var dtheader = [];
+    var dtpart = [];
+    var dtPlain = [];
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        CKEDITOR.replace('rtl',
+             {
+                 toolbar: 'AryaArda', /* this does the magic */
+                 uiColor : '#9AB8F3'
+             });
+        $('#tbodytblNotulen').empty();
+        MainLoad();
+        loadPDCA();
+        $('#utamaFrm').show();
+        $('#noteFrm2').hide();
+        $('#noteFrm3').hide();
+
+        $(".modal-header").on("mousedown", function (mousedownEvt) {
+            var $draggable = $(this);
+            var x = mousedownEvt.pageX - $draggable.offset().left,
+                y = mousedownEvt.pageY - $draggable.offset().top;
+            $("body").on("mousemove.draggable", function (mousemoveEvt) {
+                $draggable.closest(".modal-dialog").offset({
+                    "left": mousemoveEvt.pageX - x,
+                    "top": mousemoveEvt.pageY - y
+                });
+            });
+            $("body").one("mouseup", function () {
+                $("body").off("mousemove.draggable");
+            });
+            $draggable.closest(".modal").one("bs.modal.hide", function () {
+                $("body").off("mousemove.draggable");
+            });
+        });
+
+        $(".modal-footer").on("mousedown", function (mousedownEvt) {
+            var $draggable = $(this);
+            var x = mousedownEvt.pageX - $draggable.offset().left,
+                y = mousedownEvt.pageY - $draggable.offset().top;
+            $("body").on("mousemove.draggable", function (mousemoveEvt) {
+                $draggable.closest(".modal-dialog").offset({
+                    "left": mousemoveEvt.pageX - x,
+                    "top": mousemoveEvt.pageY - y
+                });
+            });
+            $("body").one("mouseup", function () {
+                $("body").off("mousemove.draggable");
+            });
+            $draggable.closest(".modal").one("bs.modal.hide", function () {
+                $("body").off("mousemove.draggable");
+            });
+        });
+
+    });
+
+   
+    function alignModal() {
+        var modalDialog = $(this).find(".modal-dialog");
+        /* Applying the top margin on modal dialog to align it vertically center */
+        modalDialog.css("margin-top", Math.max(0, ($(window).height() - modalDialog.height()) / 2));
+    }
+
+
+    function loadPDCA() {
+        
+        var kpiObj = {
+            id: 0,
+            opt: 'A'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPDCA",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<option value=' + item.id + '>' + item.program + '</option>';
+                });
+                $('#cbPDCA').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+  
+    function CloseNote2() {
+        $('#noteFrm2').hide();
+    }
+
+    function CloseNote3() {
+        $('#noteFrm3').hide();
+    }
+
+    function addNotulen2() {
+        $('#id_2').val("");
+        if (update2 === 0) {
+            $('#nama').val("");
+            $('#agensi').val("");
+        }
+
+        $("#myModalNotulen2").modal({ show: true, backdrop: false })
+
+        $('#btnUpdate2').hide();
+        $('#btnAdd2').show();
+
+        // Align modal when it is displayed
+        $(".modal").on("shown.bs.modal", alignModal);
+
+        // Align modal when user resize the window
+        $(window).on("resize", function () {
+            $(".modal:visible").each(alignModal);
+        });
+    }
+
+    function addNotulen3() {
+        $('#id_3').val("");
+        if (update3 === 0) {
+            $('#principal').val("");
+            $('#pic').val(""); 
+            $('#target').val("");
+        }
+
+        $("#myModalNotulen3").modal({ show: true, backdrop: false })
+
+        $('#btnUpdate3').hide();
+        $('#btnAdd3').show();
+
+        // Align modal when it is displayed
+        $(".modal").on("shown.bs.modal", alignModal);
+
+        // Align modal when user resize the window
+        $(window).on("resize", function () {
+            $(".modal:visible").each(alignModal);
+        });
+
+
+    }
+
+
+    function CRUDnotulen2(type) {
+        var res = validateATT2();
+        if (res == false) {
+            alert('fill entry form Notulen 2, completely');
+            update2 = 1;
+            return false;
+        }
+        var kpiObj = {
+            id_1: $('#id_1').val(),
+            id_2: $('#id_2').val(),
+            name: $('#nama').val(),
+            agensi: $('#agensi').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDnotulen_2",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add Notulen 2 Successfull..."
+                    });
+                    update = 0;
+                    getLoad2();
+                    //window.location.reload();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add Notulen 2 Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function CRUDnotulen3(type) {
+        var res = validateATT3();
+        var myContent = CKEDITOR.instances.rtl.getData()
+        if (res == false) {
+            alert('fill entry form Notulen 3, completely');
+            update3 = 1;
+            return false;
+        }
+        var adt = $("#pdca").is(':checked') ? 1 : 0;
+        if (adt==0) {
+            $('#cbPDCA').val(0);
+        } 
+        var kpiObj = {
+            id_1: $('#id_1_3').val(),
+            id_3: $('#id_3').val(),
+            matter: $('#principal').val(),
+            plann: myContent,
+            pic: $('#pic').val(),
+            target: $('#target').val(),
+            pdca: adt,
+            pdca_id: $('#cbPDCA').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDnotulen_3",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add Notulen 3 Successfull..."
+                    });
+                    update = 0;
+                    getLoad3();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add Notulen 3 Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function getLoad2() {
+        var id2 = $('#id_1').val();
+        listNotulen2(id2)
+    }
+
+    function getLoad3() {
+        var id3 = $('#id_1_3').val();
+        listNotulen3(id3)
+    }
+
+    function listNotulen2(id) {
+        $('#noteFrm2').show();
+        $('#noteFrm3').hide();        
+        $('#id_1').val(id);
+        $('#tbodytblNote2').empty();
+        var tr;
+        var kpiObj = {
+            id: id,
+            opt: 'A'
+        }
+        $.ajax({
+            url: urlKPI + "/viewNotulen_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.name + "</td>");
+                    tr.append("<td>" + item.agensi + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" id="btncb" data-toggle="tooltip" title="Edit !" onclick="getbyUserNote2(' + item.id_2 + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelNote2(' + item.id_2 + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+
+                    $('#tbodytblNote2').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function listNotulen3(id) {
+        $('#noteFrm3').show();
+        $('#noteFrm2').hide();
+        $('#id_1_3').val(id);
+        $('#tbodytblNote3').empty();
+        var tr;
+        var kpiObj = {
+            id: id,
+            opt: 'A'
+        }
+        $.ajax({
+            url: urlKPI + "/viewNotulen_3/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.matter + "</td>");
+                    tr.append("<td>" + item.pic + "</td>");
+                    tr.append("<td>" + item.target + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUserNote3(' + item.id_3 + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelNote3(' + item.id_3 + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+
+                    $('#tbodytblNote3').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+    }
+
+    function PrintPDF(code) {
+        var ppicObj = {
+            id: code,
+            type: "NOT1"
+        };
+        $.ajax({
+            url: urlKPI + "/passPrintNotulen/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result == 1) {
+                    window.open('../Report/WebRptForm.aspx');
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+    
+
+    function MainLoad() {
+        var tr;
+        var kpiObj = {
+            id: 0,
+            opt: 'A'
+        }
+       
+        $.ajax({
+            url: urlKPI + "/viewNotulen_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.subject + "</td>");
+                    tr.append("<td>" + item.ddate + "</td>");
+                    tr.append("<td>" + item.locate + "</td>");
+
+                    if (item.type=='BM')
+                        tr.append("<td>Purchasing meeting</td>");
+                    else if (item.type == 'MM')
+                      tr.append("<td>Marketing meeting</td>");
+                    else if (item.type == 'KM')
+                        tr.append("<td>KPI meeting</td>");
+                    else if (item.type == 'GM')
+                        tr.append("<td>General meeting</td>");
+                    else if (item.type == 'EM')
+                        tr.append("<td>Engineering meeting</td>");
+                    else if (item.type == 'PM')
+                        tr.append("<td>Production meeting</td>");
+                    else tr.append("<td></td>");
+
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUser(' + item.id_1 + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelNote(' + item.id_1 + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="List Note 2" onclick="listNotulen2(' + item.id_1 + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="List Note 3" onclick="listNotulen3(' + item.id_1 + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Pdf" onclick="PrintPDF(' + item.id_1 + ')"><i class="glyphicon glyphicon-print" style="color:green"></i></a></td>');
+
+                    $('#tbodytblNotulen').append(tr);
+                });
+                $('#tblNotulen').DataTable({ responsive: true });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function getLoad() {
+        $('#tbodytblNotulen').empty();
+        MainLoad();
+    }
+
+    function CRUDnotulen(type) {
+        var res = validateATT();
+        if (res == false) {
+            alert('fill entry form, completely');
+            update = 1;
+            return false;
+        }
+        var kpiObj = {
+            id_1: $('#id').val(),
+            subject: $('#desc').val(),
+            ddate: $('#ddate').val(),
+            locate: $('#location').val(),
+            type: $('#cbtype').val(),            
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDnotulen_1",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add Notulen Successfull..."
+                    });
+                    update = 0;
+                    //--getLoad();
+                    window.location.reload();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add Notulen Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function DelNote(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id_1: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDnotulen_1/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete Notulen Successfull..."
+                        });
+                        //--getLoad();
+                        window.location.reload();
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Unsuccessfull is not Empty..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function DelNote2(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id_2: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDnotulen_2/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Delete Notulen 2 Successfull..."
+                    });
+                    getLoad2();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function DelNote3(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id_3: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDnotulen_3/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Delete Notulen 3 Successfull..."
+                    });
+                    getLoad3();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+
+    function validateATT() {
+        var isValid = true;
+        if ($('#desc').val().trim() == "") {
+            $('#desc').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#desc').css('border-color', 'lightgrey');
+        }
+
+        if ($('#ddate').val().trim() == "") {
+            $('#ddate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ddate').css('border-color', 'lightgrey');
+        }
+
+        if ($('#location').val().trim() == "") {
+            $('#location').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#location').css('border-color', 'lightgrey');
+        }
+        
+        return isValid;
+    }
+
+    function validateATT2() {
+        var isValid = true;
+        if ($('#nama').val().trim() == "") {
+            $('#nama').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#nama').css('border-color', 'lightgrey');
+        }
+
+        if ($('#agensi').val().trim() == "") {
+            $('#agensi').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#agensi').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function validateATT3() {
+        var isValid = true;
+        if ($('#principal').val().trim() == "") {
+            $('#principal').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#principal').css('border-color', 'lightgrey');
+        }
+
+        if ($('#pic').val().trim() == "") {
+            $('#pic').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#pic').css('border-color', 'lightgrey');
+        }
+
+        if ($('#target').val().trim() == "") {
+            $('#target').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#target').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+
+    function addNotulen() {
+        $('#id').val("");
+        if (update === 0) {
+            $('#desc').val("");
+            $('#ddate').val("");
+            $('#location').val("");
+            
+        }
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').hide();
+        $('#btnAdd').show();
+    }
+
+    
+    function getbyUser(id) {
+        getView(id);
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').show();
+        $('#btnAdd').hide();
+    }
+
+    function getView(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewNotulen_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id').val(item.id_1);
+                    $('#ddate').val(item.ddate);
+                    $('#desc').val(item.subject);
+                    $('#location').val(item.locate);                    
+                    $('#cbtype').val(item.type);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function getbyUserNote2(id) {
+        getView2(id);
+        $("#myModalNotulen2").modal({ show: true, backdrop: false })
+
+        $('#btnUpdate2').show();
+        $('#btnAdd2').hide();
+    }
+    
+    function getbyUserNote3(id) {
+        getView3(id);
+        $("#myModalNotulen3").modal({ show: true, backdrop: false })
+        $('#btnUpdate3').show();
+        $('#btnAdd3').hide();
+    }
+
+    function getView2(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewNotulen_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_2').val(item.id_2);
+                    $('#nama').val(item.name);
+                    $('#agensi').val(item.agensi);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function getView3(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewNotulen_3/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_3').val(item.id_3);
+                    $('#principal').val(item.matter);
+                    CKEDITOR.instances.rtl.setData(item.plann);
+                    $('#pic').val(item.pic);
+                    $('#target').val(item.target);                    
+                    $('#valCB').val(item.nameprog);
+                    $('#cbPDCA').val(item.pdca_id);                    
+                    if (item.pdca == 1) { $('#pdca').attr('checked', true); console.log('a'); }
+                    else { $('#pdca').attr('checked', false); console.log('b'); }
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+</script>

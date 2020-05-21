@@ -1,0 +1,1991 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+            <div class="col-sm-1">
+                <button id="simpan" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Save" onclick="GetSave();">Save</button>
+            </div>
+
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="12" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>PPIC</b></a></th>
+                        <td><span id="RevTitle">Revenue</span></td>
+                        <td><span id="PicGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitle">Production Output PDA</span></td>
+                        <td><span id="PicGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle">Production Output PDB+PDC</span></td>
+                        <td><span id="PicGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitle">Delivery Reliability Measurement - TVB</span></td>
+                        <td><span id="PicGrdTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrTvb" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitle">Delivery Reliability Measurement - DP PUMPS</span></td>
+                        <td><span id="PicGrdDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrDpp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trhdreme" style="display:none">
+                        <td><span id="EmeTitle">Delivery Reliability Measurement - EMERSON</span></td>
+                        <td><span id="PicGrdEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrEme" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrsca" style="display:none">
+                        <td><span id="ScaTitle">Delivery Reliability Measurement - SCANJET</span></td>
+                        <td><span id="PicGrdSca" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtSca" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActSca" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchSca" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrSca" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrmus" style="display:none">
+                        <td><span id="MusTitle">Delivery Reliability Measurement - MUSASHI</span></td>
+                        <td><span id="PicGrdMus" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtMus" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActMus" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchMus" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrMus" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitle">Delivery Reliability Measurement - Others</span></td>
+                        <td><span id="PicGrdOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrOth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitle">Air Freight  Cost(0.5% of TR)</span></td>
+                        <td><span id="PicGrdAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrAir" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="InvTitle">Inventory Cost</span></td>
+                        <td><span id="PicGrdInv" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtInv" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActInv" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchInv" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrInv" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="12" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Period" onclick="Yearly()"><b>PPIC</b></a></th>
+                        <td><span id="RevTitleMonth">Revenue</span></td>
+                        <td><span id="PicGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleMonth">Production Output PDA</span></td>
+                        <td><span id="PicGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth">Production Output PDB+PDC</span></td>
+                        <td><span id="PicGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleMonth">Delivery Reliability Measurement - TVB</span></td>
+                        <td><span id="PicGrdTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrTvbMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleMonth">Delivery Reliability Measurement - DP PUMPS</span></td>
+                        <td><span id="PicGrdDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrDppMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtleme" style="display:none">
+                        <td><span id="EmeTitleMonth">Delivery Reliability Measurement - EMERSON</span></td>
+                        <td><span id="PicGrdEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrEmeMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlsca" style="display:none">
+                        <td><span id="ScaTitleMonth">Delivery Reliability Measurement - SCANJET</span></td>
+                        <td><span id="PicGrdScaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtScaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActScaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchScaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrScaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlmus" style="display:none">
+                        <td><span id="MusTitleMonth">Delivery Reliability Measurement - MUSASHI</span></td>
+                        <td><span id="PicGrdMusMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtMusMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActMusMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchMusMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrMusMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitleMonth">Delivery Reliability Measurement - Others</span></td>
+                        <td><span id="PicGrdOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrOthMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitleMonth">Air Freight  Cost(0.5% of TR)</span></td>
+                        <td><span id="PicGrdAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrAirMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="InvTitleMonth">Inventory Cost</span></td>
+                        <td><span id="PicGrdInvMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtInvMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActInvMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchInvMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrInvMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="12" class="text-center"><b>PPIC</b></th>
+                        <td><span id="RevTitleSum">Revenue</span></td>
+                        <td><span id="PicGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleSum">Production Output PDA</span></td>
+                        <td><span id="PicGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum">Production Output PDB+PDC</span></td>
+                        <td><span id="PicGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleSum">Delivery Reliability Measurement - TVB</span></td>
+                        <td><span id="PicGrdTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrTvbSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleSum">Delivery Reliability Measurement - DP PUMPS</span></td>
+                        <td><span id="PicGrdDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrDppSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtleme" style="display:none">
+                        <td><span id="EmeTitleSum">Delivery Reliability Measurement - EMERSON</span></td>
+                        <td><span id="PicGrdEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrEmeSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlsca" style="display:none">
+                        <td><span id="ScaTitleSum">Delivery Reliability Measurement - SCANJET</span></td>
+                        <td><span id="PicGrdScaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtScaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActScaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchScaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrScaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlmus" style="display:none">
+                        <td><span id="MusTitleSum">Delivery Reliability Measurement - MUSASHI</span></td>
+                        <td><span id="PicGrdMusSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtMusSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActMusSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchMusSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrMusSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitleSum">Delivery Reliability Measurement - Others</span></td>
+                        <td><span id="PicGrdOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrOthSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitleSum">Air Freight  Cost(0.5% of TR)</span></td>
+                        <td><span id="PicGrdAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrAirSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="InvTitleSum">Inventory Cost</span></td>
+                        <td><span id="PicGrdInvSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicTgtInvSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicActInvSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicAchInvSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="PicScrInvSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var PicScrRev = 0;
+    var PicScrPda = 0;
+    var PicScrPdc = 0;
+    var PicScrTvb = 0;
+    var PicScrDpp = 0;
+    var PicScrEme = 0;
+    var PicScrSca = 0;
+    var PicScrMus = 0;
+    var PicScrOth = 0;
+    var PicScrAir = 0;
+    var PicScrInv = 0;
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum = 0;
+    var iMonth = 1;
+    var PicTotGrade = 0, PicTotGradeMonth = 0, PicTotGradeSum = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        $('#simpan').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+        getView(iYear);
+    });
+
+    function GetSave() {
+        var kpiRpt = {
+            Bulan: $('#monthkpi').val(),
+            Tahun: $('#prd').val(),
+            Title: 'PPIC',
+            Nilai: $('#PicScrTotMonth').text(),
+            ch: 'I'
+        }
+        $.ajax({
+            url: urlKPI + "/ShowProdOPlean",
+            data: JSON.stringify(kpiRpt),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "save Successfull..."
+                    });
+                    update = 0;
+                    getLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly(){
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+        $('#simpan').show();
+    }
+
+    function Yearly() {
+        $('#simpan').hide();
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function getView(thn) {
+        PicTotGrade = 0;
+        PicScrTot = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vPPICDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#PicGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#PicTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#PicActRev").text(formatNumber(item.PicActRev));
+                        var PicTgtRev = item.PicTgtRev;
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0) {
+                            $("#PicAchRev").text(0);
+                            $("#PicScrRev").text(0);
+                            $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (PicAchRev < 0)
+                                PicAchRev = 0;
+                            $("#PicAchRev").text(formatNumber(PicAchRev.toFixed(2)));
+                            if (PicAchRev > 110)
+                                PicAchRev = 120;
+                            else if (PicAchRev > 103 && PicAchRev <= 110)
+                                PicAchRev = 110;
+                            else if (PicAchRev > 95 && PicAchRev <= 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 90 && PicAchRev <= 95)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 90)
+                                PicAchRev = 60;
+                            else
+                                PicAchRev = 0;
+
+                            PicScrRev = item.PicGrdRev * PicAchRev / 100;
+                            var newcolor = PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrRev;
+                            PicTotGrade = PicTotGrade + item.PicGrdRev;
+
+                            $("#PicScrRev").text(formatNumber(PicScrRev.toFixed(2)));
+                        }
+                    }
+                    $("#PicGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#PicTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#PicActPda").text(formatNumber(item.PicActPda));
+                    var PicTgtPda = item.PicTgtPda;
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0) {
+                        $("#PicAchPda").text(0);
+                        $("#PicScrPda").text(0);
+                        $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        if (PicAchPda < 0)
+                            PicAchPda = 0;
+                        $("#PicAchPda").text(formatNumber(PicAchPda.toFixed(2)));
+                        if (PicAchPda > 110)
+                            PicAchPda = 120;
+                        else if (PicAchPda > 102 && PicAchPda <= 110)
+                            PicAchPda = 110;
+                        else if (PicAchPda > 98 && PicAchPda <= 102)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 94 && PicAchPda <= 98)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 94)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+                        PicScrPda = item.PicGrdPda * PicAchPda / 100;
+                        var newcolor = PicScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrPda;
+                        PicTotGrade = PicTotGrade + item.PicGrdPda;
+                        $("#PicScrPda").text(formatNumber(PicScrPda.toFixed(2)));
+                    }
+
+                    $("#PicGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#PicTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#PicActPdc").text(formatNumber(item.PicActPdc));
+                    var PicTgtPdc = item.PicTgtPdc;
+                    var PicGrdPdc = item.PicGrdPdc;
+                    console.log(PicTgtPdc);
+                    if (PicGrdPdc == 0) {
+                        $("#PicAchPdc").text(0);
+                        $("#PicScrPdc").text(0);
+                        $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (PicAchPdc < 0)
+                            PicAchPdc = 0;
+                        $("#PicAchPdc").text(formatNumber(PicAchPdc.toFixed(2)));
+                        if (PicAchPdc > 110)
+                            PicAchPdc = 120;
+                        else if (PicAchPdc > 102 && PicAchPdc <= 110)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc > 98 && PicAchPdc <= 102)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 94 && PicAchPdc <= 98)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 94)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+                        PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
+                        var newcolor = PicScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrPdc;
+                        PicTotGrade = PicTotGrade + item.PicGrdPdc;
+                        $("#PicScrPdc").text(formatNumber(PicScrPdc.toFixed(2)));
+                    }
+
+                    //-------tvb
+                    $("#PicGrdTvb").text(formatNumber(item.PicGrdTvb));
+                    $("#PicTgtTvb").text(formatNumber(item.PicTgtTvb));
+                    $("#PicActTvb").text(formatNumber(item.PicActTvb));
+                    var PicTgtTvb = item.PicTgtTvb;
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0) {
+                        $("#PicAchTvb").text(0);
+                        $("#PicScrTvb").text(0);
+                        $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                        if (PicAchTvb < 0)
+                            PicAchTvb = 0;
+                        $("#PicAchTvb").text(formatNumber(PicAchTvb.toFixed(2)));
+                        if (PicAchTvb > 100)
+                            PicAchTvb = 110;
+                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                            PicAchTvb = 100;
+                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                            PicAchTvb = 90;
+                        else if (PicAchTvb < 85)
+                            PicAchTvb = 60;
+                        else
+                            PicAchTvb = 0;
+                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                        var newcolor = PicScrTvb - item.PicGrdTvb;
+                        if (newcolor >= 0)
+                            $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrTvb;
+                        PicTotGrade = PicTotGrade + item.PicGrdTvb;
+                        $("#PicScrTvb").text(formatNumber(PicScrTvb.toFixed(2)));
+                    }
+
+                    //-------dpp pump
+                    $("#PicGrdDpp").text(formatNumber(item.PicGrdDpp));
+                    $("#PicTgtDpp").text(formatNumber(item.PicTgtDpp));
+                    $("#PicActDpp").text(formatNumber(item.PicActDpp));
+                    var PicTgtDpp = item.PicTgtDpp;
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0) {
+                        $("#PicAchDpp").text(0);
+                        $("#PicScrDpp").text(0);
+                        $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                        if (PicAchDpp < 0)
+                            PicAchDpp = 0;
+                        $("#PicAchDpp").text(formatNumber(PicAchDpp.toFixed(2)));
+                        if (PicAchDpp > 100)
+                            PicAchDpp = 110;
+                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                            PicAchDpp = 100;
+                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                            PicAchDpp = 90;
+                        else if (PicAchDpp < 85)
+                            PicAchDpp = 60;
+                        else
+                            PicAchDpp = 0;
+                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                        var newcolor = PicScrDpp - item.PicGrdDpp;
+                        if (newcolor >= 0)
+                            $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrDpp;
+                        PicTotGrade = PicTotGrade + item.PicGrdDpp;
+                        $("#PicScrDpp").text(formatNumber(PicScrDpp.toFixed(2)));
+                    }
+
+                    if (thn < 2020) {
+                        //-------Emerson
+                        $("#trhdreme").show();
+                        $("#trhdrsca").show();
+                        $("#trhdrmus").show();
+                        $("#PicGrdEme").text(formatNumber(item.PicGrdEme));
+                        $("#PicTgtEme").text(formatNumber(item.PicTgtEme));
+                        $("#PicActEme").text(formatNumber(item.PicActEme));
+                        var PicTgtEme = item.PicTgtEme;
+                        var PicGrdEme = item.PicGrdEme;
+                        if (PicGrdEme == 0) {
+                            $("#PicAchEme").text(0);
+                            $("#PicScrEme").text(0);
+                            $("#EmeTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchEme = item.PicActEme / item.PicTgtEme * 100;
+                            if (PicAchEme < 0)
+                                PicAchEme = 0;
+                            $("#PicAchEme").text(formatNumber(PicAchEme.toFixed(2)));
+                            if (PicAchEme > 100)
+                                PicAchEme = 110;
+                            else if (PicAchEme > 95 && PicAchEme <= 100)
+                                PicAchEme = 100;
+                            else if (PicAchEme >= 85 && PicAchEme <= 95)
+                                PicAchEme = 90;
+                            else if (PicAchEme < 85)
+                                PicAchEme = 60;
+                            else
+                                PicAchEme = 0;
+                            PicScrEme = item.PicGrdEme * PicAchEme / 100;
+                            var newcolor = PicScrEme - item.PicGrdEme;
+                            if (newcolor >= 0)
+                                $("#EmeTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#EmeTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrEme;
+                            PicTotGrade = PicTotGrade + item.PicGrdEme;
+                            $("#PicScrEme").text(formatNumber(PicScrEme.toFixed(2)));
+                        }
+                        //-------Scanjet
+                        $("#PicGrdSca").text(formatNumber(item.PicGrdSca));
+                        $("#PicTgtSca").text(formatNumber(item.PicTgtSca));
+                        $("#PicActSca").text(formatNumber(item.PicActSca));
+                        var PicTgtSca = item.PicTgtSca;
+                        var PicGrdSca = item.PicGrdSca;
+                        if (PicGrdSca == 0) {
+                            $("#PicAchSca").text(0);
+                            $("#PicScrSca").text(0);
+                            $("#ScaTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchSca = item.PicActSca / item.PicTgtSca * 100;
+                            if (PicAchSca < 0)
+                                PicAchSca = 0;
+                            $("#PicAchSca").text(formatNumber(PicAchSca.toFixed(2)));
+                            if (PicAchSca > 100)
+                                PicAchSca = 110;
+                            else if (PicAchSca > 95 && PicAchSca <= 100)
+                                PicAchSca = 100;
+                            else if (PicAchSca >= 85 && PicAchSca <= 95)
+                                PicAchSca = 90;
+                            else if (PicAchSca < 85)
+                                PicAchSca = 60;
+                            else
+                                PicAchSca = 0;
+                            PicScrSca = item.PicGrdSca * PicAchSca / 100;
+                            var newcolor = PicScrSca - item.PicGrdSca;
+                            if (newcolor >= 0)
+                                $("#ScaTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#ScaTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrSca;
+                            PicTotGrade = PicTotGrade + item.PicGrdSca;
+                            $("#PicScrSca").text(formatNumber(PicScrSca.toFixed(2)));
+                        }
+                        //-------Musashi
+                        $("#PicGrdMus").text(formatNumber(item.PicGrdMus));
+                        $("#PicTgtMus").text(formatNumber(item.PicTgtMus));
+                        $("#PicActMus").text(formatNumber(item.PicActMus));
+                        var PicTgtMus = item.PicTgtMus;
+                        var PicGrdMus = item.PicGrdMus;
+                        if (PicGrdMus == 0) {
+                            $("#PicAchMus").text(0);
+                            $("#PicScrMus").text(0);
+                            $("#MusTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchMus = item.PicActMus / item.PicTgtMus * 100;
+                            if (PicAchMus < 0)
+                                PicAchMus = 0;
+                            $("#PicAchMus").text(formatNumber(PicAchMus.toFixed(2)));
+                            if (PicAchMus > 100)
+                                PicAchMus = 110;
+                            else if (PicAchMus > 95 && PicAchMus <= 100)
+                                PicAchMus = 100;
+                            else if (PicAchMus >= 85 && PicAchMus <= 95)
+                                PicAchMus = 90;
+                            else if (PicAchMus < 85)
+                                PicAchMus = 60;
+                            else
+                                PicAchMus = 0;
+                            PicScrMus = item.PicGrdMus * PicAchMus / 100;
+                            var newcolor = PicScrMus - item.PicGrdMus;
+                            if (newcolor >= 0)
+                                $("#MusTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MusTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrMus;
+                            PicTotGrade = PicTotGrade + item.PicGrdMus;
+                            $("#PicScrMus").text(formatNumber(PicScrMus.toFixed(2)));
+                        }
+                    }
+                    else {
+                        $("#trhdreme").hide();
+                        $("#trhdrsca").hide();
+                        $("#trhdrmus").hide();
+                    }
+
+                    //-------Others
+                    if (thn < 2020)
+                        $("#OthTitle").text("Delivery Reliability Measurement - Others");
+                    else
+                        $("#OthTitle").text("Delivery Reliability Measurement - AVE");
+
+                    $("#PicGrdOth").text(formatNumber(item.PicGrdOth));
+                    $("#PicTgtOth").text(formatNumber(item.PicTgtOth));
+                    $("#PicActOth").text(formatNumber(item.PicActOth));
+                    var PicTgtOth = item.PicTgtOth;
+                    var PicGrdOth = item.PicGrdOth;
+                    if (PicGrdOth == 0) {
+                        $("#PicAchOth").text(0);
+                        $("#PicScrOth").text(0);
+                        $("#OthTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchOth = item.PicActOth / item.PicTgtOth * 100;
+                        if (PicAchOth < 0)
+                            PicAchOth = 0;
+                        $("#PicAchOth").text(formatNumber(PicAchOth.toFixed(2)));
+                        if (PicAchOth > 100)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 100)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+                        PicScrOth = item.PicGrdOth * PicAchOth / 100;
+                        var newcolor = PicScrOth - item.PicGrdOth;
+                        if (newcolor >= 0)
+                            $("#OthTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrOth;
+                        PicTotGrade = PicTotGrade + item.PicGrdOth;
+                        $("#PicScrOth").text(formatNumber(PicScrOth.toFixed(2)));
+                    }
+
+                    //------Air freight
+                    $("#PicGrdAir").text(formatNumber(item.PicGrdAir));
+                    $("#PicTgtAir").text(formatNumber(item.PicTgtAir));
+                    $("#PicActAir").text(formatNumber(item.PicActAir));
+                    var PicTgtAir = item.PicTgtAir;
+                    var PicGrdAir = item.PicGrdAir;
+                    if (PicGrdAir == 0) {
+                        $("#PicAchAir").text(0);
+                        $("#PicScrAir").text(0);
+                        $("#AirTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicActAir = item.PicActAir;
+                        if (PicAchAir < 0)
+                            PicAchAir = 0;
+                        $("#PicAchAir").text(formatNumber(PicAchAir.toFixed(2)));
+                        if (PicActAir < 0.2)
+                            PicActAir = 120;
+                        else if (PicActAir >= 0.2 && PicActAir <= 0.25)
+                            PicActAir = 110;
+                        else if (PicActAir > 0.25 && PicActAir <= 0.3)
+                            PicActAir = 100;
+                        else if (PicActAir > 0.3 && PicActAir <= 0.35)
+                            PicActAir = 90;
+                        else if (PicActAir > 0.35)
+                            PicActAir = 60;
+
+                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+                        var newcolor = PicScrAir - item.PicGrdAir;
+                        if (newcolor >= 0)
+                            $("#AirTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + PicScrAir;
+                        PicTotGrade = PicTotGrade + item.PicGrdAir;
+                        $("#PicScrAir").text(formatNumber(PicScrAir.toFixed(2)));
+                    }
+
+                    //------INVENTORY
+                    $("#PicGrdInv").text(formatNumber(item.PicGrdInv));
+                    $("#PicTgtInv").text(formatNumber(item.PicTgtInv));
+                    $("#PicActInv").text(formatNumber(item.PicActInv));
+                    var PicTgtInv = item.PicTgtInv;
+                    var PicGrdInv = item.PicGrdInv;
+                    if (PicGrdInv == 0) {
+                        $("#PicAchInv").text(0);
+                        $("#PicScrInv").text(0);
+                        $("#InvTitle").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchInv = (1 + ((item.PicTgtInv - item.PicActInv) / item.PicTgtInv))*100;
+                        if (PicAchInv < 0)
+                            PicAchInv = 0;
+                        $("#PicAchInv").text(formatNumber(PicAchInv.toFixed(2)));
+
+                        if (thn < 2020) {
+                            if (PicAchInv >= 100)
+                                $("#InvTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitle").css({ "color": "red", "font-weight": "bold" });
+
+                            if (item.PicActInv == 0)
+                                PicScrInv = item.PicGrdInv;
+                            else
+                                PicScrInv = item.PicGrdInv - (item.PicGrdInv - ((item.PicTgtInv / item.PicActInv) * item.PicGrdInv));
+                        } else {
+                            var PicAchInvTmp = 0;
+                            if (PicAchInv < 50)
+                                PicAchInvTmp = 60;
+                            else if (PicAchInv >= 50 && PicAchInv <= 90)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 90 && PicAchInv <= 100)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 100 && PicAchInv <= 125)
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv > 125)
+                                PicAchInvTmp = 120;
+                            PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
+                            var newcolor = PicScrInv - item.PicGrdInv;
+                            if (newcolor >= 0)
+                                $("#InvTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitle").css({ "color": "red", "font-weight": "bold" });
+
+                        }
+
+                        PicScrTot = PicScrTot + PicScrInv;
+                        PicTotGrade = PicTotGrade + item.PicGrdInv;
+                        $("#PicScrInv").text(formatNumber(PicScrInv.toFixed(2)));
+                    }
+
+                    $("#PicScrTot").text(formatNumber((PicScrTot).toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber((PicTotGrade).toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrTotSum = 0;
+        PicTotGradeMonth = 0;
+        PicTotGradeSum = 0;
+        var userAu = $('#authorid').val();
+        var nmbulan = valMonth(bln);
+
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+        //---$('#thnnan').text('YEAR TO ' + thn);
+        var kpiObj = {
+            id: thn,
+            bul: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vPPICDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#PicGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#PicTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#PicActRevMonth").text(formatNumber(item.PicActRev));
+                        var PicTgtRev = item.PicTgtRev;
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0) {
+                            $("#PicAchRevMonth").text(0);
+                            $("#PicScrRevMonth").text(0);
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (PicAchRev < 0)
+                                PicAchRev = 0;
+                            $("#PicAchRevMonth").text(formatNumber(PicAchRev.toFixed(2)));
+                            if (PicAchRev > 110)
+                                PicAchRev = 120;
+                            else if (PicAchRev > 103 && PicAchRev <= 110)
+                                PicAchRev = 110;
+                            else if (PicAchRev > 95 && PicAchRev <= 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 90 && PicAchRev <= 95)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 90)
+                                PicAchRev = 60;
+                            else PicAchRev = 0;
+
+                            PicScrRev = item.PicGrdRev * PicAchRev / 100;
+                            var newcolor = PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotMonth = PicScrTotMonth + PicScrRev;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRev;
+                            $("#PicScrRevMonth").text(formatNumber(PicScrRev.toFixed(2)));
+                        }
+                    }
+                    /*------------pda ----------------*/
+                    $("#PicGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#PicTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#PicActPdaMonth").text(formatNumber(item.PicActPda));
+                    var PicTgtPda = item.PicTgtPda;
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0) {
+                        $("#PicAchPdaMonth").text(0);
+                        $("#PicScrPdaMonth").text(0);
+                        $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        if (PicAchPda < 0)
+                            PicAchPda = 0;
+                        $("#PicAchPdaMonth").text(formatNumber(PicAchPda.toFixed(2)));
+                        if (PicAchPda > 110)
+                            PicAchPda = 120;
+                        else if (PicAchPda > 103 && PicAchPda <= 110)
+                            PicAchPda = 110;
+                        else if (PicAchPda > 98 && PicAchPda <= 103)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 94 && PicAchPda <= 98)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 94)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+                        PicScrPda = item.PicGrdPda * PicAchPda / 100;
+                        var newcolor = PicScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotMonth = PicScrTotMonth + PicScrPda;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPda;
+                        $("#PicScrPdaMonth").text(formatNumber(PicScrPda.toFixed(2)));
+                    }
+                    /*------------pdc ----------------*/
+                    $("#PicGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#PicTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#PicActPdcMonth").text(formatNumber(item.PicActPdc));
+                    var PicTgtPdc = item.PicTgtPdc;
+                    var PicGrdPdc = item.PicGrdPdc;
+                    console.log(PicTgtPdc);
+                    if (PicGrdPdc == 0) {
+                        $("#PicAchPdcMonth").text(0);
+                        $("#PicScrPdcMonth").text(0);
+                        $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (PicAchPdc < 0)
+                            PicAchPdc = 0;
+                        $("#PicAchPdcMonth").text(formatNumber(PicAchPdc.toFixed(2)));
+                        if (PicAchPdc > 110)
+                            PicAchPdc = 120;
+                        else if (PicAchPdc > 102 && PicAchPdc <= 110)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc > 98 && PicAchPdc <= 102)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 94 && PicAchPdc <= 98)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 94)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+                        PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
+                        var newcolor = PicScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotMonth = PicScrTotMonth + PicScrPdc;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPdc;
+                        $("#PicScrPdcMonth").text(formatNumber(PicScrPdc.toFixed(2)));
+                    }
+
+                    //-------tvb
+                    $("#PicGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
+                    $("#PicTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
+                    $("#PicActTvbMonth").text(formatNumber(item.PicActTvb));
+                    var PicTgtTvb = item.PicTgtTvb;
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0) {
+                        $("#PicAchTvbMonth").text(0);
+                        $("#PicScrTvbMonth").text(0);
+                        $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                        if (PicAchTvb < 0)
+                            PicAchTvb = 0;
+                        $("#PicAchTvbMonth").text(formatNumber(PicAchTvb.toFixed(2)));
+                        if (PicAchTvb > 100)
+                            PicAchTvb = 110;
+                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                            PicAchTvb = 100;
+                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                            PicAchTvb = 90;
+                        else if (PicAchTvb < 85)
+                            PicAchTvb = 60;
+                        else
+                            PicAchTvb = 0;
+                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                        var newcolor = PicScrTvb - item.PicGrdTvb;
+                        if (newcolor >= 0)
+                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTotMonth = PicScrTotMonth + PicScrTvb;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
+                        $("#PicScrTvbMonth").text(formatNumber(PicScrTvb.toFixed(2)));
+                    }
+
+                    //-------dpp pump
+                    $("#PicGrdDppMonth").text(formatNumber(item.PicGrdDpp));
+                    $("#PicTgtDppMonth").text(formatNumber(item.PicTgtDpp));
+                    $("#PicActDppMonth").text(formatNumber(item.PicActDpp));
+                    var PicTgtDpp = item.PicTgtDpp;
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0) {
+                        $("#PicAchDppMonth").text(0);
+                        $("#PicScrDppMonth").text(0);
+                        $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                        if (PicAchDpp < 0)
+                            PicAchDpp = 0;
+                        $("#PicAchDppMonth").text(formatNumber(PicAchDpp.toFixed(2)));
+                        if (PicAchDpp > 100)
+                            PicAchDpp = 110;
+                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                            PicAchDpp = 100;
+                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                            PicAchDpp = 90;
+                        else if (PicAchDpp < 85)
+                            PicAchDpp = 60;
+                        else
+                            PicAchDpp = 0;
+                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                        var newcolor = PicScrDpp - item.PicGrdDpp;
+                        if (newcolor >= 0)
+                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTotMonth = PicScrTotMonth + PicScrDpp;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
+                        $("#PicScrDppMonth").text(formatNumber(PicScrDpp.toFixed(2)));
+                    }
+
+                    if (thn < 2020) {
+                        $("#trdtleme").show();
+                        $("#trdtlsca").show();
+                        $("#trdtlmus").show();
+                        //-------Emerson
+                        $("#PicGrdEmeMonth").text(formatNumber(item.PicGrdEme));
+                        $("#PicTgtEmeMonth").text(formatNumber(item.PicTgtEme));
+                        $("#PicActEmeMonth").text(formatNumber(item.PicActEme));
+                        var PicTgtEme = item.PicTgtEme;
+                        var PicGrdEme = item.PicGrdEme;
+                        if (PicGrdEme == 0) {
+                            $("#PicAchEmeMonth").text(0);
+                            $("#PicScrEmeMonth").text(0);
+                            $("#EmeTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchEme = item.PicActEme / item.PicTgtEme * 100;
+                            if (PicAchEme < 0)
+                                PicAchEme = 0;
+                            $("#PicAchEmeMonth").text(formatNumber(PicAchEme.toFixed(2)));
+                            if (PicAchEme > 100)
+                                PicAchEme = 110;
+                            else if (PicAchEme > 95 && PicAchEme <= 100)
+                                PicAchEme = 100;
+                            else if (PicAchEme >= 85 && PicAchEme <= 95)
+                                PicAchEme = 90;
+                            else if (PicAchEme < 85)
+                                PicAchEme = 60;
+                            else
+                                PicAchEme = 0;
+                            PicScrEme = item.PicGrdEme * PicAchEme / 100;
+                            var newcolor = PicScrEme - item.PicGrdEme;
+                            if (newcolor >= 0)
+                                $("#EmeTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#EmeTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotMonth = PicScrTotMonth + PicScrEme;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdEme;
+                            $("#PicScrEmeMonth").text(formatNumber(PicScrEme.toFixed(2)));
+                        }
+                        //-------Scanjet
+                        $("#PicGrdScaMonth").text(formatNumber(item.PicGrdSca));
+                        $("#PicTgtScaMonth").text(formatNumber(item.PicTgtSca));
+                        $("#PicActScaMonth").text(formatNumber(item.PicActSca));
+                        var PicTgtSca = item.PicTgtSca;
+                        if (PicTgtSca == 0) {
+                            $("#PicAchScaMonth").text(0);
+                            $("#PicScrScaMonth").text(0);
+                            $("#ScaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchSca = item.PicActSca / item.PicTgtSca * 100;
+                            if (PicAchSca < 0)
+                                PicAchSca = 0;
+                            $("#PicAchScaMonth").text(formatNumber(PicAchSca.toFixed(2)));
+                            if (PicAchSca > 100)
+                                PicAchSca = 110;
+                            else if (PicAchSca > 95 && PicAchSca <= 100)
+                                PicAchSca = 100;
+                            else if (PicAchSca >= 85 && PicAchSca <= 95)
+                                PicAchSca = 90;
+                            else if (PicAchSca < 85)
+                                PicAchSca = 60;
+                            else
+                                PicAchSca = 0;
+                            PicScrSca = item.PicGrdSca * PicAchSca / 100;
+                            var newcolor = PicScrSca - item.PicGrdSca;
+                            if (newcolor >= 0)
+                                $("#ScaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#ScaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + PicScrSca;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSca;
+                            $("#PicScrScaMonth").text(formatNumber(PicScrSca.toFixed(2)));
+                        }
+                        //-------Musashi
+                        $("#PicGrdMusMonth").text(formatNumber(item.PicGrdMus));
+                        $("#PicTgtMusMonth").text(formatNumber(item.PicTgtMus));
+                        $("#PicActMusMonth").text(formatNumber(item.PicActMus));
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicTgtMus == 0) {
+                            $("#PicAchMusMonth").text(0);
+                            $("#PicScrMusMonth").text(0);
+                            $("#MusTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchMus = item.PicActMus / item.PicTgtMus * 100;
+                            if (PicAchMus < 0)
+                                PicAchMus = 0;
+                            $("#PicAchMusMonth").text(formatNumber(PicAchMus.toFixed(2)));
+                            if (PicAchMus > 100)
+                                PicAchMus = 110;
+                            else if (PicAchMus > 95 && PicAchMus <= 100)
+                                PicAchMus = 100;
+                            else if (PicAchMus >= 85 && PicAchMus <= 95)
+                                PicAchMus = 90;
+                            else if (PicAchMus < 85)
+                                PicAchMus = 60;
+                            else
+                                PicAchMus = 0;
+                            PicScrMus = item.PicGrdMus * PicAchMus / 100;
+                            var newcolor = PicScrMus - item.PicGrdMus;
+                            if (newcolor >= 0)
+                                $("#MusTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MusTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotMonth = PicScrTotMonth + PicScrMus;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMus;
+                            $("#PicScrMusMonth").text(formatNumber(PicScrMus.toFixed(2)));
+                        }
+                    }
+                    else {
+                        $("#trdtleme").hide();
+                        $("#trdtlsca").hide();
+                        $("#trdtlmus").hide();
+                    }
+
+                    //-------Others
+                    if (thn < 2020)
+                        $("#OthTitleMonth").text("Delivery Reliability Measurement - Others");
+                    else
+                        $("#OthTitleMonth").text("Delivery Reliability Measurement - AVE");
+
+                    $("#PicGrdOthMonth").text(formatNumber(item.PicGrdOth));
+                    $("#PicTgtOthMonth").text(formatNumber(item.PicTgtOth));
+                    $("#PicActOthMonth").text(formatNumber(item.PicActOth));
+                    var PicTgtOth = item.PicTgtOth;
+                    if (PicTgtOth == 0) {
+                        $("#PicAchOthMonth").text(0);
+                        $("#PicScrOthMonth").text(0);
+                        $("#OthTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchOth = item.PicActOth / item.PicTgtOth * 100;
+                        if (PicAchOth < 0)
+                            PicAchOth = 0;
+                        $("#PicAchOthMonth").text(formatNumber(PicAchOth.toFixed(2)));
+                        if (PicAchOth > 100)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 100)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+                        PicScrOth = item.PicGrdOth * PicAchOth / 100;
+                        var newcolor = PicScrOth - item.PicGrdOth;
+                        if (newcolor >= 0)
+                            $("#OthTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotMonth = PicScrTotMonth + PicScrOth;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdOth;
+                        $("#PicScrOthMonth").text(formatNumber(PicScrOth.toFixed(2)));
+                    }
+                    //------Air freight
+                    $("#PicGrdAirMonth").text(formatNumber(item.PicGrdAir));
+                    $("#PicTgtAirMonth").text(formatNumber(item.PicTgtAir));
+                    $("#PicActAirMonth").text(formatNumber(item.PicActAir));
+                    var PicTgtAir = item.PicTgtAir;
+                    if (PicTgtAir == 0) {
+                        $("#PicAchAirMonth").text(0);
+                        $("#PicScrAirMonth").text(0);
+                        $("#AirTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicActAir = item.PicActAir;
+                        if (PicAchAir < 0)
+                            PicAchAir = 0;
+                        $("#PicAchAirMonth").text(formatNumber(PicAchAir.toFixed(2)));
+                        if (PicActAir < 0.2)
+                            PicActAir = 120;
+                        else if (PicActAir >= 0.2 && PicActAir <= 0.25)
+                            PicActAir = 110;
+                        else if (PicActAir > 0.25 && PicActAir <= 0.3)
+                            PicActAir = 100;
+                        else if (PicActAir > 0.3 && PicActAir <= 0.35)
+                            PicActAir = 90;
+                        else if (PicActAir > 0.35)
+                            PicActAir = 60;
+
+                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+                        var newcolor = PicScrAir - item.PicGrdAir;
+                        if (newcolor >= 0)
+                            $("#AirTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTotMonth = PicScrTotMonth + PicScrAir;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdAir;
+                        $("#PicScrAirMonth").text(formatNumber(PicScrAir.toFixed(2)));
+                    }
+
+                    //------INVENTORY
+                    $("#PicGrdInvMonth").text(formatNumber(item.PicGrdInv));
+                    $("#PicTgtInvMonth").text(formatNumber(item.PicTgtInv));
+                    $("#PicActInvMonth").text(formatNumber(item.PicActInv));
+                    var PicTgtInv = item.PicTgtInv;
+                    if (PicTgtInv == 0) {
+                        $("#PicAchInvMonth").text(0);
+                        $("#PicScrInvMonth").text(0);
+                        $("#InvTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchInv = (1 + ((item.PicTgtInv - item.PicActInv) / item.PicTgtInv)) * 100;
+                        if (PicAchInv < 0)
+                            PicAchInv = 0;
+                        $("#PicAchInvMonth").text(formatNumber(PicAchInv.toFixed(2)));
+
+                        if (thn < 2020) {
+                            if (PicAchInv >= 100)
+                                $("#InvTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            if (item.PicActInv == 0)
+                                PicScrInv = item.PicGrdInv;
+                            else
+                                PicScrInv = item.PicGrdInv - (item.PicGrdInv - ((item.PicTgtInv / item.PicActInv) * item.PicGrdInv));
+                        } else {
+                            var PicAchInvTmp = 0;
+                            if (PicAchInv < 50)
+                                PicAchInvTmp = 60;
+                            else if (PicAchInv >= 50 && PicAchInv <= 90)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 90 && PicAchInv <= 100)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 100 && PicAchInv <= 125)
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv > 125)
+                                PicAchInvTmp = 120;
+                            PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
+                            var newcolor = PicScrInv - item.PicGrdInv;
+                            if (newcolor >= 0)
+                                $("#InvTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        }
+
+                        PicScrTotMonth = PicScrTotMonth + PicScrInv;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdInv;
+                        $("#PicScrInvMonth").text(formatNumber(PicScrInv.toFixed(2)));
+                    }
+
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                    $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+        var kpiSum = {
+            id: thn,
+            bul: bln,
+            ch: "S"
+        }
+        $.ajax({
+            url: urlKPI + "/vPPICDeptSummary/",
+            data: JSON.stringify(kpiSum),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#PicGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#PicTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#PicActRevSum").text(formatNumber(item.PicActRev));
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicTgtRev == 0) {
+                            $("#PicAchRevSum").text(0);
+                            $("#PicScrRevSum").text(0);
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (PicAchRev < 0)
+                                PicAchRev = 0;
+                            $("#PicAchRevSum").text(formatNumber(PicAchRev.toFixed(2)));
+                            if (PicAchRev > 110)
+                                PicAchRev = 120;
+                            else if (PicAchRev > 103 && PicAchRev <= 110)
+                                PicAchRev = 110;
+                            else if (PicAchRev > 95 && PicAchRev <= 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 90 && PicAchRev <= 95)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 90)
+                                PicAchRev = 60;
+                            else
+                                PicAchRev = 0;
+                            PicScrRev = item.PicGrdRev * PicAchRev / 100;
+                            var newcolor = PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrRev;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdRev;
+                            $("#PicScrRevSum").text(formatNumber(PicScrRev.toFixed(2)));
+                        }
+                    }
+                    /*------------PDA ----------------*/
+                    $("#PicGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#PicTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#PicActPdaSum").text(formatNumber(item.PicActPda));
+                    var PicTgtPda = item.PicTgtPda;
+                    if (PicTgtPda == 0) {
+                        $("#PicAchPdaSum").text(0);
+                        $("#PicScrPdaSum").text(0);
+                        $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        if (PicActPda < 0)
+                            PicActPda = 0;
+                        $("#PicAchPdaSum").text(formatNumber(PicAchPda.toFixed(2)));
+                        if (PicAchPda > 110)
+                            PicAchPda = 120;
+                        else if (PicAchPda > 103 && PicAchPda <= 110)
+                            PicAchPda = 110;
+                        else if (PicAchPda > 98 && PicAchPda <= 103)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 94 && PicAchPda <= 98)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 94)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+
+                        PicScrPda = item.PicGrdPda * PicAchPda / 100;
+                        var newcolor = PicScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrPda;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdPda;
+                        $("#PicScrPdaSum").text(formatNumber(PicScrPda.toFixed(2)));
+                    }
+
+                    /*------------pdc ----------------*/
+                    $("#PicGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#PicTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#PicActPdcSum").text(formatNumber(item.PicActPdc));
+                    var PicTgtPda = item.PicTgtPdc;
+                    if (PicTgtPda == 0) {
+                        $("#PicAchPdcSum").text(0);
+                        $("#PicScrPdcSum").text(0);
+                        $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (PicAchPdc < 0)
+                            PicAchPdc = 0;
+                        $("#PicAchPdcSum").text(formatNumber(PicAchPdc.toFixed(2)));
+                        if (PicAchPdc > 110)
+                            PicAchPdc = 120;
+                        else if (PicAchPdc > 102 && PicAchPdc <= 110)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc > 98 && PicAchPdc <= 102)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 94 && PicAchPdc <= 98)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 94)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+                        PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
+                        var newcolor = PicScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrPdc;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
+                        $("#PicScrPdcSum").text(formatNumber(PicScrPdc.toFixed(2)));
+                    }
+                    //-------tvb
+                    $("#PicGrdTvbSum").text(formatNumber(item.PicGrdTvb));
+                    $("#PicTgtTvbSum").text(formatNumber(item.PicTgtTvb));
+                    $("#PicActTvbSum").text(formatNumber(item.PicActTvb));
+                    var PicTgtTvb = item.PicTgtTvb;
+                    if (PicTgtTvb == 0) {
+                        $("#PicAchTvbSum").text(0);
+                        $("#PicScrTvbSum").text(0);
+                        $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                        if (PicAchTvb < 0)
+                            PicAchTvb = 0;
+                        $("#PicAchTvbSum").text(formatNumber(PicAchTvb.toFixed(2)));
+                        if (PicAchTvb > 100)
+                            PicAchTvb = 110;
+                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                            PicAchTvb = 100;
+                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                            PicAchTvb = 90;
+                        else if (PicAchTvb < 85)
+                            PicAchTvb = 60;
+                        else
+                            PicAchTvb = 0;
+                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                        var newcolor = PicScrTvb - item.PicGrdTvb;
+                        if (newcolor >= 0)
+                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrTvb;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
+                        $("#PicScrTvbSum").text(formatNumber(PicScrTvb.toFixed(2)));
+                    }
+
+                    //-------dpp pump
+                    $("#PicGrdDppSum").text(formatNumber(item.PicGrdDpp));
+                    $("#PicTgtDppSum").text(formatNumber(item.PicTgtDpp));
+                    $("#PicActDppSum").text(formatNumber(item.PicActDpp));
+                    var PicTgtDpp = item.PicTgtDpp;
+                    if (PicTgtDpp == 0) {
+                        $("#PicAchDppSum").text(0);
+                        $("#PicScrDppSum").text(0);
+                        $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                        if (PicAchDpp < 0)
+                            PicAchDpp = 0;
+                        $("#PicAchDppSum").text(formatNumber(PicAchDpp.toFixed(2)));
+                        if (PicAchDpp > 100)
+                            PicAchDpp = 110;
+                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                            PicAchDpp = 100;
+                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                            PicAchDpp = 90;
+                        else if (PicAchDpp < 85)
+                            PicAchDpp = 60;
+                        else
+                            PicAchDpp = 0;
+                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                        var newcolor = PicScrDpp - item.PicGrdDpp;
+                        if (newcolor >= 0)
+                            $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrDpp;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
+                        $("#PicScrDppSum").text(formatNumber(PicScrDpp.toFixed(2)));
+                    }
+
+                    if (thn < 2020) {
+                        $("#trsubdtleme").show();
+                        $("#trsubdtlsca").show();
+                        $("#trsubdtlmus").show();
+
+                        //-------Emerson
+                        $("#PicGrdEmeSum").text(formatNumber(item.PicGrdEme));
+                        $("#PicTgtEmeSum").text(formatNumber(item.PicTgtEme));
+                        $("#PicActEmeSum").text(formatNumber(item.PicActEme));
+                        var PicTgtEme = item.PicTgtEme;
+                        if (PicTgtEme == 0) {
+                            $("#PicAchEmeSum").text(0);
+                            $("#PicScrEmeSum").text(0);
+                            $("#EmeTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchEme = item.PicActEme / item.PicTgtEme * 100;
+                            if (PicAchEme < 0)
+                                PicAchEme = 0;
+                            $("#PicAchEmeSum").text(formatNumber(PicAchEme.toFixed(2)));
+                            if (PicAchEme > 100)
+                                PicAchEme = 110;
+                            else if (PicAchEme > 95 && PicAchEme <= 100)
+                                PicAchEme = 100;
+                            else if (PicAchEme >= 85 && PicAchEme <= 95)
+                                PicAchEme = 90;
+                            else if (PicAchEme < 85)
+                                PicAchEme = 60;
+                            else
+                                PicAchEme = 0;
+                            PicScrEme = item.PicGrdEme * PicAchEme / 100;
+                            var newcolor = PicScrEme - item.PicGrdEme;
+                            if (newcolor >= 0)
+                                $("#EmeTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#EmeTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrEme;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdEme;
+                            $("#PicScrEmeSum").text(formatNumber(PicScrEme.toFixed(2)));
+                        }
+                        //-------Scanjet
+                        $("#PicGrdScaSum").text(formatNumber(item.PicGrdSca));
+                        $("#PicTgtScaSum").text(formatNumber(item.PicTgtSca));
+                        $("#PicActScaSum").text(formatNumber(item.PicActSca));
+                        var PicTgtSca = item.PicTgtSca;
+                        if (PicTgtSca == 0) {
+                            $("#PicAchScaSum").text(0);
+                            $("#PicScrScaSum").text(0);
+                            $("#ScaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchSca = item.PicActSca / item.PicTgtSca * 100;
+                            if (PicAchSca < 0)
+                                PicAchSca = 0;
+                            $("#PicAchScaSum").text(formatNumber(PicAchSca.toFixed(2)));
+                            if (PicAchSca > 100)
+                                PicAchSca = 110;
+                            else if (PicAchSca > 95 && PicAchSca <= 100)
+                                PicAchSca = 100;
+                            else if (PicAchSca >= 85 && PicAchSca <= 95)
+                                PicAchSca = 90;
+                            else if (PicAchSca < 85)
+                                PicAchSca = 60;
+                            else
+                                PicAchSca = 0;
+                            PicScrSca = item.PicGrdSca * PicAchSca / 100;
+                            var newcolor = PicScrSca - item.PicGrdSca;
+                            if (newcolor >= 0)
+                                $("#ScaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#ScaTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrSca;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdSca;
+                            $("#PicScrScaSum").text(formatNumber(PicScrSca.toFixed(2)));
+                        }
+                        //-------Musashi
+                        $("#PicGrdMusSum").text(formatNumber(item.PicGrdMus));
+                        $("#PicTgtMusSum").text(formatNumber(item.PicTgtMus));
+                        $("#PicActMusSum").text(formatNumber(item.PicActMus));
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicTgtMus == 0) {
+                            $("#PicAchMusSum").text(0);
+                            $("#PicScrMusSum").text(0);
+                            $("#MusTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchMus = item.PicActMus / item.PicTgtMus * 100;
+                            if (PicAchMus < 0)
+                                PicAchMus = 0;
+                            $("#PicAchMusSum").text(formatNumber(PicAchMus.toFixed(2)));
+                            if (PicAchMus > 100)
+                                PicAchMus = 110;
+                            else if (PicAchMus > 95 && PicAchMus <= 100)
+                                PicAchMus = 100;
+                            else if (PicAchMus >= 85 && PicAchMus <= 95)
+                                PicAchMus = 90;
+                            else if (PicAchMus < 85)
+                                PicAchMus = 60;
+                            else
+                                PicAchMus = 0;
+                            PicScrMus = item.PicGrdMus * PicAchMus / 100;
+                            var newcolor = PicScrMus - item.PicGrdMus;
+                            if (newcolor >= 0)
+                                $("#MusTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MusTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrMus;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdMus;
+                            $("#PicScrMusSum").text(formatNumber(PicScrMus.toFixed(2)));
+                        }
+                    }
+                    else {
+                        $("#trsubdtleme").hide();
+                        $("#trsubdtlsca").hide();
+                        $("#trsubdtlmus").hide();
+
+                    }
+                    //-------Others
+                    if (thn < 2020)
+                        $("#OthTitleSum").text("Delivery Reliability Measurement - Others");
+                    else
+                        $("#OthTitleSum").text("Delivery Reliability Measurement - AVE");
+
+                    $("#PicGrdOthSum").text(formatNumber(item.PicGrdOth));
+                    $("#PicTgtOthSum").text(formatNumber(item.PicTgtOth));
+                    $("#PicActOthSum").text(formatNumber(item.PicActOth));
+                    var PicTgtOth = item.PicTgtOth;
+                    if (PicTgtOth == 0) {
+                        $("#PicAchOthSum").text(0);
+                        $("#PicScrOthSum").text(0);
+                        $("#OthTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchOth = item.PicActOth / item.PicTgtOth * 100;
+                        if (PicAchOth < 0)
+                            PicAchOth = 0;
+                        $("#PicAchOthSum").text(formatNumber(PicAchOth.toFixed(2)));
+                        if (PicAchOth > 100)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 100)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+                        PicScrOth = item.PicGrdOth * PicAchOth / 100;
+                        var newcolor = PicScrOth - item.PicGrdOth;
+                        if (newcolor >= 0)
+                            $("#OthTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrOth;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdOth;
+                        $("#PicScrOthSum").text(formatNumber(PicScrOth.toFixed(2)));
+                    }
+                    //------Air freight
+                    $("#PicGrdAirSum").text(formatNumber(item.PicGrdAir));
+                    $("#PicTgtAirSum").text(formatNumber(item.PicTgtAir));
+                    $("#PicActAirSum").text(formatNumber(item.PicActAir));
+                    var PicTgtAir = item.PicTgtAir;
+                    if (PicTgtAir == 0) {
+                        $("#PicAchAirSum").text(0);
+                        $("#PicScrAirSum").text(0);
+                        $("#AirTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicActAir = item.PicActAir;
+                        if (PicAchAir < 0)
+                            PicAchAir = 0;
+                        $("#PicAchAirSum").text(formatNumber(PicAchAir.toFixed(2)));
+                        if (PicActAir < 0.2)
+                            PicActAir = 120;
+                        else if (PicActAir >= 0.2 && PicActAir <= 0.25)
+                            PicActAir = 110;
+                        else if (PicActAir > 0.25 && PicActAir <= 0.3)
+                            PicActAir = 100;
+                        else if (PicActAir > 0.3 && PicActAir <= 0.35)
+                            PicActAir = 90;
+                        else if (PicActAir > 0.35)
+                            PicActAir = 60;
+
+                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+                        var newcolor = PicScrAir - item.PicGrdAir;
+                        if (newcolor >= 0)
+                            $("#AirTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + PicScrAir;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdAir;
+                        $("#PicScrAirSum").text(formatNumber(PicScrAir.toFixed(2)));
+                    }
+
+                    //------INVENTORY
+                    $("#PicGrdInvSum").text(formatNumber(item.PicGrdInv));
+                    $("#PicTgtInvSum").text(formatNumber(item.PicTgtInv));
+                    $("#PicActInvSum").text(formatNumber(item.PicActInv));
+                    var PicTgtInv = item.PicTgtInv;
+                    if (PicTgtInv == 0) {
+                        $("#PicAchInvSum").text(0);
+                        $("#PicScrInvSum").text(0);
+                        $("#InvTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    } else {
+                        var PicAchInv = (1 + ((item.PicTgtInv - item.PicActInv) / item.PicTgtInv)) * 100;
+                        if (PicAchInv < 0)
+                            PicAchInv = 0;
+                        $("#PicAchInvSum").text(formatNumber(PicAchInv.toFixed(2)));
+
+                        if (thn < 2020) {
+                            if (PicAchInv >= 100)
+                                $("#InvTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            if (item.PicActInv == 0)
+                                PicScrInv = item.PicGrdInv;
+                            else
+                                PicScrInv = item.PicGrdInv - (item.PicGrdInv - ((item.PicTgtInv / item.PicActInv) * item.PicGrdInv));
+
+                        } else {
+                            var PicAchInvTmp = 0;
+                            if (PicAchInv < 50)
+                                PicAchInvTmp = 60;
+                            else if (PicAchInv >= 50 && PicAchInv <= 90)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 90 && PicAchInv <= 100)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 100 && PicAchInv <= 125)
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv > 125)
+                                PicAchInvTmp = 120;
+                            PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
+                            var newcolor = PicScrInv - item.PicGrdInv;
+                            if (newcolor >= 0)
+                                $("#InvTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#InvTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTotSum = PicScrTotSum + PicScrInv;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdInv;
+                        $("#PicScrInvSum").text(formatNumber(PicScrInv.toFixed(2)));
+                    }
+
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                    $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+</script>

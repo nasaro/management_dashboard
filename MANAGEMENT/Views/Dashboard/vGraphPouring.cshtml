@@ -1,0 +1,1213 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+  
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <br />
+        <h3>Production Graph</h3>
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+
+            <div class="col-sm-2">
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode()">Preview</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionOne">
+                        <span class="glyphicon glyphicon-stats"></span> Output Pouring
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionOne" href="#collapseOne">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseOne">
+                        <div class="panel-body">
+                            <div id="barPouring">
+                                <canvas id="chartPouring" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionTwo">
+                        <span class="glyphicon glyphicon-stats"></span> Cummulatif Output Pouring
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionTwo" href="#collapseTwo">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseTwo">
+                        <div class="panel-body">
+                            <div id="barCummPouring">
+                                <canvas id="chartCummPouring" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+        <div class="row">
+            <div class="col-md-12">
+                <h4><span class="label label-danger" id="remarkpouring">Remark Cummulative Output Pouring :</span></h4>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionThree">
+                        <span class="glyphicon glyphicon-stats"></span> Output PDA
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionThree" href="#collapseThree">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseThree">
+                        <div class="panel-body">
+                            <div id="barPda">
+                                <canvas id="chartPda" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFour">
+                        <span class="glyphicon glyphicon-stats"></span> Cummulative Output PDA
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFour" href="#collapseFour">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFour">
+                        <div class="panel-body">
+                            <div id="barCummPda">
+                                <canvas id="chartCummPda" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4><span class="label label-danger" id="remarkpda">Remark Cummulative Output PDA :</span></h4>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionEight">
+                        <span class="glyphicon glyphicon-stats"></span> Cummulative Actual Pouring VS PDA
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionEight" href="#collapseEight">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseEight">
+                        <div class="panel-body">
+                            <div id="barCummPouringPda">
+                                <canvas id="chartCummPouringPda" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFive">
+                        <span class="glyphicon glyphicon-stats"></span> Output PDB
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFive" href="#collapseFive">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFive">
+                        <div class="panel-body">
+                            <div id="barPdb">
+                                <canvas id="chartPdb" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionSix">
+                        <span class="glyphicon glyphicon-stats"></span> Cummulative Output PDB
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionSix" href="#collapseSix">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseSix">
+                        <div class="panel-body">
+                            <div id="barCummPdb">
+                                <canvas id="chartCummPdb" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4><span class="label label-danger" id="remarkpdb">Remark Cummulative Output PDB :</span></h4>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionSeven">
+                        <span class="glyphicon glyphicon-stats"></span> WIP
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("vGraphPouring", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionSeven" href="#collapseSeven">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseSeven">
+                        <div class="panel-body">
+                            <div id="barWIP">
+                                <canvas id="chartWIP" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <br />
+        <br />
+    <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var dataBeratP = [];
+    var dataTargetP = [];
+    var dataHeatP = [];
+    var dataTglP = [];
+    var dataKumBeratP = [];
+    var dataKumTargetP = [];
+    var dataKumHeatP = [];
+    var datatotalPDA = [];
+    var datatargetPDA = [];
+    var dataKumPDA = [];
+    var dataKumtargetPDA = [];
+    var datatotalPDB = [];
+    var datatargetPDB = [];
+    var dataKumPDB = [];
+    var dataKumtargetPDB = [];
+    var dataWIP = [];
+    var dataPouringVS = [];
+    var dataPDAVS = [];
+    var dataActualPouring = [];
+    var dataActualPDA = [];
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+
+        var dNow = new Date(Date.now() );
+        var iMonth = dNow.getMonth();
+        $('#monthkpi').val(iMonth + 1);
+        var iYear = dNow.getFullYear();
+        $('#prd').val(iYear);
+        $(".loader").hide();        
+    });
+
+    function GetPeriode() {
+        var bln = $('#monthkpi').val();
+        var thn = $('#prd').val();
+        $('#chartPouring').remove();
+        $('#barPouring').append('<canvas id="chartPouring" style="height:230px"></canvas>');
+        $('#chartCummPouring').remove();
+        $('#barCummPouring').append('<canvas id="chartCummPouring" style="height:230px"></canvas>');
+        showGraphPouring(thn, bln);
+        showLastRowPouring(thn, bln);
+        
+        $('#chartPda').remove();
+        $('#barPda').append('<canvas id="chartPda" style="height:230px"></canvas>');
+        $('#chartCummPda').remove();
+        $('#barCummPda').append('<canvas id="chartCummPda" style="height:230px"></canvas>');
+        $('#chartCummPouringPda').remove();
+        $('#barCummPouringPda').append('<canvas id="chartCummPouringPda" style="height:230px"></canvas>');
+        showGraphPDA(thn, bln);
+        showLastRowPDA(thn, bln);
+        showGraphPouringPDA(thn, bln);
+
+        $('#chartPdb').remove();
+        $('#barPdb').append('<canvas id="chartPdb" style="height:230px"></canvas>');
+        $('#chartCummPdb').remove();
+        $('#barCummPdb').append('<canvas id="chartCummPdb" style="height:230px"></canvas>');
+        showGraphPDB(thn, bln);
+        showLastRowPDB(thn, bln);
+
+        $('#chartWIP').remove();
+        $('#barWIP').append('<canvas id="chartWIP" style="height:230px"></canvas>');
+        showGraphWIP(thn, bln);
+    }
+
+   
+    function showGraphPouring(thn, bln) {
+        $.getJSON(urlKPI + "/vGrapOutputPouring/", { year: thn, month: bln },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataBeratP = json.map(function (e) {
+                    return e.totbrtpouring;
+                });
+                dataTargetP = json.map(function (e) {
+                    return e.trgpouring;
+                });
+                dataHeatP = json.map(function (e) {
+                    return e.totheatpouring;
+                });
+                dataKumBeratP = json.map(function (e) {
+                    return e.kumbrtpouring;
+                });
+                dataKumTargetP = json.map(function (e) {
+                    return e.kumtrgpouring;
+                });
+                dataKumHeatP = json.map(function (e) {
+                    return e.kumheatpouring;
+                });
+                dataTglP = json.map(function (e) {
+                    return e.tgl;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx = document.getElementById("chartPouring");
+                var chartPouring = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Actual Pouring',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataBeratP,
+                              yAxisID: 'y-axis-1'
+                          },
+                          {
+                              type: 'line',
+                              label: 'Target Pouring',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataTargetP,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: '#f00',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          },
+                          {
+                              type: 'line',
+                              label: 'Actual Heat',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataHeatP,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'green',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-2'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }, {
+                                type: "linear",
+                                display: true,
+                                position: "right",
+                                id: "y-axis-2",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+                    
+                    }
+                });
+
+                //-----end batas 1--
+
+                //-----------batas 2---
+                var ctx2 = document.getElementById("chartCummPouring");
+                var chartCummPouring = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Cumm. Actual Pouring',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataKumBeratP,
+                              yAxisID: 'y-axis-1'
+                          },
+                          {
+                              type: 'line',
+                              label: 'Cumm. Target Pouring',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataKumTargetP,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: '#f00',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          },
+                          {
+                              type: 'line',
+                              label: 'Cumm. Actual Heat',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataKumHeatP,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'green',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-2'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }, {
+                                type: "linear",
+                                display: true,
+                                position: "right",
+                                id: "y-axis-2",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+
+                    }
+                });
+
+                //-----end batas 1--
+
+            } 
+           
+        });
+    }
+
+    function showLastRowPouring(thn,bln)
+    {
+        $.getJSON(urlKPI + "/vLastRowPouring/", { year: thn, month: bln },
+            function (result) {
+            $.each(result, function (i, field) {
+                $('#remarkpouring').text('Remark Cummulative Output Pouring : ' + formatNumber(field.lastrowpouring));                
+            });
+        });
+    }
+
+    function showGraphPDA(thn, bln) {
+        $.getJSON(urlKPI + "/vGrapOutputPda/", { year: thn, month: bln },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                datatotalPDA = json.map(function (e) {
+                    return e.totalpda;
+                });
+                datatargetPDA = json.map(function (e) {
+                    return e.targetpda;
+                });
+                dataKumPDA = json.map(function (e) {
+                    return e.kumpda;
+                });
+                dataKumtargetPDA = json.map(function (e) {
+                    return e.kumtargetpda;
+                });               
+                dataTglP = json.map(function (e) {
+                    return e.tgl;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx3 = document.getElementById("chartPda");
+                var chartPDA = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Actual PDA',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: datatotalPDA,
+                              yAxisID: 'y-axis-1'
+                          },                          
+                          {
+                              type: 'line',
+                              label: 'Target PDA',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: datatargetPDA,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'green',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            },],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+                    
+                    }
+                });
+
+                //-----end batas 1--
+
+                //-----------batas 2---
+                var ctx4 = document.getElementById("chartCummPda");
+                var chartCummPDA = new Chart(ctx4, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Cumm. Actual PDA',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataKumPDA,
+                              yAxisID: 'y-axis-1'
+                          },                         
+                          {
+                              type: 'line',
+                              label: 'Cumm. Target PDA',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataKumtargetPDA,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'red',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            },],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+
+                    }
+                });
+
+                //-----end batas 1--
+
+            } 
+           
+        });
+    }
+
+    function showLastRowPDA(thn,bln)
+    {
+        $.getJSON(urlKPI + "/vLastRowPda/", { year: thn, month: bln },
+            function (result) {
+                $.each(result, function (i, field) {
+                    $('#remarkpda').text('Remark Cummulative Output PDA : ' + formatNumber(field.lastrowpda));                
+                });
+            });
+    }
+    
+    function showGraphPouringPDA(thn, bln) {
+        $.getJSON(urlKPI + "/vGrapPouringVSPda/", { year: thn, month: bln },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataPouringVS = json.map(function (e) {
+                    return e.totbrtpouring;
+                });
+                dataPDAVS = json.map(function (e) {
+                    return e.totalpda;
+                });
+                dataActualPouring = json.map(function (e) {
+                    return e.trgpouring;
+                });
+                dataActualPDA = json.map(function (e) {
+                    return e.targetpda;
+                });
+                dataTglP = json.map(function (e) {
+                    return e.tgl;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx8 = document.getElementById("chartCummPouringPda");
+                var chartPouringPDA = new Chart(ctx8, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              label: 'Cummulative Actual Pouring',
+                              data: dataPouringVS,
+                              type: "bar",
+                              stack: "Sensitivity",
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              backgroundColorHover: "#3e95cd",
+                              borderWidth: 2,
+                              yAxisID: 'y-axis-1'
+                          },                          
+                          {
+                              label: 'Cummulative Actual PDA',
+                              data: dataPDAVS,
+                              type: "bar",
+                              stack: "Sensitivity",
+                              backgroundColor: "rgba(150, 32, 219, 0.3)",
+                              backgroundColorHover: "#f8981f",
+                              borderWidth: 2,
+                              yAxisID: 'y-axis-1'
+                          },
+                          {
+                              type: 'line',
+                              label: 'Actual Pouring',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataActualPouring,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'red',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              yAxisID: 'y-axis-2'
+                              //steppedLine: true,
+                          },
+                          {
+                              type: 'line',
+                              label: 'Actual PDA',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataActualPDA,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'green',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              yAxisID: 'y-axis-2'
+                              //steppedLine: true,
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }, {
+                                type: "linear",
+                                display: true,
+                                position: "right",
+                                id: "y-axis-2",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }],
+                            xAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+                    
+                    }
+                });
+
+                //-----end batas 1--
+
+            } 
+           
+        });
+    }
+
+    function showGraphPDB(thn, bln) {
+        $.getJSON(urlKPI + "/vGrapOutputPdb/", { year: thn, month: bln },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                datatotalPDB = json.map(function (e) {
+                    return e.totalpdb;
+                });
+                datatargetPDB = json.map(function (e) {
+                    return e.targetpdb;
+                });
+                dataKumPDB = json.map(function (e) {
+                    return e.kumpdb;
+                });
+                dataKumtargetPDB = json.map(function (e) {
+                    return e.kumtargetpdb;
+                });               
+                dataTglP = json.map(function (e) {
+                    return e.tgl;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx5 = document.getElementById("chartPdb");
+                var chartPDB = new Chart(ctx5, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Actual PDB',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: datatotalPDB,
+                              yAxisID: 'y-axis-1'
+                          },                          
+                          {
+                              type: 'line',
+                              label: 'Target PDB',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: datatargetPDB,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'green',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            },],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+                    
+                    }
+                });
+
+                //-----end batas 1--
+
+                //-----------batas 2---
+                var ctx6 = document.getElementById("chartCummPdb");
+                var chartCummPDB = new Chart(ctx6, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Cumm. Actual PDB',
+                              backgroundColor: "rgba(32, 162, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataKumPDB,
+                              yAxisID: 'y-axis-1'
+                          },                         
+                          {
+                              type: 'line',
+                              label: 'Cumm. Target PDB',
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              // to get a straight line, the 1st and last values must match the same value as
+                              // the next/prev respectively
+                              data: dataKumtargetPDB,
+                              fill: false,
+                              borderWidth: 1,
+                              borderColor: 'red',
+                              borderDash: [5, 4],
+                              lineTension: 0,
+                              //steppedLine: true,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            },],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+
+                    }
+                });
+
+                //-----end batas 1--
+
+            } 
+           
+        });
+    }
+
+    function showLastRowPDB(thn,bln)
+    {
+        $.getJSON(urlKPI + "/vLastRowPdb/", { year: thn, month: bln },
+            function (result) {
+                $.each(result, function (i, field) {
+                    $('#remarkpdb').text('Remark Cummulative Output PDB : ' + formatNumber(field.lastrowpdb));                
+                });
+            });
+    }
+
+    function showGraphWIP(thn, bln) {
+        $.getJSON(urlKPI + "/vGrapOutputWIP/", { year: thn, month: bln },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataWIP = json.map(function (e) {
+                    return e.totalwip;
+                });
+                dataTglP = json.map(function (e) {
+                    return e.tgl;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx7 = document.getElementById("chartWIP");
+                var chartWIP = new Chart(ctx7, {
+                    type: 'bar',
+                    data: {
+                        labels: dataTglP,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'WIP',
+                              backgroundColor: "rgba(150, 32, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataWIP,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            },],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, chart){
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+                    
+                    }
+                });
+
+                //-----end batas 1--
+
+            } 
+           
+        });
+    }
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>

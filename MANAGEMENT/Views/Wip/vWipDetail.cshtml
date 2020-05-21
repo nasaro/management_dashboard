@@ -1,0 +1,210 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <h3>Report WIP</h3>
+        <div id="utamaFrm" class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-1">
+                    <label>Date</label>
+                </div>
+                <div class="col-sm-4">
+                    <div class="input-group date datetimepicker">
+                        <input type="text" class="form-control" id="ddate" placeholder="DD-MM-YYYY" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <button id="proc" type="button" class="btn btn-success btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+                </div>
+            </div>
+            <div id="optBox">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Option: </label>
+                    </div>
+                    <div class="col-md-11">
+                        <label class="radio-inline"><input type="radio" name="optradio" id="opt1">WAX</label>
+                        <label class="radio-inline"><input type="radio" name="optradio" id="opt2">DIPPING</label>
+                        <label class="radio-inline"><input type="radio" name="optradio" id="opt3">CERAMIC</label>
+                        <label class="radio-inline"><input type="radio" name="optradio" id="opt4">FINISHING</label>
+                        <label class="radio-inline"><input type="radio" name="optradio" id="opt5">MACHINING</label>                     
+                    </div>
+                </div>
+            </div>
+            <hr style="height:2px; color:rgb(60,90,180); background-color:rgb(60,90,180)">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="Masterinfo" class="table table-bordered  table-hover">
+                        <caption id="capDetail" class="text-center" style="background-color: #4d79ff;color: white;">WIP Detail</caption>
+                        <thead>
+                            <tr>
+                                <th>CustProdId</th>
+                                <th>ProdName</th>
+                                <th><span class='pull-right'>Begin </span></th>
+                                <th><span class='pull-right'>IN </span></th>
+                                <th><span class='pull-right'>NCR </span></th>
+                                <th><span class='pull-right'>OUT </span></th>
+                                <th><span class='pull-right'>Koreksi </span></th>
+                                <th><span class='pull-right'>End </span></th>
+                                <th><span class='pull-right'>StdCost </span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblDetail"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI="@Url.Content("~/Wip")" ;
+    $(document).ready(function () {
+        var dNow = new Date();
+        $('#ddate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#ddate').val(getFormattedDate(dNow));
+        $(".loader").hide();
+    });
+
+    function getFormattedDate(date) {
+        var year = date.getFullYear();
+
+        var month = (1 + date.getMonth()).toString();
+        month = month.length > 1 ? month : '0' + month;
+
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+
+        return day + '-' + month + '-' + year;
+    }
+
+    function GetPeriode() {
+        var valday = $('#ddate').val();
+        var valdayDD = parseInt(valday.substring(0, 2));
+        var valdayMM = parseInt(valday.substring(3, 5));
+        var valdayYY = parseInt(valday.substring(6, 10));
+        var valcheck = 0;
+
+        if ($('#opt1').is(':checked'))
+            valcheck = 1;
+        else if ($('#opt2').is(':checked'))
+            valcheck = 2;
+        else if ($('#opt3').is(':checked'))
+            valcheck = 3;
+        else if ($('#opt4').is(':checked'))
+            valcheck = 4;
+        else if ($('#opt5').is(':checked'))
+            valcheck = 5;
+    var ppicObj = {
+            tgl: $('#mydateDelivery').val()
+        };
+
+        var ppicObj = {
+            thn: valdayYY,
+            bln: valdayMM,
+            hari: valdayDD,
+            pil: valcheck
+        }
+
+        var tr;
+
+        $('#Masterinfo').DataTable().destroy();
+        $('#tbodytblDetail').empty();
+
+
+        $.ajax({
+            url: urlKPI + "/GetWipDetail/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + item.ProdID + "</td>");
+                    tr.append("<td>" + item.ProdName + "</td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.Beginning) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.INing) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.NCR) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.OUTing) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.Koreksi) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.Ending) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.Cost) + "</span></td>");
+                    $('#tbodytblDetail').append(tr);
+
+                });
+
+                $('#Masterinfo').DataTable({
+
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                            [10, 25, 50, -1],
+                            ['10 rows', '25 rows', '50 rows', 'Show all']
+                    ],
+                    buttons: ['pageLength', {
+                        extend: 'excel',
+                        text: 'Export to Excel(All)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'all',      // 'all',     'current'
+                                search: 'none'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    }, {
+                        extend: 'excel',
+                        text: 'Export to Excel(Part)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'current',      // 'all',     'current'
+                                search: 'applied'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    },
+
+                    ],
+                }).draw();
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>
+

@@ -1,0 +1,702 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group date datetimepicker">
+                    @if (Session["UserYear"] != null)
+                    {
+                        var tahun = Session["UserYear"];
+                        <input type="text" class="form-control" id="prd1" placeholder="YYYY" value=@tahun />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    }
+                    @if (Session["UserType"] != null)
+                    {
+                        var author = Session["UserType"];
+                        <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                    }
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th><b>AREA</b></th>
+                        <th><b>DESCRIPTION</b></th>
+                        <th><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th><span class="pull-right"><b>TARGET</b></span></th>
+                        <th><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph Financial" onclick="Finance()"><p style="color:black"><b>FINANCIAL</b></p></a></th>
+                        <td><span id="finCekRev">Revenue</span></td>
+                        <td><span id="finGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Production Output Casting</td>
+                        <td><span id="finGrdProdCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtProdCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActProdCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchProdCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrProdCast" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Production Output Machining</td>
+                        <td><span id="finGrdProdMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtProdMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActProdMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchProdMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrProdMach" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Surplus Cash Flow</td>
+                        <td><span id="finGrdCash" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtCash" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActCash" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchCash" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrCash" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Cost Reductiion Casting</td>
+                        <td><span id="finGrdRedCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtRedCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActRedCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchRedCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrRedCast" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Cost Reductiion Machining</td>
+                        <td><span id="finGrdRedMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtRedMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActRedMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchRedMach" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrRedMach" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Cost Reductiion Purchasing</td>
+                        <td><span id="finGrdRedPurc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finTgtRedPurc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finActRedPurc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finAchRedPurc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="finScrRedPurc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph Customer" onclick="Customer()"><b>CUSTOMER</b></a></th>
+                        <td>DRM</td>
+                        <td><span id="cusGrdDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusTgtDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusActDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusAchDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusScrDrm" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Air Freight Cost</td>
+                        <td><span id="cusGrdAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusTgtAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusActAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusAchAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusScrAir" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph IBP" onclick="IBP()"><p style="color:black"><b>INTERNAL BUSINESS PROCESS</b></p></a></th>
+                        <td>Reject Rate-Casting</td>
+                        <td><span id="ibpGrdRjtCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpTgtRjtCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpActRjtCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpAchRjtCast" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpScrRjtCast" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Reject Rate-Machining</td>
+                        <td><span id="ibpGrdRjtMac" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpTgtRjtMac" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpActRjtMac" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpAchRjtMac" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpScrRjtMac" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Customer claim - CN</td>
+                        <td><span id="ibpGrdCN" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpTgtCN" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpActCN" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpAchCN" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpScrCN" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Safety Index</td>
+                        <td><span id="ibpGrdSafe" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpTgtSafe" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpActSafe" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpAchSafe" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ibpScrSafe" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph LG" onclick="LG()"><p style="color:black"><b>LEARNING & GROWTH</b></p></a></th>
+                        <td>Implementation Of 5S - Ave Score</td>
+                        <td><span id="lgGrdImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgTgtImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgActImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgAchImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgScrImp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>IS capabilities</td>
+                        <td><span id="lgGrdIsCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgTgtIsCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgActIsCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgAchIsCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgScrIsCap" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>People Development(training)</td>
+                        <td><span id="lgGrdTrain" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgTgtTrain" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgActTrain" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgAchTrain" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgScrTrain" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>People Development(skill capability index)</td>
+                        <td><span id="lgGrdSkill" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgTgtSkill" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgActSkill" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgAchSkill" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgScrSkill" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>People Awareness & Motivation</td>
+                        <td><span id="lgGrdMot" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgTgtMot" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgActMot" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgAchMot" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="lgScrMot" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <th colspan="6" style="color:black" class="text-center"><b>TOTAL</b></th>
+                        <td><span id="TotalScore" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var ibpGrdSafe = 0, ibpTgtSafe = 0, lgGrdMot = 0, lgTgtMot = 0;
+    var lgGrdImp = 0, lgTgtImp = 0, lgGrdIsCap = 0, lgTgtIsCap = 0, lgGrdTrain = 0, lgTgtTrain = 0, lgGrdSkill = 0, lgTgtSkill = 0;
+    var finScrRev = 0, finScrCash = 0, finScrProdCast = 0, finScrProdMach = 0, finScrRedCast = 0;
+    var finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrAir = 0, ibpScrRjtCast = 0;
+    var ibpScrRjtMac = 0, ibpScrCN = 0, ibpScrSafe = 0, lgScrImp = 0, lgScrIsCap = 0, lgScrMot = 0;
+    var lgScrTrain = 0, lgScrSkill = 0;
+    
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+
+        var yynow = $('#prd1').val();
+        getView(yynow);
+   
+    });
+
+
+    function Finance() {       
+        $.session.set("UserYear", $('#prd1').val());
+        window.location.href = '@Url.Action("graphFinance", "Dashboard")';
+    }
+
+    function Customer() {
+        $.session.set("UserYear", $('#prd1').val());
+        window.location.href = '@Url.Action("graphCustomer", "Dashboard")';
+    }
+
+    function IBP() {
+        $.session.set("UserYear", $('#prd1').val());
+        window.location.href = '@Url.Action("graphIBP", "Dashboard")';
+    }
+
+    function LG() {
+        $.session.set("UserYear", $('#prd1').val());
+        window.location.href = '@Url.Action("graphLG", "Dashboard")';
+    }
+
+    function GetPeriode() {
+        var newyear = $('#prd1').val();
+        getView(newyear);
+    }
+
+    function getView(thn) {
+        finScrRev = 0, finScrCash = 0, finScrProdCast = 0, finScrProdMach = 0, finScrRedCast = 0;
+        finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrAir = 0, ibpScrRjtCast = 0;
+        ibpScrRjtMac = 0, ibpScrCN = 0, ibpScrSafe = 0, lgScrImp = 0, lgScrIsCap = 0, lgScrMot = 0;
+        lgScrTrain = 0, lgScrSkill = 0;
+        //---cek visitor
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#finCekRev").text('');
+        }
+        var kpiObj = {
+            id: thn
+        }
+        $.ajax({
+            url: urlKPI + "/vCORP/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+
+                    if (userAu != "VST") {
+                        $("#finGrdRev").text(formatNumber(item.finGrdRev));
+                        $("#finTgtRev").text(formatNumber(item.finTgtRev));
+                        $("#finActRev").text(formatNumber(item.finActRev));
+                        var finTgtRev = item.finTgtRev;
+                        if (finTgtRev == 0) {
+                            $("#finAchRev").text(0);
+                            $("#finScrRev").text(0);
+                        } else {
+                            var finAchRev = item.finActRev / item.finTgtRev * 100;
+                            finScrRev = item.finGrdRev * (item.finActRev / item.finTgtRev);
+                            if (finAchRev < 0)
+                                finAchRev = 0;
+                            $("#finAchRev").text(formatNumber(finAchRev.toFixed(2)));
+                            if (finScrRev < 0)
+                                finScrRev = 0;
+                            $("#finScrRev").text(formatNumber((finScrRev).toFixed(2)));
+                        }
+                    }
+
+                    $("#finGrdProdCast").text(formatNumber(item.finGrdProdCast));
+                    $("#finTgtProdCast").text(formatNumber(item.finTgtProdCast));
+                    $("#finActProdCast").text(formatNumber(item.finActProdCast));
+                    var finTgtProdCast = item.finTgtProdCast;
+                    if (finTgtProdCast == 0) {
+                        $("#finAchProdCast").text(0);
+                        $("#finScrProdCast").text(0);
+                    } else {
+                        var finAchProdCast = item.finActProdCast / item.finTgtProdCast * 100;
+                        finScrProdCast = item.finGrdProdCast * (item.finActProdCast / item.finTgtProdCast);
+                        if (finAchProdCast < 0)
+                            finAchProdCast = 0;
+                        $("#finAchProdCast").text(formatNumber(finAchProdCast.toFixed(2)));
+                        if (finScrProdCast < 0)
+                            finScrProdCast = 0;
+                        $("#finScrProdCast").text(formatNumber(finScrProdCast.toFixed(2)));
+                    }
+
+                    $("#finGrdProdMach").text(formatNumber(item.finGrdProdMach));
+                    $("#finTgtProdMach").text(formatNumber(item.finTgtProdMach));
+                    $("#finActProdMach").text(formatNumber(item.finActProdMach));
+                    var finTgtProdMach = item.finTgtProdMach;
+                    if (finTgtProdMach == 0) {
+                        $("#finAchProdMach").text(0);
+                        $("#finScrProdMach").text(0);
+                    } else {
+                        var finAchProdMach = item.finActProdMach / item.finTgtProdMach * 100;
+                        finScrProdMach = item.finGrdProdMach * (item.finActProdMach / item.finTgtProdMach);
+                        if (finAchProdMach < 0)
+                            finAchProdMach = 0;
+                        $("#finAchProdMach").text(formatNumber(finAchProdMach.toFixed(2)));
+                        if (finScrProdMach < 0)
+                            finScrProdMach = 0;
+                        $("#finScrProdMach").text(formatNumber(finScrProdMach.toFixed(2)));
+                    }
+
+                    $("#finGrdCash").text(formatNumber(item.finGrdCash));
+                    $("#finTgtCash").text(formatNumber(item.finTgtCash));
+                    $("#finActCash").text(formatNumber(item.finActCash));
+                    var finTgtCash = item.finTgtCash;
+                    if (finTgtCash == 0) {
+                        $("#finAchCash").text(0);
+                        $("#finScrCash").text(0);
+                    } else {
+                        var finAchCash = item.finActCash / item.finTgtCash * 100;
+                        finScrCash = item.finGrdCash * (item.finActCash / item.finTgtCash);
+                        if (finAchCash < 0)
+                            finAchCash=0;
+                        $("#finAchCash").text(formatNumber(finAchCash.toFixed(2)));
+                        if (finScrCash < 0)
+                            finScrCash = 0;
+                        $("#finScrCash").text(formatNumber(finScrCash.toFixed(2)));
+                    }
+
+                    $("#finGrdRedCast").text(formatNumber(item.finGrdRedCast));
+                    $("#finTgtRedCast").text(formatNumber(item.finTgtRedCast));
+                    $("#finActRedCast").text(formatNumber(item.finActRedCast));
+                    var finTgtRedCast = item.finTgtRedCast;
+                    if (finTgtCash == 0) {
+                        $("#finAchRedCast").text(0);
+                        $("#finScrRedCast").text(0);
+                    } else {
+                        var finAchRedCast = item.finActRedCast / item.finTgtRedCast * 100;
+                        finScrRedCast = item.finGrdRedCast * (item.finActRedCast / item.finTgtRedCast);
+                        if (finAchRedCast < 0)
+                            finAchRedCast = 0;
+                        $("#finAchRedCast").text(formatNumber(finAchRedCast.toFixed(2)));
+                        if (finScrRedCast < 0)
+                            finScrRedCast = 0;
+                        $("#finScrRedCast").text(formatNumber(finScrRedCast.toFixed(2)));
+                    }
+
+                    $("#finGrdRedMach").text(formatNumber(item.finGrdRedMach));
+                    $("#finTgtRedMach").text(formatNumber(item.finTgtRedMach));
+                    $("#finActRedMach").text(formatNumber(item.finActRedMach));
+                    var finTgtRedMach = item.finTgtRedMach;
+                    if (finTgtRedMach == 0) {
+                        $("#finAchRedMach").text(0);
+                        $("#finScrRedMach").text(0);
+                    } else {
+                        var finAchRedMach = item.finActRedMach / item.finTgtRedMach * 100;
+                        finScrRedMach = item.finGrdRedMach * (item.finActRedMach / item.finTgtRedMach);
+                        if (finAchRedMach < 0)
+                            finAchRedMach = 0;
+                        $("#finAchRedMach").text(formatNumber(finAchRedMach.toFixed(2)));
+                        if (finScrRedMach < 0)
+                            finScrRedMach = 0;
+                        $("#finScrRedMach").text(formatNumber(finScrRedMach.toFixed(2)));
+                    }
+
+                    $("#finGrdRedPurc").text(formatNumber(item.finGrdRedPurc));
+                    $("#finTgtRedPurc").text(formatNumber(item.finTgtRedPurc));
+                    $("#finActRedPurc").text(formatNumber(item.finActRedPurc));
+                    var finTgtRedPurc = item.finTgtRedPurc;
+                    if (finTgtRedPurc == 0) {
+                        $("#finAchRedPurc").text(0);
+                        $("#finScrRedPurc").text(0);
+                    } else {
+                        var finAchRedPurc = item.finActRedPurc / item.finTgtRedPurc * 100;
+                        finScrRedPurc = item.finGrdRedPurc * (item.finActRedPurc / item.finTgtRedPurc);
+                        if (finAchRedPurc < 0)
+                            finAchRedPurc = 0;
+                        $("#finAchRedPurc").text(formatNumber(finAchRedPurc.toFixed(2)));
+                        if (finScrRedPurc < 0)
+                            finScrRedPurc = 0;
+                        $("#finScrRedPurc").text(formatNumber(finScrRedPurc.toFixed(2)));
+                    }
+
+                    $("#cusGrdDrm").text(formatNumber(item.cusGrdDrm));
+                    $("#cusTgtDrm").text(formatNumber(item.cusTgtDrm));
+                    $("#cusActDrm").text(formatNumber(item.cusActDrm));
+                    var cusTgtDrm = item.cusTgtDrm;
+                    if (cusTgtDrm == 0) {
+                        $("#cusAchDrm").text(0);
+                        $("#cusScrDrm").text(0);
+                    } else {
+                        var cusAchDrm = item.cusActDrm / item.cusTgtDrm * 100;
+                        cusScrDrm = item.cusGrdDrm * (item.cusActDrm / item.cusTgtDrm);
+                        if (cusAchDrm < 0)
+                            cusAchDrm = 0;
+                        $("#cusAchDrm").text(formatNumber(cusAchDrm.toFixed(2)));
+                        if (cusScrDrm < 0)
+                            cusScrDrm = 0;
+                        $("#cusScrDrm").text(formatNumber(cusScrDrm.toFixed(2)));
+                    }
+
+                    $("#cusGrdAir").text(formatNumber(item.cusGrdAir));
+                    $("#cusTgtAir").text(formatNumber(item.cusTgtAir));
+                    $("#cusActAir").text(formatNumber(item.cusActAir));
+                    var cusTgtAir = item.cusTgtAir;
+                    if (cusTgtAir == 0) {
+                        $("#cusAchAir").text(0);
+                        $("#cusScrAir").text(0);
+                    } else {
+                        var cusAchAir = 100+((item.cusTgtAir - item.cusActAir) / item.cusTgtAir * 100);
+                        cusScrAir = item.cusGrdAir * (1+((item.cusTgtAir-item.cusActAir) / item.cusTgtAir));
+                        if (cusAchAir < 0)
+                            cusAchAir = 0;
+                        $("#cusAchAir").text(formatNumber(cusAchAir.toFixed(2)));
+                        if (cusScrAir < 0)
+                            cusScrAir = 0;
+                        $("#cusScrAir").text(formatNumber(cusScrAir.toFixed(2)));
+                    }
+
+                    $("#ibpGrdRjtCast").text(formatNumber(item.ibpGrdRjtCast));
+                    $("#ibpTgtRjtCast").text(formatNumber(item.ibpTgtRjtCast));
+                    $("#ibpActRjtCast").text(formatNumber(item.ibpActRjtCast));
+                    var ibpTgtRjtCast = item.ibpTgtRjtCast;
+                    if (ibpTgtRjtCast == 0) {
+                        $("#ibpAchRjtCast").text(0);
+                        $("#ibpScrRjtCast").text(0);
+                    } else {
+                        var ibpAchRjtCast = 100+((item.ibpTgtRjtCast - item.ibpActRjtCast) / item.ibpTgtRjtCast * 100);
+                        ibpScrRjtCast = item.ibpGrdRjtCast * (1+((item.ibpTgtRjtCast - item.ibpActRjtCast) / item.ibpTgtRjtCast));
+                        if (ibpAchRjtCast < 0)
+                            ibpAchRjtCast = 0;
+                        $("#ibpAchRjtCast").text(formatNumber(ibpAchRjtCast.toFixed(2)));
+                        if (ibpScrRjtCast < 0)
+                            ibpScrRjtCast = 0;
+                        $("#ibpScrRjtCast").text(formatNumber(ibpScrRjtCast.toFixed(2)));
+                    }
+
+                    $("#ibpGrdRjtMac").text(formatNumber(item.ibpGrdRjtMac)); 
+                    $("#ibpTgtRjtMac").text(formatNumber(item.ibpTgtRjtMac));
+                    $("#ibpActRjtMac").text(formatNumber(item.ibpActRjtMac));
+                    var ibpTgtRjtMac = item.ibpTgtRjtMac;
+                    if (ibpTgtRjtMac == 0) {
+                        $("#ibpAchRjtMac").text(0);
+                        $("#ibpScrRjtMac").text(0);
+                    } else {
+                        var ibpAchRjtMac = 100+((item.ibpTgtRjtMac - item.ibpActRjtMac) / item.ibpTgtRjtMac * 100);
+                        ibpScrRjtMac = item.ibpGrdRjtMac * (1+((item.ibpTgtRjtMac - item.ibpActRjtMac) / item.ibpTgtRjtMac));
+                        if (ibpAchRjtMac < 0)
+                            ibpAchRjtMac = 0;
+                        $("#ibpAchRjtMac").text(formatNumber(ibpAchRjtMac.toFixed(2)));
+                        if (ibpScrRjtMac < 0)
+                            ibpScrRjtMac = 0;
+                        $("#ibpScrRjtMac").text(formatNumber(ibpScrRjtMac.toFixed(2)));
+                    }
+
+                    $("#ibpGrdCN").text(formatNumber(item.ibpGrdCN));
+                    $("#ibpTgtCN").text(formatNumber(item.ibpTgtCN));
+                    $("#ibpActCN").text(formatNumber(item.ibpActCN));
+                    var ibpTgtCN = item.ibpTgtCN;
+                    if (ibpTgtCN == 0) {
+                        $("#ibpAchCN").text(0);
+                        $("#ibpScrCN").text(0);
+                    } else {
+                        var ibpAchCN = 100+((item.ibpTgtCN - item.ibpActCN) / item.ibpTgtCN * 100);
+                        ibpScrCN = item.ibpGrdCN * (1+((item.ibpTgtCN - item.ibpActCN) / item.ibpTgtCN));
+                        if (ibpAchCN < 0)
+                            ibpAchCN = 0;
+                        $("#ibpAchCN").text(formatNumber(ibpAchCN.toFixed(2)));
+                        if (ibpScrCN < 0)
+                            ibpScrCN = 0;
+                        $("#ibpScrCN").text(formatNumber(ibpScrCN.toFixed(2)));
+                    }
+
+                    $("#ibpGrdSafe").text(formatNumber(item.ibpGrdSafe));
+                    $("#ibpTgtSafe").text(formatNumber(item.ibpTgtSafe));
+                    ibpGrdSafe = item.ibpGrdSafe;
+                    ibpTgtSafe = item.ibpTgtSafe;
+
+                    $("#lgGrdImp").text(formatNumber(item.lgGrdImp));
+                    $("#lgTgtImp").text(formatNumber(item.lgTgtImp));
+                    lgGrdImp = item.lgGrdImp;
+                    lgTgtImp = item.lgTgtImp;
+
+                    $("#lgGrdIsCap").text(formatNumber(item.lgGrdIsCap));
+                    $("#lgTgtIsCap").text(formatNumber(item.lgTgtIsCap));
+                    lgGrdIsCap = item.lgGrdIsCap;
+                    lgTgtIsCap = item.lgTgtIsCap;
+
+                    $("#lgGrdTrain").text(formatNumber(item.lgGrdTrain));
+                    $("#lgTgtTrain").text(formatNumber(item.lgTgtTrain));
+                    lgGrdTrain = item.lgGrdTrain;
+                    lgTgtTrain = item.lgTgtTrain;
+
+                    $("#lgGrdSkill").text(formatNumber(item.lgGrdSkill));
+                    $("#lgTgtSkill").text(formatNumber(item.lgTgtSkill));
+                    lgGrdSkill = item.lgGrdSkill;
+                    lgTgtSkill = item.lgTgtSkill;
+
+                    $("#lgGrdMot").text(formatNumber(item.lgGrdMot));
+                    $("#lgTgtMot").text(formatNumber(item.lgTgtMot));
+                    lgGrdMot = item.lgGrdMot;
+                    lgTgtMot = item.lgTgtMot;
+
+                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN).toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+        $.ajax({
+            url: urlKPI + "/vCORPHRD/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $("#ibpActSafe").text(formatNumber(item.ibpActSafe));
+                    if (ibpTgtSafe==0) {
+                        $("#ibpAchSafe").text(0);
+                        $("#ibpScrSafe").text(0);
+                    } else {
+                        if (item.ibpActSafe == 0) {
+                            $("#ibpAchSafe").text(100);
+                            ibpScrSafe = ibpGrdSafe;
+                            $("#ibpScrSafe").text(ibpGrdSafe);
+                        }
+                        else {
+                            $("#ibpAchSafe").text(0);
+                            ibpScrSafe = 0;
+                            $("#ibpScrSafe").text(0);
+                        }
+                    }
+                    $("#lgActImp").text(formatNumber(item.lgActImp));
+                    if (lgTgtImp == 0) {
+                        $("#lgAchImp").text(0);
+                        $("#lgScrImp").text(0);
+                    } else {
+                        var lgAchImp = item.lgActImp / lgTgtImp * 100;
+                        lgScrImp = lgGrdImp * (item.lgActImp / lgTgtImp);
+                        if (lgAchImp < 0)
+                            lgAchImp = 0;
+                        $("#lgAchImp").text(formatNumber(lgAchImp.toFixed(2)));
+                        if (lgScrImp < 0)
+                            lgScrImp = 0;
+                        $("#lgScrImp").text(formatNumber(lgScrImp.toFixed(2)));
+                    }
+                    $("#lgActIsCap").text(formatNumber(item.lgActIsCap));
+                    if (lgTgtIsCap == 0) {
+                        $("#lgAchIsCap").text(0);
+                        $("#lgScrIsCap").text(0);
+                    } else {
+                        var lgAchIsCap = item.lgActIsCap / lgTgtIsCap * 100;
+                        lgScrIsCap = lgGrdIsCap * (item.lgActIsCap / lgTgtIsCap);
+                        if (lgAchIsCap < 0)
+                            lgAchIsCap = 0;
+                        $("#lgAchIsCap").text(formatNumber(lgAchIsCap.toFixed(2)));
+                        if (lgScrIsCap < 0)
+                            lgScrIsCap = 0;
+                        $("#lgScrIsCap").text(formatNumber(lgScrIsCap.toFixed(2)));
+                    }
+                    $("#lgActMot").text(formatNumber(item.lgActMot));
+                    if (lgTgtMot == 0) {
+                        $("#lgAchMot").text(0);
+                        $("#lgScrMot").text(0);
+                    } else {
+                        var lgAchMot = item.lgActMot / lgTgtMot * 100;
+                        lgScrMot = lgGrdMot * (item.lgActMot / lgTgtMot);
+                        if (lgAchMot < 0)
+                            lgAchMot = 0;
+                        $("#lgAchMot").text(formatNumber(lgAchMot.toFixed(2)));
+                        if (lgScrMot < 0)
+                            lgScrMot = 0;
+                        $("#lgScrMot").text(formatNumber(lgScrMot.toFixed(2)));
+                    }
+                    $("#lgActTrain").text(formatNumber(item.lgActTrain));
+                    if (lgTgtTrain == 0) {
+                        $("#lgAchTrain").text(0);
+                        $("#lgScrTrain").text(0);
+                    } else {
+                        var lgAchTrain = item.lgActTrain / lgTgtTrain * 100;
+                        lgScrTrain = lgGrdTrain * (item.lgActTrain / lgTgtTrain);
+                        if (lgAchTrain < 0)
+                            lgAchTrain = 0;
+                        $("#lgAchTrain").text(formatNumber(lgAchTrain.toFixed(2)));
+                        if (lgScrTrain < 0)
+                            lgScrTrain = 0;
+                        $("#lgScrTrain").text(formatNumber(lgScrTrain.toFixed(2)));
+                    }
+
+                    $("#lgActSkill").text(formatNumber(item.lgActSkill));
+                    if (lgTgtSkill == 0) {
+                        $("#lgAchSkill").text(0);
+                        $("#lgScrSkill").text(0);
+                    } else {
+                        var lgAchSkill = item.lgActSkill / lgTgtSkill * 100;
+                        lgScrSkill = lgGrdSkill * (item.lgActSkill / lgTgtSkill);
+                        if (lgAchSkill < 0)
+                            lgAchSkill = 0;
+                        $("#lgAchSkill").text(formatNumber(lgAchSkill.toFixed(2)));
+                        if (lgScrSkill < 0)
+                            lgScrSkill = 0;
+                        $("#lgScrSkill").text(formatNumber(lgScrSkill.toFixed(2)));
+                    }
+                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN + ibpScrSafe + lgScrImp + lgScrIsCap + lgScrMot + lgScrTrain + lgScrSkill).toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+</script>

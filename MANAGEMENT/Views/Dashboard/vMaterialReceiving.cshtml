@@ -1,0 +1,440 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+       .zui-table {
+        border: none;
+        border-right: solid 1px #DDEFEF;
+        border-collapse: separate;
+        border-spacing: 0;
+        font: normal 13px Arial, sans-serif;
+    }
+    .zui-table thead th {
+        background-color: #DDEFEF;
+        border: none;
+        color: #336B6B;
+        padding: 10px;
+        text-align: left;
+        text-shadow: 1px 1px 1px #fff;
+        white-space: nowrap;
+    }
+
+    .zui-table tbody td {
+        border-bottom: solid 1px #DDEFEF;
+        color: black;
+        padding: 10px;
+        /*text-shadow: 1px 1px 2px blue;*/
+        white-space: nowrap;
+        font-size: 85%;
+    }
+    .zui-wrapper {
+        position: relative;
+    }
+    .zui-scroller {
+        margin-left: 400px;
+        overflow-x: scroll;
+        overflow-y: visible;
+        padding-bottom: 5px;
+        width: 800px;
+    }
+    .zui-table .zui-sticky-col {
+        border-left: solid 1px #DDEFEF;
+        border-right: solid 1px #DDEFEF;
+        left: 0;
+        position: absolute;
+        top: auto;
+        width: 400px;
+    }
+
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <br />
+        <h3>Material Receiving - Actual</h3>
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to XLS" onclick="javascript: xport.toCSV('DetailInfo');">Export to XLS</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="zui-wrapper">
+            <br />
+            <div class="zui-scroller form-horizontal">
+                <table id="DetailInfo" class="zui-table table table-bordered  table-hover">
+                    @*<caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>*@
+                    <thead>
+                        <tr>
+                            <th style="background-color: #4d79ff;color: white;" class="zui-sticky-col"><b>Remark</b></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>JAN</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>FEB</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>MAR</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>APR</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>MAY</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>JUN</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>JUL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>AUG</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SEP</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>OCT</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>NOV</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>DEC</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TOT</b></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblmatreceive"></tbody>
+                </table>
+            </div>
+             @*<label style="font-size: 175%;">Grand Total : </label>*@
+            @*<span id="grand" class='gtext1'></span>*@
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="bottom_anchor"></div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var grandtotal=0, totjan=0, totfeb=0, totmar=0, totapr=0, totmay=0, totjun=0, totjul=0, totaug=0, totsep=0, totoct=0, totnov=0, totdec=0 ;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+
+        var dNow = new Date()
+        var iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        //--$('#thn').text('YEAR : ' + iYear);
+        getView(iYear);
+    });
+
+    function getView(thn) {
+        var tr;
+        var ppicObj = {
+            id: thn
+        };
+        $.ajax({
+            url: urlKPI + "/vRptMatRec/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    var s = item.remark;
+                    if (s.match(/SUBTOT.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #006622;'><b>" + item.remark + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jan) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.feb) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.mar) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.apr) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.may) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jun) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jul) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.aug) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.sep) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.oct) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.nov) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.dec) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.tot) + "</b></span></td>");
+                    }
+                    else if (s.match(/TOTAL.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #1a1aff;'><b>"+ item.remark +"</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjan) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totfeb) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totmar) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totapr) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totmay) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjun) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjul) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totaug) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totsep) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totoct) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totnov) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totdec) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(grandtotal) + "</span></td>");
+
+                    }
+                    else if (s.match(/GRANDTOT.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #1a1aff;'><b>" + item.remark + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totjan) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totfeb) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totmar) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totapr) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totmay) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totjun) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totjul) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totaug) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totsep) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totoct) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totnov) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.totdec) + "</span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(item.grandtot)+ "</span></td>");
+                    }
+                    else if (s.match(/VAT.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #006622;'><b>" + item.remark + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jan) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.feb) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.mar) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.apr) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.may) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jun) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.jul) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.aug) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.sep) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.oct) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.nov) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.dec) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.tot) + "</b></span></td>");
+                    }
+                    else {
+                        tr.append("<td class='zui-sticky-col'><b>" + item.remark + "</b></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.jan) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.feb) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.mar) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.apr) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.may) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.jun) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.jul) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.aug) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.sep) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.oct) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.nov) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.dec) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.tot) + "</span></td>");
+                    }
+                    $('#DetailInfo').append(tr);
+                    ////totjan = item.totjan;
+                    ////totfeb = item.totfeb;
+                    ////totmar = item.totmar;
+                    ////totapr = item.totapr;
+                    ////totmay = item.totmay;
+                    ////totjun = item.totjun;
+                    ////totjul = item.totjul;
+                    ////totaug = item.totaug;
+                    ////totsep = item.totsep;
+                    ////totoct = item.totoct;
+                    ////totnov = item.totnov;
+                    ////totdec = item.totdec;
+                    ////grandtotal = item.grandtot;
+                });
+
+                ////tr = $('<tr/>');
+                ////tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #1a1aff;'><b>SUB TOTAL</b></span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjan) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totfeb) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totmar) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totapr) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totmay) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjun) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totjul) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totaug) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totsep) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totoct) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totnov) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totdec) + "</span></td>");
+                ////tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(grandtotal) + "</span></td>");
+                ////$('#DetailInfo').append(tr);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+
+    function GetPeriode() {
+        var tr;
+        var newyear = $('#prd').val();
+        $('#tbodytblmatreceive').empty();
+        getView(newyear)
+    }
+
+   
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+
+    var xport = {
+        _fallbacktoCSV: true,
+        toXLS: function (tableId, filename) {
+            this._filename = (typeof filename == 'undefined') ? tableId : filename;
+
+            //var ieVersion = this._getMsieVersion();
+            //Fallback to CSV for IE & Edge
+            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+                return this.toCSV(tableId);
+            } else if (this._getMsieVersion() || this._isFirefox()) {
+                alert("Not supported browser");
+            }
+
+            //Other Browser can download xls
+            var htmltable = document.getElementById(tableId);
+            var html = htmltable.outerHTML;
+
+            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls');
+        },
+        toCSV: function (tableId, filename) {
+            this._filename = (typeof filename === 'undefined') ? tableId : filename;
+            // Generate our CSV string from out HTML Table
+            var csv = this._tableToCSV(document.getElementById(tableId));
+            // Create a CSV Blob
+            var blob = new Blob([csv], { type: "text/csv" });
+
+            // Determine which approach to take for the download
+            if (navigator.msSaveOrOpenBlob) {
+                // Works for Internet Explorer and Microsoft Edge
+                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+            } else {
+                this._downloadAnchor(URL.createObjectURL(blob), 'csv');
+            }
+        },
+        _getMsieVersion: function () {
+            var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0) {
+                // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+            }
+
+            var trident = ua.indexOf("Trident/");
+            if (trident > 0) {
+                // IE 11 => return version number
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+            }
+
+            var edge = ua.indexOf("Edge/");
+            if (edge > 0) {
+                // Edge (IE 12+) => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+            }
+
+            // other browser
+            return false;
+        },
+        _isFirefox: function () {
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                return 1;
+            }
+
+            return 0;
+        },
+        _downloadAnchor: function (content, ext) {
+            var anchor = document.createElement("a");
+            anchor.style = "display:none !important";
+            anchor.id = "downloadanchor";
+            document.body.appendChild(anchor);
+
+            // If the [download] attribute is supported, try to use it
+
+            if ("download" in anchor) {
+                anchor.download = this._filename + "." + ext;
+            }
+            anchor.href = content;
+            anchor.click();
+            anchor.remove();
+        },
+        _tableToCSV: function (table) {
+            // We'll be co-opting `slice` to create arrays
+            var slice = Array.prototype.slice;
+
+            return slice
+              .call(table.rows)
+              .map(function (row) {
+                  return slice
+                    .call(row.cells)
+                    .map(function (cell) {
+                        return '"t"'.replace("t", cell.textContent);
+                    })
+                    .join(",");
+              })
+              .join("\r\n");
+        }
+    };
+
+</script>
+
+
+

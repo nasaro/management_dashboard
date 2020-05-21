@@ -1,0 +1,227 @@
+﻿@using System.Web.Optimization
+@model MANAGEMENT.Models.FullNameViewModel
+
+<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        /*KHUSUS VIEW INI SAJA DI SERVER  background: Url("/MG/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);*/
+        opacity: .8;
+    }
+    th {
+        font-size: 11px;
+        background-color:#00ff99;
+		color:black;
+    }
+
+    td {
+        font-size: 11px;
+        background-color:#b3ffe0;
+		color:black;
+    }
+
+     #myModalPPIC {
+      top:50%;
+      left:27%;
+      outline: none;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout_Spc.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h3>Table PPIC Control</h3>
+            <table id="MasterInfo" class="table table-bordered  table-hover">
+                <caption id="Judul" class="text-center" style="background-color: #b3ffe0;color: black;">PPIC Control - Non Assembly</caption>
+                <thead>
+                    <tr>
+                        <th>PRODUCT CODE</th>
+                        <th>CUSTOMER</th>
+                        <th>PRODUCT</th>
+                        <th>MATERIAL</th>
+                        <th>WEIGHT</th>
+                        <th><span class="pull-right">WIP WAX</span></th>
+                        <th><span class="pull-right">WIP DIPPING</span></th>
+                        <th><span class="pull-right">WIP CERAMIC</span></th>
+                        <th><span class="pull-right">WIP FINISHING</span></th>
+                        <th><span class="pull-right">STOCK CASTING</span></th>
+                        <th><span class="pull-right">PDA TODAY</span></th>
+                        <th><span class="pull-right">WIP MACHINING</span></th>
+                        <th><span class="pull-right">STOCK PRODUK</span></th>
+                        <th><span class="pull-right">PDB TODAY</span></th>
+                        <th><span class="pull-right">SISA ORDER</span></th>
+                        <th>TGL EDD</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblControl"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <br/>
+        <br />
+        <br />
+        <br />
+        <div class="modal fade" id="myModalPPIC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Product Code</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table id="ProdukInfo" class="table table-bordered  table-hover">
+                            @*<caption id="Prodinfo" class="text-center" style="background-color: #b3ffe0;color: black;">Product Info</caption>*@
+                            <thead>
+                                <tr>
+                                    <th>POR#</th>
+                                    <th><span class="pull-right">Sisa</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblProdukInfo"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="buttoninfo" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loader"></div>
+    </section>
+  </body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var datPar = "@Model.FirstName";
+
+    $(document).ready(function () {
+        MainLoad();       
+    });
+
+
+    function MainLoad() {
+        var tr;
+        var nilpar;
+        if (datPar == 'Non') {
+            $('#Judul').text('PPIC Control - Non Assembly');
+            nilpar = 1;
+        }
+        else if (datPar == 'Assembly') {
+            nilpar = 2;
+            $('#Judul').text('PPIC Control - Assembly');
+        }
+        else nilpar = 0;
+        $.ajax({
+            url: urlKPI + "/vRptWarehouseControl/" + nilpar,
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.prodcode + "</td>");
+                    tr.append("<td>" + item.cust + "</td>");
+                    tr.append("<td>" + item.item + "</td>");
+                    tr.append("<td>" + item.material + "</td>");
+                    tr.append("<td>" + item.berat + "</td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.wax) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.dipping) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.ceramic) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.finishing) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.stokawalcasting) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.totMR) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.totmach) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.stokawalfinished) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.totterkirim) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.sisaPO) + "</span></td>");
+                    tr.append('<td>' + item.edd + "</td>");
+                    $('#MasterInfo').append(tr);
+                });
+
+               var  masterTable = $('#MasterInfo').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                            [10, 25, 50, -1],
+                            ['10 rows', '25 rows', '50 rows', 'Show all']
+                    ],
+                    buttons: ['pageLength', {
+                        extend: 'excel',
+                        text: 'Export to Excel(All)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'all',      // 'all',     'current'
+                                search: 'none'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    }, {
+                        extend: 'excel',
+                        text: 'Export to Excel(Part)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'current',      // 'all',     'current'
+                                search: 'applied'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    },
+
+                    ],
+                    "columnDefs": [
+                    {
+                        "targets": [ 3, 4, 5, 6 ,7 ,8 , 9, 10, 11, 12],
+                        "searchable": false
+                    },                    
+                    ]
+                });
+
+                $('#MasterInfo tbody').on('click', 'tr', function () {
+                    var data = masterTable.row(this).data();
+                    showPopUp(data[0], data[2]);
+                });
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function showPopUp(code, name) {
+        ListProdCode(code);
+        $('#myModalLabel').text('Product Info: '+ name);
+        $('#tbodytblProdukInfo').empty();
+        $("#myModalPPIC").modal({ show: true, backdrop: false });
+       
+    }
+
+    function ListProdCode(code) {
+        $.getJSON(urlKPI + "/vShowProd/", { codeprod: code },
+        function (json) {
+            var tr;
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr/>');
+                tr.append("<td>" + json[i].item + "</td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].wax) + "</span></td>");
+                $('#tbodytblProdukInfo').append(tr);
+
+            }
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+
+
+</script>

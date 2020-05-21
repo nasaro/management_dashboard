@@ -1,0 +1,949 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>FINISHING</b></a></th>
+                        <td><span id="RevTitle" style="color:red">Revenue</span></td>
+                        <td><span id="FisGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitle" style="color:red">Production Output PDA</span></td>
+                        <td><span id="FisGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="FisGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="DrmTitle" style="color:red">DRM Average</span></td>
+                        <td><span id="FisGrdDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrDrm" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="RejTitle" style="color:red">Reject Rate</span></td>
+                        <td><span id="FisGrdRej" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRej" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRej" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRej" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRej" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="WipTitle" style="color:red">WIP Control</span></td>
+                        <td><span id="FisGrdWip" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtWip" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActWip" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchWip" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrWip" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>FINISHING</b></a></th>
+                        <td><span id="RevTitleMonth" style="color:red">Revenue</span></td>
+                        <td><span id="FisGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleMonth" style="color:red">Production Output PDA</span></td>
+                        <td><span id="FisGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="FisGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="DrmTitleMonth" style="color:red">DRM Average</span></td>
+                        <td><span id="FisGrdDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrDrmMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="RejTitleMonth" style="color:red">Reject Rate</span></td>
+                        <td><span id="FisGrdRejMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRejMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRejMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRejMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRejMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="WipTitleMonth" style="color:red">WIP Control</span></td>
+                        <td><span id="FisGrdWipMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtWipMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActWipMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchWipMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrWipMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><b>FINISHING</b></th>
+                        <td><span id="RevTitleSum" style="color:red">Revenue</span></td>
+                        <td><span id="FisGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleSum" style="color:red">Production Output PDA</span></td>
+                        <td><span id="FisGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="FisGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="DrmTitleSum" style="color:red">DRM Average</span></td>
+                        <td><span id="FisGrdDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrDrmSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="RejTitleSum" style="color:red">Reject Rate</span></td>
+                        <td><span id="FisGrdRejSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtRejSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActRejSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchRejSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrRejSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="WipTitleSum" style="color:red">WIP Control</span></td>
+                        <td><span id="FisGrdWipSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisTgtWipSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisActWipSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisAchWipSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="FisScrWipSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum = 0;
+    var PicTotGrade = 0, PicTotGradeMonth = 0, PicTotGradeSum = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function getView(thn) {
+        PicScrTot = 0;
+        PicTotGrade = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vFinishingDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    //  revenue
+                    if (userAu != "VST") {
+                        $("#FisGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#FisTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#FisActRev").text(formatNumber(item.PicActRev));
+                        $("#FisAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#FisScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTot = PicScrTot + item.PicScrRev;
+                        PicTotGrade = PicTotGrade + item.PicGrdRev;
+                    }
+                    //-- pda
+                    $("#FisGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#FisTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#FisActPda").text(formatNumber(item.PicActPda));
+                    $("#FisAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#FisScrPda").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTot = PicScrTot + item.PicScrPda;
+                    PicTotGrade = PicTotGrade + item.PicGrdPda;
+
+                    //-- utk 2019 pdc , 2020 cost finishing
+                    if (thn<2020) {
+                        $('#PdcTitle').text('Production Output PDB+PDC');
+                    } else {
+                        $('#PdcTitle').text('Cost Finishing per Kg - AVE');
+                    }
+                    $("#FisGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#FisTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#FisActPdc").text(formatNumber(item.PicActPdc));
+                    $("#FisAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#FisScrPdc").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    console.log(PicGrdPdc);
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0)
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTot = PicScrTot + item.PicScrPdc;
+                    PicTotGrade = PicTotGrade + item.PicGrdPdc;
+
+                    //-- drm
+                    $("#FisGrdDrm").text(formatNumber(item.PicGrdDrm));
+                    $("#FisTgtDrm").text(formatNumber(item.PicTgtDrm));
+                    $("#FisActDrm").text(formatNumber(item.PicActDrm));
+                    $("#FisAchDrm").text(formatNumber(item.PicAchDrm.toFixed(2)));
+                    $("#FisScrDrm").text(formatNumber(item.PicScrDrm.toFixed(2)));
+                    var PicGrdDrm = item.PicGrdDrm;
+                    if (PicGrdDrm == 0)
+                        $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrDrm - item.PicGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTot = PicScrTot + item.PicScrDrm;
+                    PicTotGrade = PicTotGrade + item.PicGrdDrm;
+
+                    //-- reject rate casting
+                    $("#FisGrdRej").text(formatNumber(item.PicGrdRed));
+                    $("#FisTgtRej").text(formatNumber(item.PicTgtRed));
+                    $("#FisActRej").text(formatNumber(item.PicActRed));
+                    $("#FisAchRej").text(formatNumber(item.PicAchRed.toFixed(2)));
+                    $("#FisScrRej").text(formatNumber(item.PicScrRed.toFixed(2)));
+                    var PicGrdRed = item.PicGrdRed;
+                    if (PicGrdRed == 0)
+                        $("#RejTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrRed - item.PicGrdRed;
+                        if (newcolor4 >= 0)
+                            $("#RejTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RejTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTot = PicScrTot + item.PicScrRed;
+                    PicTotGrade = PicTotGrade + item.PicGrdRed;
+
+                    //--wip
+                    $("#FisGrdWip").text(formatNumber(item.PicGrdWip));
+                    $("#FisTgtWip").text(formatNumber(item.PicTgtWip));
+                    $("#FisActWip").text(formatNumber(item.PicActWip));
+                    $("#FisAchWip").text(formatNumber(item.PicAchWip.toFixed(2)));
+                    $("#FisScrWip").text(formatNumber(item.PicScrWip.toFixed(2)));
+                    var PicGrdWip = item.PicGrdWip;
+                    if (PicGrdWip == 0)
+                        $("#WipTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (thn < 2020) {
+                            var newcolor5 = item.PicAchWip;
+                            if (newcolor5 >= 100)
+                                $("#WipTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitle").css({ "color": "red", "font-weight": "bold" });
+
+                        } else {
+                            var newcolor4 = item.PicScrWip - item.PicGrdWip;
+                            if (newcolor4 >= 0)
+                                $("#WipTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+
+                    PicScrTot = PicScrTot + item.PicScrWip;
+                    PicTotGrade = PicTotGrade + item.PicGrdWip;
+
+                    $("#PicScrTot").text(formatNumber((PicScrTot).toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber((PicTotGrade).toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+    }
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrTotSum = 0;
+        PicTotGradeMonth = 0;
+        PicTotGradeSum = 0;
+        var userAu = $('#authorid').val();
+        var nmbulan = valMonth(bln);
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+        var kpiObj = {
+            id: thn,
+            bul: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vFinishingDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    //  revenue
+                    if (userAu != "VST") {
+                        $("#FisGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#FisTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#FisActRevMonth").text(formatNumber(item.PicActRev));
+                        $("#FisAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#FisScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTotMonth = PicScrTotMonth + item.PicScrRev;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRev;
+                    }
+                    //-- pda
+                    $("#FisGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#FisTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#FisActPdaMonth").text(formatNumber(item.PicActPda));
+                    $("#FisAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#FisScrPdaMonth").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0)
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrPda;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPda;
+
+                    //-- utk 2019 pdc , 2020 cost finishing
+                    if (thn < 2020) {
+                        $('#PdcTitleMonth').text('Production Output PDB+PDC');
+                    } else {
+                        $('#PdcTitleMonth').text('Cost Finishing per Kg - AVE');
+                    }
+                    //-- pdc
+                    $("#FisGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#FisTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#FisActPdcMonth").text(formatNumber(item.PicActPdc));
+                    $("#FisAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#FisScrPdcMonth").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    console.log(PicGrdPdc);
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0)
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrPdc;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPdc;
+
+                    //-- drm
+                    $("#FisGrdDrmMonth").text(formatNumber(item.PicGrdDrm));
+                    $("#FisTgtDrmMonth").text(formatNumber(item.PicTgtDrm));
+                    $("#FisActDrmMonth").text(formatNumber(item.PicActDrm));
+                    $("#FisAchDrmMonth").text(formatNumber(item.PicAchDrm.toFixed(2)));
+                    $("#FisScrDrmMonth").text(formatNumber(item.PicScrDrm.toFixed(2)));
+                    var PicGrdDrm = item.PicGrdDrm;
+                    if (PicGrdDrm == 0)
+                        $("#DrmTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrDrm - item.PicGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrDrm;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDrm;
+
+                    //-- reject rate casting
+                    $("#FisGrdRejMonth").text(formatNumber(item.PicGrdRed));
+                    $("#FisTgtRejMonth").text(formatNumber(item.PicTgtRed));
+                    $("#FisActRejMonth").text(formatNumber(item.PicActRed));
+                    if (item.PicAchRed < 0)
+                        $("#FisAchRejMonth").text(formatNumber(0));
+                    else
+                        $("#FisAchRejMonth").text(formatNumber(item.PicAchRed.toFixed(2)));
+                    $("#FisScrRejMonth").text(formatNumber(item.PicScrRed.toFixed(2)));
+                    var PicGrdRed = item.PicGrdRed;
+                    if (PicGrdRed == 0)
+                        $("#RejTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrRed - item.PicGrdRed;
+                        if (newcolor4 >= 0)
+                            $("#RejTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RejTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrRed;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRed;
+
+                    //--wip
+                    $("#FisGrdWipMonth").text(formatNumber(item.PicGrdWip));
+                    $("#FisTgtWipMonth").text(formatNumber(item.PicTgtWip));
+                    $("#FisActWipMonth").text(formatNumber(item.PicActWip));
+                    $("#FisAchWipMonth").text(formatNumber(item.PicAchWip.toFixed(2)));
+                    $("#FisScrWipMonth").text(formatNumber(item.PicScrWip.toFixed(2)));
+                    var PicGrdWip = item.PicGrdWip;
+                    if (PicGrdWip == 0)
+                        $("#WipTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (thn < 2020) {
+                            var newcolor5 = item.PicAchWip;
+                            if (newcolor5 >= 100)
+                                $("#WipTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        } else {
+                            var newcolor4 = item.PicScrWip - item.PicGrdWip;
+                            if (newcolor4 >= 0)
+                                $("#WipTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrWip;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdWip;
+
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                    $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+        var kpiObj = {
+            id: thn,
+            bul: bln,
+            ch: "Y"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vFinishingDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    //  revenue
+                    if (userAu != "VST") {
+                        $("#FisGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#FisTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#FisActRevSum").text(formatNumber(item.PicActRev));
+                        $("#FisAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#FisScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTotSum = PicScrTotSum + item.PicScrRev;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdRev;
+                    }
+                    //-- pda
+                    $("#FisGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#FisTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#FisActPdaSum").text(formatNumber(item.PicActPda));
+                    $("#FisAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#FisScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0)
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotSum = PicScrTotSum + item.PicScrPda;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdPda;
+
+                    //-- utk 2019 pdc , 2020 cost finishing
+                    if (thn < 2020) {
+                        $('#PdcTitleSum').text('Production Output PDB+PDC');
+                    } else {
+                        $('#PdcTitleSum').text('Cost Finishing per Kg - AVE');
+                    }
+                    //-- pdc
+                    $("#FisGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#FisTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#FisActPdcSum").text(formatNumber(item.PicActPdc));
+                    $("#FisAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#FisScrPdcSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0)
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotSum = PicScrTotSum + item.PicScrPdc;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
+
+                    //-- drm
+                    $("#FisGrdDrmSum").text(formatNumber(item.PicGrdDrm));
+                    $("#FisTgtDrmSum").text(formatNumber(item.PicTgtDrm));
+                    $("#FisActDrmSum").text(formatNumber(item.PicActDrm));
+                    $("#FisAchDrmSum").text(formatNumber(item.PicAchDrm.toFixed(2)));
+                    $("#FisScrDrmSum").text(formatNumber(item.PicScrDrm.toFixed(2)));
+                    var PicGrdDrm = item.PicGrdDrm;
+                    if (PicGrdDrm == 0)
+                        $("#DrmTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrDrm - item.PicGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotSum = PicScrTotSum + item.PicScrDrm;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdDrm;
+
+                    //-- reject rate casting
+                    $("#FisGrdRejSum").text(formatNumber(item.PicGrdRed));
+                    $("#FisTgtRejSum").text(formatNumber(item.PicTgtRed));
+                    $("#FisActRejSum").text(formatNumber(item.PicActRed));
+                    $("#FisAchRejSum").text(formatNumber(item.PicAchRed.toFixed(2)));
+                    $("#FisScrRejSum").text(formatNumber(item.PicScrRed.toFixed(2)));
+                    var PicGrdRed = item.PicGrdRed;
+                    if (PicGrdRed == 0)
+                        $("#RejTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrRed - item.PicGrdRed;
+                        if (newcolor4 >= 0)
+                            $("#RejTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RejTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    PicScrTotSum = PicScrTotSum + item.PicScrRed;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdRed;
+
+                    //--wip
+                    $("#FisGrdWipSum").text(formatNumber(item.PicGrdWip));
+                    $("#FisTgtWipSum").text(formatNumber(item.PicTgtWip));
+                    $("#FisActWipSum").text(formatNumber(item.PicActWip));
+                    $("#FisAchWipSum").text(formatNumber(item.PicAchWip.toFixed(2)));
+                    console.log('act' + item.PicActWip);
+                    console.log('ach'+item.PicAchWip);
+                    $("#FisScrWipSum").text(formatNumber(item.PicScrWip.toFixed(2)));
+                    var PicGrdWip = item.PicGrdWip;
+                    if (PicGrdWip == 0)
+                        $("#WipTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (thn < 2020) {
+                            var newcolor5 = item.PicAchWip;
+                            if (newcolor5 >= 100)
+                                $("#WipTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        } else {
+                            var newcolor4 = item.PicScrWip - item.PicGrdWip;
+                            if (newcolor4 >= 0)
+                                $("#WipTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#WipTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        }
+                    }
+
+                    PicScrTotSum = PicScrTotSum + item.PicScrWip;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdWip;
+
+
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                    $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>

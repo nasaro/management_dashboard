@@ -1,0 +1,449 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+  hr { background-color: red; height: 1px; border: 0; }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Table Cost Control</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" onclick="addCost();">Add New Cost Control</button>
+                </div>
+            </div>
+            <br />
+            <table id="tblCost" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Type</th>
+                        <th>Constanta</th>
+                        <th>Price</th>
+                        <th>Material</th>
+                        <th>Desc</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblCost"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <hr>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Add New Cost Control Form</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" id="costID" disabled="disabled" />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="dPeriod">Period</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" id="dPeriod" placeholder="Period" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="costtype">Type</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="costtype">
+                                            <option value="DIPPING">DIPPING</option>
+                                            <option value="ALLOY">ALLOY</option>
+                                            <option value="SCRAP">SCRAP</option>
+                                            <option value="OTHER">OTHER</option>
+                                            <option value="PROCESS COST">PROCESS COST</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="cusID">Material</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="hidden" class="form-control" id="cusID" placeholder="Material ID" />
+                                        <input type="text" class="form-control" id="cusName" placeholder="Material Name" autocomplete="on" />
+                                    </div>
+                                </div>                              
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="const">Constanta</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="const" placeholder="Constanta" />   
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="price">Price</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="price" placeholder="Price" />
+                                    </div>
+                                </div>                                                             
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="desc">Description</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="desc" placeholder="Description" maxlength="50" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAdd" data-dismiss="modal" onclick="CRUDcost('I');">Add</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" onclick="CRUDcost('U');">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+           
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+    </section>
+
+</body>
+
+
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'MM-YYYY'
+        });
+        MainLoad();
+    });
+
+    function MainLoad() {
+        var tr;
+        var kpiOBJ = {
+            ch: 'A'
+        };
+        $('#tbodytblCost').empty();
+        $.ajax({
+            url: urlKPI + "/viewCostControl/",
+            data: JSON.stringify(kpiOBJ),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + item.period + "</td>");
+                    tr.append("<td>" + item.type + "</td>");
+                    tr.append("<td align='right'>" + formatNumber(item.KPI1) + "</td>");
+                    tr.append("<td align='right'>" + formatNumber(item.KPI2) + "</td>");
+                    tr.append("<td>" + item.name + "</td>");
+                    tr.append("<td>" + item.desc + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit !"     onclick="getCost(' + item.idkpi + ');"><span class="glyphicon glyphicon-pencil" style="color:black"></span></a></td>');
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Delete !"     onclick="deleteCost(' + item.idkpi + ');"><span class="glyphicon glyphicon-trash" style="color:red"></span></a></td>');
+                    $('#tblCost').append(tr);
+                });
+                $('#tblCost').DataTable({ responsive: true });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function getLoad() {
+        var tr;
+        $('#tblCost').DataTable().destroy();
+        $('#tbodytblCost').empty();
+        var kpiOBJ = {
+            ch: 'A'
+        };
+        $.ajax({
+            url: urlKPI + "/viewCostControl/",
+            data: JSON.stringify(kpiOBJ),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + item.period + "</td>");
+                    tr.append("<td>" + item.type + "</td>");
+                    tr.append("<td align='right'>" + formatNumber(item.KPI1) + "</td>");
+                    tr.append("<td align='right'>" + formatNumber(item.KPI2) + "</td>");
+                    tr.append("<td>" + item.name + "</td>");
+                    tr.append("<td>" + item.desc + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit !"     onclick="getCost(' + item.idkpi + ');"><span class="glyphicon glyphicon-pencil" style="color:black"></span></a></td>');
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Delete !"     onclick="deleteCost(' + item.idkpi + ');"><span class="glyphicon glyphicon-trash" style="color:red"></span></a></td>');
+                    $('#tbodytblCost').append(tr);
+                });
+                $('#tblCost').DataTable().draw();
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function getCost(id) {
+        var ppicObj = {
+            idkpi: id,
+            ch: 'c'
+        };
+        $.ajax({
+            url: urlKPI + "/viewCostControl/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#costID').val(item.idkpi);
+                    $('#dPeriod').val(item.period);
+                    $('#cusID').val(item.grade);
+                    $('#const').val(item.KPI1);
+                    $('#price').val(item.KPI2);
+                    $('#desc').val(item.desc);
+                    $('#costtype').val(item.type);
+                    $('#cusName').val(item.name)
+
+                });
+                $("#myModal").modal({ show: true, backdrop: false })
+                $('#btnUpdate').show();
+                $('#btnAdd').hide();
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+
+    function deleteCost(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var ppicObj = {
+                idkpi: id,
+                ch: "D"
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDCostControl/",
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(ppicObj),
+                dataType: "json",
+                success: function (result) {
+                    getLoad();
+                    //--window.location.reload();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function CRUDcost(type) {
+        var res = validateCost();
+        if (res == false) {
+            alert('fill entry form, completely');
+            update = 1;
+            return false;
+        }
+        var kpiOBJ = {
+            idkpi: $('#costID').val(),
+            period: $('#dPeriod').val(),
+            grade: $('#cusID').val(),
+            type: $('#costtype').val(),
+            desc: $('#desc').val(),
+            KPI1: $('#const').val(),
+            KPI2: $('#price').val(),
+            ch: type
+        };
+        
+        $.ajax({
+            url: urlKPI + "/CRUDCostControl",
+            data: JSON.stringify(kpiOBJ),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add Cost Control Successfull..."
+                    });
+                    update = 0;
+                    getLoad();
+                    //--window.location.reload();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add Cost Control Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+  
+  
+
+    function addCost() {
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').hide();
+        $('#btnAdd').show();
+        $('#dPeriod').val('');
+        $('#cusName').val('');
+        $('#cusID').val('');
+        $('#costtype').val('');
+        $('#const').val(0);
+        $('#price').val(0);
+        $('#desc').val('');
+    }
+
+   
+    function validateCost() {
+        var isValid = true;
+        if ($('#dPeriod').val().trim() == "") {
+            $('#dPeriod').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#dPeriod').css('border-color', 'lightgrey');
+        }
+
+        if ($('#costtype').val().trim() == "") {
+            $('#costtype').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#costtype').css('border-color', 'lightgrey');
+        }
+
+        if ($('#const').val().trim() == "") {
+            $('#const').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#const').css('border-color', 'lightgrey');
+        }
+
+        if ($('#price').val().trim() == "") {
+            $('#price').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#price').css('border-color', 'lightgrey');
+        }
+
+        if ($('#desc').val().trim() == "") {
+            $('#desc').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#desc').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    $(function () {
+        $("#cusName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: urlKPI + "/vMaterial",
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.id;
+                            var names = item.name;
+                            map[names] = { id: id, name: names };
+                            items.push(names);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#cusID').val(map[item].id);
+                return item;
+            }
+        });
+    });
+</script>

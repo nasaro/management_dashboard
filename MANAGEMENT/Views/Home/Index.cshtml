@@ -1,0 +1,165 @@
+﻿
+<style>
+     .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    #piechart {
+        height: 400px;
+        width: 650px;
+    }
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Radial menu</title>
+    @Styles.Render("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css")
+    @{
+        ViewBag.Title = "Dashboard";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+</head>
+<body>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <section>
+        <div class="nav">
+            <ul class="radial-nav">
+                <li data-content="js"><a href="#">FIN</a></li>
+                <li data-content="css"><a href="#">CUST</a></li>
+                <li data-content="git"><a href="#">IBP</a></li>
+                <li data-content="jade"><a href="#">LEARN</a></li>
+                <li class="menu"><span class="icon-menu"></span></li>
+            </ul>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-1">
+                    <label for="lbl1">Periode</label>
+                </div>
+                <div class="col-sm-4">
+                    <div class="input-group date datetimepicker">
+                        <input type="text" class="form-control" id="prd1" placeholder="MM-YYYY"></>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Chart" onclick="GetChart();">Chart</button>
+                </div>
+
+            </div>
+
+
+            <article class="item" id="grunt">
+                <h1>Grunt: the task runner</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="jade">
+                <h1>Jade: A Node templating engine</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="css">
+                <h1>CSS3</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="git">
+                <h1>GIT: Version control</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="gulp">
+                <h1>GULP: An other task runner</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="yo">
+                <h1>YO</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+            <article class="item" id="js">
+                <h1>JS</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ad laudantium ullam nobis magni, molestiae, nisi doloribus fugiat quam, quo odio ex sequi eum recusandae tempore optio! Veniam, mollitia soluta.</p>
+            </article>
+        </section>
+    </section>
+    <div class="loader"></div>
+</body>
+</html>
+
+
+<script>
+    var urlEmployee = "@Url.Content("~/Dashboard")";
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        var d = new Date();
+        var nday = leftPad(d.getMonth() + 1, 2) + '-' + d.getFullYear();
+        $("#prd1").val(nday);
+        $(".loader").hide();
+
+
+    });
+
+
+
+    function drawChartReligion() {
+        var period = $("#prd1").val();
+        var lab;
+        var val;
+        $.getJSON(urlEmployee + "/EmployeeInfo/", { prd: period, type: 'RELIGION' },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+
+                var labels = json.map(function (e) {
+                    return e.label;
+                });
+                lab = labels;
+                var valu = json.map(function (e) {
+                    return e.value;
+                });
+                val = valu;
+            }
+            lab2 = lab;
+            val2 = val;
+            var ctx = $("#chartReligion").get(0).getContext('2d');
+            var config = {
+                type: 'pie',
+                data: {
+                    labels: lab2,
+                    datasets: [{
+                        label: 'Graph Pie',
+                        data: val2,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#4BC0C0",
+                            "#FFCE56",
+                            "#36A2EB",
+                            "#E7E9ED"
+                        ]
+                    }]
+                }
+            };
+
+            var chart = new Chart(ctx, config);
+
+        });
+    }
+
+    function leftPad(number, targetLength) {
+        var output = number + '';
+        while (output.length < targetLength) {
+            output = '0' + output;
+        }
+        return output;
+    }
+</script>

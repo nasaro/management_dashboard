@@ -1,0 +1,241 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionOne">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart DRM ( in % )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionOne" href="#collapseOne">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseOne">
+                        <div class="panel-body">
+                            <div id="barDRM">
+                                <canvas id="chartDRM" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionTwo">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Air Freight Cost
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionTwo" href="#collapseTwo">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseTwo">
+                        <div class="panel-body">
+                            <div id="barAIR">
+                                <canvas id="chartAIR" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var dataD = [];
+    var dataR = [];
+    var dataTA = [];
+    var dataAA = [];
+    var iYear;
+    $(document).ready(function () {
+        iYear = $.session.get("UserYear");
+        showDRM(iYear);
+        showAIR(iYear);
+    });
+
+    function showDRM(thn) {
+        var chc = 6;
+        $.getJSON(urlKPI + "/GraphTgt/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataD = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphDRMAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataR = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataDRM = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'DRM',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataR,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataD,
+                      }
+                    ]
+                }
+
+                var barChartCanvasDRM = $('#chartDRM').get(0).getContext('2d');
+                var barChartDRM = new Chart(barChartCanvasDRM)
+                var barChartDataDRM = areaChartDataDRM
+                barChartDataDRM.datasets[0].fillColor = '#00a65a'
+                barChartDataDRM.datasets[0].strokeColor = '#00a65a'
+                barChartDataDRM.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsDRM = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsDRM.datasetFill = true
+
+                var barChartDRM = new Chart(barChartCanvasDRM, {
+                    type: 'bar',
+                    data: barChartDataDRM,
+                    options: barChartOptionsDRM
+                });
+
+            });
+        });
+    }
+
+    function showAIR(thn) {
+        var chc = 7;
+        $.getJSON(urlKPI + "/GraphTgt/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataTA = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphAIRAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataAA = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataAIR = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Air Freight Cost',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataAA,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataTA,
+                      }
+                    ]
+                }
+
+                var barChartCanvasAIR = $('#chartAIR').get(0).getContext('2d');
+                var barChartAIR = new Chart(barChartCanvasAIR)
+                var barChartDataAIR = areaChartDataAIR
+                barChartDataAIR.datasets[0].fillColor = '#00a65a'
+                barChartDataAIR.datasets[0].strokeColor = '#00a65a'
+                barChartDataAIR.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsAIR = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsAIR.datasetFill = true
+
+                var barChartAIR = new Chart(barChartCanvasAIR, {
+                    type: 'bar',
+                    data: barChartDataAIR,
+                    options: barChartOptionsAIR
+                });
+
+            });
+        });
+    }
+
+
+   
+
+</script>

@@ -1,0 +1,343 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Table Cost Control Machine</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" onclick="clearTextBox();">Add Cost Control Machine</button>
+                </div>
+            </div>
+            <br />
+            <table id="MasterInfo" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Standard</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblKPI"></tbody>
+            </table>
+        </div> <!--Form utama-->
+    </section>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Cost Control Machine</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="id">ID</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="id" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="prd">Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="prd" placeholder="Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="cbdesc">Description :</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="cbdesc">
+                                        <option val='CONSUMABLES'>CONSUMABLES</option>
+                                        <option val='ELECTRICITY'>ELECTRICITY</option>
+                                        <option val='FOH'>FOH</option>
+                                        <option val='LABOR COST'>LABOR COST</option>
+                                        <option val='MATERIAL CUTTING TOOLS'>MATERIAL CUTTING TOOLS</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="std">Standard</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input id="std" name="std" type="number" class="form-control" placeholder="Standard Cost Control Machine" />
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" data-dismiss="modal" onclick="CRUDkpi('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" onclick="CRUDkpi('U');">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var update = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        MainLoad();
+        $('#utamaFrm').show();
+    });
+
+    function MainLoad() {
+        var tr;
+        var kpiObj = {
+            ch: 'A'
+        }
+        $('#tbodytblKPI').empty();
+        $.ajax({
+            url: urlKPI + "/viewCostControlmachine/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.idkpi + "</td>");
+                    tr.append("<td>" + item.period + "</td>");
+                    tr.append("<td>" + item.desc + "</td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.target) + "</span></td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUser(' + item.idkpi + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelKPI(' + item.idkpi + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    $('#tbodytblKPI').append(tr);
+                });
+                $('#MasterInfo').DataTable({ responsive: true });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+
+    function clearTextBox() {
+        $('#id').val("");
+        if (update === 0) {
+            $('#prd').val("");
+            $('#cbdesc').val("");
+            $('#tgt').val(0);
+            $('#prd').attr("disabled", false);
+            $('#cbdesc').attr("disabled", false);
+
+        }
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').hide();
+        $('#btnAdd').show();
+    }
+
+    function getbyUser(id) {
+        getView(id);
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').show();
+        $('#btnAdd').hide();
+    }
+
+    function getView(idkpi) {
+        var kpiObj = {
+            idkpi: idkpi,
+            ch: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewCostControlmachine/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    var aaa = item.desc;
+                    $('#id').val(item.idkpi);
+                    $('#prd').val(item.period);
+                    $('#cbdesc').val(item.desc);
+                    $('#std').val(item.target);
+                    $('#cbdesc').attr("disabled", true);
+                    $('#prd').attr("disabled", true);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function CRUDkpi(type) {
+        if (type == 'U')
+            update = 1;
+        else update = 0;
+
+        var res = validateATT();
+        if (res == false) {
+            alert('fill entry form, completely');
+            return false;
+        }
+        var kpiObj = {
+            idkpi: $('#id').val(),
+            desc: $("#cbdesc option:selected").text(),
+            period: $('#prd').val(),
+            target: $('#std').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDCostControlMachine",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add Cost Control Machine Successfull..."
+                    });
+                    update = 0;
+                    //getLoad();                    
+                    window.location.reload();
+
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add Target Inv Control Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function DelKPI(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                idkpi: id,
+                ch: 'D'
+            };
+
+            $.ajax({
+                url: urlKPI + "/CRUDCostControlMachine/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Cost Control Machine Has Been Deleted..."
+                    });
+                    window.location.reload();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function validateATT() {
+        var isValid = true;
+        if ($('#prd').val().trim() == "") {
+            $('#prd').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#prd').css('border-color', 'lightgrey');
+        }
+
+        if (update != 1) {
+            if ($('#cbdesc').val() !== null) {
+                if ($('#cbdesc').val().trim() == "") {
+                    $('#cbdesc').css('border-color', 'Red');
+                    isValid = false;
+                }
+                else {
+                    $('#cbdesc').css('border-color', 'lightgrey');
+                }
+            }
+
+            if ($('#cbdesc').val() == null) {
+                $('#cbdesc').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#cbdesc').css('border-color', 'lightgrey');
+            }
+        }
+        if ($('#std').val().trim() == "") {
+            $('#std').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#std').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+
+</script>

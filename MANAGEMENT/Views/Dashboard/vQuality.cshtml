@@ -1,0 +1,1565 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="14" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>QUALITY</b></a></th>
+                        <td><span id="RevTitle">Revenue</span></td>
+                        <td><span id="QuaGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrPDA" style="display:none">
+                        <td><span id="PdaTitle">Production Output PDA</span></td>
+                        <td><span id="QuaGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrPDC" style="display:none">
+                        <td><span id="PdcTitle">Production Output PDB+PDC</span></td>
+                        <td><span id="QuaGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="CasTitle">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="QuaGrdCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCas" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="BadTitle">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="QuaGrdBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrBad" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitle">Reject Rate at Customer site-TVB (DPPM)</span></td>
+                        <td><span id="QuaGrdTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrTvb" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitle">Reject Rate at Customer site-DP Pump (DPPM)</span></td>
+                        <td><span id="QuaGrdDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrDpp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="EmeTitle">Reject Rate at Customer site-Emerson (DPPM)</span></td>
+                        <td><span id="QuaGrdEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchEme" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrEme" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitle">Reject Rate at Customer site-Others (DPPM)</span></td>
+                        <td><span id="QuaGrdOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchOth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrOth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="CcnTitle">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="QuaGrdCcn" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCcn" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCcn" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCcn" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCcn" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrPED" style="display:none">
+                        <td><span id="PedTitle">PED Cert.</span></td>
+                        <td><span id="QuaGrdPed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPed" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrISO" style="display:none">
+                        <td><span id="IsoTitle">ISO-13485 & MDD</span></td>
+                        <td><span id="QuaGrdIso" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtIso" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActIso" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchIso" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrIso" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitle">Quality Cost Control-Labor Cost</span></td>
+                        <td><span id="QuaGrdLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrLab" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="14" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>Quality</b></a></th>
+                        <td><span id="RevTitleMonth">Revenue</span></td>
+                        <td><span id="QuaGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlPDA">
+                        <td><span id="PdaTitleMonth">Production Output PDA</span></td>
+                        <td><span id="QuaGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlPDC">
+                        <td><span id="PdcTitleMonth">Production Output PDB+PDC</span></td>
+                        <td><span id="QuaGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="CasTitleMonth">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="QuaGrdCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCasMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="BadTitleMonth">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="QuaGrdBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrBadMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleMonth">Reject Rate at Customer site-TVB (DPPM)</span></td>
+                        <td><span id="QuaGrdTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrTvbMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleMonth">Reject Rate at Customer site-DP Pump (DPPM)</span></td>
+                        <td><span id="QuaGrdDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrDppMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="EmeTitleMonth">Reject Rate at Customer site-Emerson (DPPM)</span></td>
+                        <td><span id="QuaGrdEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchEmeMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrEmeMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitleMonth">Reject Rate at Customer site-Others (DPPM)</span></td>
+                        <td><span id="QuaGrdOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchOthMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrOthMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="CcnTitleMonth">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="QuaGrdCcnMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCcnMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCcnMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCcnMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCcnMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlPED">
+                        <td><span id="PedTitleMonth">PED Cert.</span></td>
+                        <td><span id="QuaGrdPedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPedMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlISO">
+                        <td><span id="IsoTitleMonth">ISO-13485 & MDD</span></td>
+                        <td><span id="QuaGrdIsoMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtIsoMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActIsoMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchIsoMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrIsoMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitleMonth">Quality Cost Control-Labor Cost</span></td>
+                        <td><span id="QuaGrdLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrLabMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="14" class="text-center"><b>Quality</b></th>
+                        <td><span id="RevTitleSum">Revenue</span></td>
+                        <td><span id="QuaGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlPDA">
+                        <td><span id="PdaTitleSum">Production Output PDA</span></td>
+                        <td><span id="QuaGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlPDC">
+                        <td><span id="PdcTitleSum">Production Output PDB+PDC</span></td>
+                        <td><span id="QuaGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="CasTitleSum">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="QuaGrdCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCasSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="BadTitleSum">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="QuaGrdBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrBadSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleSum">Reject Rate at Customer site-TVB (DPPM)</span></td>
+                        <td><span id="QuaGrdTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrTvbSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleSum">Reject Rate at Customer site-DP Pump (DPPM)</span></td>
+                        <td><span id="QuaGrdDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrDppSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="EmeTitleSum">Reject Rate at Customer site-Emerson (DPPM)</span></td>
+                        <td><span id="QuaGrdEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchEmeSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrEmeSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OthTitleSum">Reject Rate at Customer site-Others (DPPM)</span></td>
+                        <td><span id="QuaGrdOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchOthSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrOthSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="CcnTitleSum">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="QuaGrdCcnSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtCcnSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActCcnSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchCcnSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrCcnSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlPED">
+                        <td><span id="PedTitleSum">PED Cert.</span></td>
+                        <td><span id="QuaGrdPedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtPedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActPedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchPedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrPedSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlISO">
+                        <td><span id="IsoTitleSum">ISO-13485 & MDD</span></td>
+                        <td><span id="QuaGrdIsoSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtIsoSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActIsoSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchIsoSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrIsoSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitleSum">Quality Cost Control-Labor Cost</span></td>
+                        <td><span id="QuaGrdLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaTgtLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaActLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaAchLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="QuaScrLabSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum, PicScrTotSumHRD  = 0;
+    var PicScrSaf = 0
+    var TempGradeSaf = 0, TempGradeSafMonth = 0, TempGradeSafSum = 0;
+    var TempTargetSaf = 0, TempTargetSafMonth = 0, TempTargetSafSum = 0;
+    var PicTgtSaf = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function getView(thn) {
+        PicScrTot = 0;
+        PicScrSaf = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vQualityDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#QuaGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#QuaTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#QuaActRev").text(formatNumber(item.PicActRev));
+                        $("#QuaAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#QuaScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+                    if (thn < 2020) {
+                        $("#trhdrPDA").show();
+                        $("#trhdrPDC").show();
+                        /*------------pda---------*/
+                        $("#QuaGrdPda").text(formatNumber(item.PicGrdPda));
+                        $("#QuaTgtPda").text(formatNumber(item.PicTgtPda));
+                        $("#QuaActPda").text(formatNumber(item.PicActPda));
+                        $("#QuaAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
+                        $("#QuaScrPda").text(formatNumber(item.PicScrPda.toFixed(2)));
+                        var PicGrdPda = item.PicGrdPda;
+                        var PicTgtPda = item.PicTgtPda;
+                        if (PicGrdPda == 0)
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                            if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                                $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        /*------------pdc---------*/
+                        $("#QuaGrdPdc").text(formatNumber(item.PicGrdPdc));
+                        $("#QuaTgtPdc").text(formatNumber(item.PicTgtPdc));
+                        $("#QuaActPdc").text(formatNumber(item.PicActPdc));
+                        $("#QuaAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                        $("#QuaScrPdc").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                        var PicGrdPdc = item.PicGrdPdc;
+                        var PicTgtPdc = item.PicTgtPdc;
+                        if (PicGrdPdc == 0)
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                            if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                                $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    } else {
+                        $("#trhdrPDA").hide();
+                        $("#trhdrPDC").hide();
+                    }
+                    //----Reject casting
+                    $("#QuaGrdCas").text(formatNumber(item.PicGrdRjt));
+                    $("#QuaTgtCas").text(formatNumber(item.PicTgtRjt));
+                    $("#QuaActCas").text(formatNumber(item.PicActRjt));
+                    $("#QuaAchCas").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#QuaScrCas").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    var PicTgtRjt = item.PicTgtRjt;
+                    if (PicGrdRjt == 0 )
+                        $("#CasTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                            $("#CasTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CasTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Reject Machining
+                    $("#QuaGrdBad").text(formatNumber(item.PicGrdAir));
+                    $("#QuaTgtBad").text(formatNumber(item.PicTgtAir));
+                    $("#QuaActBad").text(formatNumber(item.PicActAir));
+                    $("#QuaAchBad").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#QuaScrBad").text(formatNumber(item.PicScrAir.toFixed(2)));
+                    var PicGrdAir = item.PicGrdAir;
+                    var PicTgtAir = item.PicTgtAir;
+                    if (PicGrdAir == 0 )
+                        $("#BadTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                            $("#BadTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Tvb
+                    $("#QuaGrdTvb").text(formatNumber(item.PicGrdTvb));
+                    $("#QuaTgtTvb").text(formatNumber(item.PicTgtTvb));
+                    $("#QuaActTvb").text(formatNumber(item.PicActTvb));
+                    $("#QuaAchTvb").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#QuaScrTvb").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    var PicTgtTvb = item.PicTgtTvb;
+                    if (PicGrdTvb == 0 )
+                        $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                            $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Dpp
+                    $("#QuaGrdDpp").text(formatNumber(item.PicGrdDpp));
+                    $("#QuaTgtDpp").text(formatNumber(item.PicTgtDpp));
+                    $("#QuaActDpp").text(formatNumber(item.PicActDpp));
+                    $("#QuaAchDpp").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#QuaScrDpp").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    var PicTgtDpp = item.PicTgtDpp;
+                    if (PicGrdDpp == 0 )
+                        $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                            $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Emerson
+                    $("#QuaGrdEme").text(formatNumber(item.PicGrdEme));
+                    $("#QuaTgtEme").text(formatNumber(item.PicTgtEme));
+                    $("#QuaActEme").text(formatNumber(item.PicActEme));
+                    $("#QuaAchEme").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#QuaScrEme").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    var PicTgtEme = item.PicTgtEme;
+                    if (PicGrdEme == 0 )
+                        $("#EmeTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                            $("#EmeTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#EmeTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Other
+                    $("#QuaGrdOth").text(formatNumber(item.PicGrdOth));
+                    $("#QuaTgtOth").text(formatNumber(item.PicTgtOth));
+                    $("#QuaActOth").text(formatNumber(item.PicActOth));
+                    $("#QuaAchOth").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#QuaScrOth").text(formatNumber(item.PicScrOth.toFixed(2)));
+                    var PicGrdOth = item.PicGrdOth;
+                    var PicTgtOth = item.PicTgtOth;
+                    if (PicGrdOth == 0 )
+                        $("#OthTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                            $("#OthTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Customer Complaint CN
+                    $("#QuaGrdCcn").text(formatNumber(item.PicGrdSca));
+                    $("#QuaTgtCcn").text(formatNumber(item.PicTgtSca));
+                    $("#QuaActCcn").text(formatNumber(item.PicActSca));
+                    $("#QuaAchCcn").text(formatNumber(item.PicAchSca.toFixed(2)));
+                    $("#QuaScrCcn").text(formatNumber(item.PicScrSca.toFixed(2)));
+                    var PicGrdSca = item.PicGrdSca;
+                    var PicTgtSca = item.PicTgtSca;
+                    if (PicGrdSca == 0 )
+                        $("#CcnTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                            $("#CcnTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CcnTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    if (thn < 2020) {
+                        $("#trhdrPED").show();
+                        $("#trhdrISO").show();
+                        //----ISO
+                        $("#QuaGrdIso").text(formatNumber(item.PicGrdMus));
+                        $("#QuaTgtIso").text(formatNumber(item.PicTgtMus));
+                        $("#QuaActIso").text(formatNumber(item.PicActMus));
+                        $("#QuaAchIso").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#QuaScrIso").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicGrdMus == 0)
+                            $("#IsoTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor12 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor12 >= 0 && item.PicTgtMus > 0)
+                                $("#IsoTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#IsoTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----PED
+                        $("#QuaGrdPed").text(formatNumber(item.PicGrdInv));
+                        $("#QuaTgtPed").text(formatNumber(item.PicTgtInv));
+                        $("#QuaActPed").text(formatNumber(item.PicActInv));
+                        $("#QuaAchPed").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#QuaScrPed").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        var PicTgtInv = item.PicTgtInv;
+                        if (PicGrdInv == 0)
+                            $("#PedTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor13 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor13 >= 0 && item.PicTgtInv > 0)
+                                $("#PedTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PedTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    } else {
+                        $("#trhdrPED").hide();
+                        $("#trhdrISO").hide();
+                    }
+
+                    //----Labor cost
+                    $("#QuaGrdLab").text(formatNumber(item.PicGrdSaf));
+                    $("#QuaTgtLab").text(formatNumber(item.PicTgtSaf));
+                    //--TempGradeSaf = item.PicGrdSaf;
+                    //--TempTargetSaf = item.PicTgtSaf;                   
+                    $("#QuaActLab").text(formatNumber(item.PicActSaf));
+                    $("#QuaAchLab").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                    $("#QuaScrLab").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                    var PicGrdSaf = item.PicGrdSaf;
+                    var PicAchSaf = item.PicAchSaf;
+                    console.log(PicGrdSaf);
+                    if (PicGrdSaf == 0)
+                        $("#LabTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (PicAchSaf >= 100)
+                            $("#LabTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+
+                    
+                    if (userAu == "VST") 
+                        PicScrTot = item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrSaf;
+                    else 
+                        PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrSaf;
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
+
+                    $("#PicGrdTot").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
+
+                    /*--
+                    var kpiHRD = {
+                        id: thn,
+                        bln: iMonth,
+                        ch: 'D'
+                    }
+                    $.ajax({
+                        url: urlKPI + "/QualityDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+
+                               
+                                var MacActSaf = item.ibpActSafe;
+                                console.log('a' + MacActSaf);
+                                console.log(MacActSaf);
+                                $("#QuaActLab").text(formatNumber(item.ibpActSafe.toFixed(2)));
+                                $("#QuaAchLab").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#QuaScrLab").text(formatNumber(item.PicScrSaf.toFixed(2)));                                
+                                if (TempGradeSaf == 0)
+                                    $("#LabTitle").css({ "color": "black", "font-weight": "normal" });
+                                else {
+                                    if (item.PicAchSaf >= 100)
+                                        $("#LabTitle").css({ "color": "black", "font-weight": "bold" });
+                                    else $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                                }
+                                PicScrTot = PicScrTot + item.PicScrSaf;
+
+                                $("#PicGrdTot").text(formatNumber(item.TotGrade.toFixed(2)));
+                                $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+                    */
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    
+    }
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrSafMonth = 0;
+        PicScrSafSum = 0;
+        PicScrTotSum = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vQualityDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#QuaGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#QuaTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#QuaActRevMonth").text(formatNumber(item.PicActRev));
+                        $("#QuaAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#QuaScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+                    if (thn < 2020) {
+                        $("#trdtlPDA").show();
+                        $("#trdtlPDC").show();
+
+                        /*------------pda---------*/
+                        $("#QuaGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                        $("#QuaTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                        $("#QuaActPdaMonth").text(formatNumber(item.PicActPda));
+                        $("#QuaAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
+                        $("#QuaScrPdaMonth").text(formatNumber(item.PicScrPda.toFixed(2)));
+                        var PicGrdPda = item.PicGrdPda;
+                        var PicTgtPda = item.PicTgtPda;
+                        if (PicGrdPda == 0)
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                            if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                                $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        /*------------pdc---------*/
+                        $("#QuaGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                        $("#QuaTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                        $("#QuaActPdcMonth").text(formatNumber(item.PicActPdc));
+                        $("#QuaAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                        $("#QuaScrPdcMonth").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                        var PicGrdPdc = item.PicGrdPdc;
+                        var PicTgtPdc = item.PicTgtPdc;
+                        console.log(PicTgtPdc);
+                        if (PicGrdPdc == 0)
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                            if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                                $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trdtlPDA").hide();
+                        $("#trdtlPDC").hide();
+                    }
+                    //----Reject casting
+                    $("#QuaGrdCasMonth").text(formatNumber(item.PicGrdRjt));
+                    $("#QuaTgtCasMonth").text(formatNumber(item.PicTgtRjt));
+                    $("#QuaActCasMonth").text(formatNumber(item.PicActRjt));
+                    $("#QuaAchCasMonth").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#QuaScrCasMonth").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    var PicTgtRjt = item.PicTgtRjt;
+                    if (PicGrdRjt == 0 )
+                        $("#CasTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                            $("#CasTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CasTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Reject Machining
+                    $("#QuaGrdBadMonth").text(formatNumber(item.PicGrdAir));
+                    $("#QuaTgtBadMonth").text(formatNumber(item.PicTgtAir));
+                    $("#QuaActBadMonth").text(formatNumber(item.PicActAir));
+                    $("#QuaAchBadMonth").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#QuaScrBadMonth").text(formatNumber(item.PicScrAir.toFixed(2)));
+                    var PicGrdAir = item.PicGrdAir;
+                    var PicTgtAir = item.PicTgtAir;
+                    if (PicGrdAir == 0 )
+                        $("#BadTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                            $("#BadTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Tvb
+                    $("#QuaGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
+                    $("#QuaTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
+                    $("#QuaActTvbMonth").text(formatNumber(item.PicActTvb));
+                    $("#QuaAchTvbMonth").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#QuaScrTvbMonth").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    var PicTgtTvb = item.PicTgtTvb;
+                    if (PicGrdTvb == 0 )
+                        $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Dpp
+                    $("#QuaGrdDppMonth").text(formatNumber(item.PicGrdDpp));
+                    $("#QuaTgtDppMonth").text(formatNumber(item.PicTgtDpp));
+                    $("#QuaActDppMonth").text(formatNumber(item.PicActDpp));
+                    $("#QuaAchDppMonth").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#QuaScrDppMonth").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    var PicTgtDpp = item.PicTgtDpp;
+                    if (PicGrdDpp == 0 )
+                        $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Emerson
+                    $("#QuaGrdEmeMonth").text(formatNumber(item.PicGrdEme));
+                    $("#QuaTgtEmeMonth").text(formatNumber(item.PicTgtEme));
+                    $("#QuaActEmeMonth").text(formatNumber(item.PicActEme));
+                    $("#QuaAchEmeMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#QuaScrEmeMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    var PicTgtEme = item.PicTgtEme;
+                    if (PicGrdEme == 0 )
+                        $("#EmeTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                            $("#EmeTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#EmeTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Other
+                    $("#QuaGrdOthMonth").text(formatNumber(item.PicGrdOth));
+                    $("#QuaTgtOthMonth").text(formatNumber(item.PicTgtOth));
+                    $("#QuaActOthMonth").text(formatNumber(item.PicActOth));
+                    $("#QuaAchOthMonth").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#QuaScrOthMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
+                    var PicGrdOth = item.PicGrdOth;
+                    var PicTgtOth = item.PicTgtOth;
+                    if (PicGrdOth == 0 )
+                        $("#OthTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                            $("#OthTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Customer Complaint CN
+                    $("#QuaGrdCcnMonth").text(formatNumber(item.PicGrdSca));
+                    $("#QuaTgtCcnMonth").text(formatNumber(item.PicTgtSca));
+                    $("#QuaActCcnMonth").text(formatNumber(item.PicActSca));
+                    $("#QuaAchCcnMonth").text(formatNumber(item.PicAchSca.toFixed(2)));
+                    $("#QuaScrCcnMonth").text(formatNumber(item.PicScrSca.toFixed(2)));
+                    var PicGrdSca = item.PicGrdSca;
+                    var PicTgtSca = item.PicTgtSca;
+                    if (PicGrdSca == 0 )
+                        $("#CcnTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                            $("#CcnTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CcnTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    if (thn < 2020) {
+                        $("#trdtlPED").show();
+                        $("#trdtlISO").show();
+                        //----ISO
+                        $("#QuaGrdIsoMonth").text(formatNumber(item.PicGrdMus));
+                        $("#QuaTgtIsoMonth").text(formatNumber(item.PicTgtMus));
+                        $("#QuaActIsoMonth").text(formatNumber(item.PicActMus));
+                        $("#QuaAchIsoMonth").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#QuaScrIsoMonth").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        console.log(PicTgtMus);
+                        if (PicGrdMus == 0)
+                            $("#IsoTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor12 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor12 >= 0 && item.PicTgtMus > 0)
+                                $("#IsoTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#IsoTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----PED
+                        $("#QuaGrdPedMonth").text(formatNumber(item.PicGrdInv));
+                        $("#QuaTgtPedMonth").text(formatNumber(item.PicTgtInv));
+                        $("#QuaActPedMonth").text(formatNumber(item.PicActInv));
+                        $("#QuaAchPedMonth").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#QuaScrPedMonth").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        var PicTgtInv = item.PicTgtInv;
+                        if (PicGrdInv == 0)
+                            $("#PedTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor13 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor13 >= 0 && item.PicTgtInv > 0)
+                                $("#PedTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PedTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trdtlPED").hide();
+                        $("#trdtlISO").hide();
+                    }
+                    //----Labor cost
+                    $("#QuaGrdLabMonth").text(formatNumber(item.PicGrdSaf));
+                    $("#QuaTgtLabMonth").text(formatNumber(item.PicTgtSaf));
+                    $("#QuaActLabMonth").text(formatNumber(item.PicActSaf));
+                    $("#QuaAchLabMonth").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                    $("#QuaScrLabMonth").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                    var PicGrdSafMonth = item.PicGrdSaf;
+                    var PicAchSafMonth = item.PicAchSaf;
+                    console.log(PicGrdSafMonth);
+                    if (PicGrdSafMonth == 0)
+                        $("#LabTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (PicAchSafMonth >= 100)
+                            $("#LabTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    //--TempGradeSafMonth = item.PicGrdSaf;
+                    //--TempTargetSafMonth = item.PicTgtSaf;
+                    /*-
+                    if (userAu == "VST")
+                        PicScrTot = item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrSaf;
+                    else
+                        PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrSaf;
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTot.toFixed(2)));
+                    --*/
+
+                    $("#PicGrdTotMonth").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTotMonth").text(formatNumber(item.TotScore.toFixed(2)));
+
+
+
+                    /*--
+                    var kpiHRD = {
+                        id: thn,
+                        bln: bln,
+                        ch: "M"
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/QualityDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+
+                                $("#QuaActLabMonth").text(formatNumber(item.ibpActSafe.toFixed(2)));
+                                $("#QuaAchLabMonth").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#QuaScrLabMonth").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                console.log(item.ibpActSafe);
+                                if (TempGradeSafMonth == 0)
+                                    $("#LabTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                                else {
+                                    if (item.PicAchSaf >= 100)
+                                        $("#LabTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                    else $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                }
+
+                                $("#PicGrdTotMonth").text(formatNumber(item.TotGradeMonth.toFixed(2)));
+                                $("#PicScrTotMonth").text(formatNumber(item.TotScoreMonth.toFixed(2)));
+
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+                    --*/
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+      
+        /*-----------------------  yearly  ----------------------------*/
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "Y"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vQualityDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#QuaGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#QuaTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#QuaActRevSum").text(formatNumber(item.PicActRev));
+                        $("#QuaAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#QuaScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        var PicTgtRev = item.PicTgtRev;
+                        console.log(PicGrdRev);
+                        if (PicGrdRev == 0)
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+                    if (thn < 2020) {
+                        $("#trsubdtlPDA").show();
+                        $("#trsubdtlPDC").show();
+                        /*------------pda---------*/
+                        $("#QuaGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                        $("#QuaTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                        $("#QuaActPdaSum").text(formatNumber(item.PicActPda));
+                        $("#QuaAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
+                        $("#QuaScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
+                        var PicGrdPda = item.PicGrdPda;
+                        var PicTgtPda = item.PicTgtPda;
+                        if (PicGrdPda == 0)
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                            if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                                $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        /*------------pdc---------*/
+                        $("#QuaGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                        $("#QuaTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                        $("#QuaActPdcSum").text(formatNumber(item.PicActPdc));
+                        $("#QuaAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                        $("#QuaScrPdcSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                        var PicGrdPdc = item.PicGrdPdc;
+                        var PicTgtPdc = item.PicTgtPdc;
+                        if (PicGrdPdc == 0)
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                            if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                                $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    } else {
+                        $("#trsubdtlPDA").hide();
+                        $("#trsubdtlPDC").hide();
+                    }
+                    //----Reject casting
+                    $("#QuaGrdCasSum").text(formatNumber(item.PicGrdRjt));
+                    $("#QuaTgtCasSum").text(formatNumber(item.PicTgtRjt));
+                    $("#QuaActCasSum").text(formatNumber(item.PicActRjt));
+                    $("#QuaAchCasSum").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#QuaScrCasSum").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    var PicTgtRjt = item.PicTgtRjt;
+                    if (PicGrdRjt == 0 )
+                        $("#CasTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                            $("#CasTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CasTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    //----Reject Machining
+                    $("#QuaGrdBadSum").text(formatNumber(item.PicGrdAir));
+                    $("#QuaTgtBadSum").text(formatNumber(item.PicTgtAir));
+                    $("#QuaActBadSum").text(formatNumber(item.PicActAir));
+                    $("#QuaAchBadSum").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#QuaScrBadSum").text(formatNumber(item.PicScrAir.toFixed(2)));
+                    var PicGrdAir = item.PicGrdAir;
+                    var PicTgtAir = item.PicTgtAir;
+                    if (PicGrdAir == 0 )
+                        $("#BadTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                            $("#BadTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Tvb
+                    $("#QuaGrdTvbSum").text(formatNumber(item.PicGrdTvb));
+                    $("#QuaTgtTvbSum").text(formatNumber(item.PicTgtTvb));
+                    $("#QuaActTvbSum").text(formatNumber(item.PicActTvb));
+                    $("#QuaAchTvbSum").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#QuaScrTvbSum").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    var PicTgtTvb = item.PicTgtTvb;
+                    if (PicGrdTvb == 0 )
+                        $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Dpp
+                    $("#QuaGrdDppSum").text(formatNumber(item.PicGrdDpp));
+                    $("#QuaTgtDppSum").text(formatNumber(item.PicTgtDpp));
+                    $("#QuaActDppSum").text(formatNumber(item.PicActDpp));
+                    $("#QuaAchDppSum").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#QuaScrDppSum").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    var PicTgtDpp = item.PicTgtDpp;
+                    if (PicGrdDpp == 0 )
+                        $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                            $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Emerson
+                    $("#QuaGrdEmeSum").text(formatNumber(item.PicGrdEme));
+                    $("#QuaTgtEmeSum").text(formatNumber(item.PicTgtEme));
+                    $("#QuaActEmeSum").text(formatNumber(item.PicActEme));
+                    $("#QuaAchEmeSum").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#QuaScrEmeSum").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    var PicTgtEme = item.PicTgtEme;
+                    if (PicGrdEme == 0 )
+                        $("#EmeTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                            $("#EmeTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#EmeTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Other
+                    $("#QuaGrdOthSum").text(formatNumber(item.PicGrdOth));
+                    $("#QuaTgtOthSum").text(formatNumber(item.PicTgtOth));
+                    $("#QuaActOthSum").text(formatNumber(item.PicActOth));
+                    $("#QuaAchOthSum").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#QuaScrOthSum").text(formatNumber(item.PicScrOth));
+                    var PicGrdOth = item.PicGrdOth;
+                    var PicTgtOth = item.PicTgtOth;
+                    if (PicGrdOth == 0 )
+                        $("#OthTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                            $("#OthTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#OthTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Customer Complaint CN
+                    $("#QuaGrdCcnSum").text(formatNumber(item.PicGrdSca));
+                    $("#QuaTgtCcnSum").text(formatNumber(item.PicTgtSca));
+                    $("#QuaActCcnSum").text(formatNumber(item.PicActSca));
+                    $("#QuaAchCcnSum").text(formatNumber(item.PicAchSca.toFixed(2)));
+                    $("#QuaScrCcnSum").text(formatNumber(item.PicScrSca.toFixed(2)));
+                    var PicGrdSca = item.PicGrdSca;
+                    var PicTgtSca = item.PicTgtSca;
+                    if (PicGrdSca == 0 )
+                        $("#CcnTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                            $("#CcnTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#CcnTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trsubdtlPED").show();
+                        $("#trsubdtlISO").show();
+                        //----ISO
+                        $("#QuaGrdIsoSum").text(formatNumber(item.PicGrdMus));
+                        $("#QuaTgtIsoSum").text(formatNumber(item.PicTgtMus));
+                        $("#QuaActIsoSum").text(formatNumber(item.PicActMus));
+                        $("#QuaAchIsoSum").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#QuaScrIsoSum").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicGrdMus == 0)
+                            $("#IsoTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor22 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor22 >= 0 && item.PicTgtMus > 0)
+                                $("#IsoTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#IsoTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----PED
+                        $("#QuaGrdPedSum").text(formatNumber(item.PicGrdInv));
+                        $("#QuaTgtPedSum").text(formatNumber(item.PicTgtInv));
+                        $("#QuaActPedSum").text(formatNumber(item.PicActInv));
+                        $("#QuaAchPedSum").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#QuaScrPedSum").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        var PicTgtInv = item.PicTgtInv;
+                        if (PicGrdInv == 0)
+                            $("#PedTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor23 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor23 >= 0 && item.PicTgtInv > 0)
+                                $("#PedTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PedTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trsubdtlPED").hide();
+                        $("#trsubdtlISO").hide();
+                    }
+                    //----Labor cost
+                    $("#QuaGrdLabSum").text(formatNumber(item.PicGrdSaf));
+                    $("#QuaTgtLabSum").text(formatNumber(item.PicTgtSaf));
+                    $("#QuaActLabSum").text(formatNumber(item.PicActSaf));
+                    $("#QuaAchLabSum").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                    $("#QuaScrLabSum").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                    var PicGrdSafSum = item.PicGrdSaf;
+                    var PicAchSafSum = item.PicAchSaf;
+                    console.log(PicGrdSafSum);
+                    if (PicGrdSafSum == 0)
+                        $("#LabTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        if (PicAchSafSum >= 100)
+                            $("#LabTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //--TempGradeSafSum   = item.PicGrdSaf;
+                    //--TempTargetSafSum  = item.PicTgtSaf;
+
+                    //--PicScrTotSum = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrLab;
+
+                    $("#PicGrdTotSum").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTotSum").text(formatNumber(item.TotScore.toFixed(2)));
+
+                    /*--
+                    var kpiHRD = {
+                        id: thn,
+                        bln: bln,
+                        ch: "Y"
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/QualityDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                $("#QuaActLabSum").text(formatNumber(item.ibpActSafe.toFixed(2)));
+                                $("#QuaAchLabSum").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#QuaScrLabSum").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                console.log(item.ibpActSafe);
+                                if (TempGradeSafSum == 0)
+                                    $("#LabTitleSum").css({ "color": "black", "font-weight": "normal" });
+                                else {
+                                    if (item.PicAchSaf >= 100)
+                                        $("#LabTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                    else $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                }
+                                $("#PicGrdTotSum").text(formatNumber(item.TotGradeSum.toFixed(2)));
+                                $("#PicScrTotSum").text(formatNumber(item.TotScoreSum.toFixed(2)));
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+                    ---*/
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    
+
+    }
+
+</script>
+

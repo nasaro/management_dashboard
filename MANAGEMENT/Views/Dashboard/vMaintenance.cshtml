@@ -1,0 +1,830 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>MAINTENANCE</b></a></th>
+                        <td><span id="PdaTitle">Production Output PDA</span></td>
+                        <td><span id="MtnGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle">Production Output PDB+PDC</span></td>
+                        <td><span id="MtnGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="ReqTitle">Total Request of CM</span></td>
+                        <td><span id="MtnGrdReq" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtReq" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActReq" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchReq" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrReq" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PreTitle">Preventive Maintenance Accomplishment</span></td>
+                        <td><span id="MtnGrdPre" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPre" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPre" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPre" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPre" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitle">Total Hour Machine Downtime</span></td>
+                        <td><span id="MtnGrdTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchTvb" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrTvb" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitle">Maintenance Cost Control Spareparts</span></td>
+                        <td><span id="MtnGrdDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchDpp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrDpp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>MAINTENANCE</b></a></th>
+                        <td><span id="PdaTitleMonth">Production Output PDA</span></td>
+                        <td><span id="MtnGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth">Production Output PDB+PDC</span></td>
+                        <td><span id="MtnGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="ReqTitleMonth">Total Request of CM</span></td>
+                        <td><span id="MtnGrdReqMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtReqMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActReqMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchReqMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrReqMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PreTitleMonth">Preventive Maintenance Accomplishment</span></td>
+                        <td><span id="MtnGrdPreMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPreMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPreMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPreMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPreMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleMonth">Total Hour Machine Downtime</span></td>
+                        <td><span id="MtnGrdTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchTvbMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrTvbMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleMonth">Maintenance Cost Control Spareparts</span></td>
+                        <td><span id="MtnGrdDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchDppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrDppMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><b>MAINTENANCE</b></th>
+                        <td><span id="PdaTitleSum">Production Output PDA</span></td>
+                        <td><span id="MtnGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum">Production Output PDB+PDC</span></td>
+                        <td><span id="MtnGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span id="ReqTitleSum">Total Request of CM</span></td>
+                        <td><span id="MtnGrdReqSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtReqSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActReqSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchReqSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrReqSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PreTitleSum">Preventive Maintenance Accomplishment</span></td>
+                        <td><span id="MtnGrdPreSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtPreSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActPreSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchPreSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrPreSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TvbTitleSum">Total Hour Machine Downtime</span></td>
+                        <td><span id="MtnGrdTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchTvbSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrTvbSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DppTitleSum">Maintenance Cost Control Spareparts</span></td>
+                        <td><span id="MtnGrdDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnTgtDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnActDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnAchDppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MtnScrDppSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function getView(thn) {
+
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vMaintenanceDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    /*------------pda---------*/
+                    $("#MtnGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#MtnTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#MtnActPda").text(formatNumber(item.PicActPda));
+                    $("#MtnAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#MtnScrPda").text(formatNumber(item.PicScrPda));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pdc---------*/
+                    $("#MtnGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#MtnTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#MtnActPdc").text(formatNumber(item.PicActPdc));
+                    $("#MtnAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#MtnScrPdc").text(formatNumber(item.PicScrPdc));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0 )
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----total request CM
+                    $("#MtnGrdReq").text(formatNumber(item.PicGrdRjt));
+                    $("#MtnTgtReq").text(formatNumber(item.PicTgtRjt));
+                    $("#MtnActReq").text(formatNumber(item.PicActRjt));
+                    $("#MtnAchReq").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#MtnScrReq").text(formatNumber(item.PicScrRjt));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    if (PicGrdRjt == 0)
+                        $("#ReqTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0 )
+                            $("#ReqTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ReqTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //---- Preventive Maintenance Accomplishment--
+                    $("#MtnGrdPre").text(formatNumber(item.PicGrdAir));
+                    $("#MtnTgtPre").text(formatNumber(item.PicTgtAir));
+                    $("#MtnActPre").text(formatNumber(item.PicActAir));
+                    $("#MtnAchPre").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#MtnScrPre").text(formatNumber(item.PicScrAir));
+                    var PicGrdAir = item.PicGrdAir;
+                    if (PicGrdAir == 0)
+                        $("#PreTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0 )
+                            $("#PreTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PreTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Tvb
+                    $("#MtnGrdTvb").text(formatNumber(item.PicGrdTvb));
+                    $("#MtnTgtTvb").text(formatNumber(item.PicTgtTvb));
+                    $("#MtnActTvb").text(formatNumber(item.PicActTvb));
+                    $("#MtnAchTvb").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#MtnScrTvb").text(formatNumber(item.PicScrTvb));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                            $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Dpp
+                    $("#MtnGrdDpp").text(formatNumber(item.PicGrdDpp));
+                    $("#MtnTgtDpp").text(formatNumber(item.PicTgtDpp));
+                    $("#MtnActDpp").text(formatNumber(item.PicActDpp));
+                    $("#MtnAchDpp").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#MtnScrDpp").text(formatNumber(item.PicScrDpp));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0 )
+                            $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    var PicScrTot =  item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp ;
+                    var PicGrdTot = item.PicGrdPda + item.PicGrdPdc + item.PicGrdRjt + item.PicGrdAir + item.PicGrdTvb + item.PicGrdDpp;
+
+
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber(PicGrdTot.toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+      
+    }
+
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrSafSum = 0;
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vMaintenanceDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    /*------------pda---------*/
+                    $("#MtnGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#MtnTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#MtnActPdaMonth").text(formatNumber(item.PicActPda));
+                    $("#MtnAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#MtnScrPdaMonth").text(formatNumber(item.PicScrPda));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pdc---------*/
+                    $("#MtnGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#MtnTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#MtnActPdcMonth").text(formatNumber(item.PicActPdc));
+                    $("#MtnAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#MtnScrPdcMonth").text(formatNumber(item.PicScrPdc));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0 )
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Total Request of CM
+                    $("#MtnGrdReqMonth").text(formatNumber(item.PicGrdRjt));
+                    $("#MtnTgtReqMonth").text(formatNumber(item.PicTgtRjt));
+                    $("#MtnActReqMonth").text(formatNumber(item.PicActRjt));
+                    $("#MtnAchReqMonth").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#MtnScrReqMonth").text(formatNumber(item.PicScrRjt));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    if (PicGrdRjt == 0)
+                        $("#ReqTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0)
+                            $("#ReqTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ReqTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Preventive Maintenance Accomplishment
+                    $("#MtnGrdPreMonth").text(formatNumber(item.PicGrdAir));
+                    $("#MtnTgtPreMonth").text(formatNumber(item.PicTgtAir));
+                    $("#MtnActPreMonth").text(formatNumber(item.PicActAir));
+                    $("#MtnAchPreMonth").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#MtnScrPreMonth").text(formatNumber(item.PicScrAir));
+                    var PicGrdAir = item.PicGrdAir;
+                    if (PicGrdAir == 0)
+                        $("#PreTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0 )
+                            $("#PreTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PreTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Total Hour Machine Downtime
+                    $("#MtnGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
+                    $("#MtnTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
+                    $("#MtnActTvbMonth").text(formatNumber(item.PicActTvb));
+                    $("#MtnAchTvbMonth").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#MtnScrTvbMonth").text(formatNumber(item.PicScrTvb));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 )
+                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Maintenance Cost Control Spareparts
+                    $("#MtnGrdDppMonth").text(formatNumber(item.PicGrdDpp));
+                    $("#MtnTgtDppMonth").text(formatNumber(item.PicTgtDpp));
+                    $("#MtnActDppMonth").text(formatNumber(item.PicActDpp));
+                    $("#MtnAchDppMonth").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#MtnScrDppMonth").text(formatNumber(item.PicScrDpp));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0 )
+                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    var PicScrTotMonth = item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp;
+                    var PicGrdTotMonth = item.PicGrdPda + item.PicGrdPdc + item.PicGrdRjt + item.PicGrdAir + item.PicGrdTvb + item.PicGrdDpp;
+
+
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                    $("#PicGrdTotMonth").text(formatNumber(PicGrdTotMonth.toFixed(2)));
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+     
+        /*-----------------------  yearly  ----------------------------*/
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "Y"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vMaintenanceDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    /*------------pda---------*/
+                    $("#MtnGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#MtnTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#MtnActPdaSum").text(formatNumber(item.PicActPda));
+                    $("#MtnAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#MtnScrPdaSum").text(formatNumber(item.PicScrPda));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pdc---------*/
+                    $("#MtnGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#MtnTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#MtnActPdcSum").text(formatNumber(item.PicActPdc));
+                    $("#MtnAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#MtnScrPdcSum").text(formatNumber(item.PicScrPdc));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0)
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Total Request of CM
+                    $("#MtnGrdReqSum").text(formatNumber(item.PicGrdRjt));
+                    $("#MtnTgtReqSum").text(formatNumber(item.PicTgtRjt));
+                    $("#MtnActReqSum").text(formatNumber(item.PicActRjt));
+                    $("#MtnAchReqSum").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                    $("#MtnScrReqSum").text(formatNumber(item.PicScrRjt));
+                    var PicGrdRjt = item.PicGrdRjt;
+                    if (PicGrdRjt == 0)
+                        $("#ReqTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                        if (newcolor3 >= 0)
+                            $("#ReqTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ReqTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Preventive Maintenance Accomplishment
+                    $("#MtnGrdPreSum").text(formatNumber(item.PicGrdAir));
+                    $("#MtnTgtPreSum").text(formatNumber(item.PicTgtAir));
+                    $("#MtnActPreSum").text(formatNumber(item.PicActAir));
+                    $("#MtnAchPreSum").text(formatNumber(item.PicAchAir.toFixed(2)));
+                    $("#MtnScrPreSum").text(formatNumber(item.PicScrAir));
+                    var PicGrdAir = item.PicGrdAir;
+                    if (PicGrdAir == 0)
+                        $("#PreTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                        if (newcolor4 >= 0)
+                            $("#PreTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PreTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Total Hour Machine Downtime
+                    $("#MtnGrdTvbSum").text(formatNumber(item.PicGrdTvb));
+                    $("#MtnTgtTvbSum").text(formatNumber(item.PicTgtTvb));
+                    $("#MtnActTvbSum").text(formatNumber(item.PicActTvb));
+                    $("#MtnAchTvbSum").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#MtnScrTvbSum").text(formatNumber(item.PicScrTvb));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0)
+                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Maintenance Cost Control Spareparts
+                    $("#MtnGrdDppSum").text(formatNumber(item.PicGrdDpp));
+                    $("#MtnTgtDppSum").text(formatNumber(item.PicTgtDpp));
+                    $("#MtnActDppSum").text(formatNumber(item.PicActDpp));
+                    $("#MtnAchDppSum").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#MtnScrDppSum").text(formatNumber(item.PicScrDpp));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0)
+                            $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    var PicScrTotSum = item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp;
+                    var PicGrdTotSum = item.PicGrdPda + item.PicGrdPdc + item.PicGrdRjt + item.PicGrdAir + item.PicGrdTvb + item.PicGrdDpp;
+
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                    $("#PicGrdTotSum").text(formatNumber(PicGrdTotSum.toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+
+</script>
+

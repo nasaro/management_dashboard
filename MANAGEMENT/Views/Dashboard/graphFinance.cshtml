@@ -1,0 +1,780 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                @*@if (Session["UserYear"] != null)
+                {
+                    var tahun = Session["UserYear"];
+                    <input type="hidden" class="form-control" id="thn" placeholder="YYYY" value=@tahun />
+                }*@ 
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div id="panRev" class="panel panel-primary">
+                    <div class="panel-heading" id="accordionOne">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Revenue ( In Million )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                            </a>                           
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionOne" href="#collapseOne">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseOne">
+                        <div class="panel-body">
+                            <div id="barRevenue">
+                                <canvas id="chartRevenue" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionTwo">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Production Output Casting ( In Thousand )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionTwo" href="#collapseTwo">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseTwo">
+                        <div class="panel-body">
+                            <div id="bar2Revenue">
+                                <canvas id="chartProdCast" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionThree">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Production Output Machining ( In Million )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionThree" href="#collapseThree">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseThree">
+                        <div class="panel-body">
+                            <div id="barMachine">
+                                <canvas id="chartProdMach" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFour">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Surplus CashFlow ( In Million )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFour" href="#collapseFour">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFour">
+                        <div class="panel-body">
+                            <div id="barSurplus">
+                                <canvas id="chartCashFlow" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFiveOne">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Cost Reduction Casting ( In Million )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFiveOne" href="#collapseFiveOne">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFiveOne">
+                        <div class="panel-body">
+                            <div id="barCostCast">
+                                <canvas id="chartCostCast" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFiveTwo">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Cost Reduction Machining ( In Thousand )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFiveTwo" href="#collapseFiveTwo">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFiveTwo">
+                        <div class="panel-body">
+                            <div id="barCostMach">
+                                <canvas id="chartCostMach" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <!-- /.col (LEFT) -->
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordionFiveThree">
+                        <span class="glyphicon glyphicon-stats"></span> Bar Chart Cost Reduction Purchasing ( In Thousand )
+                        <div class="btn-group pull-right">
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Main Menu.!" href="javascript:void(0)" onclick="location.href='@Url.Action("index", "Dashboard")'"><span class="glyphicon glyphicon-th-list"></span></a>
+                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionFiveThree" href="#collapseFiveThree">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="collapseFiveThree">
+                        <div class="panel-body">
+                            <div id="barCostPurc">
+                                <canvas id="chartCostPurc" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var dataR = [];
+    var dataP = [];
+    var dataC = [];
+    var dataB = [];
+    var dataM = [];
+    var dataN = [];
+    var dataL = [];
+    var dataK = [];
+    var dataTCast = [];
+    var dataDCast = [];
+    var dataTMach = [];
+    var dataDMach = [];
+    var dataTPurc = [];
+    var dataDPurc = [];
+    var iYear;
+    $(document).ready(function () {
+        iYear = $.session.get("UserYear");
+        var userAu = $('#authorid').val();
+        if (userAu != "VST") 
+            showRevenue(iYear);           
+         else
+            $('#panRev').hide();
+        showCasting(iYear);
+        showMachining(iYear);
+        showCashFlow(iYear);
+        showCostRedCast(iYear);
+        showCostRedMach(iYear);
+        showCostRedPurc(iYear);
+    });
+
+    function showRevenue(thn) {
+        var chc = 1;
+        $.getJSON(urlKPI + "/GraphTgtMilliun/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataR = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphRevenueAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataP = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataRev = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Revenue',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataP,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataR,
+                      }
+                    ]
+                }
+
+                var barChartCanvasRev = $('#chartRevenue').get(0).getContext('2d');
+                var barChartRev = new Chart(barChartCanvasRev)
+                var barChartDataRev = areaChartDataRev
+                barChartDataRev.datasets[0].fillColor = '#00a65a'
+                barChartDataRev.datasets[0].strokeColor = '#00a65a'
+                barChartDataRev.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsRev = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsRev.datasetFill = true
+
+                var barChartRev = new Chart(barChartCanvasRev, {
+                    type: 'bar',
+                    data: barChartDataRev,
+                    options: barChartOptionsRev
+                });
+
+            });
+        });
+    }
+
+    function showCasting(thn) {
+        var chc = 2;
+        $.getJSON(urlKPI + "/GraphTgtThousand/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataC = json.map(function (e) {
+                    return parseFloat(e.amount);
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphProdCastAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataB = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataCast = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Prod Out Casting',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataB,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataC,
+                      }
+                    ]
+                }
+
+                var barChartCanvasCast = $('#chartProdCast').get(0).getContext('2d');
+                var barChartCast = new Chart(barChartCanvasCast)
+                var barChartDataCast = areaChartDataCast
+                barChartDataCast.datasets[0].fillColor = '#00a65a'
+                barChartDataCast.datasets[0].strokeColor = '#00a65a'
+                barChartDataCast.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsCast = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsCast.datasetFill = true
+
+                var barChartCast = new Chart(barChartCanvasCast, {
+                    type: 'bar',
+                    data: barChartDataCast,
+                    options: barChartOptionsCast
+                });
+
+            });
+        });
+    }
+
+    function showMachining(thn) {
+        var chc = 3;
+        $.getJSON(urlKPI + "/GraphTgtMilliun/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataM = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphProdMachAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataN = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataMach = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Prod Out Machining',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataN,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataM,
+                      }
+                    ]
+                }
+
+                var barChartCanvasMach = $('#chartProdMach').get(0).getContext('2d');
+                var barChartMach = new Chart(barChartCanvasMach)
+                var barChartDataMach = areaChartDataMach
+                barChartDataMach.datasets[0].fillColor = '#00a65a'
+                barChartDataMach.datasets[0].strokeColor = '#00a65a'
+                barChartDataMach.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsMach = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsMach.datasetFill = true
+
+                var barChartMach = new Chart(barChartCanvasMach, {
+                    type: 'bar',
+                    data: barChartDataMach,
+                    options: barChartOptionsMach
+                });
+
+            });
+        });
+    }
+
+    function showCashFlow(thn) {
+        var chc = 4;
+        $.getJSON(urlKPI + "/GraphTgtMilliun/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataL = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphCashflowAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataK = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataCash = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Surplus CashFlow',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataK,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataL,
+                      }
+                    ]
+                }
+
+                var barChartCanvasCash = $('#chartCashFlow').get(0).getContext('2d');
+                var barChartCash = new Chart(barChartCanvasCash)
+                var barChartDataCash = areaChartDataCash
+                barChartDataCash.datasets[0].fillColor = '#00a65a'
+                barChartDataCash.datasets[0].strokeColor = '#00a65a'
+                barChartDataCash.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsCash = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsCash.datasetFill = true
+
+                var barChartCash = new Chart(barChartCanvasCash, {
+                    type: 'bar',
+                    data: barChartDataCash,
+                    options: barChartOptionsCash
+                });
+
+            });
+        });
+    }
+
+    function showCostRedCast(thn) {
+        var chc = 51;
+        $.getJSON(urlKPI + "/GraphTgtMilliun/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataTCast = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphCostRedCastAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataDCast = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataCostCast = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Cost Reduction Casting',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataDCast,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataTCast,
+                      }
+                    ]
+                }
+
+                var barChartCanvasCostCast = $('#chartCostCast').get(0).getContext('2d');
+                var barChartCostCast = new Chart(barChartCanvasCostCast)
+                var barChartDataCostCast = areaChartDataCostCast
+                barChartDataCostCast.datasets[0].fillColor = '#00a65a'
+                barChartDataCostCast.datasets[0].strokeColor = '#00a65a'
+                barChartDataCostCast.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsCostCast = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsCostCast.datasetFill = true
+
+                var barChartCostCast = new Chart(barChartCanvasCostCast, {
+                    type: 'bar',
+                    data: barChartDataCostCast,
+                    options: barChartOptionsCostCast
+                });
+
+            });
+        });
+    }
+
+    function showCostRedMach(thn) {
+        var chc = 52;
+        $.getJSON(urlKPI + "/GraphTgtThousand/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataTMach = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphCostRedMachAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataDMach = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataCostMach = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Cost Reduction Machining',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataDMach,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataTMach,
+                      }
+                    ]
+                }
+
+                var barChartCanvasCostMach = $('#chartCostMach').get(0).getContext('2d');
+                var barChartCostMach = new Chart(barChartCanvasCostMach)
+                var barChartDataCostMach = areaChartDataCostMach
+                barChartDataCostMach.datasets[0].fillColor = '#00a65a'
+                barChartDataCostMach.datasets[0].strokeColor = '#00a65a'
+                barChartDataCostMach.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsCostMach = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsCostMach.datasetFill = true
+
+                var barChartCostMach = new Chart(barChartCanvasCostMach, {
+                    type: 'bar',
+                    data: barChartDataCostMach,
+                    options: barChartOptionsCostMach
+                });
+
+            });
+        });
+    }
+
+    function showCostRedPurc(thn) {
+        var chc = 53;
+        $.getJSON(urlKPI + "/GraphTgtThousand/", { year: thn, chc },
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataTPurc = json.map(function (e) {
+                    return e.amount;
+                });
+            }
+
+            $.getJSON(urlKPI + "/GraphCostRedPurcAct/", { year: thn },
+            function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    dataDPurc = json.map(function (e) {
+                        return e.amount;
+                    });
+
+                }
+
+                var areaChartDataCostPurc = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                      {
+                          label: 'Cost Reduction Purchasing',
+                          backgroundColor: "blue",
+                          borderColor: "lightblue",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataDPurc,
+                      },
+
+                      {
+                          label: 'Target',
+                          backgroundColor: "red",
+                          borderColor: "red",
+                          fill: false,
+                          lineTension: 0,
+                          data: dataTPurc,
+                      }
+                    ]
+                }
+
+                var barChartCanvasCostPurc = $('#chartCostPurc').get(0).getContext('2d');
+                var barChartCostPurc = new Chart(barChartCanvasCostPurc)
+                var barChartDataCostPurc = areaChartDataCostPurc
+                barChartDataCostPurc.datasets[0].fillColor = '#00a65a'
+                barChartDataCostPurc.datasets[0].strokeColor = '#00a65a'
+                barChartDataCostPurc.datasets[0].pointColor = '#00a65a'
+                var barChartOptionsCostPurc = {
+                    scaleLabel: "<%= formatNumber(value)  %>",
+                    scaleBeginAtZero: true,
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: 'rgba(0,0,0,.05)',
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    barShowStroke: true,
+                    barStrokeWidth: 2,
+                    barValueSpacing: 5,
+                    barDatasetSpacing: 1,
+                    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+
+                barChartOptionsCostPurc.datasetFill = true
+
+                var barChartCostPurc = new Chart(barChartCanvasCostPurc, {
+                    type: 'bar',
+                    data: barChartDataCostPurc,
+                    options: barChartOptionsCostPurc
+                });
+
+            });
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+</script>

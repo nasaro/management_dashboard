@@ -1,0 +1,1355 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="13" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>INDUSTRIAL ENGINEERING</b></a></th>
+                        <td><span id="RevTitle">Revenue</span></td>
+                        <td><span id="EngGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitle">Production Output PDA</span></td>
+                        <td><span id="EngGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle">Production Output PDB+PDC</span></td>
+                        <td><span id="EngGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trheadRjCt">
+                        <td><span id="CasTitle">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="EngGrdCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchCas" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrCas" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trheadRjMc">
+                        <td><span id="BadTitle">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="EngGrdBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrBad" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="YieTitle">Yield % - Average</span></td>
+                        <td><span id="EngGrdYie" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtYie" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActYie" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchYie" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrYie" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SubTitle">New Product Submission</span></td>
+                        <td><span id="EngGrdSub" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtSub" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActSub" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchSub" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrSub" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AppTitle">Sample Approval Success Rate</span></td>
+                        <td><span id="EngGrdApp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtApp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActApp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchApp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrApp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="GatTitle">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
+                        <td><span id="EngGrdGat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtGat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActGat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchGat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrGat" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trheadCe">
+                        <td><span id="PumTitle">New Product - ZENPUMP+ Centrifugal 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdPum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trheadLoop">
+                        <td><span id="LopTitle">New Product - ZENPUMP+ Loop 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdLop" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtLop" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActLop" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchLop" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrLop" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trheadAct">
+                        <td><span id="AtuTitle">New Product - ZENGATE+ c/w Actuator 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdAtu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtAtu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActAtu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchAtu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrAtu" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="13" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>INDUSTRIAL ENGINEERING</b></a></th>
+                        <td><span id="RevTitleMonth">Revenue</span></td>
+                        <td><span id="EngGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleMonth">Production Output PDA</span></td>
+                        <td><span id="EngGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth">Production Output PDB+PDC</span></td>
+                        <td><span id="EngGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trdtlRjCt">
+                        <td><span id="CasTitleMonth">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="EngGrdCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchCasMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrCasMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlRjMc">
+                        <td><span id="BadTitleMonth">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="EngGrdBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrBadMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="YieTitleMonth">Yield % - Average</span></td>
+                        <td><span id="EngGrdYieMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtYieMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActYieMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchYieMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrYieMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SubTitleMonth">New Product Submission</span></td>
+                        <td><span id="EngGrdSubMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtSubMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActSubMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchSubMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrSubMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AppTitleMonth">Sample Approval Success Rate</span></td>
+                        <td><span id="EngGrdAppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtAppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActAppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchAppMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrAppMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="GatTitleMonth">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
+                        <td><span id="EngGrdGatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtGatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActGatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchGatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrGatMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlCe">
+                        <td><span id="PumTitleMonth">New Product - ZENPUMP+ Centrifugal 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdPumMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPumMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPumMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPumMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPumMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlLoop">
+                        <td><span id="LopTitleMonth">New Product - ZENPUMP+ Loop 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdLopMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtLopMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActLopMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchLopMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrLopMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtlAct">
+                        <td><span id="AtuTitleMonth">New Product - ZENGATE+ c/w Actuator 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdAtuMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtAtuMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActAtuMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchAtuMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrAtuMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="13" class="text-center"><b>INDUSTRIAL ENGINEERING</b></th>
+                        <td><span id="RevTitleSum">Revenue</span></td>
+                        <td><span id="EngGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleSum">Production Output PDA</span></td>
+                        <td><span id="EngGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum">Production Output PDB+PDC</span></td>
+                        <td><span id="EngGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trsubdtlRjCt">
+                        <td><span id="CasTitleSum">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="EngGrdCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchCasSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrCasSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlRjMc">
+                        <td><span id="BadTitleSum">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="EngGrdBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrBadSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="YieTitleSum">Yield % - Average</span></td>
+                        <td><span id="EngGrdYieSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtYieSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActYieSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchYieSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrYieSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SubTitleSum">New Product Submission</span></td>
+                        <td><span id="EngGrdSubSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtSubSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActSubSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchSubSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrSubSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AppTitleSum">Sample Approval Success Rate</span></td>
+                        <td><span id="EngGrdAppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtAppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActAppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchAppSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrAppSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="GatTitleSum">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
+                        <td><span id="EngGrdGatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtGatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActGatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchGatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrGatSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlCe">
+                        <td><span id="PumTitleSum">New Product - ZENPUMP+ Centrifugal 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdPumSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtPumSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActPumSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchPumSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrPumSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlLoop">
+                        <td><span id="LopTitleSum">New Product - ZENPUMP+ Loop 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdLopSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtLopSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActLopSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchLopSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrLopSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtlAct">
+                        <td><span id="AtuTitleSum">New Product - ZENGATE+ c/w Actuator 1-1.5",2"&2.5"</span></td>
+                        <td><span id="EngGrdAtuSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngTgtAtuSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngActAtuSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngAchAtuSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="EngScrAtuSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum, PicScrTotSumHRD  = 0;
+    var PicScrSaf = 0
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function getView(thn) {
+        PicScrTot = 0;
+        PicScrSaf = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vEngineeringDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#EngGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#EngTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#EngActRev").text(formatNumber(item.PicActRev));
+                        $("#EngAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#EngScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    }
+                    /*------------pda---------*/
+                    $("#EngGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#EngTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#EngActPda").text(formatNumber(item.PicActPda));
+                    $("#EngAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#EngScrPda").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0)
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    /*------------pdc---------*/
+                    $("#EngGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#EngTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#EngActPdc").text(formatNumber(item.PicActPdc));
+                    $("#EngAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#EngScrPdc").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0)
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                  
+                    if (thn < 2020) {
+                        $("#trheadRjCt").show();
+                        $("#trheadRjMc").show();
+                        //----Reject casting
+                        $("#EngGrdCas").text(formatNumber(item.PicGrdRjt));
+                        $("#EngTgtCas").text(formatNumber(item.PicTgtRjt));
+                        $("#EngActCas").text(formatNumber(item.PicActRjt));
+                        $("#EngAchCas").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#EngScrCas").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        console.log(PicGrdRjt);
+                        if (PicGrdRjt == 0)
+                            $("#CasTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor3 >= 0)
+                                $("#CasTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#CasTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----Reject Machining
+                        $("#EngGrdBad").text(formatNumber(item.PicGrdAir));
+                        $("#EngTgtBad").text(formatNumber(item.PicTgtAir));
+                        $("#EngActBad").text(formatNumber(item.PicActAir));
+                        $("#EngAchBad").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#EngScrBad").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        if (PicGrdAir == 0)
+                            $("#BadTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor4 >= 0)
+                                $("#BadTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    } else {
+                        $("#trheadRjCt").hide();
+                        $("#trheadRjMc").hide();
+                    }
+                     
+
+                    //----Yield
+                    $("#EngGrdYie").text(formatNumber(item.PicGrdTvb));
+                    $("#EngTgtYie").text(formatNumber(item.PicTgtTvb));
+                    $("#EngActYie").text(formatNumber(item.PicActTvb));
+                    $("#EngAchYie").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#EngScrYie").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#YieTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 )
+                            $("#YieTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#YieTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Submission
+                    $("#EngGrdSub").text(formatNumber(item.PicGrdDpp));
+                    $("#EngTgtSub").text(formatNumber(item.PicTgtDpp));
+                    $("#EngActSub").text(formatNumber(item.PicActDpp));
+                    $("#EngAchSub").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#EngScrSub").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#SubTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0)
+                            $("#SubTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SubTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Sample Approval
+                    $("#EngGrdApp").text(formatNumber(item.PicGrdEme));
+                    $("#EngTgtApp").text(formatNumber(item.PicTgtEme));
+                    $("#EngActApp").text(formatNumber(item.PicActEme));
+                    $("#EngAchApp").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#EngScrApp").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    if (PicGrdEme == 0)
+                        $("#AppTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 )
+                            $("#AppTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AppTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    //----ZENGATE
+                    if (thn < 2020) {
+                        $("#GatTitle").text('New Product - ZENGATE+ 100mm,150mm, 200mm');
+                    } else {
+                        $("#GatTitle").text('New Product Innovation - 2 items');
+                    }
+                    $("#EngGrdGat").text(formatNumber(item.PicGrdOth));
+                    $("#EngTgtGat").text(formatNumber(item.PicTgtOth));
+                    $("#EngActGat").text(formatNumber(item.PicActOth));
+                    $("#EngAchGat").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#EngScrGat").text(formatNumber(item.PicScrOth.toFixed(2)));
+                    var PicGrdOth = item.PicGrdOth;
+                    if (PicGrdOth == 0)
+                        $("#GatTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 )
+                            $("#GatTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#GatTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trheadCe").show();
+                        $("#trheadLoop").show();
+                        $("#trheadAct").show();
+
+                        //----ZENPUMP
+                        $("#EngGrdPum").text(formatNumber(item.PicGrdSca));
+                        $("#EngTgtPum").text(formatNumber(item.PicTgtSca));
+                        $("#EngActPum").text(formatNumber(item.PicActSca));
+                        $("#EngAchPum").text(formatNumber(item.PicAchSca.toFixed(2)));
+                        $("#EngScrPum").text(formatNumber(item.PicScrSca.toFixed(2)));
+                        var PicGrdSca = item.PicGrdSca;
+                        if (PicGrdSca == 0)
+                            $("#PumTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                            if (newcolor9 >= 0)
+                                $("#PumTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PumTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----ZENGATE actuator
+                        $("#EngGrdAtu").text(formatNumber(item.PicGrdMus));
+                        $("#EngTgtAtu").text(formatNumber(item.PicTgtMus));
+                        $("#EngActAtu").text(formatNumber(item.PicActMus));
+                        $("#EngAchAtu").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#EngScrAtu").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        if (PicGrdMus == 0)
+                            $("#AtuTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor12 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor12 >= 0)
+                                $("#AtuTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AtuTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        //----ZENPUMP loop
+                        $("#EngGrdLop").text(formatNumber(item.PicGrdInv));
+                        $("#EngTgtLop").text(formatNumber(item.PicTgtInv));
+                        $("#EngActLop").text(formatNumber(item.PicActInv));
+                        $("#EngAchLop").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#EngScrLop").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        if (PicGrdInv == 0)
+                            $("#LopTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor13 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor13 >= 0)
+                                $("#LopTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#LopTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trheadCe").hide();
+                        $("#trheadLoop").hide();
+                        $("#trheadAct").hide();
+                    }
+
+                    //----PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrLab;
+                    $("#PicGrdTot").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTot").text(formatNumber(item.TotScore.toFixed(2)));
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+     
+    }
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrSafMonth = 0;
+        PicScrSafSum = 0;
+        PicScrTotSum = 0;
+        var userAu = $('#authorid').val();
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vEngineeringDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#EngGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#EngTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#EngActRevMonth").text(formatNumber(item.PicActRev));
+                        $("#EngAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#EngScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+                    /*------------pda---------*/
+                    $("#EngGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#EngTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#EngActPdaMonth").text(formatNumber(item.PicActPda));
+                    $("#EngAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#EngScrPdaMonth").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pdc---------*/
+                    $("#EngGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#EngTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#EngActPdcMonth").text(formatNumber(item.PicActPdc));
+                    $("#EngAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#EngScrPdcMonth").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0 )
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trdtlRjCt").show();
+                        $("#trdtlRjMc").show();
+                        //----Reject casting
+                        $("#EngGrdCasMonth").text(formatNumber(item.PicGrdRjt));
+                        $("#EngTgtCasMonth").text(formatNumber(item.PicTgtRjt));
+                        $("#EngActCasMonth").text(formatNumber(item.PicActRjt));
+                        $("#EngAchCasMonth").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#EngScrCasMonth").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        if (PicGrdRjt == 0)
+                            $("#CasTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor3 >= 0)
+                                $("#CasTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#CasTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----Reject Machining
+                        $("#EngGrdBadMonth").text(formatNumber(item.PicGrdAir));
+                        $("#EngTgtBadMonth").text(formatNumber(item.PicTgtAir));
+                        $("#EngActBadMonth").text(formatNumber(item.PicActAir));
+                        $("#EngAchBadMonth").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#EngScrBadMonth").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        if (PicGrdAir == 0)
+                            $("#BadTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor4 >= 0)
+                                $("#BadTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trdtlRjCt").hide();
+                        $("#trdtlRjMc").hide();
+                    }                    
+
+                    //----Yield
+                    $("#EngGrdYieMonth").text(formatNumber(item.PicGrdTvb));
+                    $("#EngTgtYieMonth").text(formatNumber(item.PicTgtTvb));
+                    $("#EngActYieMonth").text(formatNumber(item.PicActTvb));
+                    $("#EngAchYieMonth").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#EngScrYieMonth").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#YieTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 )
+                            $("#YieTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#YieTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    //----Submission
+                    $("#EngGrdSubMonth").text(formatNumber(item.PicGrdDpp));
+                    $("#EngTgtSubMonth").text(formatNumber(item.PicTgtDpp));
+                    $("#EngActSubMonth").text(formatNumber(item.PicActDpp));
+                    $("#EngAchSubMonth").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#EngScrSubMonth").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#SubTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0)
+                            $("#SubTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SubTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    //----Sample Approval
+                    $("#EngGrdAppMonth").text(formatNumber(item.PicGrdEme));
+                    $("#EngTgtAppMonth").text(formatNumber(item.PicTgtEme));
+                    $("#EngActAppMonth").text(formatNumber(item.PicActEme));
+                    $("#EngAchAppMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#EngScrAppMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    if (PicGrdEme == 0)
+                        $("#AppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 )
+                            $("#AppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#GatTitleMonth").text('New Product - ZENGATE+ 100mm,150mm, 200mm');
+                    } else {
+                        $("#GatTitleMonth").text('New Product Innovation - 2 items');
+                    }
+
+                    //----ZENGATE
+                    $("#EngGrdGatMonth").text(formatNumber(item.PicGrdOth));
+                    $("#EngTgtGatMonth").text(formatNumber(item.PicTgtOth));
+                    $("#EngActGatMonth").text(formatNumber(item.PicActOth));
+                    $("#EngAchGatMonth").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#EngScrGatMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
+                    var PicGrdOth = item.PicGrdOth;
+                    if (PicGrdOth == 0)
+                        $("#GatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 )
+                            $("#GatTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#GatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trdtlCe").show();
+                        $("#trdtlLoop").show();
+                        $("#trdtlAct").show();
+                        //----ZENPUMP
+                        $("#EngGrdPumMonth").text(formatNumber(item.PicGrdSca));
+                        $("#EngTgtPumMonth").text(formatNumber(item.PicTgtSca));
+                        $("#EngActPumMonth").text(formatNumber(item.PicActSca));
+                        $("#EngAchPumMonth").text(formatNumber(item.PicAchSca.toFixed(2)));
+                        $("#EngScrPumMonth").text(formatNumber(item.PicScrSca.toFixed(2)));
+                        var PicGrdSca = item.PicGrdSca;
+                        if (PicGrdSca == 0)
+                            $("#PumTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                            if (newcolor9 >= 0)
+                                $("#PumTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PumTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        //----ZENGATE actuator
+                        $("#EngGrdAtuMonth").text(formatNumber(item.PicGrdMus));
+                        $("#EngTgtAtuMonth").text(formatNumber(item.PicTgtMus));
+                        $("#EngActAtuMonth").text(formatNumber(item.PicActMus));
+                        $("#EngAchAtuMonth").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#EngScrAtuMonth").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        if (PicGrdMus == 0)
+                            $("#AtuTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor12 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor12 >= 0)
+                                $("#AtuTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AtuTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        //----ZENPUMP loop
+                        $("#EngGrdLopMonth").text(formatNumber(item.PicGrdInv));
+                        $("#EngTgtLopMonth").text(formatNumber(item.PicTgtInv));
+                        $("#EngActLopMonth").text(formatNumber(item.PicActInv));
+                        $("#EngAchLopMonth").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#EngScrLopMonth").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        if (PicGrdInv == 0)
+                            $("#LopTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor13 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor13 >= 0)
+                                $("#LopTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#LopTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+
+                    } else {
+                        $("#trdtlCe").hide();
+                        $("#trdtlLoop").hide();
+                        $("#trdtlAct").hide();
+                    }
+
+                    //----PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrLab;
+                    $("#PicGrdTotMonth").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTotMonth").text(formatNumber(item.TotScore.toFixed(2)));
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+     
+        /*-----------------------  yearly  ----------------------------*/
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "Y"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vEngineeringDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#EngGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#EngTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#EngActRevSum").text(formatNumber(item.PicActRev));
+                        $("#EngAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#EngScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    }
+                    /*------------pda---------*/
+                    $("#EngGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#EngTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#EngActPdaSum").text(formatNumber(item.PicActPda));
+                    $("#EngAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#EngScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
+                    var PicGrdPda = item.PicGrdPda;
+                    if (PicGrdPda == 0)
+                        $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                        if (newcolor1 >= 0 )
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pdc---------*/
+                    $("#EngGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#EngTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#EngActPdcSum").text(formatNumber(item.PicActPdc));
+                    $("#EngAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#EngScrPdcSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
+                    var PicGrdPdc = item.PicGrdPdc;
+                    if (PicGrdPdc == 0)
+                        $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                        if (newcolor2 >= 0 )
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trsubdtlRjCt").show();
+                        $("#trsubdtlRjMc").show();
+
+                        //----Reject casting
+                        $("#EngGrdCasSum").text(formatNumber(item.PicGrdRjt));
+                        $("#EngTgtCasSum").text(formatNumber(item.PicTgtRjt));
+                        $("#EngActCasSum").text(formatNumber(item.PicActRjt));
+                        $("#EngAchCasSum").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#EngScrCasSum").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        console.log(PicGrdRjt);
+                        if (PicGrdRjt == 0)
+                            $("#CasTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor3 >= 0)
+                                $("#CasTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#CasTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----Reject Machining
+                        $("#EngGrdBadSum").text(formatNumber(item.PicGrdAir));
+                        $("#EngTgtBadSum").text(formatNumber(item.PicTgtAir));
+                        $("#EngActBadSum").text(formatNumber(item.PicActAir));
+                        $("#EngAchBadSum").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#EngScrBadSum").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        if (PicGrdAir == 0)
+                            $("#BadTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor4 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor4 >= 0)
+                                $("#BadTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                    } else {
+                        $("#trsubdtlRjCt").hide();
+                        $("#trsubdtlRjMc").hide();
+                    }
+
+                    //----Yield
+                    $("#EngGrdYieSum").text(formatNumber(item.PicGrdTvb));
+                    $("#EngTgtYieSum").text(formatNumber(item.PicTgtTvb));
+                    $("#EngActYieSum").text(formatNumber(item.PicActTvb));
+                    $("#EngAchYieSum").text(formatNumber(item.PicAchTvb.toFixed(2)));
+                    $("#EngScrYieSum").text(formatNumber(item.PicScrTvb.toFixed(2)));
+                    var PicGrdTvb = item.PicGrdTvb;
+                    if (PicGrdTvb == 0)
+                        $("#YieTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
+                        if (newcolor5 >= 0 )
+                            $("#YieTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#YieTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Submission
+                    $("#EngGrdSubSum").text(formatNumber(item.PicGrdDpp));
+                    $("#EngTgtSubSum").text(formatNumber(item.PicTgtDpp));
+                    $("#EngActSubSum").text(formatNumber(item.PicActDpp));
+                    $("#EngAchSubSum").text(formatNumber(item.PicAchDpp.toFixed(2)));
+                    $("#EngScrSubSum").text(formatNumber(item.PicScrDpp.toFixed(2)));
+                    var PicGrdDpp = item.PicGrdDpp;
+                    if (PicGrdDpp == 0)
+                        $("#SubTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
+                        if (newcolor6 >= 0)
+                            $("#SubTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SubTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    //----Sample Approval
+                    $("#EngGrdAppSum").text(formatNumber(item.PicGrdEme));
+                    $("#EngTgtAppSum").text(formatNumber(item.PicTgtEme));
+                    $("#EngActAppSum").text(formatNumber(item.PicActEme));
+                    $("#EngAchAppSum").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#EngScrAppSum").text(formatNumber(item.PicScrEme.toFixed(2)));
+                    var PicGrdEme = item.PicGrdEme;
+                    if (PicGrdEme == 0)
+                        $("#AppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor7 = item.PicScrEme - item.PicGrdEme;
+                        if (newcolor7 >= 0 )
+                            $("#AppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#GatTitleSum").text('New Product - ZENGATE+ 100mm,150mm, 200mm');
+                    } else {
+                        $("#GatTitleSum").text('New Product Innovation - 2 items');
+                    }
+                    //----ZENGATE
+                    $("#EngGrdGatSum").text(formatNumber(item.PicGrdOth));
+                    $("#EngTgtGatSum").text(formatNumber(item.PicTgtOth));
+                    $("#EngActGatSum").text(formatNumber(item.PicActOth));
+                    $("#EngAchGatSum").text(formatNumber(item.PicAchOth.toFixed(2)));
+                    $("#EngScrGatSum").text(formatNumber(item.PicScrOth.toFixed(2)));
+                    var PicGrdOth = item.PicGrdOth;
+                    if (PicGrdOth == 0)
+                        $("#GatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                        if (newcolor8 >= 0 )
+                            $("#GatTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#GatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    if (thn < 2020) {
+                        $("#trsubdtlCe").show();
+                        $("#trsubdtlLoop").show();
+                        $("#trsubdtlAct").show();
+
+                        //----ZENPUMP
+                        $("#EngGrdPumSum").text(formatNumber(item.PicGrdSca));
+                        $("#EngTgtPumSum").text(formatNumber(item.PicTgtSca));
+                        $("#EngActPumSum").text(formatNumber(item.PicActSca));
+                        $("#EngAchPumSum").text(formatNumber(item.PicAchSca.toFixed(2)));
+                        $("#EngScrPumSum").text(formatNumber(item.PicScrSca.toFixed(2)));
+                        var PicGrdSca = item.PicGrdSca;
+                        if (PicGrdSca == 0)
+                            $("#PumTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor9 = item.PicScrSca - item.PicGrdSca;
+                            if (newcolor9 >= 0)
+                                $("#PumTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#PumTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        //----ZENGATE actuator
+                        $("#EngGrdAtuSum").text(formatNumber(item.PicGrdMus));
+                        $("#EngTgtAtuSum").text(formatNumber(item.PicTgtMus));
+                        $("#EngActAtuSum").text(formatNumber(item.PicActMus));
+                        $("#EngAchAtuSum").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#EngScrAtuSum").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        if (PicGrdMus == 0)
+                            $("#AtuTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor12 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor12 >= 0)
+                                $("#AtuTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AtuTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        //----ZENPUMP loop
+                        $("#EngGrdLopSum").text(formatNumber(item.PicGrdInv));
+                        $("#EngTgtLopSum").text(formatNumber(item.PicTgtInv));
+                        $("#EngActLopSum").text(formatNumber(item.PicActInv));
+                        $("#EngAchLopSum").text(formatNumber(item.PicAchInv.toFixed(2)));
+                        $("#EngScrLopSum").text(formatNumber(item.PicScrInv.toFixed(2)));
+                        var PicGrdInv = item.PicGrdInv;
+                        if (PicGrdInv == 0)
+                            $("#LopTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor13 = item.PicScrInv - item.PicGrdInv;
+                            if (newcolor13 >= 0)
+                                $("#LopTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#LopTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                    } else {
+                        $("#trsubdtlCe").hide();
+                        $("#trsubdtlLoop").hide();
+                        $("#trsubdtlAct").hide();
+                    }
+
+                    //----PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrRjt + item.PicScrAir + item.PicScrTvb + item.PicScrDpp + item.PicScrEme + item.PicScrOth + item.PicScrSca + item.PicScrInv + item.PicScrMus + item.PicScrLab;
+                    $("#PicGrdTotSum").text(formatNumber(item.TotGrade.toFixed(2)));
+                    $("#PicScrTotSum").text(formatNumber(item.TotScore.toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+    }
+
+</script>

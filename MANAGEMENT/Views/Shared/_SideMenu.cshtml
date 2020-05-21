@@ -1,0 +1,348 @@
+﻿<style>  
+    .glyphicon.glyphicon-log-out {
+        font-size: 40px;
+    } 
+</style>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h4><a href="javascript:void()" onclick="location.href='@Url.Action("Index", "Dashboard")'">Management Control</a></h4>
+        </div>
+        @if (Session["UserType"] != null)
+        {
+           var author = Session["UserType"];
+           <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+        }
+        <ul class="list-unstyled components">
+            <li><center><h5>CORPORATE</h5></center></li>                       
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Department</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                        </ul>
+                </li>
+                <li>
+                    <a href="#masterSubmenu" data-toggle="collapse" aria-expanded="false">Master</a>
+                        <ul class="collapse list-unstyled" id="masterSubmenu">
+                        </ul>
+                </li>
+                <li>
+                    <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false">Report</a>
+                        <ul class="collapse list-unstyled" id="reportSubmenu"></ul>
+                </li>
+            <li>
+                <a href="#notulenSubmenu" data-toggle="collapse" aria-expanded="false">Notulen</a>
+                <ul class="collapse list-unstyled" id="notulenSubmenu"></ul>
+            </li>
+            <li>
+                <a href="#graphprodSubmenu" data-toggle="collapse" aria-expanded="false">Production Graph</a>
+                <ul class="collapse list-unstyled" id="graphprodSubmenu"></ul>
+            </li>
+            <li>
+                <a href="#surveySubmenu" data-toggle="collapse" aria-expanded="false">Survey</a>
+                <ul class="collapse list-unstyled" id="surveySubmenu"></ul>
+            </li>
+        </ul>
+        <ul class="list-unstyled CTAs">
+            @*<li>
+                <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+            </li>*@
+            <li>
+                <a href="javascript:void()" data-toggle="tooltip" title="Log OFF" onclick="getOut()"><span class="glyphicon glyphicon-log-out"></span></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Page Content Holder -->
+    <div id="content">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" id="sidebarCollapse" class="navbar-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+
+        var userAu = $('#authorid').val();
+        if (userAu == "MKT" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MARKETING", "vMarketing", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "PIC" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PPIC", "vPPIC", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "MAC" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MACHINING", "vMachining", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "CAS" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("CASTING", "vCasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "FIN" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("FINISHING", "vFinishing", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "PUR" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PURCHASING", "vPurchasing", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "QUA" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("QUALITY", "vQuality", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "MAI" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MAINTENANCE", "vMaintenance", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "ENG" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("INDUSTRIAL ENGINEERING", "vEngineering", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "PRO" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+        if (userAu == "HRD" || userAu == "VST") {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("HRD & GA", "vHRDGA", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+        }
+
+        if (userAu == "ADM")
+        {
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MARKETING", "vMarketing", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PPIC", "vPPIC", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MACHINING", "vMachining", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("CASTING", "vCasting", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("FINISHING", "vFinishing", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PURCHASING", "vPurchasing", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("QUALITY", "vQuality", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("MAINTENANCE", "vMaintenance", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("INDUSTRIAL ENGINEERING", "vEngineering", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');
+            $("#homeSubmenu").append('<li>@Html.ActionLink("HRD & GA", "vHRDGA", "Dashboard")</li>');
+
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("Notulen", "vNotulen", "Dashboard")</li>');
+            $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
+
+            $("#masterSubmenu").append('<li>@Html.ActionLink("KPI Description", "vDescription", "Dashboard")</li>');
+            $("#masterSubmenu").append('<li>@Html.ActionLink("KPI", "vMaster", "Dashboard")</li>');
+            $("#masterSubmenu").append('<li>@Html.ActionLink("KPI Department", "vKPIDept", "Dashboard")</li>');
+            $("#masterSubmenu").append('<li>@Html.ActionLink("Cost Control", "vCostControl", "Dashboard")</li>');
+            $("#masterSubmenu").append('<li>@Html.ActionLink("Inventory Control", "vInvControl", "Dashboard")</li>');
+            $("#masterSubmenu").append('<li>@Html.ActionLink("Cost Control Machine", "vCostControlMachine", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Machining Cost Control", "vRptMachiningControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Non Assembly", "vRptPpicControl", new { id = "1" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Inventory Cost Control", "vRptInventoryCostControl", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Assembly", "vRptPpicControl", new { id = "2" }, "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Inventory", "vRptStockPrPoInv", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Product", "vPPICCntrlProduct", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("PPIC Control - Mat Summary", "vPPICCntrlOutPomat", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Outstanding - PO Detail", "vRptOutPoDetail", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Margin", "vRptMargin", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("WIP Detail", "vWipDetail", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+
+            $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
+
+            $("#surveySubmenu").append('<li>@Html.ActionLink("Report Survey Customer", "vRptSurvey", "Dashboard")</li>');
+
+        }
+    });
+
+    function getOut() {
+        $.session.clear();
+        window.location.href = '@Url.Action("LogOff", "Dashboard")';
+    }
+</script>

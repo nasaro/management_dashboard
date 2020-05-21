@@ -1,0 +1,120 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    
+    
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Table PPIC Control - Inventory</h2>
+            <table id="MasterInfo" class="table table-bordered  table-hover">
+                <caption id="Judul" class="text-center" style="background-color: #b3ffe0;color: black;">PPIC Control - Inventory</caption>
+                <thead>
+                    <tr>
+                        <th>ACCOUNT</th>
+                        <th>ITEM</th>
+                        <th><span class="pull-right">STOCK</span></th>
+                        <th><span class="pull-right">SISA PR</span></th>
+                        <th><span class="pull-right">SISA PO</span></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblControl"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+    </section>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    $(document).ready(function () {
+        MainLoad();       
+    });
+
+    function MainLoad() {
+        var tr;
+        $.ajax({
+            url: urlKPI + "/vRptStockPrPo/",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.item + "</td>");
+                    tr.append("<td>" + item.prodcode + "</td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.stokawalcasting) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.stokawalfinished) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.totterkirim) + "</span></td>");
+                    $('#MasterInfo').append(tr);
+                });
+
+                $('#MasterInfo').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                            [10, 25, 50, -1],
+                            ['10 rows', '25 rows', '50 rows', 'Show all']
+                    ],
+                    buttons: ['pageLength', {
+                        extend: 'excel',
+                        text: 'Export to Excel(All)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'all',      // 'all',     'current'
+                                search: 'none'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    }, {
+                        extend: 'excel',
+                        text: 'Export to Excel(Part)',
+                        exportOptions: {
+                            modifier: {
+                                // DataTables core
+                                order: 'index',  // 'current', 'applied', 'index',  'original'
+                                page: 'current',      // 'all',     'current'
+                                search: 'applied'     // 'none',    'applied', 'removed'
+                            }
+                        }
+                    },
+
+                    ],
+                    "columnDefs": [
+                    {
+                        "targets": [2, 3, 4],
+                        "searchable": false
+                    },
+                    ]
+                });
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>

@@ -1,0 +1,439 @@
+﻿<style>
+        badge {
+          padding: 1px 9px 2px;
+          font-size: 12.025px;
+          font-weight: bold;
+          white-space: nowrap;
+          color: #ffffff;
+          background-color: #999999;
+          -webkit-border-radius: 9px;
+          -moz-border-radius: 9px;
+          border-radius: 9px;
+        }
+        .badge:hover {
+          color: #ffffff;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .badge-error {
+          background-color: #b94a48;
+        }
+        .badge-error:hover {
+          background-color: #953b39;
+        }
+        .badge-warning {
+          background-color: #f89406;
+        }
+        .badge-warning:hover {
+          background-color: #c67605;
+        }
+        .badge-success {
+          background-color: #468847;
+        }
+        .badge-success:hover {
+          background-color: #356635;
+        }
+        .badge-info {
+          background-color: #3a87ad;
+        }
+        .badge-info:hover {
+          background-color: #2d6987;
+        }
+        .badge-inverse {
+          background-color: #333333;
+        }
+        .badge-inverse:hover {
+          background-color: #1a1a1a;
+        }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+    /*
+
+    body{       
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }
+   */
+
+
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+
+    <div class="container">
+        <h4>Customer Survey</h4>
+        <div id="utamaFrm" class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Survey Period :</label>
+                </div>
+                <div class="col-sm-4">
+                    <select class="form-control" id="cbdesc"></select>
+                </div>
+                <div class="col-sm-2">
+                    <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+                </div>
+            </div>
+            <hr style="height:2px; color:rgb(60,90,180); background-color:rgb(60,90,180)">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="#">Total customers who make transactions during the survey period :  <span id="totcust" class="badge badge-info"></span></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="#">Total percentage of surveylog :  <span id="totpros" class="badge badge-success"></span></a>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="#">Survey score average :  <span id="totavg" class="badge badge-success"></span></a>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <blockquote>
+                        <table class="table table-hover" id="tblcustomer">
+                            <thead>
+                                <tr>
+                                    <th>List of customers who fill the survey</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblcust"></tbody>
+                        </table>
+                        <footer>Total Customer : <span id="ftcust" class="badge badge-error"></span></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <blockquote>
+                        <table class="table table-hover table-bordered" id="tblthree">
+                            <caption>List score below of 3.0</caption>
+                            <thead>
+                                <tr>
+                                    <th>Section</th>
+                                    <th>Question</th>
+                                    <th><span class='pull-right'>Score</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblthree"></tbody>
+                        </table>
+                        <footer>Total Section : <span id="ftthree" class="badge badge-error"></span></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <blockquote>
+                        <table class="table table-hover table-bordered" id="tblsection">
+                            <caption>List score of question per section</caption>
+                            <thead>
+                                <tr>
+                                    <th>Section</th>
+                                    <th>Question</th>
+                                    <th><span class='pull-right'>Score</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblsection"></tbody>
+                        </table>
+                        <footer>Total Section : <span id="ftsection" class="badge badge-error"></span></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <blockquote>
+                        <table class="table table-hover" id="tblcomment">
+                            <caption>List comment of customer</caption>
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblcomment"></tbody>
+                        </table>
+                        <footer>Total Customer : <span id="ftcomment" class="badge badge-error"></span></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="panRev" class="panel panel-primary">
+                        <div class="panel-heading" id="accordionOne">
+                            <span class="glyphicon glyphicon-stats"></span> Score of graph
+                            <div class="btn-group pull-right">
+                                <a type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Score" href="javascript:void(0)" onclick="location.href='#'">
+                                    <span class="glyphicon glyphicon-th-list"></span>
+                                </a>
+                                <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordionOne" href="#collapseOne">
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-collapse" id="collapseOne">
+                            <div class="panel-body">
+                                <div id="barScore">
+                                    <canvas id="chartScore" style="height:230px"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+
+
+        </div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var dataNum = [];
+    var dataSection = [];    
+
+    $(document).ready(function () {
+        $("#cbdesc").css("font-family", "Georgia");
+        $(".loader").hide();
+        LoadDesc();       
+    });
+
+    function LoadDesc() {
+        $.getJSON(urlKPI + "/vSurveyPeriod",
+        function (json) {
+            var html = '';
+            for (var i = 0; i < json.length; i++) {
+                html += '<option value=' + json[i].id + '>' + json[i].dateSurvey + '</option>';
+                $('#cbdesc').html(html);
+            }
+        });
+    }
+
+    function GetPeriode() {
+        var idnya = $('#cbdesc').val();
+        $.getJSON(urlKPI + "/vSurveyCount", { id: idnya },
+       function (json) {
+           var html = '';
+           for (var i = 0; i < json.length; i++) {               
+               $('#totcust').text(json[i].int1);
+           }
+       });
+
+       $('#totpros').text('0 %');
+       $.getJSON(urlKPI + "/vSurveyProsenLog", { id: idnya },
+       function (json) {
+           var html = '';
+           for (var i = 0; i < json.length; i++) {
+               $('#totpros').text(json[i].num1 +' %');
+           }
+       });
+        
+        $.getJSON(urlKPI + "/vSurveyScoreAvg", { id: idnya },
+       function (json) {
+           var html = '';
+           for (var i = 0; i < json.length; i++) {
+               $('#totavg').text(json[i].num1);
+           }
+       });
+
+       $('#tbodytblcust').empty();
+       $.getJSON(urlKPI + "/vSurveyCountCust", { id: idnya },
+       function (json) {
+           var tr = '';
+           var icust = 0;
+           for (var i = 0; i < json.length; i++) {
+               tr = $('<tr/>');
+               tr.append("<td>" + json[i].Customer + "</td>");
+               $('#tblcustomer').append(tr);
+               icust = i;
+           }
+           if (icust > 0)
+               $('#ftcust').text(icust + 1);
+           else $('#ftcust').text(icust);
+
+
+       });
+    
+       
+       $('#tbodytblthree').empty();
+       $.getJSON(urlKPI + "/vSurveyScoreThree", { id: idnya },
+       function (json) {
+           var tr = '';
+           var ithree = 0;
+           for (var i = 0; i < json.length; i++) {
+               tr = $('<tr/>');
+               tr.append("<td>" + json[i].Section + "</td>");
+               tr.append("<td>" + json[i].Question + "</td>");
+               tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num1) + "</span></td>");
+               $('#tblthree').append(tr);
+               ithree = i+1;
+               
+           }
+           $('#ftthree').text(ithree);
+       });
+
+        $('#tbodytblsection').empty();
+        var ppicObj = {
+            id: idnya
+        };
+        $.ajax({
+            url: urlKPI + "/vSurveyScoreList/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                var tr = "";
+                var idt = 0;
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    if (item.num1 > 0) {
+                        tr.append("<td><span>" + item.Section + "</span></td>");
+                        tr.append("<td><span>" + item.Question + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.num1) + "</span></td>");
+                        $('#tblsection').append(tr);
+                        idt++;
+                    }
+                });
+                $('#ftsection').text(idt);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+      
+
+
+       $('#tbodytblcomment').empty();
+       $.getJSON(urlKPI + "/vSurveyCommentList", { id: idnya },
+       function (json) {
+           var tr = '';
+           var icomment = 0;
+           for (var i = 0; i < json.length; i++) {
+               tr = $('<tr/>');
+               tr.append("<td>" + json[i].Customer + "</td>");
+               tr.append("<td>" + json[i].Comment + "</td>");
+               $('#tblcomment').append(tr);
+               icomment = i;
+           }
+           if (icomment>0)
+           $('#ftcomment').text(icomment + 1);
+           else $('#ftcomment').text(icomment );
+       });
+
+       $('#chartScore').remove();
+       $('#barScore').append('<canvas id="chartScore" style="height:230px"></canvas>');
+       showGraphScore(idnya);
+
+    }
+
+    
+    function showGraphScore(prd) {
+        $.getJSON(urlKPI + "/vSurveyScoreGraph/", { id: prd},
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                dataNum = json.map(function (e) {
+                    return e.num1;
+                });
+                dataSection = json.map(function (e) {
+                    return e.Section;
+                });
+            }
+
+            //--check empty array
+            if (json.length === 0) {
+                console.log('a');
+            }
+            else {
+                //-----------batas 1---
+                var ctx7 = document.getElementById("chartScore");
+                var chartScore = new Chart(ctx7, {
+                    type: 'bar',
+                    data: {
+                        labels: dataSection,
+                        datasets: [
+                          {
+                              type: 'bar',
+                              label: 'Score',
+                              backgroundColor: "rgba(150, 32, 219, 0.3)",
+                              // the 1st and last value are placeholders and never get displayed on the chart
+                              data: dataNum,
+                              yAxisID: 'y-axis-1'
+                          }
+                        ]
+                    },
+                    responsive: true,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return formatNumber(value);
+                                    }
+                                },
+                                type: "linear",
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                                gridLines: {
+                                    display: false
+                                },
+                                labels: {
+                                    show: true,
+
+                                }
+                            }, ],
+                            xAxes: [{
+                                ticks: {
+                                    min: '',
+                                    max: '',
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, chart) {
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ' : ' + formatNumber(tooltipItem.yLabel, 2);
+                                }
+                            }
+                        } //---end tooltip 
+
+                    }
+                });
+
+                //-----end batas 1--
+
+            }
+
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>
+

@@ -1,0 +1,475 @@
+﻿<style>
+body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+   .zui-table {
+        border: none;
+        border-right: solid 1px #DDEFEF;
+        border-collapse: separate;
+        border-spacing: 0;
+        font: normal 13px Arial, sans-serif;
+    }
+    .zui-table thead th {
+        background-color: #DDEFEF;
+        border: none;
+        color: #336B6B;
+        padding: 10px;
+        text-align: left;
+        text-shadow: 1px 1px 1px #fff;
+        white-space: nowrap;
+    }
+
+    .zui-table tbody td {
+        border-bottom: solid 1px #DDEFEF;
+        color: black;
+        padding: 10px;
+        /*text-shadow: 1px 1px 3px blue;*/
+        white-space: nowrap;
+        font-size: 85%;
+    }
+    .zui-wrapper {
+        position: relative;
+    }
+    .zui-scroller {
+        margin-left: 225px;
+        overflow-x: scroll;
+        overflow-y: visible;
+        padding-bottom: 5px;
+        width: 800px;
+    }
+    .zui-table .zui-sticky-col {
+        border-left: solid 1px #DDEFEF;
+        border-right: solid 1px #DDEFEF;
+        left: 0;
+        position: absolute;
+        top: auto;
+        width: 225px;
+    }
+
+   .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+   
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <br />
+        <h3>Casting Cost Control</h3>
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to XLS" onclick="javascript: xport.toCSV('CostInfo');">Export to XLS</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="zui-wrapper" >
+            <div class="zui-scroller form-horizontal">
+                <table id="CostInfo" class="zui-table table table-bordered  table-hover">
+                    @*<caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>*@                   
+                    <thead>
+                        <tr>
+                            <th style="background-color: #4d79ff;color: white;" class="zui-sticky-col"><b>Remark</b></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>308 / 309</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>AISI 4140</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>CARBON STEEL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>COPPER</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>DUPLEX 2205</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>DUPLEX 2507</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>DUPLEX 329</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>NI-HARD</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS 316 MO 2.8</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS 400</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS-201</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS304</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS310</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS316</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS316L</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS410</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SS430</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>STEEL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>STELLITE HS-4</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>STELLITE HS-6</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>Tot Std Cost</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>Tot Act Cost</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>Variance</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>Variance(%)</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>BS</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>BA</b></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblcost"></tbody>
+                </table>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+
+        </div>
+
+        <div id="bottom_anchor"></div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var grandtotal = 0, totC1 = 0, totC2, totC3, totC4, totC5, totC6, totC7, totC8, totC9, totC10, totC11, totC12, totC13, totC14, totC15, totC16, totC17, totC18, totC19, totC20;
+    var sumtot = 0, sumcost = 0, varianceTB1 = 0;
+    var sumtotBS, sumtotBA;
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+
+        var dNow = new Date()
+        var iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        //$('#thn').text('YEAR : ' + iYear);
+        $('#monthkpi').val(iMonth);
+        getView(iYear, iMonth);
+    });
+
+    function getView(year, month) {
+        var tr;
+        var ppicObj = {
+            thn: year,
+            bln: month
+        };
+        $.ajax({
+            url: urlKPI + "/vRptCost/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    var s = item.item;
+                    if (s.match(/TOTAL.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #006622;'><b>" + item.item + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C1) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C2) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C3) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C4) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C5) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C6) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C7) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C8) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C9) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C10) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C11) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C12) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C13) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C14) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C15) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C16) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C17) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C18) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C19) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.C20) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.tot) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.cost) + "</b></span></td>");
+                        if (item.diff < 0) {
+                            tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(item.diff) + "</span></td>");
+                            tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(item.variance.toFixed(2)) + "</span></td>");
+                        }
+                        else {
+                            tr.append("<td><span class='pull-right'>" + formatNumber(item.diff) + "</span></td>");
+                            tr.append("<td><span class='pull-right'>" + formatNumber(item.variance.toFixed(2)) + "</span></td>");
+                        }
+
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.sumtotBS) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.sumtotBA) + "</b></span></td>");
+
+                    }
+                    else {
+                        tr.append("<td class='zui-sticky-col'><b>" + item.item + "</b></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C1) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C2) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C3) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C4) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C5) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C6) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C7) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C8) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C9) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C10) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C11) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C12) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C13) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C14) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C15) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C16) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C17) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C18) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C19) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.C20) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.tot) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.cost) + "</span></td>");
+                        if (item.diff < 0) {
+                            tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(item.diff) + "</span></td>");
+                            tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(item.variance.toFixed(2)) + "</span></td>");
+                        }
+                        else {
+                            tr.append("<td><span class='pull-right'>" + formatNumber(item.diff) + "</span></td>");
+                            tr.append("<td><span class='pull-right'>" + formatNumber(item.variance.toFixed(2)) + "</span></td>");
+                        }
+
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.BS) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.BA) + "</span></td>");
+                    }
+
+
+                    $('#CostInfo').append(tr);
+                    totC1 = item.totC1;
+                    totC2 = item.totC2;
+                    totC3 = item.totC3;
+                    totC4 = item.totC4;
+                    totC5 = item.totC5;
+                    totC6 = item.totC6;
+                    totC7 = item.totC7;
+                    totC8 = item.totC8;
+                    totC9 = item.totC9;
+                    totC10 = item.totC10;
+                    totC11 = item.totC11;
+                    totC12 = item.totC12;
+                    totC13 = item.totC13;
+                    totC14 = item.totC14;
+                    totC15 = item.totC15;
+                    totC16 = item.totC16;
+                    totC17 = item.totC17;
+                    totC18 = item.totC18;
+                    totC19 = item.totC19;
+                    totC20 = item.totC20;
+                    sumtot = item.sumtot;
+                    sumcost = item.sumcost;
+                    sumtotBS = item.grandtotBS;
+                    sumtotBA = item.grandtotBA;
+                    grandtotal = item.grandtot;
+                    varianceTB1 = grandtotal / sumtot * 100;
+                });
+                tr = $('<tr/>');
+                tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #1a1aff;'><b>GRAND TOTAL</b></span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC1) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC2) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC3) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC4) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC5) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC6) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC7) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC8) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC9) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC10) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC11) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC12) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC13) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC14) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC15) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC16) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC17) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC18) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC19) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totC20) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumtot) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumcost) + "</span></td>");
+
+                if (grandtotal < 0){
+                    tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(grandtotal) + "</span></td>");
+                    tr.append("<td><span class='pull-right' style='color: red;'>" + formatNumber(varianceTB1.toFixed(2)) + "</span></td>");
+
+                }
+                else {
+                    tr.append("<td><span class='pull-right'>" + formatNumber(grandtotal) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(varianceTB1.toFixed(2)) + "</span></td>");
+
+                }
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumtotBS) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumtotBA) + "</span></td>");
+
+                $('#CostInfo').append(tr);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function GetPeriode() {
+        var tr;
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        $('#tbodytblcost').empty();
+        getView(newyear, newmonth)
+    }
+
+      
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    var xport = {
+        _fallbacktoCSV: true,
+        toXLS: function (tableId, filename) {
+            this._filename = (typeof filename == 'undefined') ? tableId : filename;
+
+            //var ieVersion = this._getMsieVersion();
+            //Fallback to CSV for IE & Edge
+            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+                return this.toCSV(tableId);
+            } else if (this._getMsieVersion() || this._isFirefox()) {
+                alert("Not supported browser");
+            }
+
+            //Other Browser can download xls
+            var htmltable = document.getElementById(tableId);
+            var html = htmltable.outerHTML;
+
+            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls');
+        },
+        toCSV: function (tableId, filename) {
+            this._filename = (typeof filename === 'undefined') ? tableId : filename;
+            // Generate our CSV string from out HTML Table
+            var csv = this._tableToCSV(document.getElementById(tableId));
+            // Create a CSV Blob
+            var blob = new Blob([csv], { type: "text/csv" });
+
+            // Determine which approach to take for the download
+            if (navigator.msSaveOrOpenBlob) {
+                // Works for Internet Explorer and Microsoft Edge
+                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+            } else {
+                this._downloadAnchor(URL.createObjectURL(blob), 'csv');
+            }
+        },
+        _getMsieVersion: function () {
+            var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0) {
+                // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+            }
+
+            var trident = ua.indexOf("Trident/");
+            if (trident > 0) {
+                // IE 11 => return version number
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+            }
+
+            var edge = ua.indexOf("Edge/");
+            if (edge > 0) {
+                // Edge (IE 12+) => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+            }
+
+            // other browser
+            return false;
+        },
+        _isFirefox: function () {
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                return 1;
+            }
+
+            return 0;
+        },
+        _downloadAnchor: function (content, ext) {
+            var anchor = document.createElement("a");
+            anchor.style = "display:none !important";
+            anchor.id = "downloadanchor";
+            document.body.appendChild(anchor);
+
+            // If the [download] attribute is supported, try to use it
+
+            if ("download" in anchor) {
+                anchor.download = this._filename + "." + ext;
+            }
+            anchor.href = content;
+            anchor.click();
+            anchor.remove();
+        },
+        _tableToCSV: function (table) {
+            // We'll be co-opting `slice` to create arrays
+            var slice = Array.prototype.slice;
+
+            return slice
+              .call(table.rows)
+              .map(function (row) {
+                  return slice
+                    .call(row.cells)
+                    .map(function (cell) {
+                        return '"t"'.replace("t", cell.textContent);
+                    })
+                    .join(",");
+              })
+              .join("\r\n");
+        }
+    };
+
+
+
+</script>

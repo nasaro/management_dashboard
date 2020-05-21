@@ -1,0 +1,288 @@
+﻿<style>
+    badge {
+        padding: 1px 9px 2px;
+        font-size: 12.025px;
+        font-weight: bold;
+        white-space: nowrap;
+        color: #ffffff;
+        background-color: #999999;
+        -webkit-border-radius: 9px;
+        -moz-border-radius: 9px;
+        border-radius: 9px;
+    }
+
+    .badge:hover {
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .badge-error {
+        background-color: #b94a48;
+    }
+
+        .badge-error:hover {
+            background-color: #953b39;
+        }
+
+    .badge-warning {
+        background-color: #f89406;
+    }
+
+        .badge-warning:hover {
+            background-color: #c67605;
+        }
+
+    .badge-success {
+        background-color: #468847;
+    }
+
+        .badge-success:hover {
+            background-color: #356635;
+        }
+
+    .badge-info {
+        background-color: #3a87ad;
+    }
+
+        .badge-info:hover {
+            background-color: #2d6987;
+        }
+
+    .badge-inverse {
+        background-color: #333333;
+    }
+
+        .badge-inverse:hover {
+            background-color: #1a1a1a;
+        }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+    /*--not use
+    body {
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }*/
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <h3>Margin</h3>
+        <div id="utamaFrm" class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label for="prd">Periode :</label>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group date datetimepicker">
+                        <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <select class="form-control" id="monthprd">
+                        <option value="1">JANUARY</option>
+                        <option value="2">FEBRUARY</option>
+                        <option value="3">MARCH</option>
+                        <option value="4">APRIL</option>
+                        <option value="5">MAY</option>
+                        <option value="6">JUNE</option>
+                        <option value="7">JULY</option>
+                        <option value="8">AUGUSTUS</option>
+                        <option value="9">SEPTEMBER</option>
+                        <option value="10">OCTOBER</option>
+                        <option value="11">NOVEMBER</option>
+                        <option value="12">DECEMBER</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <button id="proc" type="button" class="btn btn-success btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+                </div>
+            </div>
+            <hr style="height:2px; color:rgb(60,90,180); background-color:rgb(60,90,180)">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4><a href="#">Total Margin :   <span id="totmargin" class="badge badge-info"></span></a></h4>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">                    
+                    <blockquote>
+                        <table class="table table-hover" id="tblProsen">                            
+                            <caption id="capProsen" class="text-center" style="background-color: #f5e8e8;color: black;">percentage margin percustomer</caption>
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th><span class='pull-right'> Margin (%) </span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblProsen"></tbody>
+                        </table>
+                        <footer>Total Customer : <span id="ftcust" class="badge badge-error"></span></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">                   
+                    <table id="Masterinfo" class="table table-bordered  table-hover" >
+                        <caption id="capDetail" class="text-center" style="background-color: #4d79ff;color: white;">Detail Margin</caption>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th><span class='pull-right'>Qty </span></th>
+                                <th><span class='pull-right'>Amount </span></th>
+                                <th><span class='pull-right'>HPP </span></th>
+                                <th><span class='pull-right'>Margin </span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblDetail"></tbody>
+                    </table>                  
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br />
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $(".loader").hide();
+        var dNow = new Date();
+        var iMonth = dNow.getMonth() + 1;
+        var iYear = dNow.getFullYear();
+        $('#prd').val(iYear);
+        $('#monthprd').val(iMonth);
+        GetPeriode(iYear, iMonth);
+    });
+
+    function GetPeriode() {
+        var thn = $('#prd').val();
+        var bln = $('#monthprd').val();
+        $.getJSON(urlKPI + "/vMarginTotal", { year: thn, month: bln },
+         function (json) {
+             var html = '';
+             for (var i = 0; i < json.length; i++) {
+                 $('#totmargin').text(formatNumber(json[i].num1));
+             }
+         });
+
+         $('#ftcust').text(0);
+         $('#tbodytblProsen').empty();
+         $.getJSON(urlKPI + "/vMarginProsen", { year: thn, month: bln },
+         function (json) {
+             var tr = '';
+             var icust = 0;
+			 var bolcust = false;
+             for (var i = 0; i < json.length; i++) {				
+                 tr = $('<tr/>');
+                 tr.append("<td>" + json[i].cust + "</td>");
+                 tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num1) + "</span></td>");
+                 $('#tblProsen').append(tr);
+                 icust = i;
+				 bolcust = true
+             }
+			 /*
+             if (icust > 0)
+                 $('#ftcust').text(icust + 1);
+             else $('#ftcust').text(icust);
+			 */
+			 if (bolcust) 
+               $('#ftcust').text(icust + 1);
+			 else 
+				$('#ftcust').text(icust);
+         });
+         
+         
+        var tr;       
+        var kpiObj = {
+            year: thn,
+            month: bln
+        }
+
+        
+        $('#Masterinfo').DataTable().destroy();
+        $('#tbodytblDetail').empty();
+        $.ajax({
+            url: urlKPI + "/vMarginDetail/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.code + "</td>");
+                    tr.append("<td>" + item.cust + "</td>");
+                    tr.append("<td>" + item.product + "</td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.num1) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.num2) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.num3) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.num4) + "</span></td>");
+                    $('#tbodytblDetail').append(tr);
+                });
+                $('#Masterinfo').DataTable().draw();
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+       
+        /*-----------
+        $('#tbodytblDetail').empty();
+        $.getJSON(urlKPI + "/vMarginDetail", { year: thn, month: bln },
+        function (json) {
+            var tr = '';
+            var icust = 0;
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr/>');
+                tr.append("<td>" + json[i].code + "</td>");
+                tr.append("<td>" + json[i].cust + "</td>");
+                tr.append("<td>" + json[i].product + "</td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num1) + "</span></td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num2) + "</span></td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num3) + "</span></td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].num4) + "</span></td>");
+                $('#tbodytblDetail').append(tr);
+            }
+            $('#Masterinfo').DataTable();
+        });
+        */
+    }
+
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>

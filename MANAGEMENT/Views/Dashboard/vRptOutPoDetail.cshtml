@@ -1,0 +1,345 @@
+﻿<style>
+    
+    th { background-color: #d2e0e0; }
+    tr:hover {
+          background-color: #d6f5f5;
+     }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<body>
+    <div class="container">
+        <h4>Outstanding - PO Details</h4>
+        <div class="row">
+            <div class="col-sm-1">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to XLS" onclick="javascript: xport.toCSV('table-basic');">Export to XLS</button>
+            </div>
+        </div>
+        <br />
+
+        <div class="table-scrollable" style="height: 475px;">
+            <table cellspacing="0" id="table-basic" class="table table-sm table-bordered table-striped" style="min-width: 1800px;">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>ID</th>
+                        <th>Cust</th>
+                        <th>BackLog</th>
+                        <th>Week1</th>
+                        <th>Week2</th>
+                        <th>Week3</th>
+                        <th>Week4</th>
+                        <th>Week5</th>
+                        <th>Week6</th>
+                        <th>Week7</th>
+                        <th>Week8</th>
+                        <th>Week9</th>
+                        <th>Week10</th>
+                        <th>Week11</th>
+                        <th>Week12</th>
+                        <th>Week13</th>
+                        <th>Week14</th>
+                        <th>Week15</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="tbodytblpodetail"></tbody>
+
+            </table>
+        </div>
+        <br>
+
+    </div> <!-- /container -->
+    <div class="modal fade" id="myModalPPIC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Product Code</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="ProdukInfo" class="table table-bordered  table-hover">
+                        @*<caption id="Prodinfo" class="text-center" style="background-color: #b3ffe0;color: black;">Product Info</caption>*@
+                        <thead>
+                            <tr>
+                                <th>POR#</th>
+                                <th><span class="pull-right">Sisa</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblProdukInfo"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="buttoninfo" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="loader"></div>
+</body>
+
+@Scripts.Render("~/Scripts/freeze-table.js")
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    $(document).ready(function() {
+
+      $(".table-basic").freezeTable();
+
+      $(".table-scrollable").freezeTable({
+          'scrollable': true,
+          'shadow': true,
+          'columnNum': 6,
+      });
+
+      $('.datetimepicker').datetimepicker({
+          format: 'YYYY'
+      });
+      $(".loader").hide();
+
+      var dNow = new Date()
+      var iMonth = dNow.getMonth() + 1
+      var iYear = dNow.getFullYear()
+      $('#prd').val(iYear);
+      getView(iYear);
+
+    });
+
+
+    function getView(year) {
+        var tr;
+        var ppicObj = {
+            thn: year
+        };
+        $.ajax({
+            url: urlKPI + "/vRptOutPoDetailResult/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    var s = item.item;
+                    if (s.match(/AMOUNT.*/) || s.match(/TONNAGE.*/))
+                        tr.append("<td><span class='pull-right'>" + item.item + "</span></td>");
+                    else
+                        tr.append("<td>" + item.item + "</td>");
+                    tr.append("<td>" + item.id + "</td>");
+                    tr.append("<td> <span>" + item.cust.substring(0, 25) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.backlog) + "</b></span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C1) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C2) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C3) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C4) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C5) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C6) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C7) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C8) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C9) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C10) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C11) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C12) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C13) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C14) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.C15) + "</span></td>");
+                    tr.append("<td><span class='pull-right'>" + formatNumber(item.tot) + "</span></td>");
+                    $('table').append(tr);
+                });
+
+                $('#table-basic tbody').on('click', 'tr', function () {
+                    var idx;
+                    var namex;
+                     var $row = $(this).closest("tr"),        // Finds the closest row <tr> 
+                     $tds = $row.find("td:nth-child(2)");
+                     $.each($tds, function() {
+                        idx = $(this).text();
+                     });
+                     $tdx = $row.find("td:nth-child(1)");
+                     $.each($tdx, function () {
+                         namex = $(this).text();
+                     });
+                     showPopUp(idx, namex);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function showPopUp(code, name) {
+        ListProdCode(code);
+        $('#myModalLabel').text('Product Info: ' + name);
+        $('#tbodytblProdukInfo').empty();
+        $("#myModalPPIC").modal({ show: true, backdrop: false });
+    }
+
+    function ListProdCode(code) {
+        $.getJSON(urlKPI + "/vShowProd/", { codeprod: code },
+        function (json) {
+            var tr;
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr/>');
+                tr.append("<td>" + json[i].item + "</td>");
+                tr.append("<td><span class='pull-right'>" + formatNumber(json[i].wax) + "</span></td>");
+                $('#tbodytblProdukInfo').append(tr);
+
+            }
+        });
+    }
+
+    function GetPeriode() {
+        var tr;
+        var newyear = $('#prd').val();
+        $('#tbodytblpodetail').empty();
+        $(".table-basic").freezeTable();
+
+        $(".table-scrollable").freezeTable({
+            'scrollable': true,
+            'shadow': true,
+            'columnNum': 6,
+        });
+        getView(newyear)
+    }
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    var xport = {
+        _fallbacktoCSV: true,
+        toXLS: function (tableId, filename) {
+            this._filename = (typeof filename == 'undefined') ? tableId : filename;
+
+            //var ieVersion = this._getMsieVersion();
+            //Fallback to CSV for IE & Edge
+            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+                return this.toCSV(tableId);
+            } else if (this._getMsieVersion() || this._isFirefox()) {
+                alert("Not supported browser");
+            }
+
+            //Other Browser can download xls
+            var htmltable = document.getElementById(tableId);
+            var html = htmltable.outerHTML;
+
+            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls');
+        },
+        toCSV: function (tableId, filename) {
+            this._filename = (typeof filename === 'undefined') ? tableId : filename;
+            // Generate our CSV string from out HTML Table
+            var csv = this._tableToCSV(document.getElementById(tableId));
+            // Create a CSV Blob
+            var blob = new Blob([csv], { type: "text/csv" });
+
+            // Determine which approach to take for the download
+            if (navigator.msSaveOrOpenBlob) {
+                // Works for Internet Explorer and Microsoft Edge
+                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+            } else {
+                this._downloadAnchor(URL.createObjectURL(blob), 'csv');
+            }
+        },
+        _getMsieVersion: function () {
+            var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0) {
+                // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+            }
+
+            var trident = ua.indexOf("Trident/");
+            if (trident > 0) {
+                // IE 11 => return version number
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+            }
+
+            var edge = ua.indexOf("Edge/");
+            if (edge > 0) {
+                // Edge (IE 12+) => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+            }
+
+            // other browser
+            return false;
+        },
+        _isFirefox: function () {
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                return 1;
+            }
+
+            return 0;
+        },
+        _downloadAnchor: function (content, ext) {
+            var anchor = document.createElement("a");
+            anchor.style = "display:none !important";
+            anchor.id = "downloadanchor";
+            document.body.appendChild(anchor);
+
+            // If the [download] attribute is supported, try to use it
+
+            if ("download" in anchor) {
+                anchor.download = this._filename + "." + ext;
+            }
+            anchor.href = content;
+            anchor.click();
+            anchor.remove();
+        },
+        _tableToCSV: function (table) {
+            // We'll be co-opting `slice` to create arrays
+            var slice = Array.prototype.slice;
+
+            return slice
+              .call(table.rows)
+              .map(function (row) {
+                  return slice
+                    .call(row.cells)
+                    .map(function (cell) {
+                        return '"t"'.replace("t", cell.textContent);
+                    })
+                    .join(",");
+              })
+              .join("\r\n");
+        }
+    };
+
+</script>

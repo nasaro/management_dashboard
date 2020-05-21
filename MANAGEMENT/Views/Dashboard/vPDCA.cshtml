@@ -1,0 +1,2165 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+     .modal-dialog-center {   
+        margin-right: 0;
+        margin-top: 200px;        
+        margin-left:400px;
+        }
+
+        
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .panel-footer.panel-custom {
+        background: red;
+        color: white;
+    }
+
+    .panel-heading.panel-custom {
+        background: red;
+        color: white;
+    }
+
+     .utama {
+        border-radius: 8px;
+        background: #e3f2e4;
+        overflow: auto;
+    }
+
+.modal-header {
+    cursor: move;
+}
+
+.modal-footer {
+    cursor: move;
+}     
+
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>PDCA</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" id="btnAddPDCA"  onclick="addPDCA();">Add New PDCA</button>
+                    <button class="btn btn-info btn-lg btn-block" id="btnAddPDCADo" onclick="addDo();">Add New PDCA DO</button>
+                    <button  class="btn btn-info btn-lg btn-block" id="btnAddPDCADoDtl" onclick="addDoDtl();">Add New PDCA DO Detail</button>
+                    <button class="btn btn-info btn-lg btn-block" id="btnAddPDCAAct" onclick="addAct();">Add New PDCA Action</button>
+                    <button class="btn btn-info btn-lg btn-block" id="btnAddPDCAActDtl" onclick="addActDtl();">Add New PDCA Action Detail</button>
+                </div>
+            </div>
+            <br />
+            <table id="tblPdca" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Main Problem</th>
+                        <th>Link Department</th>
+                        <th>Date</th>
+                        <th>Leader</th>
+                        <th>Member</th>
+                        <th>Dept</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Plan</th>
+                        <th>Do</th>
+                        <th>Check</th>
+                        <th>Action</th>
+                        <th>Print</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblPdca"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <hr>
+
+        <div id="myModalPlan">
+            <div class="panel panel-default">
+                <div class="panel-heading panel-custom">
+                    <h4>PDCA Plan</h4>
+                    <input type="hidden" class="form-control" id="id_pdca" name="id_pdca" value="" disabled="disabled" />
+                    <input type="hidden" class="form-control" id="id_plan" name="id_plan" value="" disabled="disabled" />
+
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#prob">Problem</a></li>
+                                <li><a data-toggle="tab" href="#cause">Root Cause</a></li>
+                                <li><a data-toggle="tab" href="#measure">Counter Measure</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="prob" class="tab-pane fade in active">
+                                    <br />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="problem">Problem :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="problem" name="problem" placeholder="Problem"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="goal">Goal :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="goal" name="goal" placeholder="Goal"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--End Content for Problem-->
+                                <div id="cause" class="tab-pane fade">
+                                    <br />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="why1">Why 1 :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="why1" name="why1" placeholder="Why 1"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="why2">Why 2 :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="why2" name="why2" placeholder="Why 2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="why3">Why 3 :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="why3" name="why3" placeholder="Why 3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="why4">Why 4 :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="why4" name="why4" placeholder="Why 4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="why5">Why 5 :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="why5" name="why5" placeholder="Why 5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <label for="root">Root Cause :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="3" id="root" name="root" placeholder="Root Cause"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--End Content for Education-->
+                                <div id="measure" class="tab-pane fade">
+                                    <br />
+                                    <div class="form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="count1">Counter Measure 1:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="count1" name="count1" placeholder="Counter Measure 1"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="benefit1">Benefit 1:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="benefit1" name="benefit1" placeholder="Benefit 1"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="challenge1">Challenge 1:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="challenge1" name="challenge1" placeholder="Challenge 1"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="count2">Counter Measure 2:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="count2" name="count2" placeholder="Counter Measure 2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="benefit2">Benefit 2:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="benefit2" name="benefit2" placeholder="Benefit 2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label for="challenge2">Challenge 2:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="challenge2" name="challenge2" placeholder="Challenge2"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div><!--End Content for counter-->
+                            </div><!--End tab Content -->
+                        </div><!--End container -->
+
+                    </form>
+                </div>
+                <div class="panel-footer panel-custom">
+                    <button type="button" class="btn btn-default" id="btnSavePlan" onclick="CRUDPdcaPlan('I');">Save</button>
+                    <button type="button" class="btn btn-default" id="btnUpdatePlan" onclick="CRUDPdcaPlan('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnclosePlan" onclick="exitPlan();">Close</button>
+                </div>
+            </div>
+        </div>
+     
+        <div id="PDCADoForm">
+                <h5>PDCA Do</h5>
+                <form>
+                    <div class="container">
+                        <table id="tblPdcaDo" class="table table-bordered  table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Containment</th>
+                                    <th>Criteria Effective</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodytblPdcaDo"></tbody>
+                        </table>
+                        
+                    </div><!--End container -->
+
+                </form>
+                <button type="button" class="btn btn-default" id="btncloseDo" onclick="exitDo();">Close</button>
+        </div>
+       
+        <div id="PDCADoDetailForm">
+            <h5>PDCA Do Detail</h5>
+            <form>
+                <div class="container">
+                    <table id="tblPdcaDoDtl" class="table table-bordered  table-hover">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Pic</th>
+                                <th>Deadline</th>
+                                <th>Completed</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblPdcaDoDtl"></tbody>
+                    </table>
+
+                </div><!--End container -->
+
+            </form>
+            <button type="button" class="btn btn-default" id="btncloseDoDtl" onclick="exitDoDtl();">Close</button>
+        </div>
+
+        <div id="PDCACheckForm">
+            <div class="panel panel-default">
+                <div class="panel-heading panel-custom">
+                    <h4>PDCA Check</h4>
+                    <input type="hidden" class="form-control" id="id_pdca_3" name="id_pdca_3" value="" disabled="disabled" />
+                    <input type="hidden" class="form-control" id="id_check" name="id_check" value="" disabled="disabled" />
+
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="container">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="test" name="test" placeholder="Test Result"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="success" name="success" placeholder="Success Or Not"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="area" name="area" placeholder="Area for Improvement"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--End container -->
+
+                    </form>
+                </div>
+                <div class="panel-footer panel-custom">
+                    <button type="button" class="btn btn-default" id="btnSaveCheck" onclick="CRUDPdcaCheck('I');">Save</button>
+                    <button type="button" class="btn btn-default" id="btnUpdateCheck" onclick="CRUDPdcaCheck('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btncloseCheck" onclick="exitCheck();">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="PDCAActForm">
+            <h5>PDCA Action 1</h5>
+            <form>
+                <div class="container">
+                    <table id="tblPdcaAct" class="table table-bordered  table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tested As Standard</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblPdcaAct"></tbody>
+                    </table>
+
+                </div><!--End container -->
+
+            </form>
+            <button type="button" class="btn btn-default" id="btncloseAct" onclick="exitAct();">Close</button>
+        </div>
+ 
+        <div id="PDCAActDetailForm">
+            <h5>PDCA Action 2 Detail</h5>
+            <form>
+                <div class="container">
+                    <table id="tblPdcaActDtl" class="table table-bordered  table-hover">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Pic</th>
+                                <th>Deadline</th>
+                                <th>Completed</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodytblPdcaActDtl"></tbody>
+                    </table>
+
+                </div><!--End container -->
+
+            </form>
+            <button type="button" class="btn btn-default" id="btncloseActDtl" onclick="exitActDtl();">Close</button>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+  
+        
+       </section>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">PDCA</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" id="id" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="prog" name="prog" placeholder="Program" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="mslh" name="mslh" placeholder="Problem" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="lead" name="lead" placeholder="Team Leader" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="ddate" placeholder="Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" rows="5" id="link" name="link" placeholder="Link Department"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" rows="5" id="member" name="member" placeholder="Member"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label for="cbdept">Type:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="cbdept">
+                                        <option value="QM">Quality</option>
+                                        <option value="BM">Purchasing</option>
+                                        <option value="MM">Marketing</option>
+                                        <option value="IC">PPIC</option>
+                                        <option value="CT">Casting</option>
+                                        <option value="MC">Machining</option>
+                                        <option value="EM">Engineering</option>
+                                        <option value="PM">Production</option>
+                                        <option value="FS">Finishing</option>
+                                        <option value="HR">HRD</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" data-dismiss="modal" onclick="CRUDPDCA('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" onclick="CRUDPDCA('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnClose" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModalPDCADo" tabindex="-1" role="dialog" aria-labelledby="myModalLabelPDCADo" aria-hidden="true">
+        
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalLabelPDCADo">PDCA Do</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="hidden" class="form-control" id="id_do" placeholder="id" disabled="disabled" />
+                                        <input type="hidden" class="form-control" id="id_pdca_2" name="id_pdca_2" value="" disabled="disabled" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" rows="5" id="containment" name="containment" placeholder="Containment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" rows="5" id="criteria" name="criteria" placeholder="criteria"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAddDo" data-dismiss="modal" onclick="CRUDPDCADo('I');">Add</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdateDo" data-dismiss="modal" onclick="CRUDPDCADo('U');">Update</button>
+                        <button type="button" class="btn btn-default" id="btnCloseDo" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+
+    <div class="modal fade" id="myModalPDCADoDtl" tabindex="-1" role="dialog" aria-labelledby="myModalLabelPDCADoDtl" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabelPDCADoDtl">PDCA Do Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" id="id_dodtl"  disabled="disabled" />
+                                    <input type="hidden" class="form-control" id="id_pdca_do"  disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" rows="3" id="task" name="task" placeholder="Task"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="pic" name="pic" placeholder="PIC" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="ddead" placeholder="Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="completed">
+                                        <label class="custom-control-label" for="completed">Completed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAddDoDtl" data-dismiss="modal" onclick="CRUDPDCADoDtl('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdateDoDtl" data-dismiss="modal" onclick="CRUDPDCADoDtl('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnCloseDoDtl" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="myModalPDCAAct" tabindex="-1" role="dialog" aria-labelledby="myModalLabelPDCAAct" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabelPDCAAct">PDCA Do</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" id="id_act" placeholder="id" disabled="disabled" />
+                                    <input type="hidden" class="form-control" id="id_pdca_3" name="id_pdca_3" value="" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" rows="5" id="testSTD" name="testSTD" placeholder="Tested As Standard"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAddAct" data-dismiss="modal" onclick="CRUDPDCAAct('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdateAct" data-dismiss="modal" onclick="CRUDPDCAAct('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnCloseAct" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="myModalPDCAActDtl" tabindex="-1" role="dialog" aria-labelledby="myModalLabelPDCAActDtl" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabelPDCAActDtl">PDCA Action 2 Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" id="id_actdtl" disabled="disabled" />
+                                    <input type="hidden" class="form-control" id="id_pdca_act" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" rows="3" id="taskact" name="taskact" placeholder="Task"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="picact" name="picact" placeholder="PIC" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="ddeadact" placeholder="Date"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="completedact">
+                                        <label class="custom-control-label" for="completedact">Completed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAddActDtl" data-dismiss="modal" onclick="CRUDPDCAActDtl('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdateActDtl" data-dismiss="modal" onclick="CRUDPDCAActDtl('U');">Update</button>
+                    <button type="button" class="btn btn-default" id="btnCloseActDtl" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+      <div class="loader"></div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var update = 0, updatePlan, updateDo, updateDoMdl, updateCheck, updateAct, updateActMdl;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#tbodytblPdca').empty();
+        MainLoad();
+        $('#utamaFrm').show();
+        $('#myModalPlan').hide();        
+        $('#PDCADoForm').hide();
+        $('#PDCADoDetailForm').hide();
+        $('#PDCACheckForm').hide();
+        $('#PDCAActForm').hide();
+        $('#PDCAActDetailForm').hide();
+        
+
+        $('#btnAddPDCADo').hide();
+        $('#btnAddPDCADoDtl').hide();
+        $('#btnAddPDCAAct').hide();
+        $('#btnAddPDCAActDtl').hide();
+
+
+        $(".modal-header").on("mousedown", function (mousedownEvt) {
+            var $draggable = $(this);
+            var x = mousedownEvt.pageX - $draggable.offset().left,
+                y = mousedownEvt.pageY - $draggable.offset().top;
+            $("body").on("mousemove.draggable", function (mousemoveEvt) {
+                $draggable.closest(".modal-dialog").offset({
+                    "left": mousemoveEvt.pageX - x,
+                    "top": mousemoveEvt.pageY - y
+                });
+            });
+            $("body").one("mouseup", function () {
+                $("body").off("mousemove.draggable");
+            });
+            $draggable.closest(".modal").one("bs.modal.hide", function () {
+                $("body").off("mousemove.draggable");
+            });
+        });
+
+        $(".modal-footer").on("mousedown", function (mousedownEvt) {
+            var $draggable = $(this);
+            var x = mousedownEvt.pageX - $draggable.offset().left,
+                y = mousedownEvt.pageY - $draggable.offset().top;
+            $("body").on("mousemove.draggable", function (mousemoveEvt) {
+                $draggable.closest(".modal-dialog").offset({
+                    "left": mousemoveEvt.pageX - x,
+                    "top": mousemoveEvt.pageY - y
+                });
+            });
+            $("body").one("mouseup", function () {
+                $("body").off("mousemove.draggable");
+            });
+            $draggable.closest(".modal").one("bs.modal.hide", function () {
+                $("body").off("mousemove.draggable");
+            });
+        });
+
+
+    });
+
+    function addDoDtl() {
+        $("#myModalPDCADoDtl").modal({ show: true, backdrop: false });
+        $('#btnAddDoDtl').show();
+        $('#btnUpdateDoDtl').hide();
+    }
+
+    function addActDtl() {
+        $("#myModalPDCAActDtl").modal({ show: true, backdrop: false });
+        $('#btnAddActDtl').show();
+        $('#btnUpdateActDtl').hide();
+    }
+
+
+    function CRUDPDCAActDtl(type) {
+        var res = validateActDtl();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updateActMdl = 1;
+            return false;
+        }
+
+        var adt = $("#completedact").is(':checked') ? 1 : 0;
+        var kpiObj = {
+            id: $('#id_actdtl').val(),
+            id_pdca_act: $('#id_pdca_act').val(),
+            task: $('#taskact').val(),
+            pic: $('#picact').val(),
+            dDeadline: $('#ddeadact').val(),
+            completed: adt,
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPdcaAct_2",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA Action 2 Successfull..."
+                    });
+                    updateActMdl = 0;
+                    PDCAActLoadDtl();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA Action 2  Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function PdcaDoDetail(iddtl) {        
+        $('#id_pdca_do').val(iddtl);
+        PDCADoLoadDtl();
+        
+        $('#btnAddPDCADoDtl').show();
+        $('#btnAddPDCADo').hide();
+        $('#btnAddPDCA').hide();
+
+        $('#PDCADoDetailForm').show();
+        $('#PDCADoForm').hide();
+    }
+
+    function PdcaActDetail(iddtl) {
+        $('#id_pdca_act').val(iddtl);
+        PDCAActLoadDtl();
+
+        
+        $('#btnAddPDCAActDtl').show();
+        $('#btnAddPDCAAct').hide();
+        $('#btnAddPDCADoDtl').hide();
+        $('#btnAddPDCADo').hide();
+        $('#btnAddPDCA').hide();
+
+        $('#PDCAActDetailForm').show();
+        $('#PDCAActForm').hide();
+    }
+
+    function PDCAActLoadDtl() {
+        var tr;
+        var kpiObj = {
+            id: $('#id_pdca_act').val(),
+            opt: "A"
+        }
+        $('#tbodytblPdcaActDtl').empty();
+        $.ajax({
+            url: urlKPI + "/viewPdcaAct_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.task + "</td>");
+                    tr.append("<td>" + item.pic + "</td>");
+                    tr.append("<td>" + item.dDeadline + "</td>");
+                    tr.append("<td>" + item.completed + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUserPDAActDtl(' + item.id + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelPdcaActDtl(' + item.id + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+
+                    $('#tbodytblPdcaActDtl').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+  
+    function DelPdcaActDtl(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDPdcaAct_2/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Action 2 Successfull..."
+                        });
+
+                        PDCAActLoadDtl();
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Action 2 Unsuccessfull..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+
+    function PdcaDO(iddo) {
+        $('#id_pdca_2').val(iddo);        
+        PDCADoLoad();
+        $('#btnAddPDCADo').show();
+        $('#btnAddPDCA').hide();
+        $('#btnAddPDCADoDtl').hide();
+
+        $('#PDCADoForm').show();
+        $('#PDCADoDetailForm').hide();
+    }
+
+    function addDo() {
+        $('#id_do').val("");        
+        $('#containment').val("");
+        $('#criteria').val("");        
+        $("#myModalPDCADo").modal({ show: true, backdrop: false })
+        $('#btnUpdateDo').hide();
+        $('#btnAddDo').show();
+    }
+
+    function CRUDPDCADoDtl(type) {
+        var res = validateDoDtl();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updateDoMdl = 1;
+            return false;
+        }
+
+        var adt = $("#completed").is(':checked') ? 1 : 0;
+        var kpiObj = {
+            id: $('#id_dodtl').val(),
+            id_pdca_do: $('#id_pdca_do').val(),
+            task: $('#task').val(),
+            pic: $('#pic').val(),
+            dDeadline: $('#ddead').val(),
+            completed: adt,
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPdcaDO_2",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA Do 2 Successfull..."
+                    });
+                    updateDoMdl = 0;
+                    PDCADoLoadDtl();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA 2 Do Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    
+    function CRUDPDCADo(type) {
+        var res = validateDo();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updateDo = 1;
+            return false;
+        }
+
+        var kpiObj = {
+            id: $('#id_do').val(),
+            id_pdca: $('#id_pdca_2').val(),
+            containment: $('#containment').val(),
+            criteria: $('#criteria').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPdcaDO_1",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA Do Successfull..."
+                    });
+                    updateDo = 0;
+                    PDCADoLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA Do Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function DelPdcaDo(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDPdcaDO_1/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Do 1 Successfull..."
+                        });
+
+                        PDCADoLoad();                        
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Do 1 Unsuccessfull..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function DelPdcaDoDtl(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDPdcaDO_2/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Do 1 Successfull..."
+                        });
+
+                        PDCADoLoadDtl();
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Do 1 Unsuccessfull..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+    
+    function addAct() {
+        $('#id_act').val("");
+        $('#testSTD').val("");
+        $("#myModalPDCAAct").modal({ show: true, backdrop: false })
+        $('#btnUpdateAct').hide();
+        $('#btnAddAct').show();
+    }
+
+    function PdcaAction(iddo) {
+        $('#id_pdca_3').val(iddo);
+        PDCAActLoad();
+        $('#btnAddPDCADo').hide();
+        $('#btnAddPDCA').hide();
+        $('#btnAddPDCADoDtl').hide();
+        $('#btnAddPDCAAct').show();        
+
+        $('#PDCAActForm').show();
+        //$('#PDCADoDetailForm').hide();
+    }
+
+    function exitAct() {
+        $('#tbodytblPdcaAct').empty();
+        $('#PDCAActForm').hide();
+        $('#btnAddPDCAAct').hide();
+        $('#btnAddPDCA').show();
+
+    }
+
+    function PDCAActLoad() {
+        var tr;
+        var kpiObj = {
+            id: $('#id_pdca_3').val(),
+            opt: "A"
+        }
+        $('#tbodytblPdcaAct').empty();
+        $.ajax({
+            url: urlKPI + "/viewPdcaAct_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.testSTD + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUserPDAAct(' + item.id + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelPdcaAct(' + item.id + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Detail !" onclick="PdcaActDetail(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+
+                    $('#tbodytblPdcaAct').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    
+    function CRUDPDCAAct(type) {
+        var res = validateAct();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updateAct = 1;
+            return false;
+        }
+
+        var kpiObj = {
+            id: $('#id_act').val(),
+            id_pdca: $('#id_pdca_3').val(),
+            testSTD: $('#testSTD').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPdcaAct_1",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA Action 1 Successfull..."
+                    });
+                    updateAct = 0;
+                    PDCAActLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA Action 1 Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    
+    function DelPdcaAct(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDPdcaAct_1/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Action 1 Successfull..."
+                        });
+
+                        PDCAActLoad();
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Action 1 Unsuccessfull..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+    
+    function exitActDtl() {
+        $('#tbodytblPdcaAct').empty();
+        $('#PDCAActDetailForm').hide();
+        $('#addActDtl').hide();
+        $('#btnAddPDCA').show();
+        $('#btnAddPDCAActDtl').hide();
+    }
+
+    function exitDo() {
+        $('#tbodytblPdcaDo').empty();
+        $('#PDCADoForm').hide();
+        $('#btnAddPDCADo').hide();
+        $('#btnAddPDCA').show();
+
+    }
+
+    function exitDoDtl() {
+        $('#tbodytblPdcaDo').empty();
+        $('#PDCADoDetailForm').hide();
+        $('#addDoDtl').hide();
+        $('#btnAddPDCA').show();
+        $('#btnAddPDCADoDtl').hide();
+    }
+    
+    function getbyUserPDAAct(id) {
+        getViewPdcaAct(id);
+        $("#myModalPDCAAct").modal({ show: true, backdrop: false })
+        $('#btnUpdateAct').show();
+        $('#btnAddAct').hide();
+    }
+
+    function getViewPdcaAct(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPdcaAct_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_act').val(item.id);
+                    $('#id_pdca_3').val(item.id_pdca);
+                    $('#testSTD').val(item.testSTD);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function getbyUserPDAActDtl(id) {
+        getViewPdcaActDtl(id);
+        $("#myModalPDCAActDtl").modal({ show: true, backdrop: false })
+        $('#btnUpdateActDtl').show();
+        $('#btnAddActDtl').hide();
+    }
+
+    function getViewPdcaActDtl(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPdcaAct_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_actdtl').val(item.id);
+                    $('#id_pdca_act').val(item.id_pdca_act);
+                    $('#taskact').val(item.task);
+                    $('#picact').val(item.pic);
+                    $('#ddeadact').val(item.dDeadline);
+                    if (item.completed == 1) { $('#completedact').attr('checked', true); }
+                    else { $('#completedact').attr('checked', false); }
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+
+    function getbyUserPDADoDtl(id) {
+        getViewPdcaDoDtl(id);
+        $("#myModalPDCADoDtl").modal({ show: true, backdrop: false })
+        $('#btnUpdateDoDtl').show();
+        $('#btnAddDoDtl').hide();
+    }
+
+
+    function getbyUserPDADo(id) {
+        getViewPdcaDo(id);
+        $("#myModalPDCADo").modal({ show: true, backdrop: false })
+        $('#btnUpdateDo').show();
+        $('#btnAddDo').hide();
+    }
+
+    function getViewPdcaDoDtl(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPdcaDO_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_dodtl').val(item.id);
+                    $('#id_pdca_do').val(item.id_pdca_do);
+                    $('#task').val(item.task);
+                    $('#pic').val(item.pic);                 
+                    $('#ddead').val(item.dDeadline);
+                    if (item.completed == 1) { $('#completed').attr('checked', true);  }
+                    else { $('#completed').attr('checked', false); }
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+
+    function getViewPdcaDo(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPdcaDO_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_do').val(item.id);
+                    $('#id_pdca_2').val(item.id_pdca);
+                    $('#containment').val(item.containment);
+                    $('#criteria').val(item.criteria);
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function PDCADoLoad() {
+        var tr;
+        var kpiObj = {
+            id: $('#id_pdca_2').val(),
+            opt: "A"
+        }
+        $('#tbodytblPdcaDo').empty();
+        $.ajax({
+            url: urlKPI + "/viewPdcaDO_1/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.containment + "</td>");
+                    tr.append("<td>" + item.criteria + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUserPDADo(' + item.id + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelPdcaDo(' + item.id + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Detail !" onclick="PdcaDoDetail(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+
+                    $('#tbodytblPdcaDo').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function PDCADoLoadDtl() {
+        var tr;
+        var kpiObj = {
+            id: $('#id_pdca_do').val(),
+            opt: "A"
+        }
+        $('#tbodytblPdcaDoDtl').empty();
+        $.ajax({
+            url: urlKPI + "/viewPdcaDO_2/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.task + "</td>");
+                    tr.append("<td>" + item.pic + "</td>");
+                    tr.append("<td>" + item.dDeadline + "</td>");
+                    tr.append("<td>" + item.completed + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUserPDADoDtl(' + item.id + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelPdcaDoDtl(' + item.id + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+
+                    $('#tbodytblPdcaDoDtl').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+    
+    function exitPlan() {
+        $('#myModalPlan').hide();
+    }
+
+    function exitCheck() {
+        $('#PDCACheckForm').hide();
+    }
+
+    function PdcaPlan(idkpi) {
+        $('#btnSavePlan').show();
+        $('#btnUpdatePlan').hide();
+        updatePlan = 0;        
+        $('#id_pdca').val(idkpi);
+        $('#id_plan').val('');
+        $('#problem').val('');
+        $('#goal').val('');
+        $('#why1').val('');
+        $('#why2').val('');
+        $('#why3').val('');
+        $('#why4').val('');
+        $('#why5').val('');
+        $('#root').val('');
+        $('#count1').val('');
+        $('#benefit1').val('');
+        $('#challenge1').val('');
+        $('#count2').val('');
+        $('#benefit2').val('');
+        $('#challenge2').val('');
+
+        getViewPdcaPlan(idkpi)
+        $('#myModalPlan').show();
+    }
+   
+    function PdcaCheck(idkpi) {
+        $('#btnSaveCheck').show();
+        $('#btnUpdateCheck').hide();
+        updateCheck = 0;
+        getViewPdcaCheck(idkpi)
+        $('#PDCACheckForm').show();
+
+
+        $('#id_pdca_3').val(idkpi);
+        $('#id_check').val('');
+        $('#test').val('');
+        $('#success').val('');
+        $('#area').val('');
+
+    }
+
+    function getViewPdcaCheck(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'A'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPdcaCheck/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_check').val(item.id);
+                    $('#test').val(item.testResult);
+                    $('#success').val(item.success);
+                    $('#area').val(item.area);
+                    $('#btnSaveCheck').hide();
+                    $('#btnUpdateCheck').show();
+
+                });
+                
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function getViewPdcaPlan(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'A'
+        }
+        console.log(idkpi);
+        $.ajax({
+            url: urlKPI + "/viewPDCAPLAN/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id_plan').val(item.id);
+                    $('#id_pdca').val(item.id_pdca);
+                    $('#problem').val(item.problem);
+                    $('#goal').val(item.goal);
+                    $('#why1').val(item.why1);
+                    $('#why2').val(item.why2);
+                    $('#why3').val(item.why3);
+                    $('#why4').val(item.why4);
+                    $('#why5').val(item.why5);
+                    $('#root').val(item.root);
+                    $('#count1').val(item.count1);
+                    $('#benefit1').val(item.benefit1);
+                    $('#challenge1').val(item.challenge1);
+                    $('#count2').val(item.count2);
+                    $('#benefit2').val(item.benefit2);
+                    $('#challenge2').val(item.challenge2);
+
+                    $('#btnSavePlan').hide();
+                    $('#btnUpdatePlan').show();
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function CRUDPdcaPlan(type) {
+        var res = validatePlan();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updatePlan = 1;
+            return false;
+        }
+
+        var kpiObj = {
+            id: $('#id_plan').val(),
+            id_pdca: $('#id_pdca').val(),
+            problem: $('#problem').val(),
+            goal: $('#goal').val(),
+            why1: $('#why1').val(),
+            why2: $('#why2').val(),
+            why3: $('#why3').val(),
+            why4: $('#why4').val(),
+            why5: $('#why5').val(),
+            root: $('#root').val(),
+            count1: $('#count1').val(),
+            benefit1: $('#benefit1').val(),
+            challenge1: $('#challenge1').val(),
+            count2: $('#count2').val(),
+            benefit2: $('#benefit2').val(),
+            challenge2: $('#challenge2').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPLAN",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA PLAN Successfull..."
+                    });
+                    updatePlan = 0;
+                    $('#myModalPlan').hide();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA PLAN Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+  
+    function CRUDPdcaCheck(type) {
+        var res = validateCheck();
+        if (res == false) {
+            alert('fill entry form, completely');
+            updateCheck = 1;
+            return false;
+        }
+        var kpiObj = {
+            id: $('#id_check').val(),
+            id_pdca: $('#id_pdca_3').val(),
+            testResult: $('#test').val(),
+            success: $('#success').val(),
+            area: $('#area').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPdcaCheck",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Save PDCA Check Successfull..."
+                    });
+                    updateCheck = 0;
+                    //--getLoad();
+                    $('#PDCACheckForm').hide();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Save PDCA Check Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function PrintPDCA(code) {
+        var ppicObj = {
+            id: code,
+            type: "PDCA"
+        };
+        $.ajax({
+            url: urlKPI + "/passPrintNotulen/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result == 1) {
+                    window.open('../Report/WebRptForm.aspx');
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+
+    function MainLoad() {
+        var tr;
+        var kpiObj = {
+            id: 0,
+            opt: 'A'
+        }
+
+        $.ajax({
+            url: urlKPI + "/viewPDCA/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.program + "</td>");
+                    tr.append("<td>" + item.masalah + "</td>");
+                    tr.append("<td>" + item.linkDept + "</td>");
+                    tr.append("<td>" + item.tgl + "</td>");
+                    tr.append("<td>" + item.leader + "</td>");
+                    tr.append("<td>" + item.member + "</td>");
+
+                    if (item.dept == 'BM')
+                        tr.append("<td>Purchasing</td>");
+                    else if (item.dept == 'MM')
+                        tr.append("<td>Marketing</td>");
+                    else if (item.dept == 'IC')
+                        tr.append("<td>PPIC</td>");
+                    else if (item.dept == 'CT')
+                        tr.append("<td>Casting</td>");
+                    else if (item.dept == 'EM')
+                        tr.append("<td>Engineering</td>");
+                    else if (item.dept == 'QM')
+                        tr.append("<td>Quality</td>");
+                    else if (item.dept == 'PM')
+                        tr.append("<td>Production</td>");
+                    else if (item.dept == 'MC')
+                        tr.append("<td>Machining</td>");
+                    else if (item.dept == 'FS')
+                        tr.append("<td>Finishing</td>");
+                    else if (item.dept == 'HR')
+                        tr.append("<td>HRD</td>");
+                    else tr.append("<td></td>");
+
+
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUser(' + item.id + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelPdca(' + item.id + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Plan !" onclick="PdcaPlan(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Do !" onclick="PdcaDO(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Check !" onclick="PdcaCheck(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Action !" onclick="PdcaAction(' + item.id + ')"><i class="glyphicon glyphicon-th-list" style="color:blue"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Pdf" onclick="PrintPDCA(' + item.id + ')"><i class="glyphicon glyphicon-print" style="color:green"></i></a></td>');
+
+                    $('#tbodytblPdca').append(tr);
+                });
+                $('#tblPdca').DataTable({ responsive: true });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function addPDCA() {
+        $('#id').val("");
+        if (update === 0) {
+            $('#prog').val("");
+            $('#ddate').val("");
+            $('#prog').val("");
+            $('#mslh').val("");
+            $('#link').val("");
+            $('#lead').val("");
+            $('#member').val("");
+        }
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').hide();
+        $('#btnAdd').show();
+    }
+
+    function CRUDPDCA(type) {
+        var res = validateATT();
+        if (res == false) {
+            alert('fill entry form, completely');
+            update = 1;
+            return false;
+        }
+        var kpiObj = {
+            id: $('#id').val(),
+            program: $('#prog').val(),
+            tgl: $('#ddate').val(),
+            masalah: $('#mslh').val(),
+            linkDept: $('#link').val(),
+            leader: $('#lead').val(),
+            member: $('#member').val(),
+            dept: $('#cbdept').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDPDCA",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add PDCA Successfull..."
+                    });
+                    update = 0;
+                    //--getLoad();
+                    window.location.reload();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "CRUD PDCA Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function DelPdca(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                id: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDPDCA/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Successfull..."
+                        });
+                        //--getLoad();
+                        window.location.reload();
+                    } else {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Delete PDCA Unsuccessfull..."
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function getbyUser(id) {
+        getView(id);
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').show();
+        $('#btnAdd').hide();
+    }
+
+    function getView(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            opt: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewPDCA/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id').val(item.id);
+                    $('#ddate').val(item.tgl);
+                    $('#prog').val(item.program);
+                    $('#mslh').val(item.masalah);
+                    $('#link').val(item.linkDept);
+                    $('#lead').val(item.leader);
+                    $('#member').val(item.member);
+                    $('#cbdept').val(item.dept);
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function validateATT() {
+        var isValid = true;
+        if ($('#prog').val().trim() == "") {
+            $('#prog').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#prog').css('border-color', 'lightgrey');
+        }
+
+        if ($('#mslh').val().trim() == "") {
+            $('#mslh').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#mslh').css('border-color', 'lightgrey');
+        }
+
+        if ($('#link').val().trim() == "") {
+            $('#link').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#link').css('border-color', 'lightgrey');
+        }
+
+        if ($('#lead').val().trim() == "") {
+            $('#lead').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#lead').css('border-color', 'lightgrey');
+        }
+
+        if ($('#member').val().trim() == "") {
+            $('#member').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#member').css('border-color', 'lightgrey');
+        }
+
+        if ($('#ddate').val().trim() == "") {
+            $('#ddate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ddate').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function validatePlan() {
+        var isValid = true;
+        if ($('#problem').val().trim() == "") {
+            $('#problem').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#problem').css('border-color', 'lightgrey');
+        }
+
+        if ($('#goal').val().trim() == "") {
+            $('#goal').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#goal').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+
+    function validateDo() {
+        var isValid = true;
+        if ($('#containment').val().trim() == "") {
+            $('#containment').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#containment').css('border-color', 'lightgrey');
+        }
+
+        if ($('#criteria').val().trim() == "") {
+            $('#criteria').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#criteria').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+    
+    function validateDoDtl() {
+        var isValid = true;
+        if ($('#task').val().trim() == "") {
+            $('#task').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#task').css('border-color', 'lightgrey');
+        }
+
+        if ($('#pic').val().trim() == "") {
+            $('#pic').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#pic').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+    
+    function validateCheck() {
+        var isValid = true;
+        if ($('#test').val().trim() == "") {
+            $('#test').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#test').css('border-color', 'lightgrey');
+        }
+
+        if ($('#success').val().trim() == "") {
+            $('#success').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#success').css('border-color', 'lightgrey');
+        }
+
+        if ($('#area').val().trim() == "") {
+            $('#area').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#area').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+    
+    function validateAct() {
+        var isValid = true;
+        if ($('#testSTD').val().trim() == "") {
+            $('#testSTD').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#testSTD').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+
+    function validateActDtl() {
+        var isValid = true;
+        if ($('#taskact').val().trim() == "") {
+            $('#taskact').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#taskact').css('border-color', 'lightgrey');
+        }
+
+        if ($('#picact').val().trim() == "") {
+            $('#picact').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#picact').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+</script>

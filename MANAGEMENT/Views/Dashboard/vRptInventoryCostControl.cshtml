@@ -1,0 +1,583 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    .zui-table {
+        border: none;
+        border-right: solid 1px #DDEFEF;
+        border-collapse: separate;
+        border-spacing: 0;
+        font: normal 13px Arial, sans-serif;
+    }
+
+        .zui-table thead th {
+            background-color: #DDEFEF;
+            border: none;
+            color: #336B6B;
+            padding: 10px;
+            text-align: left;
+            text-shadow: 1px 1px 1px #fff;
+            white-space: nowrap;
+        }
+
+
+        .zui-table tbody td {
+            border-bottom: solid 1px #DDEFEF;
+            color: black;
+            padding: 10px;
+            /*text-shadow: 1px 1px 3px blue;*/
+            white-space: nowrap;
+            font-size: 85%;
+        }
+
+    .zui-wrapper {
+        position: relative;
+    }
+
+    .zui-scroller {
+        margin-left: 340px;
+        overflow-x: scroll;
+        overflow-y: visible;
+        padding-bottom: 5px;
+        width: 800px;
+    }
+
+    .zui-table .zui-sticky-col {
+        border-left: solid 1px #DDEFEF;
+        border-right: solid 1px #DDEFEF;
+        left: 0;
+        position: absolute;
+        top: auto;
+        width: 340px;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="container">
+        <br />
+        <h3>Inventory Cost Control</h3>
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to XLS" onclick="javascript: xport.toCSV('CostINV');">Export to XLS</button>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+
+            
+        </div>
+        <br />
+        <div id="detailForm" class="zui-wrapper">
+            <div class="zui-scroller form-horizontal">
+                <table id="CostINV" class="zui-table table table-bordered  table-hover">
+                    @*<caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>*@
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b></b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>JAN</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>FEB</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>MAR</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>APR</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>MAY</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>JUN</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>JUL</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>AUG</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>SEP</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>OCT</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>NOV</b></th>
+                            <th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>DEC </b></th>
+                            @*<th colspan="2" style="background-color: #4d79ff;color: white;text-align: center"><b>TOTAL</b></th>*@
+                        </tr>
+                        <tr>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                            @*<th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                            <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>*@
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblINV"></tbody>
+                </table>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+
+        </div>
+
+        <div id="bottom_anchor"></div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var grandtotal = 0, totA1 = 0, totA2, totA3, totA4, totA5, totA6, totA7, totA8, totA9, totA10, totA11, totA12;
+    var totT1 = 0, totT2, totT3, totT4, totT5, totT6, totT7, totT8, totT9, totT10, totT11, totT12;
+    var sumtotA = 0, sumtotT = 0;
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+
+        var dNow = new Date()
+        var iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        //$('#thn').text('YEAR : ' + iYear);
+        $('#monthkpi').val(iMonth);
+        $('#monthkpi').hide();
+        getView(iYear, iMonth);
+    });
+
+    function getView(year, month) {
+        var tr;
+        var ppicObj = {
+            thn: year,
+            bln: month
+        };
+        $.ajax({
+            url: urlKPI + "/vRptInvControl/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    var s = item.item;
+                    if (s.match(/TOTAL.*/)) {
+                        tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #006622;'><b>" + item.item + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T1) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A1) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T2) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A2) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T3) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A3) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T4) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A4) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T5) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A5) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T6) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A6) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T7) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A7) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T8) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A8) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T9) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A9) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T10) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A10) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T11) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A11) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.T12) + "</b></span></td>");
+                        tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.A12) + "</b></span></td>");
+                        //tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.totSubRowT) + "</b></span></td>");
+                        //tr.append("<td><span class='pull-right' style='color: #006622;'><b>" + formatNumber(item.totSubRowA) + "</b></span></td>");
+
+                    }
+                    else {
+                        tr.append("<td class='zui-sticky-col'><b>" + item.item + "</b></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T1) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A1) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T2) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A2) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T3) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A3) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T4) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A4) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T5) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A5) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T6) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A6) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T7) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A7) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T8) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A8) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T9) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A9) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T10) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A10) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T11) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A11) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T12) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A12) + "</span></td>");
+                        //tr.append("<td><span class='pull-right'>" + formatNumber(item.totRowT) + "</span></td>");
+                        //tr.append("<td><span class='pull-right'>" + formatNumber(item.totRowA) + "</span></td>");
+                    }
+
+
+                    $('#CostINV').append(tr);
+                    totA1 = item.totA1;
+                    totA2 = item.totA2;
+                    totA3 = item.totA3;
+                    totA4 = item.totA4;
+                    totA5 = item.totA5;
+                    totA6 = item.totA6;
+                    totA7 = item.totA7;
+                    totA8 = item.totA8;
+                    totA9 = item.totA9;
+                    totA10 = item.totA10;
+                    totA11 = item.totA11;
+                    totA12 = item.totA12;
+
+                    totT1 = item.totT1;
+                    totT2 = item.totT2;
+                    totT3 = item.totT3;
+                    totT4 = item.totT4;
+                    totT5 = item.totT5;
+                    totT6 = item.totT6;
+                    totT7 = item.totT7;
+                    totT8 = item.totT8;
+                    totT9 = item.totT9;
+                    totT10 = item.totT10;
+                    totT11 = item.totT11;
+                    totT12 = item.totT12;
+
+                    sumtotA = item.grandtotA;
+                    sumtotT = item.grandtotT;
+                });
+                tr = $('<tr/>');
+                tr.append("<td class='zui-sticky-col'><span class='pull-right' style='color: #1a1aff;'><b>GRAND TOTAL</b></span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT1) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA1) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT2) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA2) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT3) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA3) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT4) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA4) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT5) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA5) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT6) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA6) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT7) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA7) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT8) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA8) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT9) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA9) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT10) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA10) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT11) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA11) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT12) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA12) + "</span></td>");
+                //tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumtotT) + "</span></td>");
+                //tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(sumtotA) + "</span></td>");
+
+                $('#CostINV').append(tr);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+
+    function getViewbak(year, month) {
+        var tr;
+        var ppicObj = {
+            thn: year,
+            bln: month
+        };
+        $.ajax({
+            url: urlKPI + "/vRptInvControl/",
+            data: JSON.stringify(ppicObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    var s = item.item;                   
+                        tr.append("<td><b>" + item.item + "</b></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T1) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A1) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T2) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A2) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T3) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A3) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T4) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A4) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T5) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A5) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T6) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A6) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T7) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A7) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T8) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A8) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T9) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A9) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T10) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A10) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T11) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A11) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.T12) + "</span></td>");
+                        tr.append("<td><span class='pull-right'>" + formatNumber(item.A12) + "</span></td>");
+
+                    $('#CostINV').append(tr);
+                    totA1 = item.totA1;
+                    totA2 = item.totA2;
+                    totA3 = item.totA3;
+                    totA4 = item.totA4;
+                    totA5 = item.totA5;
+                    totA6 = item.totA6;
+                    totA7 = item.totA7;
+                    totA8 = item.totA8;
+                    totA9 = item.totA9;
+                    totA10 = item.totA10;
+                    totA11 = item.totA11;
+                    totA12 = item.totA12;
+
+                    totT1 = item.totT1;
+                    totT2 = item.totT2;
+                    totT3 = item.totT3;
+                    totT4 = item.totT4;
+                    totT5 = item.totT5;
+                    totT6 = item.totT6;
+                    totT7 = item.totT7;
+                    totT8 = item.totT8;
+                    totT9 = item.totT9;
+                    totT10 = item.totT10;
+                    totT11 = item.totT11;
+                    totT12 = item.totT12;
+
+                    sumtotA = item.totSubRowA;
+                    sumtotT = item.totSubRowT;
+                });
+                tr = $('<tr/>');
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'><b>GRAND TOTAL</b></span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT1) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA1) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT2) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA2) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT3) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA3) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT4) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA4) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT5) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA5) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT6) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA6) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT7) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA7) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT8) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA8) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT9) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA9) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT10) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA10) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT11) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA11) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totT12) + "</span></td>");
+                tr.append("<td><span class='pull-right' style='color: #1a1aff;'>" + formatNumber(totA12) + "</span></td>");
+
+                $('#CostINV').append(tr);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function GetPeriode() {
+        var tr;
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        $('#tbodytblINV').empty();
+        getView(newyear, newmonth)
+    }
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    var xport = {
+        _fallbacktoCSV: true,
+        toXLS: function (tableId, filename) {
+            this._filename = (typeof filename == 'undefined') ? tableId : filename;
+
+            //var ieVersion = this._getMsieVersion();
+            //Fallback to CSV for IE & Edge
+            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+                return this.toCSV(tableId);
+            } else if (this._getMsieVersion() || this._isFirefox()) {
+                alert("Not supported browser");
+            }
+
+            //Other Browser can download xls
+            var htmltable = document.getElementById(tableId);
+            var html = htmltable.outerHTML;
+
+            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls');
+        },
+        toCSV: function (tableId, filename) {
+            this._filename = (typeof filename === 'undefined') ? tableId : filename;
+            // Generate our CSV string from out HTML Table
+            var csv = this._tableToCSV(document.getElementById(tableId));
+            // Create a CSV Blob
+            var blob = new Blob([csv], { type: "text/csv" });
+
+            // Determine which approach to take for the download
+            if (navigator.msSaveOrOpenBlob) {
+                // Works for Internet Explorer and Microsoft Edge
+                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+            } else {
+                this._downloadAnchor(URL.createObjectURL(blob), 'csv');
+            }
+        },
+        _getMsieVersion: function () {
+            var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0) {
+                // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+            }
+
+            var trident = ua.indexOf("Trident/");
+            if (trident > 0) {
+                // IE 11 => return version number
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+            }
+
+            var edge = ua.indexOf("Edge/");
+            if (edge > 0) {
+                // Edge (IE 12+) => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+            }
+
+            // other browser
+            return false;
+        },
+        _isFirefox: function () {
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                return 1;
+            }
+
+            return 0;
+        },
+        _downloadAnchor: function (content, ext) {
+            var anchor = document.createElement("a");
+            anchor.style = "display:none !important";
+            anchor.id = "downloadanchor";
+            document.body.appendChild(anchor);
+
+            // If the [download] attribute is supported, try to use it
+
+            if ("download" in anchor) {
+                anchor.download = this._filename + "." + ext;
+            }
+            anchor.href = content;
+            anchor.click();
+            anchor.remove();
+        },
+        _tableToCSV: function (table) {
+            // We'll be co-opting `slice` to create arrays
+            var slice = Array.prototype.slice;
+
+            return slice
+              .call(table.rows)
+              .map(function (row) {
+                  return slice
+                    .call(row.cells)
+                    .map(function (cell) {
+                        return '"t"'.replace("t", cell.textContent);
+                    })
+                    .join(",");
+              })
+              .join("\r\n");
+        }
+    };
+
+
+
+</script>

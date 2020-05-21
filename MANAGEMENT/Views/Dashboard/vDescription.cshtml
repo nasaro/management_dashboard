@@ -1,0 +1,326 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Table KPI Description</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" onclick="clearTextBox();">Add New KPI Description</button>
+                </div>
+            </div>
+            <br />
+            <table id="MasterInfo" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th>Desc</th>
+                        <th>Group</th>
+                        <th>Row</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblKPI"></tbody>
+            </table>
+        </div> <!--Form utama-->
+    </section>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Add New KPI Description</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="id">ID</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="id" placeholder="Id" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="desc">Description :</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input id="desc" name="desc" type="text" class="form-control" placeholder="Description" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="group">Group :</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input id="group" name="group" type="text" class="form-control" placeholder="Group" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="sort">Row :</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input id="sort" name="sort" type="number" class="form-control" placeholder="Row" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" data-dismiss="modal" onclick="CRUDkpi('I');">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" onclick="CRUDkpi('U');">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="loader"></div>
+    </div>
+
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var update = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        MainLoad();
+        $('#utamaFrm').show();
+    });
+
+    
+    function MainLoad() {
+        var tr;
+        var kpiObj = {
+            id: 0,
+            ch: 'S'
+        };
+
+        $.ajax({
+            url: urlKPI + "/viewKPIDesc/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.desc + "</td>");
+                    tr.append("<td>" + item.group + "</td>");
+                    tr.append("<td>" + item.sort + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUser(' + item.iddesc + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelKPI(' + item.iddesc + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    $('#MasterInfo').append(tr);
+                });
+                $('#MasterInfo').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function getLoad() {
+        var tr;
+        $('#tbodytblKPI').empty();
+        var kpiObj = {
+            id: 0,
+            ch: 'S'
+        }
+        $.ajax({
+            url: urlKPI + "/viewKPIDesc/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr />');
+                    tr.append("<td>" + item.desc + "</td>");
+                    tr.append("<td>" + item.group + "</td>");
+                    tr.append("<td>" + item.sort + "</td>");
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Edit !" onclick="getbyUser(' + item.iddesc + ')"><i class="glyphicon glyphicon-pencil" style="color:red"></i></a></td>');
+                    tr.append('<td><a href="javascript:void(0)" data-toggle="tooltip" title="Delete !" onclick="DelKPI(' + item.iddesc + ')"><i class="glyphicon glyphicon-trash" style="color:red"></i></a></td>');
+                    $('#tbodytblKPI').append(tr);
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function CRUDkpi(type) {
+        var res = validateATT();
+        if (res == false) {
+            alert('fill entry form, completely');
+            update = 1;
+            return false;
+        }
+        var kpiObj = {
+            iddesc: $('#id').val(),
+            group: $('#group').val(),
+            desc: $('#desc').val(),
+            sort: $('#sort').val(),
+            ch: type
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/CRUDkpiDesc",
+            data: JSON.stringify(kpiObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Add KPI Successfull..."
+                    });
+                    update = 0;
+                    getLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Add KPI Failed..."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function DelKPI(id) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            var kpiObj = {
+                iddesc: id,
+                ch: 'D'
+            };
+            $.ajax({
+                url: urlKPI + "/CRUDkpiDesc/",
+                type: "POST",
+                data: JSON.stringify(kpiObj),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    getLoad();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function getbyUser(id) {
+        getView(id);
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').show();
+        $('#btnAdd').hide();
+    }
+
+    function getView(idkpi) {
+        var kpiObj = {
+            id: idkpi,
+            ch: 'B'
+        }
+        $.ajax({
+            url: urlKPI + "/viewKPIDesc/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    $('#id').val(item.iddesc);
+                    $('#group').val(item.group);
+                    $('#desc').val(item.desc);
+                    $('#sort').val(item.sort);
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+
+    function clearTextBox() {
+        $('#id').val("");
+        if (update === 0) {
+            $('#group').val("");
+            $('#desc').val("");
+            $('#sort').val("");
+        }
+        $("#myModal").modal({ show: true, backdrop: false })
+        $('#btnUpdate').hide();
+        $('#btnAdd').show();
+    }
+
+    function validateATT() {
+        var isValid = true;
+
+        if ($('#group').val().trim() == "") {
+            $('#group').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#group').css('border-color', 'lightgrey');
+        }
+
+        if ($('#desc').val().trim() == "") {
+            $('#desc').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#desc').css('border-color', 'lightgrey');
+        }
+
+        if ($('#sort').val().trim() == "") {
+            $('#sort').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#sort').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+</script>

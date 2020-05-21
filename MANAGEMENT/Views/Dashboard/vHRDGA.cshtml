@@ -1,0 +1,1584 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+
+
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="9" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>HRD & GA</b></a></th>
+                        <td><span id="RevTitle" style="color:red">Revenue</span></td>
+                        <td><span id="HrdGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitle" style="color:red">Production Output PDA</span></td>
+                        <td><span id="HrdGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="HrdGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitle" style="color:red">Safety Index</span></td>
+                        <td><span id="HrdGrdSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrSaf" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TraTitle" style="color:red">People Development(training) </span></td>
+                        <td><span id="HrdGrdTra" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtTra" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActTra" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchTra" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrTra" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdr" style="display:none">
+                        <td><span id="CapTitle" style="color:red">People Development(Skill capability index)</span></td>
+                        <td><span id="HrdGrdCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchCap" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrCap" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitle" style="color:red">GA Cost Control-Labor Cost</span></td>
+                        <td><span id="HrdGrdLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchLab" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrLab" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OveTitle" style="color:red">GA Cost Control-Total Overtime</span></td>
+                        <td><span id="HrdGrdOve" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtOve" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActOve" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchOve" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrOve" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="9" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>HRD & GA</b></a></th>
+                        <td><span id="RevTitleMonth" style="color:red">Revenue</span></td>
+                        <td><span id="HrdGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleMonth" style="color:red">Production Output PDA</span></td>
+                        <td><span id="HrdGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="HrdGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitleMonth" style="color:red">Safety Index</span></td>
+                        <td><span id="HrdGrdSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrSafMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TraTitleMonth" style="color:red">People Development(training) </span></td>
+                        <td><span id="HrdGrdTraMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtTraMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActTraMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchTraMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrTraMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trdtl" style="display:none">
+                        <td><span id="CapTitleMonth" style="color:red">People Development(Skill capability index)</span></td>
+                        <td><span id="HrdGrdCapMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtCapMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActCapMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchCapMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrCapMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitleMonth" style="color:red">GA Cost Control-Labor Cost</span></td>
+                        <td><span id="HrdGrdLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchLabMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrLabMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OveTitleMonth" style="color:red">GA Cost Control-Total Overtime</span></td>
+                        <td><span id="HrdGrdOveMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtOveMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActOveMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchOveMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrOveMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="9" class="text-center"><b>HRD & GA</b></th>
+                        <td><span id="RevTitleSum" style="color:red">Revenue</span></td>
+                        <td><span id="HrdGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleSum" style="color:red">Production Output PDA</span></td>
+                        <td><span id="HrdGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="HrdGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitleSum" style="color:red">Safety Index</span></td>
+                        <td><span id="HrdGrdSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrSafSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="TraTitleSum" style="color:red">People Development(training) </span></td>
+                        <td><span id="HrdGrdTraSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtTraSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActTraSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchTraSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrTraSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trsubdtl" style="display:none">
+                        <td><span id="CapTitleSum" style="color:red">People Development(Skill capability index)</span></td>
+                        <td><span id="HrdGrdCapSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtCapSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActCapSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchCapSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrCapSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="LabTitleSum" style="color:red">GA Cost Control-Labor Cost</span></td>
+                        <td><span id="HrdGrdLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchLabSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrLabSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="OveTitleSum" style="color:red">GA Cost Control-Total Overtime</span></td>
+                        <td><span id="HrdGrdOveSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdTgtOveSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdActOveSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdAchOveSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="HrdScrOveSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var HrdScrRev = 0;
+    var HrdScrPda = 0;
+    var HrdScrPdc = 0;
+    var HrdScrSaf = 0;
+    var HrdScrTra = 0;
+    var HrdScrCap = 0;
+    //--var HrdScrLab = 0;
+    var HrdScrOve = 0;
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum = 0;
+    var TmpGrdSafe = 0, TmpTrgSafe = 0;
+    var TmpGrdTrain = 0, TmpTrgTrain = 0;
+    var TmpGrdSkill = 0, TmpTrgSkill = 0;
+    var TmpGrdLabor = 0, TmpTrgLabor = 0;
+    var TmpGrdOver = 0, TmpTrgOver = 0;
+    var TmpGrdSafeMonth = 0, TmpTrgSafeMonth = 0;
+    var TmpGrdTrainMonth = 0, TmpTrgTrainMonth = 0;
+    var TmpGrdSkillMonth = 0, TmpTrgSkillMonth = 0;
+    var TmpGrdLaborMonth = 0, TmpTrgLaborMonth = 0;
+    var TmpGrdOverMonth = 0, TmpTrgOverMonth = 0;
+    var TmpGrdSafeSum = 0, TmpTrgSafeSum = 0;
+    var TmpGrdTrainSum = 0, TmpTrgTrainSum = 0;
+    var TmpGrdSkillSum = 0, TmpTrgSkillSum = 0;
+    var TmpGrdLaborSum = 0, TmpTrgLaborSum = 0;
+    var TmpGrdOverSum = 0, TmpTrgOverSum = 0;
+    var PicTotGrade = 0, PicTotGradeMonth = 0, PicTotGradeSum = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function getView(thn) {
+        PicScrTot = 0;
+        PicTotGrade = 0;
+        TmpGrdSafe = 0, TmpGrdTrain = 0, TmpGrdSkill = 0, TmpGrdLabor = 0, TmpGrdOver = 0, TmpTrgSafe = 0, TmpTrgTrain = 0, TmpTrgSkill = 0, TmpTrgLabor = 0, TmpTrgOver = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vHrdGADept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#HrdGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#HrdTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#HrdActRev").text(formatNumber(item.PicActRev));
+                        var HrdTgtRev = item.PicTgtRev;
+                        if (HrdTgtRev == 0) {
+                            $("#HrdAchRev").text(0);
+                            $("#HrdScrRev").text(0);
+                        } else {
+                            var HrdAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (HrdAchRev < 0)
+                                HrdAchRev = 0;
+                            $("#HrdAchRev").text(formatNumber(HrdAchRev.toFixed(2)));
+                            if (HrdAchRev > 110)
+                                HrdAchRev = 120;
+                            else if (HrdAchRev > 103 && HrdAchRev <= 110)
+                                HrdAchRev = 110;
+                            else if (HrdAchRev > 95 && HrdAchRev <= 103)
+                                HrdAchRev = 100;
+                            else if (HrdAchRev >= 90 && HrdAchRev <= 95)
+                                HrdAchRev = 90;
+                            else if (HrdAchRev < 90)
+                                HrdAchRev = 60;
+                            else
+                                HrdAchRev = 0;
+
+
+                            HrdScrRev = item.PicGrdRev * HrdAchRev / 100;
+                            var newcolor = HrdScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTot = PicScrTot + HrdScrRev;
+                            PicTotGrade = PicTotGrade + item.PicGrdRev;
+                            $("#HrdScrRev").text(formatNumber(HrdScrRev.toFixed(2)));
+                        }
+                    }
+
+
+                    $("#HrdGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#HrdTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#HrdActPda").text(formatNumber(item.PicActPda));
+                    var HrdTgtPda = item.PicTgtPda;
+                    if (HrdTgtPda == 0) {
+                        $("#HrdAchPda").text(0);
+                        $("#HrdScrPda").text(0);
+                    } else {
+                        var HrdAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        if (HrdAchPda < 0)
+                            HrdAchPda = 0;
+                        $("#HrdAchPda").text(formatNumber(HrdAchPda.toFixed(2)));
+                        if (HrdAchPda > 110)
+                            HrdAchPda = 120;
+                        else if (HrdAchPda > 102 && HrdAchPda <= 110)
+                            HrdAchPda = 110;
+                        else if (HrdAchPda > 98 && HrdAchPda <= 102)
+                            HrdAchPda = 100;
+                        else if (HrdAchPda >= 94 && HrdAchPda <= 98)
+                            HrdAchPda = 90;
+                        else if (HrdAchPda < 94)
+                            HrdAchPda = 60;
+                        else
+                            HrdAchPda = 0;
+
+
+                        HrdScrPda = item.PicGrdPda * HrdAchPda / 100;
+                        var newcolor = HrdScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTot = PicScrTot + HrdScrPda;
+                        PicTotGrade = PicTotGrade + item.PicGrdPda;
+                        $("#HrdScrPda").text(formatNumber(HrdScrPda.toFixed(2)));
+                    }
+
+                    $("#HrdGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#HrdTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#HrdActPdc").text(formatNumber(item.PicActPdc));
+                    var HrdTgtPdc = item.PicTgtPdc;
+                    if (HrdTgtPdc == 0) {
+                        $("#HrdAchPdc").text(0);
+                        $("#HrdScrPdc").text(0);
+                    } else {
+                        var HrdAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (HrdAchPdc < 0)
+                            HrdAchPdc = 0;
+                        $("#HrdAchPdc").text(formatNumber(HrdAchPdc.toFixed(2)));
+                        if (HrdAchPdc > 110)
+                            HrdAchPdc = 120;
+                        else if (HrdAchPdc > 102 && HrdAchPdc <= 110)
+                            HrdAchPdc = 110;
+                        else if (HrdAchPdc > 98 && HrdAchPdc <= 102)
+                            HrdAchPdc = 100;
+                        else if (HrdAchPdc >= 94 && HrdAchPdc <= 98)
+                            HrdAchPdc = 90;
+                        else if (HrdAchPdc < 94)
+                            HrdAchPdc = 60;
+                        else
+                            HrdAchPdc = 0;
+
+                        HrdScrPdc = item.PicGrdPdc * HrdAchPdc / 100;
+                        var newcolor = HrdScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTot = PicScrTot + HrdScrPdc;
+                        PicTotGrade = PicTotGrade + item.PicGrdPdc;
+                        $("#HrdScrPdc").text(formatNumber(HrdScrPdc.toFixed(2)));
+                    }
+
+
+                    TmpGrdSafe = item.PicGrdSaf;
+                    TmpGrdTrain = item.PicGrdDpp;
+                    TmpGrdSkill = item.PicGrdEme;
+                    TmpGrdLabor = item.PicGrdSca;
+                    TmpGrdOver = item.PicGrdMus;
+                    TmpTrgSafe = item.PicTrgSaf;
+                    TmpTrgTrain = item.PicTgtDpp;
+                    TmpTrgSkill = item.PicTgtEme;
+                    TmpTrgLabor = item.PicTgtSca;
+                    TmpTrgOver = item.PicTgtMus;
+                    PicTotGrade = PicTotGrade + TmpGrdSafe + TmpGrdTrain + TmpGrdSkill + TmpGrdLabor + TmpGrdOver;
+
+                    console.log('s' + TmpGrdSafe );
+                    console.log('t' + TmpGrdTrain);
+                    console.log('c' + TmpGrdSkill);
+
+                    var ActSalary = item.PicActSca;
+                    $("#HrdActLab").text(formatNumber(ActSalary));
+                    if (TmpTrgLabor == 0) {
+                        $("#HrdAchLab").text(0);
+                        $("#HrdScrLab").text(0);
+                        $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                    } else {
+                        var HrdAchLab = (1 + ((TmpTrgLabor - ActSalary) / TmpTrgLabor)) * 100;
+                        if (HrdAchLab < 0)
+                            HrdAchLab = 0;
+                        $("#HrdAchLab").text(formatNumber(HrdAchLab.toFixed(2)));
+                        if (HrdAchLab >= 100)
+                            $("#LabTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+
+                        //--var HrdScrLab = TmpGrdLabor * HrdAchLab / 100;
+                        if (ActSalary == 0)
+                            var HrdScrLab = TmpGrdLabor
+                        else 
+                            var HrdScrLab = TmpGrdLabor - (TmpGrdLabor - ((TmpTrgLabor / ActSalary) * TmpGrdLabor));
+                        PicScrTot = PicScrTot + HrdScrLab;
+                        $("#HrdScrLab").text(formatNumber((HrdScrLab).toFixed(2)));
+                    }
+
+
+                    $("#HrdGrdSaf").text(formatNumber(item.PicGrdSaf));
+                    $("#HrdTgtSaf").text(formatNumber(item.PicTgtSaf));
+
+                    $("#HrdGrdTra").text(formatNumber(item.PicGrdDpp));
+                    $("#HrdTgtTra").text(formatNumber(item.PicTgtDpp));
+
+                    $("#HrdGrdCap").text(formatNumber(item.PicGrdEme));
+                    $("#HrdTgtCap").text(formatNumber(item.PicTgtEme));
+
+                    $("#HrdGrdLab").text(formatNumber(item.PicGrdSca));
+                    $("#HrdTgtLab").text(formatNumber(item.PicTgtSca));
+
+                    $("#HrdGrdOve").text(formatNumber(item.PicGrdMus));
+                    $("#HrdTgtOve").text(formatNumber(item.PicTgtMus));
+
+                    $("#PicScrTot").text(formatNumber((PicScrTot).toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+        var kpiHrd = {
+            id: thn,
+            bln: iMonth,
+            ch: 'D'
+        }
+        $.ajax({
+            url: urlKPI + "/HrdGADept/",
+            data: JSON.stringify(kpiHrd),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    var HrdActSaf = item.ibpActSafe;
+                    $("#HrdActSaf").text(formatNumber(HrdActSaf));
+                    console.log(HrdActSaf);
+                    if (HrdActSaf == 0) {
+                        $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
+                        $("#HrdAchSaf").text(formatNumber(100));
+                        $("#HrdScrSaf").text(formatNumber(TmpGrdSafe.toFixed(2)));
+
+                    }
+                    else {
+
+                        $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
+                        $("#HrdAchSaf").text('0');
+                        TmpGrdSafe = TmpGrdSafe * 0.6
+                        $("#HrdScrSaf").text(formatNumber(TmpGrdSafe.toFixed(2)));
+                        PicScrTot = PicScrTot + TmpGrdSafe;
+
+                    }
+
+                    var TmpActTrain = item.lgActTrain
+                    console.log(TmpActTrain);
+                    $("#HrdActTra").text(formatNumber(TmpActTrain));
+                    if (TmpTrgTrain == 0) {
+                        $("#HrdAchTra").text(0);
+                        $("#HrdScrTra").text(0);
+                        $("#TraTitle").css({ "color": "red", "font-weight": "bold" });
+                    } else {
+                        var HrdAchTrain = TmpActTrain / TmpTrgTrain * 100;
+                        var HrdActualTrain = 0;
+                        $("#HrdAchTra").text(formatNumber(HrdAchTrain.toFixed(2)));
+                        if (TmpActTrain == 0)
+                            HrdActualTrain = 60;
+                        else if (TmpActTrain > 0 && TmpActTrain <= 12)
+                            HrdActualTrain = 90;
+                        else if (TmpActTrain > 12)
+                            HrdActualTrain = 100;
+
+                        var HrdScrTrain = TmpGrdTrain * HrdActualTrain / 100;
+
+                        $("#HrdScrTra").text(formatNumber(HrdScrTrain.toFixed(2)));
+                        if (HrdAchTrain >= 100)
+                            $("#TraTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#TraTitle").css({ "color": "red", "font-weight": "bold" });
+                        PicScrTot = PicScrTot + HrdScrTrain;
+                    }
+
+                    if (thn < 2020) {
+                        $("#trhdr").show();
+                        $("#HrdActCap").text(formatNumber(item.lgActSkill));
+                        console.log(item.lgActSkill);
+                        if (TmpTrgSkill == 0) {
+                            $("#HrdAchCap").text(0);
+                            $("#HrdScrCap").text(0);
+                            $("#CapTitle").css({ "color": "red", "font-weight": "bold" });
+                        } else {
+                            var HrdAchSkill = item.lgActSkill / TmpTrgSkill * 100;
+                            $("#HrdAchCap").text(formatNumber(HrdAchSkill.toFixed(2)));
+                            if (HrdAchSkill < 70)
+                                HrdAchSkill = 60;
+                            else if (HrdAchSkill >= 70 && HrdAchSkill <= 90)
+                                HrdAchSkill = 90;
+                            else if (HrdAchSkill > 90 && HrdAchSkill <= 100)
+                                HrdAchSkill = 100;
+                            else if (HrdAchSkill > 100 && HrdAchSkill <= 120)
+                                HrdAchSkill = 110;
+                            else if (HrdAchSkill > 120)
+                                HrdAchSkill = 120;
+                            var HrdScrSkill = TmpGrdSkill * (HrdAchSkill / 100);
+                            $("#HrdScrCap").text(formatNumber(HrdScrSkill.toFixed(2)));
+                            if ((HrdScrSkill - TmpTrgSkill) > 0)
+                                $("#CapTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#CapTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + HrdScrSkill;
+
+                        }
+                    } else {
+                        $("#trhdr").hide();
+                    }
+
+
+                    var ActOvertime = item.finActRev;
+                    $("#HrdActOve").text(formatNumber(ActOvertime));
+                    if (TmpTrgOver == 0) {
+                        $("#HrdAchOve").text(0);
+                        $("#HrdScrOve").text(0);
+                        $("#OveTitle").css({ "color": "red", "font-weight": "bold" });
+                    } else {
+                        var HrdAchOve = (1 + ((TmpTrgOver - ActOvertime) / TmpTrgOver)) * 100;
+                        console.log('ach'+HrdAchOve);
+                        if (HrdAchOve < 0)
+                            HrdAchOve = 0;
+                        $("#HrdAchOve").text(formatNumber(HrdAchOve.toFixed(2)));
+                        if (thn < 2020) {
+                            if (HrdAchOve >= 100)
+                                $("#OveTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#OveTitle").css({ "color": "red", "font-weight": "bold" });
+                            //---HrdScrOve = TmpGrdOver * HrdAchOve / 100;
+                            if (ActOvertime == 0)
+                                HrdScrOve = TmpGrdOver;
+                            else
+                                HrdScrOve = TmpGrdOver - (TmpGrdOver - ((TmpTrgOver / ActOvertime) * TmpGrdOver));
+
+                        } else {
+                            var HrdAchOveTmp = 0;
+                            var ActOvertimeTmp = ActOvertime / 12;
+                            if (ActOvertimeTmp > 19000000)
+                                HrdAchOveTmp = 60;
+                            else if (ActOvertimeTmp > 17000000 && ActOvertimeTmp <= 19000000)
+                                HrdAchOveTmp = 90;
+                            else if (ActOvertimeTmp > 15000000 && ActOvertimeTmp <= 17000000)
+                                HrdAchOveTmp = 100;
+                            else if (ActOvertimeTmp > 5000000 && ActOvertimeTmp <= 15000000)
+                                HrdAchOveTmp = 110;
+                            else if (ActOvertimeTmp < 5000000)
+                                HrdAchOveTmp = 120;
+
+                            HrdScrOve = TmpGrdOver * HrdAchOveTmp / 100;
+                            console.log('score' + HrdScrOve);
+                            var newcolor = HrdScrOve - TmpGrdOver;
+                            if (newcolor >= 0)
+                                $("#OveTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#OveTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTot = PicScrTot + HrdScrOve;
+                        $("#HrdScrOve").text(formatNumber(HrdScrOve.toFixed(2)));
+                    }
+
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+    }
+
+    function getMonthView(thn, bln) {
+        PicScrTotMonth = 0;
+        PicScrTotSum = 0;
+        PicTotGradeMonth = 0;
+        PicTotGradeSum = 0;
+        TmpGrdSafeMonth = 0, TmpGrdTrainMonth = 0, TmpGrdSkillMonth = 0, TmpGrdLaborMonth = 0, TmpGrdOverMonth = 0, TmpTrgSafeMonth = 0, TmpTrgTrainMonth = 0, TmpTrgSkillMonth = 0, TmpTrgLaborMonth = 0, TmpTrgOverMonth = 0;
+        TmpGrdSafeSum = 0, TmpGrdTrainSum = 0, TmpGrdSkillSum = 0, TmpGrdLaborSum = 0, TmpGrdOverSum = 0, TmpTrgSafeSum = 0, TmpTrgTrainSum = 0, TmpTrgSkillSum = 0, TmpTrgLaborSum = 0, TmpTrgOverSum = 0;
+        var nmbulan = valMonth(bln);
+        var userAu = $('#authorid').val();
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "M"
+        }
+        $.ajax({
+            url: urlKPI + "/vHrdGADeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#HrdGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#HrdTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#HrdActRevMonth").text(formatNumber(item.PicActRev));
+                        var HrdTgtRev = item.PicTgtRev;
+                        if (HrdTgtRev == 0) {
+                            $("#HrdAchRevMonth").text(0);
+                            $("#HrdScrRevMonth").text(0);
+                        } else {
+                            var HrdAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (HrdAchRev < 0)
+                                HrdAchRev = 0;
+                            $("#HrdAchRevMonth").text(formatNumber(HrdAchRev.toFixed(2)));
+                            if (HrdAchRev > 110)
+                                HrdAchRev = 120;
+                            else if (HrdAchRev > 103 && HrdAchRev <= 110)
+                                HrdAchRev = 110;
+                            else if (HrdAchRev > 95 && HrdAchRev <= 103)
+                                HrdAchRev = 100;
+                            else if (HrdAchRev >= 90 && HrdAchRev <= 95)
+                                HrdAchRev = 90;
+                            else if (HrdAchRev < 90)
+                                HrdAchRev = 60;
+                            else
+                                HrdAchRev = 0;
+
+                            HrdScrRev = item.PicGrdRev * HrdAchRev / 100;
+                            var newcolor = HrdScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotMonth = PicScrTotMonth + HrdScrRev;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRev;
+                            $("#HrdScrRevMonth").text(formatNumber(HrdScrRev.toFixed(2)));
+                        }
+                    }
+                    $("#HrdGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#HrdTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#HrdActPdaMonth").text(formatNumber(item.PicActPda));
+                    var HrdTgtPda = item.PicTgtPda;
+                    if (HrdTgtPda == 0) {
+                        $("#HrdAchPdaMonth").text(0);
+                        $("#HrdScrPdaMonth").text(0);
+                    } else {
+                        var HrdAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        if (HrdAchPda < 0)
+                            HrdAchPda = 0;
+                        $("#HrdAchPdaMonth").text(formatNumber(HrdAchPda.toFixed(2)));
+                        if (HrdAchPda > 110)
+                            HrdAchPda = 120;
+                        else if (HrdAchPda > 102 && HrdAchPda <= 110)
+                            HrdAchPda = 110;
+                        else if (HrdAchPda > 98 && HrdAchPda <= 102)
+                            HrdAchPda = 100;
+                        else if (HrdAchPda >= 94 && HrdAchPda <= 98)
+                            HrdAchPda = 90;
+                        else if (HrdAchPda < 94)
+                            HrdAchPda = 60;
+                        else
+                            HrdAchPda = 0;
+
+                        HrdScrPda = item.PicGrdPda * HrdAchPda / 100;
+                        var newcolor = HrdScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotMonth = PicScrTotMonth + HrdScrPda;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPda;
+                        $("#HrdScrPdaMonth").text(formatNumber(HrdScrPda.toFixed(2)));
+                    }
+
+                    $("#HrdGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#HrdTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#HrdActPdcMonth").text(formatNumber(item.PicActPdc));
+                    var HrdTgtPdc = item.PicTgtPdc;
+                    if (HrdTgtPdc == 0) {
+                        $("#HrdAchPdcMonth").text(0);
+                        $("#HrdScrPdcMonth").text(0);
+                    } else {
+                        var HrdAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (HrdAchPdc < 0)
+                            HrdAchPdc = 0;
+                        $("#HrdAchPdcMonth").text(formatNumber(HrdAchPdc.toFixed(2)));
+                        if (HrdAchPdc > 110)
+                            HrdAchPdc = 120;
+                        else if (HrdAchPdc > 102 && HrdAchPdc <= 110)
+                            HrdAchPdc = 110;
+                        else if (HrdAchPdc > 98 && HrdAchPdc <= 102)
+                            HrdAchPdc = 100;
+                        else if (HrdAchPdc >= 94 && HrdAchPdc <= 98)
+                            HrdAchPdc = 90;
+                        else if (HrdAchPdc < 94)
+                            HrdAchPdc = 60;
+                        else
+                            HrdAchPdc = 0;
+
+                        HrdScrPdc = item.PicGrdPdc * HrdAchPdc / 100;
+                        var newcolor = HrdScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotMonth = PicScrTotMonth + HrdScrPdc;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPdc;
+                        $("#HrdScrPdcMonth").text(formatNumber(HrdScrPdc.toFixed(2)));
+                    }
+                    TmpGrdSafeMonth = item.PicGrdSaf;
+                    TmpGrdTrainMonth = item.PicGrdDpp;
+                    TmpGrdSkillMonth = item.PicGrdEme;
+                    TmpGrdLaborMonth = item.PicGrdSca;
+                    TmpGrdOverMonth = item.PicGrdMus;
+                    TmpTrgSafeMonth = item.PicTrgSaf;
+                    TmpTrgTrainMonth = item.PicTgtDpp;
+                    TmpTrgSkillMonth = item.PicTgtEme;
+                    TmpTrgLaborMonth = item.PicTgtSca;
+                    TmpTrgOverMonth = item.PicTgtMus;
+                    PicTotGradeMonth = PicTotGradeMonth + TmpGrdSafeMonth + TmpGrdTrainMonth + TmpGrdSkillMonth + TmpGrdLaborMonth + TmpGrdOverMonth;
+                    console.log('s' + TmpGrdSafeMonth);
+                    console.log('t' + TmpGrdTrainMonth);
+                    console.log('c' + TmpGrdSkillMonth);
+
+                    var ActSalaryMonth = item.PicActSca;
+                    $("#HrdActLabMonth").text(formatNumber(ActSalaryMonth));
+                    if (TmpTrgLabor == 0) {
+                        $("#HrdAchLabMonth").text(0);
+                        $("#HrdScrLabMonth").text(0);
+                        $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    } else {
+                        var HrdAchLabMonth = (1 + ((TmpTrgLaborMonth - ActSalaryMonth) / TmpTrgLaborMonth)) * 100;
+                        if (HrdAchLabMonth < 0)
+                            HrdAchLabMonth = 0;
+                        $("#HrdAchLabMonth").text(formatNumber(HrdAchLabMonth.toFixed(2)));
+                        if (HrdAchLabMonth >= 100)
+                            $("#LabTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                        //var HrdScrLabMonth = item.PicGrdSca * HrdAchLabMonth / 100;
+                        if (ActSalaryMonth == 0)
+                            var HrdScrLabMonth = item.PicGrdSca
+                        else
+                            var HrdScrLabMonth = item.PicGrdSca - (item.PicGrdSca - ((TmpTrgLaborMonth / ActSalaryMonth) * item.PicGrdSca));
+                        PicScrTotMonth = PicScrTotMonth + HrdScrLabMonth;
+                        $("#HrdScrLabMonth").text(formatNumber((HrdScrLabMonth).toFixed(2)));
+                    }
+
+                    $("#HrdGrdCapMonth").text(formatNumber(item.PicGrdEme));
+                    $("#HrdTgtCapMonth").text(formatNumber(item.PicTgtEme));
+
+                    $("#HrdGrdSafMonth").text(formatNumber(item.PicGrdSaf));
+                    $("#HrdTgtSafMonth").text(formatNumber(item.PicTgtSaf));
+
+                    $("#HrdGrdTraMonth").text(formatNumber(item.PicGrdDpp));
+                    $("#HrdTgtTraMonth").text(formatNumber(item.PicTgtDpp));
+
+                    $("#HrdGrdLabMonth").text(formatNumber(item.PicGrdSca));
+                    $("#HrdTgtLabMonth").text(formatNumber(item.PicTgtSca));
+
+                    $("#HrdGrdOveMonth").text(formatNumber(item.PicGrdMus));
+                    $("#HrdTgtOveMonth").text(formatNumber(item.PicTgtMus));
+
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                    $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
+
+                    var kpiHrd = {
+                        id: thn,
+                        bln: bln,
+                        ch: 'M'
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/HrdGADept/",
+                        data: JSON.stringify(kpiHrd),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                var HrdActSaf = item.ibpActSafe;
+                                console.log(HrdActSaf);
+                                $("#HrdActSafMonth").text(formatNumber(HrdActSaf));
+                                if (HrdActSaf == 0) {
+                                    $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                    $("#HrdAchSafMonth").text(formatNumber(100));
+                                    $("#HrdScrSafMonth").text(formatNumber(TmpGrdSafeMonth.toFixed(2)));
+                                    PicScrTotMonth = PicScrTotMonth + TmpGrdSafeMonth;
+                                }
+                                else {
+                                    $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                    $("#HrdAchSafMonth").text('0');
+                                    var GrdSafeMonth = TmpGrdSafeMonth * 0.6
+                                    $("#HrdScrSafMonth").text(GrdSafeMonth.toFixed(2));
+                                    PicScrTotMonth = PicScrTotMonth + GrdSafeMonth;
+
+                                }
+
+                                var TmpActTrain = item.lgActTrain
+                                console.log(TmpActTrain);
+                                $("#HrdActTraMonth").text(formatNumber(TmpActTrain));
+                                if (TmpTrgTrainMonth == 0) {
+                                    $("#HrdAchTraMonth").text(0);
+                                    $("#HrdScrTraMonth").text(0);
+                                    $("#TraTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                } else {
+                                    var HrdAchTrain = TmpActTrain / TmpTrgTrainMonth * 100;
+                                    var HrdActualTrain = 0;
+                                    $("#HrdAchTraMonth").text(formatNumber(HrdAchTrain.toFixed(2)));
+                                    if (TmpActTrain == 0)
+                                        HrdActualTrain = 60;
+                                    else if (TmpActTrain == 1)
+                                        HrdActualTrain = 90;
+                                    else if (TmpActTrain >= 2)
+                                        HrdActualTrain = 100;
+                                    var HrdScrTrain = TmpGrdTrainMonth * HrdActualTrain / 100;
+                                    $("#HrdScrTraMonth").text(formatNumber(HrdScrTrain.toFixed(2)));
+                                    if (HrdAchTrain >= 100)
+                                        $("#TraTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                    else $("#TraTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                    PicScrTotMonth = PicScrTotMonth + HrdScrTrain;
+                                }
+
+                                if (thn < 2020) {
+                                    $("#trdtl").show();
+                                    $("#HrdActCapMonth").text(formatNumber(item.lgActSkill));
+                                    console.log(item.lgActSkill);
+                                    if (TmpTrgSkillMonth == 0) {
+                                        $("#HrdAchCapMonth").text(0);
+                                        $("#HrdScrCapMonth").text(0);
+                                        $("#CapTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                    } else {
+                                        var HrdAchSkill = item.lgActSkill / TmpTrgSkillMonth * 100;
+                                        $("#HrdAchCapMonth").text(formatNumber(HrdAchSkill.toFixed(2)));
+                                        if (HrdAchSkill < 70)
+                                            HrdAchSkill = 60;
+                                        else if (HrdAchSkill >= 70 && HrdAchSkill <= 90)
+                                            HrdAchSkill = 90;
+                                        else if (HrdAchSkill > 90 && HrdAchSkill <= 100)
+                                            HrdAchSkill = 100;
+                                        else if (HrdAchSkill > 100 && HrdAchSkill <= 120)
+                                            HrdAchSkill = 110;
+                                        else if (HrdAchSkill > 120)
+                                            HrdAchSkill = 120;
+                                        var HrdScrSkill = TmpGrdSkillMonth * (HrdAchSkill / 100);
+                                        $("#HrdScrCapMonth").text(formatNumber(HrdScrSkill.toFixed(2)));
+                                        if ((HrdScrSkill - TmpGrdSkillMonth) >= 0)
+                                            $("#CapTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#CapTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                        PicScrTotMonth = PicScrTotMonth + HrdScrSkill;
+                                    }
+                                }
+                                else {
+                                    $("#trdtl").hide();
+                                }
+
+
+
+                                var ActOvertime = item.finActRev;
+                                $("#HrdActOveMonth").text(formatNumber(ActOvertime));
+                                if (TmpTrgOverMonth == 0) {
+                                    $("#HrdAchOveMonth").text(0);
+                                    $("#HrdScrOveMonth").text(0);
+                                    $("#OveTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                } else {
+                                    var HrdAchOve = (1 + ((TmpTrgOverMonth - ActOvertime) / TmpTrgOverMonth)) * 100;
+                                    console.log('ach' + HrdAchOve);
+                                    if (HrdAchOve < 0)
+                                        HrdAchOve = 0;
+                                    $("#HrdAchOveMonth").text(formatNumber(HrdAchOve.toFixed(2)));
+                                    if (thn < 2020) {
+                                        if (HrdAchOve >= 100)
+                                            $("#OveTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#OveTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                                        if (ActOvertime == 0)
+                                            HrdScrOve = TmpGrdOverMonth;
+                                        else
+                                            HrdScrOve = TmpGrdOverMonth - (TmpGrdOverMonth - ((TmpTrgOverMonth / ActOvertime) * TmpGrdOverMonth));
+
+                                    } else {
+                                        var HrdAchOveTmp = 0;
+                                        if (ActOvertime > 19000000)
+                                            HrdAchOveTmp = 60;
+                                        else if (ActOvertime > 17000000  && ActOvertime <= 19000000)
+                                            HrdAchOveTmp = 90;
+                                        else if (ActOvertime > 15000000  && ActOvertime <= 17000000)
+                                            HrdAchOveTmp = 100;
+                                        else if (ActOvertime > 5000000 && ActOvertime <= 15000000)
+                                            HrdAchOveTmp = 110;
+                                        else if (ActOvertime < 5000000)
+                                            HrdAchOveTmp = 120;
+
+                                        HrdScrOve = TmpGrdOverMonth * HrdAchOveTmp / 100;
+                                        console.log('score' + HrdScrOve);
+                                        var newcolor = HrdScrOve - TmpGrdOverMonth;
+                                        if (newcolor >= 0)
+                                            $("#OveTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#OveTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                                    }
+
+                                    PicScrTotMonth = PicScrTotMonth + HrdScrOve;
+                                    $("#HrdScrOveMonth").text(formatNumber(HrdScrOve.toFixed(2)));
+                                }
+
+                                $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+       
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "Y"
+        }
+        $.ajax({
+            url: urlKPI + "/vHrdGADeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#HrdGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#HrdTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#HrdActRevSum").text(formatNumber(item.PicActRev));
+                        var HrdTgtRev = item.PicTgtRev;
+                        if (HrdTgtRev == 0) {
+                            $("#HrdAchRevSum").text(0);
+                            $("#HrdScrRevSum").text(0);
+                        } else {
+                            var HrdAchRev = item.PicActRev / item.PicTgtRev * 100;
+                            if (HrdAchRev < 0)
+                                HrdAchRev = 0;
+                            $("#HrdAchRevSum").text(formatNumber(HrdAchRev.toFixed(2)));
+                            if (HrdAchRev > 110)
+                                HrdAchRev = 120;
+                            else if (HrdAchRev > 103 && HrdAchRev <= 110)
+                                HrdAchRev = 110;
+                            else if (HrdAchRev > 95 && HrdAchRev <= 103)
+                                HrdAchRev = 100;
+                            else if (HrdAchRev >= 90 && HrdAchRev <= 95)
+                                HrdAchRev = 90;
+                            else if (HrdAchRev < 90)
+                                HrdAchRev = 60;
+                            else
+                                HrdAchRev = 0;
+
+                            HrdScrRev = item.PicGrdRev * HrdAchRev / 100;
+                            var newcolor = HrdScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + HrdScrRev;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdRev;
+                            $("#HrdScrRevSum").text(formatNumber(HrdScrRev.toFixed(2)));
+                        }
+                    }
+                    $("#HrdGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#HrdTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#HrdActPdaSum").text(formatNumber(item.PicActPda));
+                    var HrdTgtPda = item.PicTgtPda;
+                    if (HrdTgtPda == 0) {
+                        $("#HrdAchPdaSum").text(0);
+                        $("#HrdScrPdaSum").text(0);
+                    } else {
+                        var HrdAchPda = item.PicActPda / item.PicTgtPda * 100;
+                        console.log(HrdAchPda);
+                        if (HrdAchPda < 0)
+                            HrdAchPda = 0;
+                        $("#HrdAchPdaSum").text(formatNumber(HrdAchPda.toFixed(2)));
+                        if (HrdAchPda > 110)
+                            HrdAchPda = 120;
+                        else if (HrdAchPda > 102 && HrdAchPda <= 110)
+                            HrdAchPda = 110;
+                        else if (HrdAchPda > 98 && HrdAchPda <= 102)
+                            HrdAchPda = 100;
+                        else if (HrdAchPda >= 94 && HrdAchPda <= 98)
+                            HrdAchPda = 90;
+                        else if (HrdAchPda < 94)
+                            HrdAchPda = 60;
+                        else
+                            HrdAchPda = 0;
+
+                        HrdScrPda = item.PicGrdPda * HrdAchPda / 100;
+                        var newcolor = HrdScrPda - item.PicGrdPda;
+                        if (newcolor >= 0)
+                            $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + HrdScrPda;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdPda;
+                        $("#HrdScrPdaSum").text(formatNumber((HrdScrPda).toFixed(2)));
+                    }
+
+                    $("#HrdGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#HrdTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#HrdActPdcSum").text(formatNumber(item.PicActPdc));
+                    var HrdTgtPdc = item.PicTgtPdc;
+                    if (HrdTgtPdc == 0) {
+                        $("#HrdAchPdcSum").text(0);
+                        $("#HrdScrPdcSum").text(0);
+                    } else {
+                        var HrdAchPdc = item.PicActPdc / item.PicTgtPdc * 100;
+                        if (HrdAchPdc < 0)
+                            HrdAchPdc = 0;
+                        $("#HrdAchPdcSum").text(formatNumber(HrdAchPdc.toFixed(2)));
+                        if (HrdAchPdc > 110)
+                            HrdAchPdc = 120;
+                        else if (HrdAchPdc > 102 && HrdAchPdc <= 110)
+                            HrdAchPdc = 110;
+                        else if (HrdAchPdc > 98 && HrdAchPdc <= 102)
+                            HrdAchPdc = 100;
+                        else if (HrdAchPdc >= 94 && HrdAchPdc <= 98)
+                            HrdAchPdc = 90;
+                        else if (HrdAchPdc < 94)
+                            HrdAchPdc = 60;
+                        else
+                            HrdAchPdc = 0;
+
+                        HrdScrPdc = item.PicGrdPdc * HrdAchPdc / 100;
+                        var newcolor = HrdScrPdc - item.PicGrdPdc;
+                        if (newcolor >= 0)
+                            $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        PicScrTotSum = PicScrTotSum + HrdScrPdc;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
+                        $("#HrdScrPdcSum").text(formatNumber(HrdScrPdc.toFixed(2)));
+                    }
+                    TmpGrdSafeSum = item.PicGrdSaf;
+                    TmpGrdTrainSum = item.PicGrdDpp;
+                    TmpGrdSkillSum = item.PicGrdEme;
+                    TmpGrdLaborSum = item.PicGrdSca;
+                    TmpGrdOverSum = item.PicGrdMus;
+                    TmpTrgSafeSum = item.PicTrgSaf;
+                    TmpTrgTrainSum = item.PicTgtDpp;
+                    TmpTrgSkillSum = item.PicTgtEme;
+                    TmpTrgLaborSum = item.PicTgtSca;
+                    TmpTrgOverSum = item.PicTgtMus;
+                    PicTotGradeSum = PicTotGradeSum + TmpGrdSafeSum + TmpGrdTrainSum + TmpGrdSkillSum + TmpGrdLaborSum + TmpGrdOverSum;
+
+                    console.log('s' + TmpGrdSafeSum);
+                    console.log('t' + TmpGrdTrainSum);
+                    console.log('c' + TmpGrdSkillSum);
+
+                    var ActSalarySum = item.PicActSca;
+                    $("#HrdActLabSum").text(formatNumber(ActSalarySum));
+                    if (TmpTrgLabor == 0) {
+                        $("#HrdAchLabSum").text(0);
+                        $("#HrdScrLabSum").text(0);
+                        $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    } else {
+                        var HrdAchLabSum = (1 + ((TmpTrgLaborSum - ActSalarySum) / TmpTrgLaborSum)) * 100;
+                        if (HrdAchLabSum < 0)
+                            HrdAchLabSum = 0;
+                        $("#HrdAchLabSum").text(formatNumber(HrdAchLabSum.toFixed(2)));
+                        if (HrdAchLabSum >= 100)
+                            $("#LabTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                        //var HrdScrLabSum = item.PicGrdSca * HrdAchLabSum / 100;
+                        if (ActSalarySum == 0)
+                            var HrdScrLabSum = item.PicGrdSca
+                        else
+                            var HrdScrLabSum = item.PicGrdSca - (item.PicGrdSca - ((TmpTrgLaborSum / ActSalarySum) * item.PicGrdSca));
+                        PicScrTotSum = PicScrTotSum + HrdScrLabSum;
+                        $("#HrdScrLabSum").text(formatNumber((HrdScrLabSum).toFixed(2)));
+                    }
+
+
+                    $("#HrdGrdCapSum").text(formatNumber(item.PicGrdEme));
+                    $("#HrdTgtCapSum").text(formatNumber(item.PicTgtEme));
+
+                    $("#HrdGrdSafSum").text(formatNumber(item.PicGrdSaf));
+                    $("#HrdTgtSafSum").text(formatNumber(item.PicTgtSaf));
+
+                    $("#HrdGrdTraSum").text(formatNumber(item.PicGrdDpp));
+                    $("#HrdTgtTraSum").text(formatNumber(item.PicTgtDpp));
+
+                    $("#HrdGrdLabSum").text(formatNumber(item.PicGrdSca));
+                    $("#HrdTgtLabSum").text(formatNumber(item.PicTgtSca));
+
+                    $("#HrdGrdOveSum").text(formatNumber(item.PicGrdMus));
+                    $("#HrdTgtOveSum").text(formatNumber(item.PicTgtMus));
+
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                    $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
+
+                    var kpiHrd = {
+                        id: thn,
+                        bln: bln,
+                        ch: 'Y'
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/HrdGADept/",
+                        data: JSON.stringify(kpiHrd),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                var HrdActSaf = item.ibpActSafe;
+                                console.log(HrdActSaf);
+                                $("#HrdActSafSum").text(formatNumber(HrdActSaf));
+                                if (HrdActSaf == 0) {
+                                    $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                    $("#HrdAchSafSum").text(formatNumber(100));
+                                    $("#HrdScrSafSum").text(formatNumber(TmpGrdSafeSum.toFixed(2)));
+                                    PicScrTotSum = PicScrTotSum + TmpGrdSafeSum;
+                                }
+                                else {
+                                    $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                    $("#HrdAchSafSum").text('0');
+                                    var GrdSafeSum = TmpGrdSafeSum * 0.6
+                                    $("#HrdScrSafSum").text(formatNumber(GrdSafeSum.toFixed(2)));
+                                    PicScrTotSum = PicScrTotSum + GrdSafeSum;
+
+                                }
+
+                                var TmpActTrain = item.lgActTrain
+                                console.log(TmpActTrain);
+                                $("#HrdActTraSum").text(formatNumber(TmpActTrain));
+                                if (TmpTrgTrainSum == 0) {
+                                    $("#HrdAchTraSum").text(0);
+                                    $("#HrdScrTraSum").text(0);
+                                    $("#TraTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                } else {
+                                    var HrdAchTrain = TmpActTrain / TmpTrgTrainSum * 100;
+                                    var HrdActualTrain = 0;
+                                    var duakali = bln * 2;
+                                    var satukali = bln;
+                                    $("#HrdAchTraSum").text(formatNumber(HrdAchTrain.toFixed(2)));
+                                    if (TmpActTrain == 0)
+                                        HrdActualTrain = 60;
+                                    else if (TmpActTrain > 0 && TmpActTrain <= duakali)
+                                        HrdActualTrain = 90;
+                                    else if (TmpActTrain >= duakali)
+                                        HrdActualTrain = 100;
+
+                                    var HrdScrTrain = TmpGrdTrainSum * HrdActualTrain / 100;
+                                    $("#HrdScrTraSum").text(formatNumber(HrdScrTrain.toFixed(2)));
+                                    if (HrdAchTrain >= 100)
+                                        $("#TraTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                    else $("#TraTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                    PicScrTotSum = PicScrTotSum + HrdScrTrain;
+                                }
+
+                                if (thn < 2020) {
+                                    $("#trsubdtl").show();
+                                    $("#HrdActCapSum").text(formatNumber(item.lgActSkill));
+                                    console.log(item.lgActSkill);
+                                    if (TmpTrgSkillSum == 0) {
+                                        $("#HrdAchCapSum").text(0);
+                                        $("#HrdScrCapSum").text(0);
+                                        $("#CapTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                    } else {
+                                        var HrdAchSkill = item.lgActSkill / TmpTrgSkillSum * 100;
+                                        $("#HrdAchCapSum").text(formatNumber(HrdAchSkill.toFixed(2)));
+                                        if (HrdAchSkill < 70)
+                                            HrdAchSkill = 60;
+                                        else if (HrdAchSkill >= 70 && HrdAchSkill <= 90)
+                                            HrdAchSkill = 90;
+                                        else if (HrdAchSkill > 90 && HrdAchSkill <= 100)
+                                            HrdAchSkill = 100;
+                                        else if (HrdAchSkill > 100 && HrdAchSkill <= 120)
+                                            HrdAchSkill = 110;
+                                        else if (HrdAchSkill > 120)
+                                            HrdAchSkill = 120;
+                                        var HrdScrSkill = TmpGrdSkillSum * (HrdAchSkill / 100);
+                                        $("#HrdScrCapSum").text(formatNumber(HrdScrSkill.toFixed(2)));
+                                        if ((HrdScrSkill - TmpGrdSkillSum) >= 0)
+                                            $("#CapTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#CapTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                        PicScrTotSum = PicScrTotSum + HrdScrSkill;
+                                    }
+
+                                } else {
+                                    $("#trsubdtl").hide();
+                                }
+
+
+                                var ActOvertime = item.finActRev;
+                                $("#HrdActOveSum").text(formatNumber(ActOvertime));
+                                if (TmpTrgOverSum == 0) {
+                                    $("#HrdAchOveSum").text(0);
+                                    $("#HrdScrOveSum").text(0);
+                                    $("#OveTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                } else {
+                                    var HrdAchOve = (1 + ((TmpTrgOverSum - ActOvertime) / TmpTrgOverSum)) * 100;
+                                    console.log('ach' + HrdAchOve);
+                                    if (HrdAchOve < 0)
+                                        HrdAchOve = 0;
+                                    $("#HrdAchOveSum").text(formatNumber(HrdAchOve.toFixed(2)));
+                                    if (thn < 2020) {
+                                        if (HrdAchOve >= 100)
+                                            $("#OveTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#OveTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                                        if (ActOvertime == 0)
+                                            HrdScrOve = TmpGrdOverSum;
+                                        else
+                                            HrdScrOve = TmpGrdOverSum - (TmpGrdOverSum - ((TmpTrgOverSum / ActOvertime) * TmpGrdOverSum));
+
+                                    } else {
+                                        var HrdAchOveTmp = 0;
+                                        var ActOvertimeTmp = ActOvertime / bln;
+                                        if (ActOvertimeTmp > 19000000)
+                                            HrdAchOveTmp = 60;
+                                        else if (ActOvertimeTmp > 17000000 && ActOvertimeTmp <= 19000000)
+                                            HrdAchOveTmp = 90;
+                                        else if (ActOvertimeTmp > 15000000 && ActOvertimeTmp <= 17000000)
+                                            HrdAchOveTmp = 100;
+                                        else if (ActOvertimeTmp > 5000000 && ActOvertimeTmp <= 15000000)
+                                            HrdAchOveTmp = 110;
+                                        else if (ActOvertimeTmp < 5000000)
+                                            HrdAchOveTmp = 120;
+
+                                        HrdScrOve = TmpGrdOverSum * HrdAchOveTmp / 100;
+                                        console.log('score' + HrdScrOve);
+                                        var newcolor = HrdScrOve - TmpGrdOverSum;
+                                        if (newcolor >= 0)
+                                            $("#OveTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#OveTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                    }
+
+                                    PicScrTotSum = PicScrTotSum + HrdScrOve;
+                                    $("#HrdScrOveSum").text(formatNumber(HrdScrOve.toFixed(2)));
+                                }
+
+                                $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+
+    }
+
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>

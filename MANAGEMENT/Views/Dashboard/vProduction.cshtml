@@ -1,0 +1,1148 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="8" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>PRODUCTION OP & LEAN</b></a></th>
+                        <td><span id="RevTitle" style="color:red">Revenue</span></td>
+                        <td><span id="ProGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitle" style="color:red">Production Output PDA</span></td>
+                        <td><span id="ProGrdPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPda" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPda" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitle" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="ProGrdPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPdc" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPdc" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trhdr" style="display:none">
+                        <td><span id="AvgTitle" style="color:red">Average Score Of PPIC, Casting & Machining</span></td>
+                        <td><span id="ProGrdAvg" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtAvg" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActAvg" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchAvg" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrAvg" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="RedTitle" style="color:red">Sigma Cost Reduction From Operation</span></td>
+                        <td><span id="ProGrdRed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRed" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRed" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitle" style="color:red">Safety Production Workplace</span></td>
+                        <td><span id="ProGrdSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchSaf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrSaf" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="ImpTitle" style="color:red">Implementation of 5S-Audit Score</span></td>
+                        <td><span id="ProGrdImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchImp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrImp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="8" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>PRODUCTION OP & LEAN</b></a></th>
+                        <td><span id="RevTitleMonth" style="color:red">Revenue</span></td>
+                        <td><span id="ProGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleMonth" style="color:red">Production Output PDA</span></td>
+                        <td><span id="ProGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPdaMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPdaMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleMonth" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="ProGrdPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPdcMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPdcMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trdtl" style="display:none">
+                        <td><span id="AvgTitleMonth" style="color:red">Average Score Of PPIC, Casting & Machining</span></td>
+                        <td><span id="ProGrdAvgMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtAvgMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActAvgMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchAvgMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrAvgMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="RedTitleMonth" style="color:red">Sigma Cost Reduction From Operation</span></td>
+                        <td><span id="ProGrdRedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRedMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRedMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitleMonth" style="color:red">Safety Production Workplace</span></td>
+                        <td><span id="ProGrdSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchSafMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrSafMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="ImpTitleMonth" style="color:red">Implementation of 5S-Audit Score</span></td>
+                        <td><span id="ProGrdImpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtImpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActImpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchImpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrImpMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="8" class="text-center"><b>PRODUCTION OP & LEAN</b></th>
+                        <td><span id="RevTitleSum" style="color:red">Revenue</span></td>
+                        <td><span id="ProGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdaTitleSum" style="color:red">Production Output PDA</span></td>
+                        <td><span id="ProGrdPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPdaSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPdaSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="PdcTitleSum" style="color:red">Production Output PDB+PDC</span></td>
+                        <td><span id="ProGrdPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchPdcSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrPdcSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trsubdtl" style="display:none">
+                        <td><span id="AvgTitleSum" style="color:red">Average Score Of PPIC, Casting & Machining</span></td>
+                        <td><span id="ProGrdAvgSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtAvgSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActAvgSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchAvgSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrAvgSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                        <td><span id="RedTitleSum" style="color:red">Sigma Cost Reduction From Operation</span></td>
+                        <td><span id="ProGrdRedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtRedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActRedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchRedSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrRedSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SafTitleSum" style="color:red">Safety Production Workplace</span></td>
+                        <td><span id="ProGrdSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchSafSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrSafSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="ImpTitleSum" style="color:red">Implementation of 5S-Audit Score</span></td>
+                        <td><span id="ProGrdImpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProTgtImpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProActImpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProAchImpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="ProScrImpSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="PicGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="PicScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        
+        
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var PicScrTot = 0;
+    var PicScrTotMonth = 0;
+    var PicScrTotSum = 0;
+    var avgNow = 0;
+    var avgNowMonth = 0;
+    var avgNowYear = 0;
+    var avgTgtNow = 0;
+    var avgNowTgtMonth = 0;
+    var avgTgtNowYear = 0;
+    var avgGrdNow = 0;
+    var avgGrdNowMonth = 0;
+    var avgGrdNowYear = 0;
+    var PicScrAvg = 0;
+    var PicScrAvgMonth = 0;
+    var PicScrAvgYear = 0;
+    var PicScrImp = 0;
+    var PicScrSaf = 0;
+    var PicScrImpBln = 0;
+    var PicScrSafBln = 0;
+    var PicScrImpThn = 0;
+    var PicScrSafThn = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function Monthly() {
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function valMonth(bl) {
+        var nmonth;
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function getView(thn) {
+        avgNow = 0;
+        avgGrdNow = 0;
+        avgTgtNow = 0;
+        PicScrAvg = 0;
+        PicScrTot = 0;
+        PicScrImp = 0;
+        PicScrSaf = 0;
+        var userAu = $('#authorid').val();
+        var kpiRpt = {
+            Bulan: iMonth,
+            Tahun: $('#prd').val(),
+            ch: 'D'
+        }
+
+        $.ajax({
+            url: urlKPI + "/vShowProdOPlean/",
+            data: JSON.stringify(kpiRpt),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    avgNow = item.Nilai;
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+   
+
+
+        var kpiObj = {
+            id: thn,
+            bln: iMonth
+        }
+        $.ajax({
+            url: urlKPI + "/vProductionDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#ProGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#ProTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#ProActRev").text(formatNumber(item.PicActRev));
+                        $("#ProAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#ProScrRev").text(formatNumber(item.PicScrRev));
+                        var newcolor = item.PicScrRev - item.PicGrdRev;
+                        if (newcolor >= 0 && item.PicTgtRev > 0)
+                            $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pda---------*/
+                    $("#ProGrdPda").text(formatNumber(item.PicGrdPda));
+                    $("#ProTgtPda").text(formatNumber(item.PicTgtPda));
+                    $("#ProActPda").text(formatNumber(item.PicActPda));
+                    $("#ProAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#ProScrPda").text(formatNumber(item.PicScrPda));
+
+                    var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                    if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                        $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+
+                    /*------------pdc---------*/
+                    $("#ProGrdPdc").text(formatNumber(item.PicGrdPdc));
+                    $("#ProTgtPdc").text(formatNumber(item.PicTgtPdc));
+                    $("#ProActPdc").text(formatNumber(item.PicActPdc));
+                    $("#ProAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#ProScrPdc").text(formatNumber(item.PicScrPdc));
+
+                    var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                    if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                        $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+
+                    //----REDUCTION
+                    $("#ProGrdRed").text(formatNumber(item.PicGrdEme));
+                    $("#ProTgtRed").text(formatNumber(item.PicTgtEme));
+                    $("#ProActRed").text(formatNumber(item.PicActEme));
+                    $("#ProAchRed").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#ProScrRed").text(formatNumber(item.PicScrEme));
+
+                    var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                    if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                        $("#RedTitle").css({ "color": "black", "font-weight": "bold" });
+                    else $("#RedTitle").css({ "color": "red", "font-weight": "bold" });
+
+                    //----Safety Index
+                    $("#ProGrdSaf").text(formatNumber(item.PicGrdSaf));
+                    $("#ProTgtSaf").text(formatNumber(item.PicTgtSaf));
+
+                    if (thn < 2020) {
+                        //----average score
+                        avgNow = 0;
+                        $("#trhdr").show();
+                        $("#ProGrdAvg").text(formatNumber(item.PicGrdDpp));
+                        $("#ProTgtAvg").text(formatNumber(item.PicTgtDpp.toFixed(2)));
+                        $("#ProActAvg").text(formatNumber(avgNow.toFixed(2)));
+                        avgTgtNow = item.PicTgtDpp;
+                        avgGrdNow = item.PicGrdDpp;
+                        console.log(avgTgtNow);
+                        if (avgTgtNow == 0) {
+                            $("#ProAchAvg").text(0);
+                            $("#ProScrAvg").text(0);
+                        } else {
+                            var PicAchAvg = avgNow / avgTgtNow * 100;
+                            if (PicAchAvg < 0)
+                                PicAchAvg = 0;
+                            $("#ProAchAvg").text(formatNumber(PicAchAvg.toFixed(2)));
+                            if (PicAchAvg < 87)
+                                PicAchAvg = 60;
+                            else if (PicAchAvg >= 87 && PicAchAvg <= 92)
+                                PicAchAvg = 90;
+                            else if (PicAchAvg > 92 && PicAchAvg <= 95)
+                                PicAchAvg = 100;
+                            else if (PicAchAvg > 95 && PicAchAvg <= 98)
+                                PicAchAvg = 110;
+                            else if (PicAchAvg > 98)
+                                PicAchAvg = 120;
+
+                            PicScrAvg = avgGrdNow * PicAchAvg / 100;
+                            var newcoloravg = PicScrAvg - avgGrdNow;
+                            if (newcoloravg >= 0)
+                                $("#AvgTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AvgTitle").css({ "color": "red", "font-weight": "bold" });
+
+                            $("#ProScrAvg").text(formatNumber(PicScrAvg.toFixed(2)));
+                        }
+                    } else {
+                        $("#trhdr").hide();
+                    }
+
+
+                    if (userAu == "VST") 
+                        PicScrTot = item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvg + PicScrImp + PicScrSaf;
+                    else
+                        PicScrTot = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvg + PicScrImp + PicScrSaf;
+
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
+
+                    //----Implementation of 5S
+                    $("#ProGrdImp").text(formatNumber(item.PicGrdOth));
+                    $("#ProTgtImp").text(formatNumber(item.PicTgtOth));
+
+
+                    var kpiHRD = {
+                        id: thn,
+                        bln: iMonth,
+                        ch: 'D'
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/ProductionDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                /*-- Implementation 5S -----------*/
+                                $("#ProAchImp").text(formatNumber(item.lgAchImp.toFixed(2)));
+                                $("#ProScrImp").text(formatNumber(item.lgScrImp.toFixed(2)));
+                                $("#ProActImp").text(formatNumber(item.lgActImp.toFixed(2)));
+                                //--var newcolorLab12 = item.lgScrImp - item.lgGrdImp;
+                                var newcolorLab12 = item.lgScrImp - item.PicGrdLab;
+                                console.log('s'+item.lgScrImp);
+                                console.log('g' + item.PicGrdLab);
+                                console.log('a' + item.lgActImp);
+                                console.log(newcolorLab12);
+                                if (newcolorLab12 >= 0)
+                                    $("#ImpTitle").css({ "color": "black", "font-weight": "bold" });
+                                else $("#ImpTitle").css({ "color": "red", "font-weight": "bold" });
+                                PicScrImp = item.lgScrImp;
+
+                                /*-- safety index -----------*/
+                                var MacActSaf = item.ibpActSafe;
+                                $("#ProActSaf").text(formatNumber(MacActSaf.toFixed(2)));
+                                $("#ProAchSaf").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#ProScrSaf").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                if (MacActSaf == 0)
+                                    $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
+                                else $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
+                                PicScrSaf = item.PicScrSaf;
+
+
+                                PicScrTot = PicScrTot + PicScrImp + PicScrSaf;
+
+                                $("#PicGrdTot").text(formatNumber(item.TotGrade.toFixed(2)));
+                                $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                                //---- $("#PicScrTot").text(formatNumber((item.TotScore + PicScrAvg).toFixed(2)));
+
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+   
+    }
+
+    function getMonthView(thn, bln) {
+        avgNowMonth = 0;
+        avgGrdNowMonth = 0;
+        avgTgtNowMonth = 0;
+        PicScrAvgMonth = 0;
+        avgNowYear = 0;
+        avgGrdNowYear = 0;
+        avgTgtNowYear = 0;
+        PicScrAvgYear = 0;
+        PicScrImpBln = 0;
+        PicScrSafBln = 0;
+        PicScrImpThn = 0;
+        PicScrSafThn = 0;
+        PicScrTotMonth = 0;
+        PicScrTotSum = 0;
+        var userAu = $('#authorid').val();
+        var kpiRpt = {
+            Bulan: $('#monthkpi').val(),
+            Tahun: $('#prd').val(),
+            ch: 'M'
+        }
+
+        $.ajax({
+            url: urlKPI + "/vShowProdOPleanMM/",
+            data: JSON.stringify(kpiRpt),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    avgNowMonth = item.Nilai;
+                    $("#ProActAvgMonth").text(formatNumber(avgNowMonth.toFixed(2)));
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "M"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vProductionDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#ProGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#ProTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#ProActRevMonth").text(formatNumber(item.PicActRev));
+                        $("#ProAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#ProScrRevMonth").text(formatNumber(item.PicScrRev));
+                        var newcolor = item.PicScrRev - item.PicGrdRev;
+                        if (newcolor >= 0 && item.PicTgtRev > 0)
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pda---------*/
+                    $("#ProGrdPdaMonth").text(formatNumber(item.PicGrdPda));
+                    $("#ProTgtPdaMonth").text(formatNumber(item.PicTgtPda));
+                    $("#ProActPdaMonth").text(formatNumber(item.PicActPda));
+                    $("#ProAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#ProScrPdaMonth").text(formatNumber(item.PicScrPda));
+
+                    var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                    if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                        $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                    /*------------pdc---------*/
+                    $("#ProGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
+                    $("#ProTgtPdcMonth").text(formatNumber(item.PicTgtPdc));
+                    $("#ProActPdcMonth").text(formatNumber(item.PicActPdc));
+                    $("#ProAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#ProScrPdcMonth").text(formatNumber(item.PicScrPdc));
+
+                    var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                    if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                        $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                    //----REDUCTION
+                    $("#ProGrdRedMonth").text(formatNumber(item.PicGrdEme));
+                    $("#ProTgtRedMonth").text(formatNumber(item.PicTgtEme));
+                    $("#ProActRedMonth").text(formatNumber(item.PicActEme));
+                    $("#ProAchRedMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#ProScrRedMonth").text(formatNumber(item.PicScrEme));
+
+                    var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                    if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                        $("#RedTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                    else $("#RedTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                    //----Safety Index
+                    $("#ProGrdSafMonth").text(formatNumber(item.PicGrdSaf));
+                    $("#ProTgtSafMonth").text(formatNumber(item.PicTgtSaf));
+
+                    if (thn < 2020) {
+                        //----average score
+                        avgNowMonth = 0;
+                        $("#trdtl").show();
+                        $("#ProGrdAvgMonth").text(formatNumber(item.PicGrdDpp));
+                        $("#ProTgtAvgMonth").text(formatNumber(item.PicTgtDpp.toFixed(2)));
+                        avgTgtNowMonth = item.PicTgtDpp;
+                        avgGrdNowMonth = item.PicGrdDpp;
+                        console.log(avgTgtNowMonth);
+                        if (avgTgtNow == 0) {
+                            $("#ProAchAvgMonth").text(0);
+                            $("#ProScrAvgMonth").text(0);
+                        } else {
+                            var PicAchAvgMonth = avgNowMonth / avgTgtNowMonth * 100;
+                            if (PicAchAvgMonth < 0)
+                                PicAchAvgMonth = 0;
+                            $("#ProAchAvgMonth").text(formatNumber(PicAchAvgMonth.toFixed(2)));
+                            if (PicAchAvgMonth < 87)
+                                PicAchAvgMonth = 60;
+                            else if (PicAchAvgMonth >= 87 && PicAchAvgMonth <= 92)
+                                PicAchAvgMonth = 90;
+                            else if (PicAchAvgMonth > 92 && PicAchAvgMonth <= 95)
+                                PicAchAvgMonth = 100;
+                            else if (PicAchAvgMonth > 95 && PicAchAvgMonth <= 98)
+                                PicAchAvgMonth = 110;
+                            else if (PicAchAvgMonth > 98)
+                                PicAchAvgMonth = 120;
+
+                            PicScrAvgMonth = avgGrdNowMonth * PicAchAvgMonth / 100;
+                            var newcolorMonth = PicScrAvgMonth - avgGrdNowMonth;
+                            if (newcolorMonth >= 0)
+                                $("#AvgTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AvgTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            $("#ProScrAvgMonth").text(formatNumber(PicScrAvgMonth.toFixed(2)));
+                        }
+
+                    } else {
+                        $("#trdtl").hide();
+                    }
+                    //----Implementation of 5S
+                    $("#ProGrdImpMonth").text(formatNumber(item.PicGrdOth));
+                    $("#ProTgtImpMonth").text(formatNumber(item.PicTgtOth));
+                    if (userAu != "VST") 
+                    PicScrTotMonth = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvgMonth + PicScrImpBln + PicScrSafBln;
+                    else PicScrTotMonth =  item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvgMonth + PicScrImpBln + PicScrSafBln;
+
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+
+
+                    var kpiHRD = {
+                        id: thn,
+                        bln: bln,
+                        ch: "M"
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/ProductionDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                /*-- Implementation 5S -----------*/
+                                $("#ProAchImpMonth").text(formatNumber(item.lgAchImp.toFixed(2)));
+                                $("#ProScrImpMonth").text(formatNumber(item.lgScrImp.toFixed(2)));
+                                $("#ProActImpMonth").text(formatNumber(item.lgActImp.toFixed(2)));
+                                console.log('sBul' + item.lgScrImp);
+                                console.log('gBul' + item.PicGrdLab);
+                                console.log('aBul' + item.lgActImp);
+
+                                //--var newcolorLab12 = item.lgScrImp - item.lgGrdImp;
+                                var newcolorLab12 = item.lgScrImp - item.PicGrdLab;
+                                if (newcolorLab12 >= 0)
+                                    $("#ImpTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                else $("#ImpTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                PicScrImpBln = item.lgScrImp;
+                                /*-- safety index -----------*/
+                                var MacActSaf = item.ibpActSafe;
+                                console.log(MacActSaf);
+                                $("#ProActSafMonth").text(formatNumber(MacActSaf.toFixed(2)));
+                                $("#ProAchSafMonth").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#ProScrSafMonth").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                if (MacActSaf == 0)
+                                    $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                else $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                PicScrSafBln = item.PicScrSaf;
+
+                                PicScrTotMonth = PicScrTotMonth + PicScrImpBln + PicScrSafBln;
+
+                                $("#PicGrdTotMonth").text(formatNumber(item.TotGradeMonth.toFixed(2)));
+                                $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    
+        /*----------- yearly-------------------*/
+
+        var kpiRpt = {
+            Bulan: $('#monthkpi').val(),
+            Tahun: $('#prd').val(),
+            ch: 'Y'
+        }
+
+        $.ajax({
+            url: urlKPI + "/vShowProdOPleanYY/",
+            data: JSON.stringify(kpiRpt),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    avgNowYear = item.Nilai;
+                    $("#ProActAvgSum").text(formatNumber(avgNowYear.toFixed(2)));
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+        var kpiObj = {
+            id: thn,
+            bln: bln,
+            ch: "Y"
+        }
+
+        $.ajax({
+            url: urlKPI + "/vProductionDeptSummary/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    if (userAu != "VST") {
+                        $("#ProGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#ProTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#ProActRevSum").text(formatNumber(item.PicActRev));
+                        $("#ProAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#ProScrRevSum").text(formatNumber(item.PicScrRev));
+                        var newcolor = item.PicScrRev - item.PicGrdRev;
+                        if (newcolor >= 0 && item.PicTgtRev > 0)
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    /*------------pda---------*/
+                    $("#ProGrdPdaSum").text(formatNumber(item.PicGrdPda));
+                    $("#ProTgtPdaSum").text(formatNumber(item.PicTgtPda));
+                    $("#ProActPdaSum").text(formatNumber(item.PicActPda));
+                    $("#ProAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
+                    $("#ProScrPdaSum").text(formatNumber(item.PicScrPda));
+
+                    var newcolor1 = item.PicScrPda - item.PicGrdPda;
+                    if (newcolor1 >= 0 && item.PicTgtPdc > 0)
+                        $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                    /*------------pdc---------*/
+                    $("#ProGrdPdcSum").text(formatNumber(item.PicGrdPdc));
+                    $("#ProTgtPdcSum").text(formatNumber(item.PicTgtPdc));
+                    $("#ProActPdcSum").text(formatNumber(item.PicActPdc));
+                    $("#ProAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
+                    $("#ProScrPdcSum").text(formatNumber(item.PicScrPdc));
+
+                    var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
+                    if (newcolor2 >= 0 && item.PicTgtPda > 0)
+                        $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
+                    else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                    //----REDUCTION
+                    $("#ProGrdRedSum").text(formatNumber(item.PicGrdEme));
+                    $("#ProTgtRedSum").text(formatNumber(item.PicTgtEme));
+                    $("#ProActRedSum").text(formatNumber(item.PicActEme));
+                    $("#ProAchRedSum").text(formatNumber(item.PicAchEme.toFixed(2)));
+                    $("#ProScrRedSum").text(formatNumber(item.PicScrEme));
+
+                    var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                    if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                        $("#RedTitleSum").css({ "color": "black", "font-weight": "bold" });
+                    else $("#RedTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                    //----Safety Index
+                    $("#ProGrdSafSum").text(formatNumber(item.PicGrdSaf));
+                    $("#ProTgtSafSum").text(formatNumber(item.PicTgtSaf));
+
+                    if (thn < 2020) {
+                        //----average score
+                        avgNowYear = 0;
+                        $("#trsubdtl").show();
+                        $("#ProGrdAvgSum").text(formatNumber(item.PicGrdDpp));
+                        $("#ProTgtAvgSum").text(formatNumber(item.PicTgtDpp.toFixed(2)));
+                        avgNowYear = $("#ProActAvgSum").text();
+                        avgTgtNowYear = item.PicTgtDpp;
+                        avgGrdNowYear = item.PicGrdDpp;
+                        console.log(avgTgtNowYear);
+                        if (avgTgtNow == 0) {
+                            $("#ProAchAvgSum").text(0);
+                            $("#ProScrAvgSum").text(0);
+                        } else {
+                            var PicAchAvgSum = avgNowYear / avgTgtNowYear * 100;
+                            if (PicAchAvgSum < 0)
+                                PicAchAvgSum = 0;
+                            $("#ProAchAvgSum").text(formatNumber(PicAchAvgSum.toFixed(2)));
+                            if (PicAchAvgSum < 87)
+                                PicAchAvgSum = 60;
+                            else if (PicAchAvgSum >= 87 && PicAchAvgSum <= 92)
+                                PicAchAvgSum = 90;
+                            else if (PicAchAvgSum > 92 && PicAchAvgSum <= 95)
+                                PicAchAvgSum = 100;
+                            else if (PicAchAvgSum > 95 && PicAchAvgSum <= 98)
+                                PicAchAvgSum = 110;
+                            else if (PicAchAvgSum > 98)
+                                PicAchAvgSum = 120;
+
+                            PicScrAvgYear = avgGrdNowYear * PicAchAvgSum / 100;
+                            var newcolorYear = PicScrAvgYear - avgGrdNowYear;
+                            if (newcolorYear >= 0)
+                                $("#AvgTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#AvgTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            $("#ProScrAvgSum").text(formatNumber(PicScrAvgYear.toFixed(2)));
+                        }
+
+                    } else {
+                        $("#trsubdtl").hide();
+                    }
+                    //----Implementation of 5S
+                    $("#ProGrdImpSum").text(formatNumber(item.PicGrdOth));
+                    $("#ProTgtImpSum").text(formatNumber(item.PicTgtOth));
+
+                    if (userAu == "VST") 
+                    PicScrTotSum = item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvgYear + PicScrImpThn + PicScrSafThn;
+                    else PicScrTotSum = item.PicScrRev + item.PicScrPda + item.PicScrPdc + item.PicScrEme + PicScrAvgYear + PicScrImpThn + PicScrSafThn;
+
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+
+                    var kpiHRD = {
+                        id: thn,
+                        bln: bln,
+                        ch: "Y"
+                    }
+
+                    $.ajax({
+                        url: urlKPI + "/ProductionDept/",
+                        data: JSON.stringify(kpiHRD),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(result, function (key, item) {
+                                /*-- Implementation 5S -----------*/
+                                $("#ProAchImpSum").text(formatNumber(item.lgAchImp.toFixed(2)));
+                                $("#ProScrImpSum").text(formatNumber(item.lgScrImp.toFixed(2)));
+                                $("#ProActImpSum").text(formatNumber(item.lgActImp.toFixed(2)));
+                                //--var newcolorLab22 = item.lgScrImp - item.lgGrdImp;
+                                var newcolorLab22 = item.lgScrImp - item.PicGrdLab;
+                                if (newcolorLab22 >= 0)
+                                    $("#ImpTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                else $("#ImpTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                PicScrImpThn = item.lgScrImp;
+                                /*-- safety index -----------*/
+                                var MacActSaf = item.ibpActSafe;
+                                console.log(MacActSaf);
+                                $("#ProActSafSum").text(formatNumber(MacActSaf.toFixed(2)));
+                                $("#ProAchSafSum").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                $("#ProScrSafSum").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                if (MacActSaf == 0)
+                                    $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                else $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                PicScrSafThn = item.PicScrSaf;
+                                PicScrTotSum = PicScrTotSum + PicScrImpThn + PicScrSafThn;
+
+                                $("#PicGrdTotSum").text(formatNumber(item.TotGradeSum.toFixed(2)));
+                                $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+
+
+                            });
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        beforeSend: function () { $(".loader").show(); },
+                        complete: function () { $(".loader").hide(); },
+                        type: 'POST', dataType: 'json'
+                    });
+
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+      
+    }
+
+</script>

@@ -1,0 +1,667 @@
+﻿<style>
+    body, html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    p {
+        text-orientation:upright;      
+        writing-mode: vertical-lr;
+    }
+
+    centerP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        height: 50em;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<body>
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="lbl1">Periode :</label>
+            </div>
+            <div class="col-sm-2">
+                
+                    @*if (Session["UserYear"] != null)
+                    {
+                        var tahun = Session["UserYear"];*@
+                @if (Session["UserType"] != null)
+                {
+                    var author = Session["UserType"];
+                    <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
+                }
+                <div class="input-group date datetimepicker">
+                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                    
+            </div>
+            <div class="col-sm-2">
+                <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Table</button>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="monthkpi">
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUSTUS</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="month" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetMonth();">Table</button>
+            </div>
+        </div>
+        <br />
+
+        <div id="detailForm" class="form-horizontal">
+            <br />
+            <table id="DetailInfo" class="table table-bordered  table-hover">
+                <caption id="thn" class="text-center" style="background-color: #4d79ff;color: white;">Year :</caption>
+                <tbody id="tbodytblDetailInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7"  class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>MARKETING</b></a></th>
+                        <td><span id="RevTitle" >Revenue</span></td>
+                        <td><span id="MktGrdRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchRev" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrRev" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AquTitle">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="MktGrdAqu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAqu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAqu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAqu" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAqu" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SatTitle">Customer Satisfaction Index</span></td>
+                        <td><span id="MktGrdSat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtSat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActSat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchSat" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrSat" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="MktGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="MktScrTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+    
+        <div id="monthlyForm" class="form-horizontal">
+            <br />
+            <table id="monthlyInfo" class="table table-bordered  table-hover">
+                <caption id="blnnan" class="text-center" style="background-color: #4d79ff;color: white;">MONTH : </caption>
+                <tbody id="tbodytblMonthlyInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Period" onclick="Yearly()"><b>MARKETING</b></a></th>
+                        <td><span id="RevTitleMonth">Revenue</span></td>
+                        <td><span id="MktGrdRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchRevMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrRevMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AquTitleMonth">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="MktGrdAquMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAquMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAquMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAquMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAquMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SatTitleMonth">Customer Satisfaction Index</span></td>
+                        <td><span id="MktGrdSatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtSatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActSatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchSatMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrSatMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="MktGrdTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="MktScrTotMonth" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+    
+        <div id="childForm" class="form-horizontal">
+            <br />
+            <table id="childInfo" class="table table-bordered  table-hover">
+                <caption id="thnnan" class="text-center" style="background-color: #4d79ff;color: white;">YEAR TO DATE</caption>
+                <tbody id="tbodytblChildInfo">
+                    <tr>
+                        <th style="background-color: #4d79ff;color: white;"><b>DEPARTMENT</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><b>DESCRIPTION</b></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>WEIGHT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>TARGET</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACTUAL</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>ACHIEVEMENT</b></span></th>
+                        <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="7" class="text-center"><b>MARKETING</b></th>
+                        <td><span id="RevTitleSum">Revenue</span></td>
+                        <td><span id="MktGrdRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchRevSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrRevSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AquTitleSum">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="MktGrdAquSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAquSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAquSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAquSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAquSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="SatTitleSum">Customer Satisfaction Index</span></td>
+                        <td><span id="MktGrdSatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtSatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActSatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchSatSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrSatSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
+                        <td><span id="MktGrdTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span class="pull-right" style="color:blue"><b>Total Score</b></span></td>
+                        <td><span id="MktScrTotSum" class="pull-right" style="color:blue;font-weight:bold"></span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        
+        <div class="loader"></div>
+    </div>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Dashboard")";
+    var MktScrRev = 0;
+    var MktScrAqu = 0;
+    var MktScrSat = 0;
+    var MktScrTot = 0;
+    var MktScrTotMonth = 0;
+    var MktScrTotSum = 0;
+    var MktTotGrade = 0, MktTotGradeMonth = 0, MktTotGradeSum = 0;
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY'
+        });
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#monthkpi').hide();
+        var userAu = $('#authorid').val();
+        if (userAu == "VST") {
+            $("#RevTitle").text('');
+            $("#RevTitleMonth").text('');
+            $("#RevTitleSum").text('');
+        }
+
+        var dNow = new Date()
+        var iMonth = dNow.getMonth() + 1
+        var iYear = dNow.getFullYear()
+        $('#prd').val(iYear);
+        $('#thn').text('YEAR : ' + iYear);
+        getView(iYear);
+    });
+
+    function GetPeriode() {
+        var newyear = $('#prd').val();
+        $('#thn').text('YEAR : ' + newyear);
+        getView(newyear);
+    }
+
+    function valMonth(bl) {
+        var nmonth;        
+        switch (bl) {
+            case '1':
+                nmonth = "JANUARY";
+                break;
+            case '2':
+                nmonth = "FEBRUARY";
+                break;
+            case '3':
+                nmonth = "MARCH";
+                break;
+            case '4':
+                nmonth = "APRIL";
+                break;
+            case '5':
+                nmonth = "MAY";
+                break;
+            case '6':
+                nmonth = "JUNE";
+                break;
+            case '7':
+                nmonth = "JULY";
+                break;
+            case '8':
+                nmonth = "AUGUSTUS";
+                break;
+            case '9':
+                nmonth = "SEPTEMBER";
+                break;
+            case '10':
+                nmonth = "OCTOBER";
+                break;
+            case '11':
+                nmonth = "NOVEMBER";
+                break;
+            case '12':
+                nmonth = "DECEMBER";
+                break;
+            default:
+                nmonth = "KABISAT";
+                // code block
+        }
+        return nmonth;
+    }
+
+    function Monthly(){
+        $('#month').show();
+        $('#monthlyForm').show();
+        $('#childForm').show();
+        $('#detailForm').hide();
+        $('#periode').hide();
+        $('#monthkpi').show();
+
+    }
+
+    function Yearly() {
+        $('#month').hide();
+        $('#monthlyForm').hide();
+        $('#childForm').hide();
+        $('#detailForm').show();
+        $('#periode').show();
+        $('#monthkpi').hide();
+    }
+
+    function getView(thn) {
+        MktScrTot = 0;
+        MktTotGrade = 0;
+        var userAu = $('#authorid').val();
+        var kpiObj = {
+            id: thn
+        }
+        $.ajax({
+            url: urlKPI + "/vCORPDept/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    // marketing revenue
+                    if (userAu != "VST") {
+                        $("#MktGrdRev").text(formatNumber(item.PicGrdRev));
+                        $("#MktTgtRev").text(formatNumber(item.PicTgtRev));
+                        $("#MktActRev").text(formatNumber(item.PicActRev));
+                        $("#MktAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#MktScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        MktScrTot = MktScrTot + item.PicScrRev;;
+                        MktTotGrade = MktTotGrade + item.PicGrdRev;
+                    }
+                    // marketing new customer
+                    $("#MktGrdAqu").text(formatNumber(item.PicGrdAqu));
+                    $("#MktTgtAqu").text(formatNumber(item.PicTgtAqu));
+                    $("#MktActAqu").text(formatNumber(item.PicActAqu));
+                    $("#MktAchAqu").text(formatNumber(item.PicAchAqu.toFixed(2)));
+                    $("#MktScrAqu").text(formatNumber(item.PicScrAqu.toFixed(2)));
+                    var PicGrdAqu = item.PicGrdAqu;
+					if (thn == 2020)
+						$("#AquTitle").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");
+                    if (PicGrdAqu == 0) 
+						$("#AquTitle").css({ "color": "black", "font-weight": "normal" });					   
+                    else {
+                        var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
+                        if (newcolor2 >= 0 )
+                            $("#AquTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AquTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTot = MktScrTot + item.PicScrAqu;
+                    MktTotGrade = MktTotGrade + item.PicGrdAqu;
+
+                    // Customer Satisfaction Index
+                    $("#MktGrdSat").text(formatNumber(item.PicGrdSat));
+                    $("#MktTgtSat").text(formatNumber(item.PicTgtSat));
+                    $("#MktActSat").text(formatNumber(item.PicActSat));
+                    $("#MktAchSat").text(formatNumber(item.PicAchSat.toFixed(2)));
+                    $("#MktScrSat").text(formatNumber(item.PicScrSat.toFixed(2)));
+                    var PicGrdSat = item.PicGrdSat;
+                    if (PicGrdSat == 0)
+                        $("#SatTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrSat - item.PicGrdSat;
+                        if (newcolor3 >= 0 )
+                            $("#SatTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SatTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTot = MktScrTot + item.PicScrSat;
+                    MktTotGrade = MktTotGrade + item.PicGrdSat;
+
+                    $("#MktScrTot").text(formatNumber((MktScrTot).toFixed(2)));
+                    $("#MktGrdTot").text(formatNumber((MktTotGrade).toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+    }
+
+    function GetMonth() {
+        var newyear = $('#prd').val();
+        var newmonth = $('#monthkpi').val();
+        getMonthView(newyear, newmonth);
+    }
+
+    function getMonthView(thn, bln) {  
+        MktScrTotMonth = 0;
+        MktScrTotSum = 0;
+        MktTotGradeMonth = 0;
+        MktTotGradeSum = 0;
+        var nmbulan = valMonth(bln);
+        var userAu = $('#authorid').val();
+
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+        var kpiObj = {
+            id: thn,
+            bul: bln,
+            ch: "M"
+        }
+        $.ajax({
+            url: urlKPI + "/vCORPDeptMonthly/",
+            data: JSON.stringify(kpiObj),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    // marketing revenue
+                    if (userAu != "VST") {
+                        $("#MktGrdRevMonth").text(formatNumber(item.PicGrdRev));
+                        $("#MktTgtRevMonth").text(formatNumber(item.PicTgtRev));
+                        $("#MktActRevMonth").text(formatNumber(item.PicActRev));
+                        $("#MktAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#MktScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        MktScrTotMonth = MktScrTotMonth + item.PicScrRev;;
+                        MktTotGradeMonth = MktTotGradeMonth + item.PicGrdRev;
+                    }
+                    // marketing new customer
+                    $("#MktGrdAquMonth").text(formatNumber(item.PicGrdAqu));
+                    $("#MktTgtAquMonth").text(formatNumber(item.PicTgtAqu));
+                    $("#MktActAquMonth").text(formatNumber(item.PicActAqu));
+                    $("#MktAchAquMonth").text(formatNumber(item.PicAchAqu.toFixed(2)));
+                    $("#MktScrAquMonth").text(formatNumber(item.PicScrAqu.toFixed(2)));
+                    var PicGrdAqu = item.PicGrdAqu;
+					if (thn == 2020)
+						$("#AquTitleMonth").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");				
+					
+                    if (PicGrdAqu == 0)
+                        $("#AquTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
+                        if (newcolor2 >= 0)
+                            $("#AquTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AquTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotMonth = MktScrTotMonth + item.PicScrAqu;
+                    MktTotGradeMonth = MktTotGradeMonth + item.PicGrdAqu;
+
+                    // Customer Satisfaction Index
+                    $("#MktGrdSatMonth").text(formatNumber(item.PicGrdSat));
+                    $("#MktTgtSatMonth").text(formatNumber(item.PicTgtSat));
+                    $("#MktActSatMonth").text(formatNumber(item.PicActSat));
+                    $("#MktAchSatMonth").text(formatNumber(item.PicAchSat.toFixed(2)));
+                    $("#MktScrSatMonth").text(formatNumber(item.PicScrSat.toFixed(2)));
+                    var PicGrdSat = item.PicGrdSat;
+                    if (PicGrdSat == 0)
+                        $("#SatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrSat - item.PicGrdSat;
+                        if (newcolor3 >= 0)
+                            $("#SatTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotMonth = MktScrTotMonth + item.PicScrSat;
+                    MktTotGradeMonth = MktTotGradeMonth + item.PicGrdSat;
+
+                    $("#MktScrTotMonth").text(formatNumber((MktScrTotMonth).toFixed(2)));
+                    $("#MktGrdTotMonth").text(formatNumber((MktTotGradeMonth).toFixed(2)));
+
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+
+        var kpiSum = {
+            id: thn,
+            bul: bln,
+            ch: "S"
+        }
+        $.ajax({
+            url: urlKPI + "/vCORPDeptMonthly/",
+            data: JSON.stringify(kpiSum),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    // marketing revenue
+                    if (userAu != "VST") {
+                        $("#MktGrdRevSum").text(formatNumber(item.PicGrdRev));
+                        $("#MktTgtRevSum").text(formatNumber(item.PicTgtRev));
+                        $("#MktActRevSum").text(formatNumber(item.PicActRev));
+                        $("#MktAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
+                        $("#MktScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
+                        var PicGrdRev = item.PicGrdRev;
+                        if (PicGrdRev == 0)
+                            $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor = item.PicScrRev - item.PicGrdRev;
+                            if (newcolor >= 0)
+                                $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        MktScrTotSum = MktScrTotSum + item.PicScrRev;;
+                        MktTotGradeSum = MktTotGradeSum + item.PicGrdRev;
+                    }
+                    // marketing new customer
+                    $("#MktGrdAquSum").text(formatNumber(item.PicGrdAqu));
+                    $("#MktTgtAquSum").text(formatNumber(item.PicTgtAqu));
+                    $("#MktActAquSum").text(formatNumber(item.PicActAqu));
+                    $("#MktAchAquSum").text(formatNumber(item.PicAchAqu.toFixed(2)));
+                    $("#MktScrAquSum").text(formatNumber(item.PicScrAqu.toFixed(2)));
+                    var PicGrdAqu = item.PicGrdAqu;
+					if (thn == 2020)
+						$("#AquTitleSum").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");				
+
+                    if (PicGrdAqu == 0)
+                        $("#AquTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
+                        if (newcolor2 >= 0)
+                            $("#AquTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AquTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotSum = MktScrTotSum + item.PicScrAqu;
+                    MktTotGradeSum = MktTotGradeSum + item.PicGrdAqu;
+
+                    // Customer Satisfaction Index
+                    $("#MktGrdSatSum").text(formatNumber(item.PicGrdSat));
+                    $("#MktTgtSatSum").text(formatNumber(item.PicTgtSat));
+                    $("#MktActSatSum").text(formatNumber(item.PicActSat));
+                    $("#MktAchSatSum").text(formatNumber(item.PicAchSat.toFixed(2)));
+                    $("#MktScrSatSum").text(formatNumber(item.PicScrSat.toFixed(2)));
+                    var PicGrdSat = item.PicGrdSat;
+                    if (PicGrdSat == 0)
+                        $("#SatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.PicScrSat - item.PicGrdSat;
+                        if (newcolor3 >= 0)
+                            $("#SatTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotSum = MktScrTotSum + item.PicScrSat;
+                    MktTotGradeSum = MktTotGradeSum + item.PicGrdSat;
+
+                    $("#MktScrTotSum").text(formatNumber((MktScrTotSum).toFixed(2)));
+                    $("#MktGrdTotSum").text(formatNumber((MktTotGradeSum).toFixed(2)));
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+    
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+</script>
