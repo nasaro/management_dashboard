@@ -139,8 +139,8 @@
                         <td><span id="MacAchPdc" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrPdc" class="pull-right" style="color:blue"></span></td>
                     </tr>
- 
-                    <tr>
+
+                    <tr id="thdrm">
                         <td><span id="DrmTitle" style="color:red">DRM Average</span></td>
                         <td><span id="MacGrdDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtDrm" class="pull-right" style="color:blue"></span></td>
@@ -157,7 +157,7 @@
                         <td><span id="MacScrRej" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CutTitle" style="color:red">Cutting Tools Cost (13.76% OF MC Value)</span></td>
+                        <td><span id="CutTitle" style="color:red">Cutting Tools Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdCut" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtCut" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActCut" class="pull-right" style="color:blue"></span></td>
@@ -165,7 +165,7 @@
                         <td><span id="MacScrCut" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitle" style="color:red">Consumables Cost (5.23% OF MC Value)</span></td>
+                        <td><span id="ConTitle" style="color:red">Consumables Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdCon" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtCon" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActCon" class="pull-right" style="color:blue"></span></td>
@@ -173,15 +173,23 @@
                         <td><span id="MacScrCon" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitle" style="color:red">FOH Electricity (4.95% OF MC Value)</span></td>
+                        <td><span id="FohTitle" style="color:red">FOH Electricity (% OF MC Value)</span></td>
                         <td><span id="MacGrdFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacAchFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrFoh" class="pull-right" style="color:blue"></span></td>
                     </tr>
+                    <tr id="thnon">
+                        <td><span id="NonTitle" style="color:red">FOH Non Electricity(Fixed)</span></td>
+                        <td><span id="MacGrdNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacTgtNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacActNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacAchNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacScrNon" class="pull-right" style="color:blue"></span></td>
+                    </tr>
                     <tr>
-                        <td><span id="LabTitle" style="color:red">Labor Cost (41.69% OF MC Value)</span></td>
+                        <td><span id="LabTitle" style="color:red">Labor Cost (Fixed)</span></td>
                         <td><span id="MacGrdLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActLab" class="pull-right" style="color:blue"></span></td>
@@ -204,7 +212,7 @@
                         <td><span id="MacAchWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrWip" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="thsafe">
                         <td><span id="SafTitle" style="color:red">Safety</span></td>
                         <td><span id="MacGrdSaf" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtSaf" class="pull-right" style="color:blue"></span></td>
@@ -261,7 +269,7 @@
                         <td><span id="MacScrPdcMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
 
-                    <tr>
+                    <tr id="thdrmMonth">
                         <td><span id="DrmTitleMonth" style="color:red">DRM Average</span></td>
                         <td><span id="MacGrdDrmMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtDrmMonth" class="pull-right" style="color:blue"></span></td>
@@ -278,7 +286,7 @@
                         <td><span id="MacScrRejMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CutTitleMonth" style="color:red">Cutting Tools Cost (13.76% OF MC Value)</span></td>
+                        <td><span id="CutTitleMonth" style="color:red">Cutting Tools Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdCutMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtCutMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActCutMonth" class="pull-right" style="color:blue"></span></td>
@@ -286,7 +294,7 @@
                         <td><span id="MacScrCutMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitleMonth" style="color:red">Consumables Cost (5.23% OF MC Value)</span></td>
+                        <td><span id="ConTitleMonth" style="color:red">Consumables Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdConMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtConMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActConMonth" class="pull-right" style="color:blue"></span></td>
@@ -294,15 +302,23 @@
                         <td><span id="MacScrConMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitleMonth" style="color:red">FOH Electricity (4.95% OF MC Value)</span></td>
+                        <td><span id="FohTitleMonth" style="color:red">FOH Electricity (% OF MC Value)</span></td>
                         <td><span id="MacGrdFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacAchFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrFohMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
+                    <tr id="thnonMonth">
+                        <td><span id="NonTitleMonth" style="color:red">FOH Non Electricity(Fixed)</span></td>
+                        <td><span id="MacGrdNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacTgtNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacActNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacAchNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacScrNonMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
                     <tr>
-                        <td><span id="LabTitleMonth" style="color:red">Labor Cost (41.69% OF MC Value)</span></td>
+                        <td><span id="LabTitleMonth" style="color:red">Labor Cost(Fixed)</span></td>
                         <td><span id="MacGrdLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActLabMonth" class="pull-right" style="color:blue"></span></td>
@@ -325,7 +341,7 @@
                         <td><span id="MacAchWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrWipMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="thsafeMonth">
                         <td><span id="SafTitleMonth" style="color:red">Safety</span></td>
                         <td><span id="MacGrdSafMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtSafMonth" class="pull-right" style="color:blue"></span></td>
@@ -382,7 +398,7 @@
                         <td><span id="MacScrPdcSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
 
-                    <tr>
+                    <tr id="thdrmSum">
                         <td><span id="DrmTitleSum" style="color:red">DRM Average</span></td>
                         <td><span id="MacGrdDrmSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtDrmSum" class="pull-right" style="color:blue"></span></td>
@@ -399,7 +415,7 @@
                         <td><span id="MacScrRejSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CutTitleSum" style="color:red">Cutting Tools Cost (13.76% OF MC Value)</span></td>
+                        <td><span id="CutTitleSum" style="color:red">Cutting Tools Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdCutSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtCutSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActCutSum" class="pull-right" style="color:blue"></span></td>
@@ -407,7 +423,7 @@
                         <td><span id="MacScrCutSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitleSum" style="color:red">Consumables Cost (5.23% OF MC Value)</span></td>
+                        <td><span id="ConTitleSum" style="color:red">Consumables Cost (% OF MC Value)</span></td>
                         <td><span id="MacGrdConSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtConSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActConSum" class="pull-right" style="color:blue"></span></td>
@@ -415,15 +431,23 @@
                         <td><span id="MacScrConSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitleSum" style="color:red">FOH Electricity (4.95% OF MC Value)</span></td>
+                        <td><span id="FohTitleSum" style="color:red">FOH Electricity (% OF MC Value)</span></td>
                         <td><span id="MacGrdFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacAchFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrFohSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
+                    <tr id="thnonSum">
+                        <td><span id="NonTitleSum" style="color:red">FOH Non Electricity(Fixed)</span></td>
+                        <td><span id="MacGrdNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacTgtNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacActNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacAchNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MacScrNonSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
                     <tr>
-                        <td><span id="LabTitleSum" style="color:red">Labor Cost (41.69% OF MC Value)</span></td>
+                        <td><span id="LabTitleSum" style="color:red">Labor Cost (Fixed)</span></td>
                         <td><span id="MacGrdLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacActLabSum" class="pull-right" style="color:blue"></span></td>
@@ -446,7 +470,7 @@
                         <td><span id="MacAchWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacScrWipSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="thsafeSum">
                         <td><span id="SafTitleSum" style="color:red">Safety</span></td>
                         <td><span id="MacGrdSafSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MacTgtSafSum" class="pull-right" style="color:blue"></span></td>
@@ -663,6 +687,7 @@
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
                             $("#MacAchRev").text(formatNumber(PicAchRev.toFixed(2)));
+                            /*--
                             if (PicAchRev > 110)
                                 PicAchRev = 120;
                             else if (PicAchRev > 103 && PicAchRev <= 110)
@@ -675,6 +700,17 @@
                                 PicAchRev = 60;
                             else
                                 PicAchRev = 0;
+                            --*/
+
+
+                            if (PicAchRev >= 103)
+                                PicAchRev = 110;
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;                            
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
                             if (newcolor >= 0)
@@ -699,6 +735,7 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#MacAchPdc").text(formatNumber(PicAchPdc.toFixed(2)));
+                        /*--
                         if (PicAchPdc > 110)
                             PicAchPdc = 120;
                         else if (PicAchPdc > 102 && PicAchPdc <= 110)
@@ -711,6 +748,16 @@
                             PicAchPdc = 60;
                         else
                             PicAchPdc = 0;
+                         --*/
+                        if (PicAchPdc >= 103)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 91)
+                            PicAchPdc = 60;
+
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
                         if (newcolor >= 0)
@@ -720,38 +767,133 @@
                         PicTotGrade = PicTotGrade + item.PicGrdPdc;
                         $("#MacScrPdc").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
+                    if (thn < 2022) {
+                        $("#thdrm").show();
+                        $("#thsafe").show();
+                        $("#thnon").hide();
 
-                    $("#MacGrdDrm").text(formatNumber(item.PicGrdTvb));
-                    $("#MacTgtDrm").text(formatNumber(item.PicTgtTvb));
-                    $("#MacActDrm").text(formatNumber(item.PicActTvb));
-                    var MacTgtDrm = item.PicTgtTvb;
-                    if (MacTgtDrm == 0) {
-                        $("#MacAchDrm").text(0);
-                        $("#MacScrDrm").text(0);
+                        $("#MacGrdDrm").text(formatNumber(item.PicGrdTvb));
+                        $("#MacTgtDrm").text(formatNumber(item.PicTgtTvb));
+                        $("#MacActDrm").text(formatNumber(item.PicActTvb));
+                        var MacTgtDrm = item.PicTgtTvb;
+                        if (MacTgtDrm == 0) {
+                            $("#MacAchDrm").text(0);
+                            $("#MacScrDrm").text(0);
+                        } else {
+                            var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (MacAchDrm < 0)
+                                MacAchDrm = 0;
+                            $("#MacAchDrm").text(formatNumber(MacAchDrm.toFixed(2)));
+                            if (MacAchDrm > 100)
+                                MacAchDrm = 110;
+                            else if (MacAchDrm > 95 && MacAchDrm <= 100)
+                                MacAchDrm = 100;
+                            else if (MacAchDrm >= 85 && MacAchDrm <= 95)
+                                MacAchDrm = 90;
+                            else if (MacAchDrm < 85)
+                                MacAchDrm = 60;
+                            else
+                                MacAchDrm = 0;
+                            MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
+                            var newcolor = MacScrDrm - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTot = PicScrTot + MacScrDrm;
+                            PicTotGrade = PicTotGrade + item.PicGrdTvb;
+                            $("#MacScrDrm").text(formatNumber(MacScrDrm.toFixed(2)));
+                        }
+
+                        /*--------- safety index    --------*/
+                        $("#MacGrdSaf").text(formatNumber(item.PicGrdSaf));
+                        $("#MacTgtSaf").text(formatNumber(item.PicTgtSaf));
+                        var MacTgtSaf = item.PicTgtSaf;
+                        TmpGrdSafe = item.PicGrdSaf;
+                        PicTotGrade = PicTotGrade + TmpGrdSafe;
+
+
+
+                        var kpiObj = {
+                            id: thn,
+                            bln: iMonth,
+                            ch: 'D'
+                        }
+                        $.ajax({
+                            url: urlKPI + "/vMachineDeptHrd/",
+                            data: JSON.stringify(kpiObj),
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                $.each(result, function (key, item) {
+                                    var MacActSaf = item.ibpActSafe;
+                                    var MacGrdSafe = TmpGrdSafe;
+                                    $("#MacActSaf").text(formatNumber(MacActSaf));
+
+                                    if (MacActSaf == 0) {
+                                        $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
+                                        $("#MacAchSaf").text('100');
+                                        $("#MacScrSaf").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                        PicScrTot = PicScrTot + MacGrdSafe;
+                                    }
+                                    else {
+                                        $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
+                                        $("#MacAchSaf").text('0');
+                                        MacGrdSafe = MacGrdSafe * 0.6
+                                        $("#MacScrSaf").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                        PicScrTot = PicScrTot + MacGrdSafe;
+                                    }
+
+                                    //$("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                                    //$("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+
+                                });
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            beforeSend: function () { $(".loader").show(); },
+                            complete: function () { $(".loader").hide(); },
+                            type: 'POST', dataType: 'json'
+                        });
+
+
                     } else {
-                        var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (MacAchDrm < 0)
-                            MacAchDrm = 0;
-                        $("#MacAchDrm").text(formatNumber(MacAchDrm.toFixed(2)));
-                        if (MacAchDrm > 100)
-                            MacAchDrm = 110;
-                        else if (MacAchDrm > 95 && MacAchDrm <= 100)
-                            MacAchDrm = 100;
-                        else if (MacAchDrm >= 85 && MacAchDrm <= 95)
-                            MacAchDrm = 90;
-                        else if (MacAchDrm < 85)
-                            MacAchDrm = 60;
-                        else
-                            MacAchDrm = 0;
-                        MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
-                        var newcolor = MacScrDrm - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                        $("#thdrm").hide();
+                        $("#thsafe").hide();
+                        $("#thnon").show();
 
-                        PicScrTot = PicScrTot + MacScrDrm;
-                        PicTotGrade = PicTotGrade + item.PicGrdTvb;
-                        $("#MacScrDrm").text(formatNumber(MacScrDrm.toFixed(2)));
+
+                        //--FOH Non
+                        $("#MacGrdNon").text(formatNumber(item.PicGrdNon));
+                        $("#MacTgtNon").text(formatNumber(item.PicTgtNon));
+                        $("#MacActNon").text(formatNumber(item.PicActNon));
+                        var MacTgtNon = item.PicTgtNon;
+                        if (MacTgtNon == 0) {
+                            $("#MacAchNon").text(0);
+                            $("#MacScrNon").text(0);
+                        } else {
+                            var MacAchNon = (1 + ((item.PicTgtNon - item.PicActNon) / item.PicTgtNon)) * 100;
+                            if (MacAchNon < 0)
+                                MacAchNon = 0;
+                            $("#MacAchNon").text(formatNumber(MacAchNon.toFixed(2)));
+                            if (MacAchNon < 95)
+                                MacAchNon = 60;
+                            else if (MacAchNon >= 95 && MacAchNon <= 99)
+                                MacAchNon = 90;
+                            else if (MacAchNon > 99 && MacAchNon <= 102)
+                                MacAchNon = 100;
+                            else if (MacAchNon > 102)
+                                MacAchNon = 110;
+
+                            MacScrNon = item.PicGrdNon * MacAchNon / 100;
+                            var newcolor = MacScrNon - item.PicGrdNon;
+                            if (newcolor >= 0)
+                                $("#NonTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#NonTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + MacScrNon;
+                            PicTotGrade = PicTotGrade + item.PicGrdNon;
+                            $("#MacScrNon").text(formatNumber(MacScrNon.toFixed(2)));
+                        }
                     }
 
 
@@ -767,6 +909,7 @@
                         if (MacAchRej < 0)
                             MacAchRej = 0;
                         $("#MacAchRej").text(formatNumber(MacAchRej.toFixed(2)));
+                        /*---
                         if (item.PicActDpp < 0.6)
                             MacAchRej = 120;
                         else if (item.PicActDpp >= 0.6 && item.PicActDpp <= 0.8)
@@ -778,6 +921,16 @@
                         else if (item.PicActDpp > 1.2)
                             MacAchRej = 60;
                         else MacAchRej = 0;
+                        ---*/
+                        if (item.PicActDpp <= 0.8)
+                            MacAchRej = 110;
+                        else if (item.PicActDpp > 0.8 && item.PicActDpp <= 1)
+                            MacAchRej = 100;
+                        else if (item.PicActDpp > 1 && item.PicActDpp <= 1.2)
+                            MacAchRej = 90;
+                        else if (item.PicActDpp > 1.2)
+                            MacAchRej = 60;
+
                         MacScrRej = item.PicGrdDpp * MacAchRej / 100;
                         var newcolor = MacScrRej - item.PicGrdDpp;
                         if (newcolor >= 0)                            
@@ -801,6 +954,7 @@
                         if (MacAchCut < 0)
                             MacAchCut = 0;
                         $("#MacAchCut").text(formatNumber(MacAchCut.toFixed(2)));
+                        /*---
                         if (MacAchCut > 105)
                             MacAchCut = 120;
                         else if (MacAchCut >= 100 && MacAchCut <= 105)
@@ -813,7 +967,15 @@
                             MacAchCut = 60;
                         else
                             MacAchCut = 0;
-
+                        --*/
+                        if (MacAchCut < 95)
+                            MacAchCut = 60;
+                        else if (MacAchCut >= 95 && MacAchCut <= 99)
+                            MacAchCut = 90;
+                        else if (MacAchCut > 99 && MacAchCut <= 102)
+                            MacAchCut = 100;
+                        else if (MacAchCut > 102)
+                            MacAchCut = 110;
                         MacScrCut = item.PicGrdEme * MacAchCut / 100;
                         var newcolor = MacScrCut - item.PicGrdEme;
                         if (newcolor >= 0)
@@ -837,6 +999,7 @@
                         if (MacAchCon < 0)
                             MacAchCon = 0;
                         $("#MacAchCon").text(formatNumber(MacAchCon.toFixed(2)));
+                        /*---
                         if (MacAchCon > 105)
                             MacAchCon = 120;
                         else if (MacAchCon >= 100 && MacAchCon <= 105)
@@ -849,6 +1012,15 @@
                             MacAchCon = 60;
                         else
                             MacAchCon = 0;
+                         --*/
+                        if (MacAchCon < 95)
+                            MacAchCon = 60;
+                        else if (MacAchCon >= 95 && MacAchCon <= 99)
+                            MacAchCon = 90;
+                        else if (MacAchCon > 99 && MacAchCon <= 102)
+                            MacAchCon = 100;
+                        else if (MacAchCon > 102)
+                            MacAchCon = 110;
 
                         MacScrCon = item.PicGrdSca * MacAchCon / 100;
                         var newcolor = MacScrCon - item.PicGrdSca;
@@ -869,10 +1041,12 @@
                         $("#MacAchFoh").text(0);
                         $("#MacScrFoh").text(0);
                     } else {
-                        var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        //var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        var MacAchFoh =  item.PicActMus / item.PicTgtMus * 100;
                         if (MacAchFoh < 0)
                             MacAchFoh = 0;
                         $("#MacAchFoh").text(formatNumber(MacAchFoh.toFixed(2)));
+                        /*---
                         if (MacAchFoh > 105)
                             MacAchFoh = 120;
                         else if (MacAchFoh >= 100 && MacAchFoh <= 105)
@@ -885,6 +1059,15 @@
                             MacAchFoh = 60;
                         else
                             MacAchFoh = 0;
+                        --*/
+                        if (MacAchFoh < 95)
+                            MacAchFoh = 60;
+                        else if (MacAchFoh >= 95 && MacAchFoh <= 99)
+                            MacAchFoh = 90;
+                        else if (MacAchFoh > 99 && MacAchFoh <= 102)
+                            MacAchFoh = 100;
+                        else if (MacAchFoh > 102)
+                            MacAchFoh = 110;
 
                         MacScrFoh = item.PicGrdMus * MacAchFoh / 100;
                         var newcolor = MacScrFoh - item.PicGrdMus;
@@ -904,10 +1087,12 @@
                         $("#MacAchLab").text(0);
                         $("#MacScrLab").text(0);
                     } else {
-                        var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        //--var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        var MacAchLab = item.PicActOth / item.PicTgtOth * 100;
                         if (MacAchLab < 0)
                             MacAchLab = 0;
                         $("#MacAchLab").text(formatNumber(MacAchLab.toFixed(2)));
+                        /*--
                         if (MacAchLab > 105)
                             MacAchLab = 120;
                         else if (MacAchLab >= 100 && MacAchLab <= 105)
@@ -920,6 +1105,15 @@
                             MacAchLab = 60;
                         else
                             MacAchLab = 0;
+                         ---*/
+                        if (MacAchLab < 95)
+                            MacAchLab = 60;
+                        else if (MacAchLab >= 95 && MacAchLab <= 99)
+                            MacAchLab = 90;
+                        else if (MacAchLab > 99 && MacAchLab <= 102)
+                            MacAchLab = 100;
+                        else if (MacAchLab > 102)
+                            MacAchLab = 110;
                         MacScrLab = item.PicGrdOth * MacAchLab / 100;
                         var newcolor = MacScrLab - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -944,6 +1138,7 @@
                         if (item.PicActAir <= 0)
                             MacAchRed = 0;
                         $("#MacAchRed").text(formatNumber(MacAchRed.toFixed(2)));
+                        /*---
                         if (MacAchRed > 110)
                             MacAchRed = 120;
                         else if (MacAchRed > 100 && MacAchRed <= 110)
@@ -956,6 +1151,15 @@
                             MacAchRed = 60;
                         else
                             MacAchRed = 0;
+                        ---*/
+                        if (MacAchRed < 95)
+                            MacAchRed = 60;
+                        else if (MacAchRed >= 95 && MacAchRed <= 99)
+                            MacAchRed = 90;
+                        else if (MacAchRed > 99 && MacAchRed <= 102)
+                            MacAchRed = 100;
+                        else if (MacAchRed > 102)
+                            MacAchRed = 110;
                         MacScrRed = item.PicGrdAir * MacAchRed / 100;
                         var newcolor = MacScrRed - item.PicGrdAir;
                         if (newcolor >= 0)
@@ -994,6 +1198,7 @@
                             $("#MacScrWip").text(formatNumber(MacScrWip.toFixed(2)));
 
                         } else {
+                            /*--
                             if (MacAchWip < 50)
                                 MacAchWip = 60;
                             else if (MacAchWip >= 50 && MacAchWip <= 90)
@@ -1006,6 +1211,15 @@
                                 MacAchWip = 120;
                             else
                                 MacAchWip = 0;
+                            --*/
+                            if (MacAchWip < 95)
+                                MacAchWip = 60;
+                            else if (MacAchWip >= 95 && MacAchWip <= 99)
+                                MacAchWip = 90;
+                            else if (MacAchWip > 99 && MacAchWip <= 102)
+                                MacAchWip = 100;
+                            else if (MacAchWip > 102)
+                                MacAchWip = 110;
 
                             if (item.PicActInv == 0)
                                 MacScrWip = item.PicGrdInv;
@@ -1022,58 +1236,11 @@
                         }
                     }
 
-                    /*--------- safety index    --------*/
-                    $("#MacGrdSaf").text(formatNumber(item.PicGrdSaf));
-                    $("#MacTgtSaf").text(formatNumber(item.PicTgtSaf));
-                    var MacTgtSaf = item.PicTgtSaf;
-                    TmpGrdSafe = item.PicGrdSaf;
-                    PicTotGrade = PicTotGrade + TmpGrdSafe;
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                    $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+                    
 
-
-
-                    var kpiObj = {
-                        id: thn,
-                        bln: iMonth,
-                        ch: 'D'
-                    }
-                    $.ajax({
-                        url: urlKPI + "/vMachineDeptHrd/",
-                        data: JSON.stringify(kpiObj),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                var MacActSaf = item.ibpActSafe;
-                                var MacGrdSafe = TmpGrdSafe;
-                                $("#MacActSaf").text(formatNumber(MacActSaf));
-
-                                if (MacActSaf == 0) {
-                                    $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
-                                    $("#MacAchSaf").text('100');
-                                    $("#MacScrSaf").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTot = PicScrTot + MacGrdSafe;
-                                }
-                                else {
-                                    $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
-                                    $("#MacAchSaf").text('0');
-                                    MacGrdSafe = MacGrdSafe * 0.6
-                                    $("#MacScrSaf").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTot = PicScrTot + MacGrdSafe;
-                                }
-
-                                $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
-                                $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
-
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
-
-
+                   
                 });
             },
             error: function (errormessage) {
@@ -1121,18 +1288,16 @@
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
                             $("#MacAchRevMonth").text(formatNumber(PicAchRev.toFixed(2)));
-                            if (PicAchRev > 110)
-                                PicAchRev = 120;
-                            else if (PicAchRev > 103 && PicAchRev <= 110)
+                            if (PicAchRev >= 103)
                                 PicAchRev = 110;
-                            else if (PicAchRev > 95 && PicAchRev <= 103)
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
                                 PicAchRev = 100;
-                            else if (PicAchRev >= 90 && PicAchRev <= 95)
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
                                 PicAchRev = 90;
-                            else if (PicAchRev < 90)
-                                PicAchRev = 60;
-                            else
-                                PicAchRev = 0;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;     
+
+
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
                             if (newcolor >= 0)
@@ -1157,18 +1322,16 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#MacAchPdcMonth").text(formatNumber(PicAchPdc.toFixed(2)));
-                        if (PicAchPdc > 110)
-                            PicAchPdc = 120;
-                        else if (PicAchPdc > 102 && PicAchPdc <= 110)
+
+                        if (PicAchPdc >= 103)
                             PicAchPdc = 110;
-                        else if (PicAchPdc > 98 && PicAchPdc <= 102)
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
                             PicAchPdc = 100;
-                        else if (PicAchPdc >= 94 && PicAchPdc <= 98)
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
                             PicAchPdc = 90;
-                        else if (PicAchPdc < 94)
+                        else if (PicAchPdc < 91)
                             PicAchPdc = 60;
-                        else
-                            PicAchPdc = 0;
+
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
                         if (newcolor >= 0)
@@ -1180,38 +1343,132 @@
                         $("#MacScrPdcMonth").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
 
-                    $("#MacGrdDrmMonth").text(formatNumber(item.PicGrdTvb));
-                    $("#MacTgtDrmMonth").text(formatNumber(item.PicTgtTvb));
-                    $("#MacActDrmMonth").text(formatNumber(item.PicActTvb));
-                    var MacTgtDrm = item.PicTgtTvb;
-                    if (MacTgtDrm == 0) {
-                        $("#MacAchDrmMonth").text(0);
-                        $("#MacScrDrmMonth").text(0);
-                    } else {
-                        var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (MacAchDrm < 0)
-                            MacAchDrm = 0;
-                        $("#MacAchDrmMonth").text(formatNumber(MacAchDrm.toFixed(2)));
-                        if (MacAchDrm > 100)
-                            MacAchDrm = 110;
-                        else if (MacAchDrm > 95 && MacAchDrm <= 100)
-                            MacAchDrm = 100;
-                        else if (MacAchDrm >= 85 && MacAchDrm <= 95)
-                            MacAchDrm = 90;
-                        else if (MacAchDrm < 85)
-                            MacAchDrm = 60;
-                        else
-                            MacAchDrm = 0;
-                        MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
-                        var newcolor = MacScrDrm - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    if (thn < 2022) {
+                        $("#thdrmMonth").show();
+                        $("#thsafeMonth").show();
+                        $("#thnonMonth").hide();
 
-                        PicScrTotMonth = PicScrTotMonth + MacScrDrm;
-                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
-                        $("#MacScrDrmMonth").text(formatNumber(MacScrDrm.toFixed(2)));
+                        $("#MacGrdDrmMonth").text(formatNumber(item.PicGrdTvb));
+                        $("#MacTgtDrmMonth").text(formatNumber(item.PicTgtTvb));
+                        $("#MacActDrmMonth").text(formatNumber(item.PicActTvb));
+                        var MacTgtDrm = item.PicTgtTvb;
+                        if (MacTgtDrm == 0) {
+                            $("#MacAchDrmMonth").text(0);
+                            $("#MacScrDrmMonth").text(0);
+                        } else {
+                            var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (MacAchDrm < 0)
+                                MacAchDrm = 0;
+                            $("#MacAchDrmMonth").text(formatNumber(MacAchDrm.toFixed(2)));
+                            if (MacAchDrm > 100)
+                                MacAchDrm = 110;
+                            else if (MacAchDrm > 95 && MacAchDrm <= 100)
+                                MacAchDrm = 100;
+                            else if (MacAchDrm >= 85 && MacAchDrm <= 95)
+                                MacAchDrm = 90;
+                            else if (MacAchDrm < 85)
+                                MacAchDrm = 60;
+                            else
+                                MacAchDrm = 0;
+                            MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
+                            var newcolor = MacScrDrm - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotMonth = PicScrTotMonth + MacScrDrm;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
+                            $("#MacScrDrmMonth").text(formatNumber(MacScrDrm.toFixed(2)));
+
+                            /*--------- safety index    --------*/
+                            $("#MacGrdSafMonth").text(formatNumber(item.PicGrdSaf));
+                            $("#MacTgtSafMonth").text(formatNumber(item.PicTgtSaf));
+                            var MacTgtSaf = item.PicTgtSaf;
+                            TmpGrdSafe = item.PicGrdSaf;
+                            PicTotGradeMonth = PicTotGradeMonth + TmpGrdSafe;
+
+
+                            var kpiObj = {
+                                id: thn,
+                                bln: bln,
+                                ch: 'M'
+                            }
+                            $.ajax({
+                                url: urlKPI + "/vMachineDeptHrd/",
+                                data: JSON.stringify(kpiObj),
+                                contentType: "application/json;charset=utf-8",
+                                success: function (result) {
+                                    $.each(result, function (key, item) {
+                                        var MacActSaf = item.ibpActSafe;
+                                        var MacGrdSafe = TmpGrdSafe;
+                                        $("#MacActSafMonth").text(formatNumber(MacActSaf));
+                                        if (MacActSaf == 0) {
+                                            $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                            $("#MacAchSafMonth").text('100');
+                                            $("#MacScrSafMonth").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                            PicScrTotMonth = PicScrTotMonth + MacGrdSafe;
+                                        }
+                                        else {
+                                            $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                            $("#MacAchSafMonth").text('0');
+                                            MacGrdSafe = MacGrdSafe * 0.6
+                                            $("#MacScrSafMonth").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                            PicScrTotMonth = PicScrTotMonth + MacGrdSafe;
+                                        }
+
+
+                                    });
+                                },
+                                error: function (errormessage) {
+                                    alert(errormessage.responseText);
+                                },
+                                beforeSend: function () { $(".loader").show(); },
+                                complete: function () { $(".loader").hide(); },
+                                type: 'POST', dataType: 'json'
+                            });
+
+
+                        }
+
+                    } else {
+                        $("#thdrmMonth").hide();
+                        $("#thsafeMonth").hide();
+                        $("#thnonMonth").show();
+
+                        //--FOH Non
+                        $("#MacGrdNonMonth").text(formatNumber(item.PicGrdNon));
+                        $("#MacTgtNonMonth").text(formatNumber(item.PicTgtNon));
+                        $("#MacActNonMonth").text(formatNumber(item.PicActNon));
+                        var MacTgtNon = item.PicTgtNon;
+                        if (MacTgtNon == 0) {
+                            $("#MacAchNonMonth").text(0);
+                            $("#MacScrNonMonth").text(0);
+                        } else {
+                            var MacAchNon = (1 + ((item.PicTgtNon - item.PicActNon) / item.PicTgtNon)) * 100;
+                            if (MacAchNon < 0)
+                                MacAchNon = 0;
+                            $("#MacAchNonMonth").text(formatNumber(MacAchNon.toFixed(2)));
+                            if (MacAchNon < 95)
+                                MacAchNon = 60;
+                            else if (MacAchNon >= 95 && MacAchNon <= 99)
+                                MacAchNon = 90;
+                            else if (MacAchNon > 99 && MacAchNon <= 102)
+                                MacAchNon = 100;
+                            else if (MacAchNon > 102)
+                                MacAchNon = 110;
+
+                            MacScrNon = item.PicGrdNon * MacAchNon / 100;
+                            var newcolor = MacScrNon - item.PicGrdNon;
+                            if (newcolor >= 0)
+                                $("#NonTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#NonTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + MacScrNon;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdNon;
+                            $("#MacScrNonMonth").text(formatNumber(MacScrNon.toFixed(2)));
+                        }
+
                     }
+
 
 
                     $("#MacGrdRejMonth").text(formatNumber(item.PicGrdDpp));
@@ -1226,9 +1483,7 @@
                         if (MacAchRej < 0)
                             MacAchRej = 0;
                         $("#MacAchRejMonth").text(formatNumber(MacAchRej.toFixed(2)));
-                        if (item.PicActDpp < 0.6)
-                            MacAchRej = 120;
-                        else if (item.PicActDpp >= 0.6 && item.PicActDpp <= 0.8)
+                        if (item.PicActDpp <= 0.8)
                             MacAchRej = 110;
                         else if (item.PicActDpp > 0.8 && item.PicActDpp <= 1)
                             MacAchRej = 100;
@@ -1236,7 +1491,7 @@
                             MacAchRej = 90;
                         else if (item.PicActDpp > 1.2)
                             MacAchRej = 60;
-                        else MacAchRej = 0;
+
 
                         MacScrRej = item.PicGrdDpp * MacAchRej / 100;
                         var newcolor = MacScrRej - item.PicGrdDpp;
@@ -1260,18 +1515,15 @@
                         if (MacAchCut < 0)
                             MacAchCut = 0;
                         $("#MacAchCutMonth").text(formatNumber(MacAchCut.toFixed(2)));
-                        if (MacAchCut > 105)
-                            MacAchCut = 120;
-                        else if (MacAchCut >= 100 && MacAchCut <= 105)
-                            MacAchCut = 110;
-                        else if (MacAchCut > 98 && MacAchCut <= 100)
-                            MacAchCut = 100;
-                        else if (MacAchCut >= 95 && MacAchCut <= 98)
-                            MacAchCut = 90;
-                        else if (MacAchCut < 95)
+                        
+                        if (MacAchCut < 95)
                             MacAchCut = 60;
-                        else
-                            MacAchCut = 0;
+                        else if (MacAchCut >= 95 && MacAchCut <= 99)
+                            MacAchCut = 90;
+                        else if (MacAchCut > 99 && MacAchCut <= 102)
+                            MacAchCut = 100;
+                        else if (MacAchCut > 102)
+                            MacAchCut = 110;
 
                         MacScrCut = item.PicGrdEme * MacAchCut / 100;
                         var newcolor = MacScrCut - item.PicGrdEme;
@@ -1295,18 +1547,16 @@
                         if (MacAchCon < 0)
                             MacAchCon = 0;
                         $("#MacAchConMonth").text(formatNumber(MacAchCon.toFixed(2)));
-                        if (MacAchCon > 105)
-                            MacAchCon = 120;
-                        else if (MacAchCon >= 100 && MacAchCon <= 105)
-                            MacAchCon = 110;
-                        else if (MacAchCon > 98 && MacAchCon <= 100)
-                            MacAchCon = 100;
-                        else if (MacAchCon >= 95 && MacAchCon <= 98)
-                            MacAchCon = 90;
-                        else if (MacAchCon < 95)
+
+                        if (MacAchCon < 95)
                             MacAchCon = 60;
-                        else
-                            MacAchCon = 0;
+                        else if (MacAchCon >= 95 && MacAchCon <= 99)
+                            MacAchCon = 90;
+                        else if (MacAchCon > 99 && MacAchCon <= 102)
+                            MacAchCon = 100;
+                        else if (MacAchCon > 102)
+                            MacAchCon = 110;
+
 
                         MacScrCon = item.PicGrdSca * MacAchCon / 100;
                         var newcolor = MacScrCon - item.PicGrdSca;
@@ -1326,22 +1576,21 @@
                         $("#MacAchFohMonth").text(0);
                         $("#MacScrFohMonth").text(0);
                     } else {
-                        var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        //--var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        var MacAchFoh = item.PicActMus / item.PicTgtMus * 100;
                         if (MacAchFoh < 0)
                             MacAchFoh = 0;
                         $("#MacAchFohMonth").text(formatNumber(MacAchFoh.toFixed(2)));
-                        if (MacAchFoh > 105)
-                            MacAchFoh = 120;
-                        else if (MacAchFoh >= 100 && MacAchFoh <= 105)
-                            MacAchFoh = 110;
-                        else if (MacAchFoh > 98 && MacAchFoh <= 100)
-                            MacAchFoh = 100;
-                        else if (MacAchFoh >= 95 && MacAchFoh <= 98)
-                            MacAchFoh = 90;
-                        else if (MacAchFoh < 95)
+
+                        if (MacAchFoh < 95)
                             MacAchFoh = 60;
-                        else
-                            MacAchFoh = 0;
+                        else if (MacAchFoh >= 95 && MacAchFoh <= 99)
+                            MacAchFoh = 90;
+                        else if (MacAchFoh > 99 && MacAchFoh <= 102)
+                            MacAchFoh = 100;
+                        else if (MacAchFoh > 102)
+                            MacAchFoh = 110;
+
 
                         MacScrFoh = item.PicGrdMus * MacAchFoh / 100;
                         var newcolor = MacScrFoh - item.PicGrdMus;
@@ -1361,22 +1610,22 @@
                         $("#MacAchLabMonth").text(0);
                         $("#MacScrLabMonth").text(0);
                     } else {
-                        var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        //--var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        var MacAchLab = item.PicActOth / item.PicTgtOth * 100;
                         if (MacAchLab < 0)
                             MacAchLab = 0;
                         $("#MacAchLabMonth").text(formatNumber(MacAchLab.toFixed(2)));
-                        if (MacAchLab > 105)
-                            MacAchLab = 120;
-                        else if (MacAchLab >= 100 && MacAchLab <= 105)
-                            MacAchLab = 110;
-                        else if (MacAchLab > 98 && MacAchLab <= 100)
-                            MacAchLab = 100;
-                        else if (MacAchLab >= 95 && MacAchLab <= 98)
-                            MacAchLab = 90;
-                        else if (MacAchLab < 95)
+
+                        if (MacAchLab < 95)
                             MacAchLab = 60;
-                        else
-                            MacAchLab = 0;
+                        else if (MacAchLab >= 95 && MacAchLab <= 99)
+                            MacAchLab = 90;
+                        else if (MacAchLab > 99 && MacAchLab <= 102)
+                            MacAchLab = 100;
+                        else if (MacAchLab > 102)
+                            MacAchLab = 110;
+
+
                         MacScrLab = item.PicGrdOth * MacAchLab / 100;
                         var newcolor = MacScrLab - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -1401,18 +1650,16 @@
                         if (item.PicActAir <= 0)
                             MacAchRed = 0;
                         $("#MacAchRedMonth").text(formatNumber(MacAchRed.toFixed(2)));
-                        if (MacAchRed > 110)
-                            MacAchRed = 120;
-                        else if (MacAchRed > 100 && MacAchRed <= 110)
-                            MacAchRed = 110;
-                        else if (MacAchRed > 95 && MacAchRed <= 100)
-                            MacAchRed = 100;
-                        else if (MacAchRed >= 90 && MacAchRed <= 95)
-                            MacAchRed = 90;
-                        else if (MacAchRed < 90)
+
+                        if (MacAchRed < 95)
                             MacAchRed = 60;
-                        else
-                            MacAchRed = 0;
+                        else if (MacAchRed >= 95 && MacAchRed <= 99)
+                            MacAchRed = 90;
+                        else if (MacAchRed > 99 && MacAchRed <= 102)
+                            MacAchRed = 100;
+                        else if (MacAchRed > 102)
+                            MacAchRed = 110;
+
 
                         MacScrRed = item.PicGrdAir * MacAchRed / 100;
                         var newcolor = MacScrRed - item.PicGrdAir;
@@ -1449,18 +1696,17 @@
                             PicTotGradeMonth = PicTotGradeMonth + item.PicGrdInv;
                             $("#MacScrWipMonth").text(formatNumber(MacScrWip.toFixed(2)));
                         } else {
-                            if (MacAchWip < 50)
+
+                            if (MacAchWip < 95)
                                 MacAchWip = 60;
-                            else if (MacAchWip >= 50 && MacAchWip <= 90)
+                            else if (MacAchWip >= 95 && MacAchWip <= 99)
                                 MacAchWip = 90;
-                            else if (MacAchWip > 90 && MacAchWip <= 100)
+                            else if (MacAchWip > 99 && MacAchWip <= 102)
                                 MacAchWip = 100;
-                            else if (MacAchWip >= 100 && MacAchWip <= 125)
+                            else if (MacAchWip > 102)
                                 MacAchWip = 110;
-                            else if (MacAchWip > 125)
-                                MacAchWip = 120;
-                            else
-                                MacAchWip = 0;
+
+
 
                             if (item.PicActInv == 0)
                                 MacScrWip = item.PicGrdInv;
@@ -1477,56 +1723,8 @@
                         }
                     }
 
-                    /*--------- safety index    --------*/
-                    $("#MacGrdSafMonth").text(formatNumber(item.PicGrdSaf));
-                    $("#MacTgtSafMonth").text(formatNumber(item.PicTgtSaf));
-                    var MacTgtSaf = item.PicTgtSaf;
-                    TmpGrdSafe = item.PicGrdSaf;
-                    PicTotGradeMonth = PicTotGradeMonth + TmpGrdSafe;
-
-
-                    var kpiObj = {
-                        id: thn,
-                        bln: bln,
-                        ch: 'M'
-                    }
-                    $.ajax({
-                        url: urlKPI + "/vMachineDeptHrd/",
-                        data: JSON.stringify(kpiObj),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                var MacActSaf = item.ibpActSafe;
-                                var MacGrdSafe = TmpGrdSafe;
-                                $("#MacActSafMonth").text(formatNumber(MacActSaf));
-                                if (MacActSaf == 0) {
-                                    $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                                    $("#MacAchSafMonth").text('100');
-                                    $("#MacScrSafMonth").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTotMonth = PicScrTotMonth + MacGrdSafe;
-                                }
-                                else {
-                                    $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                                    $("#MacAchSafMonth").text('0');
-                                    MacGrdSafe = MacGrdSafe * 0.6
-                                    $("#MacScrSafMonth").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTotMonth = PicScrTotMonth + MacGrdSafe;
-                                }
-
-                                $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
-                                $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
-
-
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
-
+                    $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                    $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
 
 
                 });
@@ -1565,19 +1763,17 @@
                             var PicAchRev = item.PicActRev / item.PicTgtRev * 100;
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
-                            $("#MacAchRevSum").text(formatNumber(PicAchRev.toFixed(2)));
-                            if (PicAchRev > 110)
-                                PicAchRev = 120;
-                            else if (PicAchRev > 103 && PicAchRev <= 110)
+                            $("#MacAchRevSum").text(formatNumber(PicAchRev.toFixed(2)));                            
+
+                            if (PicAchRev >= 103)
                                 PicAchRev = 110;
-                            else if (PicAchRev > 95 && PicAchRev <= 103)
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
                                 PicAchRev = 100;
-                            else if (PicAchRev >= 90 && PicAchRev <= 95)
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
                                 PicAchRev = 90;
-                            else if (PicAchRev < 90)
-                                PicAchRev = 60;
-                            else
-                                PicAchRev = 0;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;     
+
 
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
@@ -1602,18 +1798,16 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#MacAchPdcSum").text(formatNumber(PicAchPdc.toFixed(2)));
-                        if (PicAchPdc > 110)
-                            PicAchPdc = 120;
-                        else if (PicAchPdc > 102 && PicAchPdc <= 110)
+
+                        if (PicAchPdc >= 103)
                             PicAchPdc = 110;
-                        else if (PicAchPdc > 98 && PicAchPdc <= 102)
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
                             PicAchPdc = 100;
-                        else if (PicAchPdc >= 94 && PicAchPdc <= 98)
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
                             PicAchPdc = 90;
-                        else if (PicAchPdc < 94)
+                        else if (PicAchPdc < 91)
                             PicAchPdc = 60;
-                        else
-                            PicAchPdc = 0;
+
 
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
@@ -1624,38 +1818,129 @@
                         PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
                         $("#MacScrPdcSum").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
+                    if (thn < 2022) {
+                        $("#thdrmSum").show();
+                        $("#thsafeSum").show();
+                        $("#thnonSum").hide();
 
-                    $("#MacGrdDrmSum").text(formatNumber(item.PicGrdTvb));
-                    $("#MacTgtDrmSum").text(formatNumber(item.PicTgtTvb));
-                    $("#MacActDrmSum").text(formatNumber(item.PicActTvb));
-                    var MacTgtDrm = item.PicTgtTvb;
-                    if (MacTgtDrm == 0) {
-                        $("#MacAchDrmSum").text(0);
-                        $("#MacScrDrmSum").text(0);
-                    } else {
-                        var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (MacAchDrm < 0)
-                            MacAchDrm = 0;
-                        $("#MacAchDrmSum").text(formatNumber(MacAchDrm.toFixed(2)));
-                        if (MacAchDrm > 100)
-                            MacAchDrm = 110;
-                        else if (MacAchDrm > 95 && MacAchDrm <= 100)
-                            MacAchDrm = 100;
-                        else if (MacAchDrm >= 85 && MacAchDrm <= 95)
-                            MacAchDrm = 90;
-                        else if (MacAchDrm < 85)
-                            MacAchDrm = 60;
-                        else
-                            MacAchDrm = 0;
+                        $("#MacGrdDrmSum").text(formatNumber(item.PicGrdTvb));
+                        $("#MacTgtDrmSum").text(formatNumber(item.PicTgtTvb));
+                        $("#MacActDrmSum").text(formatNumber(item.PicActTvb));
+                        var MacTgtDrm = item.PicTgtTvb;
+                        if (MacTgtDrm == 0) {
+                            $("#MacAchDrmSum").text(0);
+                            $("#MacScrDrmSum").text(0);
+                        } else {
+                            var MacAchDrm = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (MacAchDrm < 0)
+                                MacAchDrm = 0;
+                            $("#MacAchDrmSum").text(formatNumber(MacAchDrm.toFixed(2)));
+                            if (MacAchDrm > 100)
+                                MacAchDrm = 110;
+                            else if (MacAchDrm > 95 && MacAchDrm <= 100)
+                                MacAchDrm = 100;
+                            else if (MacAchDrm >= 85 && MacAchDrm <= 95)
+                                MacAchDrm = 90;
+                            else if (MacAchDrm < 85)
+                                MacAchDrm = 60;
+                            else
+                                MacAchDrm = 0;
 
-                        MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
-                        var newcolor = MacScrDrm - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
-                        PicScrTotSum = PicScrTotSum + MacScrDrm;
-                        PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
-                        $("#MacScrDrmSum").text(formatNumber(MacScrDrm.toFixed(2)));
+                            MacScrDrm = item.PicGrdTvb * MacAchDrm / 100;
+                            var newcolor = MacScrDrm - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotSum = PicScrTotSum + MacScrDrm;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
+                            $("#MacScrDrmSum").text(formatNumber(MacScrDrm.toFixed(2)));
+                        }
+
+                        /*--------- safety index    --------*/
+                        $("#MacGrdSafSum").text(formatNumber(item.PicGrdSaf));
+                        $("#MacTgtSafSum").text(formatNumber(item.PicTgtSaf));
+                        var MacTgtSaf = item.PicTgtSaf;
+                        TmpGrdSafe = item.PicGrdSaf;
+                        PicTotGradeSum = PicTotGradeSum + TmpGrdSafe;
+
+                        var kpiObj = {
+                            id: thn,
+                            bln: bln,
+                            ch: 'Y'
+                        }
+
+                        $.ajax({
+                            url: urlKPI + "/vMachineDeptHrd/",
+                            data: JSON.stringify(kpiObj),
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                $.each(result, function (key, item) {
+                                    var MacActSaf = item.ibpActSafe;
+                                    var MacGrdSafe = TmpGrdSafe;
+                                    $("#MacActSafSum").text(formatNumber(MacActSaf));
+                                    if (MacActSaf == 0) {
+                                        $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                        $("#MacAchSafSum").text('100');
+                                        $("#MacScrSafSum").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                        PicScrTotSum = PicScrTotSum + MacGrdSafe;
+                                    }
+                                    else {
+                                        $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                        $("#MacAchSafSum").text('0');
+                                        MacGrdSafe = MacGrdSafe * 0.6
+                                        $("#MacScrSafSum").text(formatNumber(MacGrdSafe.toFixed(2)));
+                                        PicScrTotSum = PicScrTotSum + MacGrdSafe;
+                                    }
+
+
+                                });
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            beforeSend: function () { $(".loader").show(); },
+                            complete: function () { $(".loader").hide(); },
+                            type: 'POST', dataType: 'json'
+                        });
+
+                    }
+                    else {
+                        $("#thdrmSum").hide();
+                        $("#thsafeSum").hide();
+                        $("#thnonSum").show();
+
+
+                        //--FOH Non
+                        $("#MacGrdNonSum").text(formatNumber(item.PicGrdNon));
+                        $("#MacTgtNonSum").text(formatNumber(item.PicTgtNon));
+                        $("#MacActNonSum").text(formatNumber(item.PicActNon));
+                        var MacTgtNon = item.PicTgtNon;
+                        if (MacTgtNon == 0) {
+                            $("#MacAchNonSum").text(0);
+                            $("#MacScrNonSum").text(0);
+                        } else {
+                            var MacAchNon = (1 + ((item.PicTgtNon - item.PicActNon) / item.PicTgtNon)) * 100;
+                            if (MacAchNon < 0)
+                                MacAchNon = 0;
+                            $("#MacAchNonSum").text(formatNumber(MacAchNon.toFixed(2)));
+                            if (MacAchNon < 95)
+                                MacAchNon = 60;
+                            else if (MacAchNon >= 95 && MacAchNon <= 99)
+                                MacAchNon = 90;
+                            else if (MacAchNon > 99 && MacAchNon <= 102)
+                                MacAchNon = 100;
+                            else if (MacAchNon > 102)
+                                MacAchNon = 110;
+
+                            MacScrNon = item.PicGrdNon * MacAchNon / 100;
+                            var newcolor = MacScrNon - item.PicGrdNon;
+                            if (newcolor >= 0)
+                                $("#NonTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#NonTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotSum = PicScrTotSum + MacScrNon;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdNon;
+                            $("#MacScrNonSum").text(formatNumber(MacScrNon.toFixed(2)));
+                        }
                     }
 
 
@@ -1671,9 +1956,8 @@
                         if (MacAchRej < 0)
                             MacAchRej = 0;
                         $("#MacAchRejSum").text(formatNumber(MacAchRej.toFixed(2)));
-                        if (item.PicActDpp < 0.6)
-                            MacAchRej = 120;
-                        else if (item.PicActDpp >= 0.6 && item.PicActDpp <= 0.8)
+
+                        if (item.PicActDpp <= 0.8)
                             MacAchRej = 110;
                         else if (item.PicActDpp > 0.8 && item.PicActDpp <= 1)
                             MacAchRej = 100;
@@ -1681,7 +1965,7 @@
                             MacAchRej = 90;
                         else if (item.PicActDpp > 1.2)
                             MacAchRej = 60;
-                        else MacAchRej = 0;
+
 
                         MacScrRej = item.PicGrdDpp * MacAchRej / 100;
                         var newcolor = MacScrRej - item.PicGrdDpp;
@@ -1705,18 +1989,17 @@
                         if (MacAchCut < 0)
                             MacAchCut = 0;
                         $("#MacAchCutSum").text(formatNumber(MacAchCut.toFixed(2)));
-                        if (MacAchCut > 105)
-                            MacAchCut = 120;
-                        else if (MacAchCut >= 100 && MacAchCut <= 105)
-                            MacAchCut = 110;
-                        else if (MacAchCut > 98 && MacAchCut <= 100)
-                            MacAchCut = 100;
-                        else if (MacAchCut >= 95 && MacAchCut <= 98)
-                            MacAchCut = 90;
-                        else if (MacAchCut < 95)
+
+                        if (MacAchCut < 95)
                             MacAchCut = 60;
-                        else
-                            MacAchCut = 0;
+                        else if (MacAchCut >= 95 && MacAchCut <= 99)
+                            MacAchCut = 90;
+                        else if (MacAchCut > 99 && MacAchCut <= 102)
+                            MacAchCut = 100;
+                        else if (MacAchCut > 102)
+                            MacAchCut = 110;
+
+
                         MacScrCut = item.PicGrdEme * MacAchCut / 100;
                         var newcolor = MacScrCut - item.PicGrdEme;
                         if (newcolor >= 0)
@@ -1738,19 +2021,18 @@
                         var MacAchCon = (1 + ((item.PicTgtSca - item.PicActSca) / item.PicTgtSca)) * 100;
                         if (MacAchCon < 0)
                             MacAchCon = 0;
-                        $("#MacAchConSum").text(formatNumber(MacAchCon.toFixed(2)));
-                        if (MacAchCon > 105)
-                            MacAchCon = 120;
-                        else if (MacAchCon >= 100 && MacAchCon <= 105)
-                            MacAchCon = 110;
-                        else if (MacAchCon > 98 && MacAchCon <= 100)
-                            MacAchCon = 100;
-                        else if (MacAchCon >= 95 && MacAchCon <= 98)
-                            MacAchCon = 90;
-                        else if (MacAchCon < 95)
+                        $("#MacAchConSum").text(formatNumber(MacAchCon.toFixed(2)));                       
+
+                        if (MacAchCon < 95)
                             MacAchCon = 60;
-                        else
-                            MacAchCon = 0;
+                        else if (MacAchCon >= 95 && MacAchCon <= 99)
+                            MacAchCon = 90;
+                        else if (MacAchCon > 99 && MacAchCon <= 102)
+                            MacAchCon = 100;
+                        else if (MacAchCon > 102)
+                            MacAchCon = 110;
+
+
                         MacScrCon = item.PicGrdSca * MacAchCon / 100;
                         var newcolor = MacScrCon - item.PicGrdSca;
                         if (newcolor >= 0)
@@ -1769,22 +2051,21 @@
                         $("#MacAchFohSum").text(0);
                         $("#MacScrFohSum").text(0);
                     } else {
-                        var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        //--var MacAchFoh = (1 + ((item.PicTgtMus - item.PicActMus) / item.PicTgtMus)) * 100;
+                        var MacAchFoh = item.PicActMus / item.PicTgtMus * 100;
                         if (MacAchFoh < 0)
                             MacAchFoh = 0;
-                        $("#MacAchFohSum").text(formatNumber(MacAchFoh.toFixed(2)));
-                        if (MacAchFoh > 105)
-                            MacAchFoh = 120;
-                        else if (MacAchFoh >= 100 && MacAchFoh <= 105)
-                            MacAchFoh = 110;
-                        else if (MacAchFoh > 98 && MacAchFoh <= 100)
-                            MacAchFoh = 100;
-                        else if (MacAchFoh >= 95 && MacAchFoh <= 98)
-                            MacAchFoh = 90;
-                        else if (MacAchFoh < 95)
+                        $("#MacAchFohSum").text(formatNumber(MacAchFoh.toFixed(2)));                        
+
+                        if (MacAchFoh < 95)
                             MacAchFoh = 60;
-                        else
-                            MacAchFoh = 0;
+                        else if (MacAchFoh >= 95 && MacAchFoh <= 99)
+                            MacAchFoh = 90;
+                        else if (MacAchFoh > 99 && MacAchFoh <= 102)
+                            MacAchFoh = 100;
+                        else if (MacAchFoh > 102)
+                            MacAchFoh = 110;
+
                         MacScrFoh = item.PicGrdMus * MacAchFoh / 100;
                         var newcolor = MacScrFoh - item.PicGrdMus;
                         if (newcolor >= 0)
@@ -1803,22 +2084,21 @@
                         $("#MacAchLabSum").text(0);
                         $("#MacScrLabSum").text(0);
                     } else {
-                        var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        //--var MacAchLab = (1 + ((item.PicTgtOth - item.PicActOth) / item.PicTgtOth)) * 100;
+                        var MacAchLab = item.PicActOth / item.PicTgtOth * 100;
                         if (MacAchLab < 0)
                             MacAchLab = 0;
-                        $("#MacAchLabSum").text(formatNumber(MacAchLab.toFixed(2)));
-                        if (MacAchLab > 105)
-                            MacAchLab = 120;
-                        else if (MacAchLab >= 100 && MacAchLab <= 105)
-                            MacAchLab = 110;
-                        else if (MacAchLab > 98 && MacAchLab <= 100)
-                            MacAchLab = 100;
-                        else if (MacAchLab >= 95 && MacAchLab <= 98)
-                            MacAchLab = 90;
-                        else if (MacAchLab < 95)
+                        $("#MacAchLabSum").text(formatNumber(MacAchLab.toFixed(2)));                       
+
+                        if (MacAchLab < 95)
                             MacAchLab = 60;
-                        else
-                            MacAchLab = 0;
+                        else if (MacAchLab >= 95 && MacAchLab <= 99)
+                            MacAchLab = 90;
+                        else if (MacAchLab > 99 && MacAchLab <= 102)
+                            MacAchLab = 100;
+                        else if (MacAchLab > 102)
+                            MacAchLab = 110;
+
                         MacScrLab = item.PicGrdOth * MacAchLab / 100;
                         var newcolor = MacScrLab - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -1843,18 +2123,16 @@
                         if (item.PicActAir <= 0)
                             MacAchRed = 0;
                         $("#MacAchRedSum").text(formatNumber(MacAchRed.toFixed(2)));
-                        if (MacAchRed > 110)
-                            MacAchRed = 120;
-                        else if (MacAchRed > 100 && MacAchRed <= 110)
-                            MacAchRed = 110;
-                        else if (MacAchRed > 95 && MacAchRed <= 100)
-                            MacAchRed = 100;
-                        else if (MacAchRed >= 90 && MacAchRed <= 95)
-                            MacAchRed = 90;
-                        else if (MacAchRed < 90)
+
+                        if (MacAchRed < 95)
                             MacAchRed = 60;
-                        else
-                            MacAchRed = 0;
+                        else if (MacAchRed >= 95 && MacAchRed <= 99)
+                            MacAchRed = 90;
+                        else if (MacAchRed > 99 && MacAchRed <= 102)
+                            MacAchRed = 100;
+                        else if (MacAchRed > 102)
+                            MacAchRed = 110;
+
 
                         MacScrRed = item.PicGrdAir * MacAchRed / 100;
                         var newcolor = MacScrRed - item.PicGrdAir;
@@ -1875,6 +2153,7 @@
                         $("#MacScrWipSum").text(0);
                     } else {
                         var MacAchWip = (1 + ((item.PicTgtInv - item.PicActInv) / item.PicTgtInv)) * 100;
+                        //--var MacAchWip = item.PicActInv / item.PicTgtInv * 100;
                         if (MacAchWip < 0)
                             MacAchWip = 0;
                         $("#MacAchWipSum").text(formatNumber(MacAchWip.toFixed(2)));
@@ -1893,18 +2172,14 @@
                             $("#MacScrWipSum").text(formatNumber(MacScrWip.toFixed(2)));
 
                         } else {
-                            if (MacAchWip < 50)
+                            if (MacAchWip < 95)
                                 MacAchWip = 60;
-                            else if (MacAchWip >= 50 && MacAchWip <= 90)
+                            else if (MacAchWip >= 95 && MacAchWip <= 99)
                                 MacAchWip = 90;
-                            else if (MacAchWip > 90 && MacAchWip <= 100)
+                            else if (MacAchWip > 99 && MacAchWip <= 102)
                                 MacAchWip = 100;
-                            else if (MacAchWip >= 100 && MacAchWip <= 125)
+                            else if (MacAchWip > 102)
                                 MacAchWip = 110;
-                            else if (MacAchWip > 125)
-                                MacAchWip = 120;
-                            else
-                                MacAchWip = 0;
 
                             if (item.PicActInv == 0)
                                 MacScrWip = item.PicGrdInv;
@@ -1922,55 +2197,9 @@
 
                     }
 
-                    /*--------- safety index    --------*/
-                    $("#MacGrdSafSum").text(formatNumber(item.PicGrdSaf));
-                    $("#MacTgtSafSum").text(formatNumber(item.PicTgtSaf));
-                    var MacTgtSaf = item.PicTgtSaf;
-                    TmpGrdSafe = item.PicGrdSaf;
-                    PicTotGradeSum = PicTotGradeSum + TmpGrdSafe;
 
-                    var kpiObj = {
-                        id: thn,
-                        bln: bln,
-                        ch: 'Y'
-                    }
-
-                    $.ajax({
-                        url: urlKPI + "/vMachineDeptHrd/",
-                        data: JSON.stringify(kpiObj),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                var MacActSaf = item.ibpActSafe;
-                                var MacGrdSafe = TmpGrdSafe;
-                                $("#MacActSafSum").text(formatNumber(MacActSaf));
-                                if (MacActSaf == 0) {
-                                    $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
-                                    $("#MacAchSafSum").text('100');
-                                    $("#MacScrSafSum").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTotSum = PicScrTotSum + MacGrdSafe;
-                                }
-                                else {
-                                    $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
-                                    $("#MacAchSafSum").text('0');
-                                    MacGrdSafe = MacGrdSafe * 0.6
-                                    $("#MacScrSafSum").text(formatNumber(MacGrdSafe.toFixed(2)));
-                                    PicScrTotSum = PicScrTotSum + MacGrdSafe;
-                                }
-                                $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
-                                $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
-
-
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
-
+                    $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                    $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
 
 
                 });

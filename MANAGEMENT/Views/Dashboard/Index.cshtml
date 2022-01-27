@@ -158,13 +158,21 @@
                         <td><span id="finScrRedPurc" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <th rowspan="2"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph Customer" onclick="Customer()"><b>CUSTOMER</b></a></th>
+                        <th rowspan="3"><a href="javascript:void(0)" data-toggle="tooltip" title="Graph Customer" onclick="Customer()"><b>CUSTOMER</b></a></th>
                         <td>DRM</td>
                         <td><span id="cusGrdDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="cusTgtDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="cusActDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="cusAchDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="cusScrDrm" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Customer Satisfaction Index</td>
+                        <td><span id="cusGrdCsi" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusTgtCsi" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusActCsi" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusAchCsi" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="cusScrCsi" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
                         <td>Air Freight Cost</td>
@@ -217,7 +225,7 @@
                         <td><span id="lgScrImp" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td>IS capabilities</td>
+                        <td>International Business Process Transformation</td>
                         <td><span id="lgGrdIsCap" class="pull-right" style="color:blue"></span></td>
                         <td><span id="lgTgtIsCap" class="pull-right" style="color:blue"></span></td>
                         <td><span id="lgActIsCap" class="pull-right" style="color:blue"></span></td>
@@ -241,7 +249,7 @@
                         <td><span id="lgScrSkill" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td>People Awareness & Motivation</td>
+                        <td>ZENITH ALLMART EXPERIENCE</td>
                         <td><span id="lgGrdMot" class="pull-right" style="color:blue"></span></td>
                         <td><span id="lgTgtMot" class="pull-right" style="color:blue"></span></td>
                         <td><span id="lgActMot" class="pull-right" style="color:blue"></span></td>
@@ -268,7 +276,7 @@
     var ibpGrdSafe = 0, ibpTgtSafe = 0, lgGrdMot = 0, lgTgtMot = 0;
     var lgGrdImp = 0, lgTgtImp = 0, lgGrdIsCap = 0, lgTgtIsCap = 0, lgGrdTrain = 0, lgTgtTrain = 0, lgGrdSkill = 0, lgTgtSkill = 0;
     var finScrRev = 0, finScrCash = 0, finScrProdCast = 0, finScrProdMach = 0, finScrRedCast = 0;
-    var finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrAir = 0, ibpScrRjtCast = 0;
+    var finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrCsi = 0, cusScrAir = 0, ibpScrRjtCast = 0;
     var ibpScrRjtMac = 0, ibpScrCN = 0, ibpScrSafe = 0, lgScrImp = 0, lgScrIsCap = 0, lgScrMot = 0;
     var lgScrTrain = 0, lgScrSkill = 0;
     
@@ -310,7 +318,7 @@
 
     function getView(thn) {
         finScrRev = 0, finScrCash = 0, finScrProdCast = 0, finScrProdMach = 0, finScrRedCast = 0;
-        finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrAir = 0, ibpScrRjtCast = 0;
+        finScrRedMach = 0, finScrRedPurc = 0, cusScrDrm = 0, cusScrCsi = 0, cusScrAir = 0, ibpScrRjtCast = 0;
         ibpScrRjtMac = 0, ibpScrCN = 0, ibpScrSafe = 0, lgScrImp = 0, lgScrIsCap = 0, lgScrMot = 0;
         lgScrTrain = 0, lgScrSkill = 0;
         //---cek visitor
@@ -474,6 +482,25 @@
                         $("#cusScrDrm").text(formatNumber(cusScrDrm.toFixed(2)));
                     }
 
+                    $("#cusGrdCsi").text(formatNumber(item.cusGrdCsi));
+                    $("#cusTgtCsi").text(formatNumber(item.cusTgtCsi));
+                    $("#cusActCsi").text(formatNumber(item.cusActCsi));
+                    var cusTgtCsi = item.cusTgtCsi;
+                    if (cusTgtCsi == 0) {
+                        $("#cusAchCsi").text(0);
+                        $("#cusScrCsi").text(0);
+                    } else {
+                        var cusAchCsi = item.cusActCsi / item.cusTgtCsi * 100;
+                        cusScrCsi = item.cusGrdCsi * (item.cusActCsi / item.cusTgtCsi);
+                        if (cusAchCsi < 0)
+                            cusAchCsi = 0;
+                        $("#cusAchCsi").text(formatNumber(cusAchCsi.toFixed(2)));
+                        if (cusScrCsi < 0)
+                            cusScrCsi = 0;
+                        $("#cusScrCsi").text(formatNumber(cusScrCsi.toFixed(2)));
+                    }
+
+
                     $("#cusGrdAir").text(formatNumber(item.cusGrdAir));
                     $("#cusTgtAir").text(formatNumber(item.cusTgtAir));
                     $("#cusActAir").text(formatNumber(item.cusActAir));
@@ -556,10 +583,14 @@
                     lgGrdImp = item.lgGrdImp;
                     lgTgtImp = item.lgTgtImp;
 
+
+                    /*---
                     $("#lgGrdIsCap").text(formatNumber(item.lgGrdIsCap));
                     $("#lgTgtIsCap").text(formatNumber(item.lgTgtIsCap));
                     lgGrdIsCap = item.lgGrdIsCap;
                     lgTgtIsCap = item.lgTgtIsCap;
+                    ---*/
+
 
                     $("#lgGrdTrain").text(formatNumber(item.lgGrdTrain));
                     $("#lgTgtTrain").text(formatNumber(item.lgTgtTrain));
@@ -571,13 +602,52 @@
                     lgGrdSkill = item.lgGrdSkill;
                     lgTgtSkill = item.lgTgtSkill;
 
+                    /*----
                     $("#lgGrdMot").text(formatNumber(item.lgGrdMot));
                     $("#lgTgtMot").text(formatNumber(item.lgTgtMot));
                     lgGrdMot = item.lgGrdMot;
                     lgTgtMot = item.lgTgtMot;
+                    ---*/
+                    $("#lgGrdIsCap").text(formatNumber(item.lgGrdIsCap));
+                    $("#lgTgtIsCap").text(formatNumber(item.lgTgtIsCap));
+                    $("#lgActIsCap").text(formatNumber(item.lgActIsCap));
+                    var lgTgtIsCap = item.lgTgtIsCap;
+                    if (lgTgtIsCap == 0) {
+                        $("#lgAchIsCap").text(0);
+                        $("#lgScrIsCap").text(0);
+                    } else {
+                        var lgAchIsCap = item.lgActIsCap / item.lgTgtIsCap * 100;
+                        lgScrIsCap = item.lgGrdIsCap * (item.lgActIsCap / item.lgTgtIsCap);
+                        if (lgAchIsCap < 0)
+                            lgAchIsCap = 0;
+                        $("#lgAchIsCap").text(formatNumber(lgAchIsCap.toFixed(2)));
+                        if (lgScrIsCap < 0)
+                            lgScrIsCap = 0;
+                        $("#lgScrIsCap").text(formatNumber(lgScrIsCap.toFixed(2)));
+                    }
 
-                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN).toFixed(2)));
+                    $("#lgGrdMot").text(formatNumber(item.lgGrdMot));
+                    $("#lgTgtMot").text(formatNumber(item.lgTgtMot));
+                    $("#lgActMot").text(formatNumber(item.lgActMot));
+                    var lgTgtMot = item.lgTgtMot;
+                    if (lgTgtMot == 0) {
+                        $("#lgAchMot").text(0);
+                        $("#lgScrMot").text(0);
+                    } else {
+                        var lgAchMot = item.lgActMot / item.lgTgtMot * 100;
+                        lgScrMot = item.lgGrdMot * (item.lgActMot / item.lgTgtMot);
+                        if (lgAchMot < 0)
+                            lgAchMot = 0;
+                        $("#lgAchMot").text(formatNumber(lgAchMot.toFixed(2)));
+                        if (lgScrMot < 0)
+                            lgScrMot = 0;
+                        $("#lgScrMot").text(formatNumber(lgScrMot.toFixed(2)));
+                    }
 
+
+
+                    //--$('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrCsi +cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN).toFixed(2)));
+                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrCsi + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN + ibpScrSafe + lgScrImp + lgScrIsCap + lgScrMot + lgScrTrain + lgScrSkill).toFixed(2)));
 
                 });
             },
@@ -625,6 +695,8 @@
                             lgScrImp = 0;
                         $("#lgScrImp").text(formatNumber(lgScrImp.toFixed(2)));
                     }
+
+                    /*--
                     $("#lgActIsCap").text(formatNumber(item.lgActIsCap));
                     if (lgTgtIsCap == 0) {
                         $("#lgAchIsCap").text(0);
@@ -653,6 +725,7 @@
                             lgScrMot = 0;
                         $("#lgScrMot").text(formatNumber(lgScrMot.toFixed(2)));
                     }
+                    ---*/
                     $("#lgActTrain").text(formatNumber(item.lgActTrain));
                     if (lgTgtTrain == 0) {
                         $("#lgAchTrain").text(0);
@@ -682,7 +755,7 @@
                             lgScrSkill = 0;
                         $("#lgScrSkill").text(formatNumber(lgScrSkill.toFixed(2)));
                     }
-                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN + ibpScrSafe + lgScrImp + lgScrIsCap + lgScrMot + lgScrTrain + lgScrSkill).toFixed(2)));
+                    $('#TotalScore').text(formatNumber((finScrRev + finScrCash + finScrProdCast + finScrProdMach + finScrRedCast + finScrRedMach + finScrRedPurc + cusScrDrm + cusScrCsi + cusScrAir + ibpScrRjtCast + ibpScrRjtMac + ibpScrCN + ibpScrSafe + lgScrImp + lgScrIsCap + lgScrMot + lgScrTrain + lgScrSkill).toFixed(2)));
 
                 });
             },

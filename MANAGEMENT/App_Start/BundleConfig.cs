@@ -32,6 +32,8 @@ namespace MANAGEMENT.App_Start
                                   "~/Scripts/bootstrap-slider.min.js",
                                   "~/Scripts/bootstrap3-typeahead.min.js",
                                   "~/Scripts/jquerysession.js",
+                                  //"~/Scripts/popper.min.js",
+                                  "~/Scripts/main.min.js",
                                   "~/Scripts/Chart.min.js"));
             //-----------------"~/Scripts/jquery-ui.js", -------
 
@@ -43,6 +45,7 @@ namespace MANAGEMENT.App_Start
                       "~/Content/style5.css",
                       "~/Content/ScrollTabla.css",
                       "~/Content/font-awesome.min.css",
+                      "~/Content/main.min.css",
                       "~/Content/dataTables.min.css"));
             //-----------"~/Content/style.css", ScrollTabla.css------------
         }

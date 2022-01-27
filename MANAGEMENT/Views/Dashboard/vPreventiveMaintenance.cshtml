@@ -1,0 +1,912 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .container {
+        overflow: scroll;
+        height: 700px;
+        background-color: #eee;
+    }
+
+    .hidethis {
+        display: none;
+    }
+
+    
+
+    
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Preventive Maintenance</h2>
+            <input type="hidden" class="form-control" id="idHdrGlobal" />
+            <input type="hidden" class="form-control" id="idDtlGlobal" />
+            <input type="hidden" class="form-control" id="idAsetGlobal" />
+            <input type="hidden" class="form-control" id="infoGlobal" />
+            <div id="mainPM">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-info btn-sm" onclick="addPM()">Add PM</button>
+                    </div>
+
+
+                </div>
+                <br />
+                <table id="tblpm" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">ID</th>
+                            <th style="width:15%">InvCode</th>
+                            <th style="width:45%">InvName</th>
+                            <th class='hidethis'>cArea</th>
+                            <th style="width:20%">Area</th>
+                            <th style="width:10%">cUrut</th>
+                            <th style="width:20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblpm"></tbody>
+                </table>
+            </div>
+            <div id="layarSchedule">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label class="control-label">Periode</label>
+                    </div>
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <div class="btn-group btn-group-sm">
+                                <div class="input-group date datetimepicker">
+                                    <input type="text" class="form-control" id="prd" placeholder="YYYY" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success  btn-sm" onclick="getViewSchedule()">View</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="BackSchedule()">Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label class="control-label">Inventory</label>
+                    </div>
+                    <div class="col-md-11">
+                        <input type="text" class="form-control" id="infoprd" readonly />
+                    </div>
+                </div>
+                <br />
+                <table id="tblschedule" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">IDhdr</th>
+                            <th style="display:none">IDtAsset</th>
+                            <th style="width:30%">Schedule Date</th>
+                            <th style="width:30%">Actual PM Date</th>
+                            <th style="width:20%">Status</th>
+                            <th style="display:none">status</th>
+                            <th style="width:20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblschedule"></tbody>
+                </table>
+            </div>
+
+            <div id="layarJOB">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success btn-sm" onclick="addJOB()">Add Job Activity</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="BackJOB()">Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label class="control-label">Actual PM</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="infoactual" readonly />
+                    </div>
+                </div>
+                <br />
+                <table id="tblJOB" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">IDDtl</th>
+                            <th style="display:none">IDHdr</th>
+                            <th style="width:60%">Job Description</th>
+                            <th style="width:30%">Cost</th>
+                            <th style="width:10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblJOB"></tbody>
+                </table>
+            </div>
+
+        </div>
+        <hr>
+
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div class="loader"></div>
+
+        <div class="modal fade" id="myMachine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Select Preventive Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="utamaTable">
+                            <table id="tblmesin" class="table table-bordered  table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none">ID</th>
+                                        <th style="width:25%">InvCode</th>
+                                        <th style="width:60%">InvName</th>
+                                        <th style="width:15%">Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodytblmesin"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="generated">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="quitBtn();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="mySchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Schedule Preventive Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>InvName</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly="readonly" class="form-control" id="namaTr" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="cbschedule">Jumlah PM selama setahun</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="cbschedule">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="8">8</option>
+                                        <option value="12">12</option>
+                                        <option value="18">18</option>
+                                        <option value="24">24</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="createSchedule">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitBtn();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editSchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Edit Schedule Preventive Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tgl">Tgl PM</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="tgl" placeholder="Tanggal PM"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tglactual">Tgl Actual PM</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="tglactual" placeholder="Tanggal Actual PM"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="cbschedule">Status</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="cbstatus">
+                                        <option value="0">Open</option>
+                                        <option value="1">Close</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updatedSchedule">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="keluarBtn();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myJOB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Add Job Activity</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>JOB Description</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" id="jobdesc" rows="2" maxlength="100" style="resize:none;" placeholder="Entry Job Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Cost</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" placeholder="Entry Job Cost" id="jobcost" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="createJOB">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitJOB();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myEditJOB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Edit Job Activity</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>JOB Description</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="editjobdesc" maxlength="100" style="resize:none;" placeholder="Entry Job Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Cost</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" placeholder="Entry Job Cost" id="editjobcost" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateJOB">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="keluarJOB();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*--------------ini alert------------- <div class="modal fade" id="myEditJOB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+
+
+        <!-- Modal -->
+        <div class="modal fade"
+             id="infoModal"             
+             tabindex="-1"
+             aria-labelledby="infoModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">                  
+                    <div class="modal-header alert-warning">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title text-center">Info Upcoming PM</h4>
+                    </div>
+                    <div class="body-content">
+                        
+                            <ul id="infoCard" class="list-group list-group-flush"></ul>
+                       
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </section>
+</body>
+<script>
+    var urlKPI = "@Url.Content("~/Wip")";
+    $(document).ready(function () {
+        $(".loader").hide();
+        $('#mainPM').show();
+        $('#layarSchedule').hide();
+        $('#layarJOB').hide();        
+        $('#prd').datetimepicker({
+            useCurrent: false,
+            format: "YYYY",
+        });
+
+        $('#tgl').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#tglactual').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        getLoad();
+
+        var myContainer = $('.container')
+
+        $(myContainer).on('click', 'a', function () {
+            var scrollTo = $(this);
+            myContainer.animate({
+                scrollTop: scrollTo.offset().top - myContainer.offset().top + myContainer.scrollTop()
+            });
+        })
+
+    });
+
+
+
+    function getLoad() {
+        
+            var tr;
+            $('#tblpm').DataTable().destroy();
+            $('#tbodytblpm').empty();            
+
+            $.ajax({
+                url: urlKPI + "/viewPreventiveMaintenance/",               
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    $.each(result, function (key, item) {                       
+                        tr = $('<tr/>');
+                        tr.append("<td style='display: none'>" + item.id + "</td>");
+                        tr.append("<td>" + item.cINVCOde + "</td>");
+                        tr.append("<td>" + item.cinvname + "</td>");
+                        tr.append("<td class='hidethis'>" + item.cArea + "</td>");
+                        tr.append("<td>" + item.Area + "</td>");
+                        tr.append("<td>" + item.cUrut + "</td>");
+                        tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="schedule"   onclick="scheduleMachine(' + item.id + ',\'' + item.cINVCOde + '\',\'' + item.cinvname + '\');"><span class="glyphicon glyphicon-calendar text-center" style="color:red"></span></a>  <a href="javascript:void(0);"  data-toggle="tooltip" title="View"   onclick="viewSchedule(' + item.id + ',\'' + item.cinvname + ' - ' + myTrim(item.Area) + ' - ' + item.cUrut  +'\',\'' + item.cinvname + '\');"><span class="glyphicon glyphicon-list-alt text-center" style="color:red"></span></a>  </td>');
+                        $('#tbodytblpm').append(tr);
+                    });
+                    $('#tblpm').DataTable().draw();
+
+                    AlertInfo();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                beforeSend: function () { $(".loader").show(); },
+                complete: function () { $(".loader").hide(); },
+                type: 'GET', dataType: 'json'
+            });
+       
+    }
+
+    function quitBtn() {
+        $("#generated").prop("disabled", false);
+    }
+
+    function AlertInfo() {
+        $.ajax({
+            url: urlKPI + "/AlertPM/",
+            contentType: "application/json;charset=utf-8",
+            success: function (rest) {
+                var iInfo = Object.keys(rest).length;
+                if (iInfo > 0) {
+                    $("#infoModal").modal({ show: true, backdrop: false });                    
+                    $.each(rest, function (key, item) {                        
+                        var newRow = '<li class="list-group-item">' + item.cInvName + ' - ' + item.cAreaName + ' - ' + item.cUrut + ' - ' + item.tglPM +'</li>';
+                        $(newRow).appendTo("#infoCard");
+                    });
+                }
+                
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'GET', dataType: 'json'
+        });
+    }
+
+    function exitBtn() {
+        $("#createSchedule").prop("disabled", false);
+    }
+
+    function keluarBtn() {
+        $("#updatedSchedule").prop("disabled", false);
+    }
+
+    function exitJOB() {
+        $("#createJOB").prop("disabled", false);
+    }
+    function keluarJOB() {
+        $("#updateJOB").prop("disabled", false);      
+    }
+    function addPM() {
+        $("#myMachine").modal({ show: true, backdrop: false });
+        getMesin();
+        
+    }
+
+
+    $('#updateJOB').click(function () {
+        var assetobj = {
+            idDtl: $("#idDtlGlobal").val(),
+            idHdr: $("#idHdrGlobal").val(),
+            JobDesc: $("#editjobdesc").val(),
+            Cost: $("#editjobcost").val()
+        };
+        
+
+        $.ajax({
+            url: urlKPI + "/updateJOB",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Job Activity telah di ubah.."
+                    });
+
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat ubah Job Activity.."
+                    });
+                }
+                viewJOBActivity($("#idHdrGlobal").val(), 0);
+                $("#updateJOB").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+
+
+    
+    $('#updatedSchedule').click(function () {
+        var assetobj = {
+            idHdr: $("#idHdrGlobal").val(),
+            idtAsset: $("#idAsetGlobal").val(),
+            tgl: $("#tgl").val(),
+            tglActual: $("#tglactual").val(),
+            status: $("#cbstatus option:selected").val()
+        };
+        $.ajax({
+            url: urlKPI + "/updateSchedule",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Schedule telah di ubah.."
+                    });
+
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat ubah Schedule.."
+                    });
+                }
+                getViewSchedule();
+                $("#updatedSchedule").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    
+    function editModuleSchedule(idHdr, idtAsset, tgl, tglActual, sts) {        
+        $("#idHdrGlobal").val(idHdr);
+        $("#idAsetGlobal").val(idtAsset);
+        $("#tgl").val(tgl);
+        $("#tglactual").val(tglActual);
+        $("#cbstatus option:selected").val(sts);
+        
+        $("#editSchedule").modal({ show: true, backdrop: false });
+    }
+
+    function addJOB() {
+        $("#myJOB").modal({ show: true, backdrop: false });       
+        $("#jobdesc").val(null);
+        $("#jobcost").val(0);
+        
+    }
+
+    function BackJOB() {
+        $('#layarSchedule').show();
+        $('#layarJOB').hide();        
+    }
+
+    function editModuleJob(idDtl, idHdr, cost, desc) {
+        $("#idHdrGlobal").val(idHdr);
+        $("#idDtlGlobal").val(idDtl);
+        $("#editjobcost").val(cost);
+        $("#editjobdesc").val(desc);
+
+        $("#myEditJOB").modal({ show: true, backdrop: false });
+    }
+
+    function viewJOBActivity(idHdr, idtAsset, tglAct) {
+        $('#layarSchedule').hide();
+        $('#layarJOB').show();        
+        $("#idHdrGlobal").val(idHdr);
+        var inprod = $("#infoprd").val();;
+        $("#infoactual").val(tglAct +' - '+ inprod);
+
+        var assetobj = {
+            id: idHdr
+        }
+
+        var tr;
+        $('#tblJOB').DataTable().destroy();
+        $('#tbodytblJOB').empty();
+
+        $.ajax({
+            url: urlKPI + "/viewJobActivity",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(assetobj),
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td style='display: none'>" + item.idDtl + "</td>");
+                    tr.append("<td style='display: none'>" + item.idHdr + "</td>");
+                    tr.append("<td>" + item.JobDesc + "</td>");
+                    tr.append("<td>" + formatNumber(item.Cost) + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit Job Activity"   onclick="editModuleJob(' + item.idDtl + ',' + item.idHdr + ',' + item.Cost + ',\'' + item.JobDesc.replace("\n", "\\n") + '\');"><span class="glyphicon glyphicon-pencil text-center" style="color:red"></span></a> </td>');
+                    $('#tbodytblJOB').append(tr);
+                });
+                $('#tblJOB').DataTable().draw();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+
+        
+    }
+
+    function getViewSchedule() {
+        var prdval = $('#prd').val();        
+        if (prdval === '' || prdval === undefined)
+            var nilprd = 1;
+        else
+            var nilprd = prdval;
+        
+        var assetobj = {
+            id: $("#idAsetGlobal").val(),
+            thn: nilprd
+        }
+
+        var tr;
+        $('#tblschedule').DataTable().destroy();
+        $('#tbodytblschedule').empty();
+
+        $.ajax({
+            url: urlKPI + "/scheduleByYear",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(assetobj),
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td style='display: none'>" + item.idHdr + "</td>");
+                    tr.append("<td style='display: none'>" + item.idtAsset + "</td>");
+                    tr.append("<td>" + item.tgl + "</td>");
+                    tr.append("<td>" + item.tglActual + "</td>");
+                    tr.append("<td>" + item.sts + "</td>");
+                    tr.append("<td style='display: none'>" + item.status + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit schedule"   onclick="editModuleSchedule(' + item.idHdr + ',' + item.idtAsset + ',\'' + item.tgl + '\',\'' + item.tglActual + '\',' + item.status + ');"><span class="glyphicon glyphicon-pencil text-center" style="color:red"></span></a>  <a href="javascript:void(0);"  data-toggle="tooltip" title="Add PM Activity"   onclick="viewJOBActivity(' + item.idHdr + ',' + item.idtAsset +',\'' + item.tglActual + '\');"><span class="glyphicon glyphicon-plus text-center" style="color:red"></span></a>  </td>');
+                    $('#tbodytblschedule').append(tr);
+                });
+                $('#tblschedule').DataTable().draw();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    function scheduleMachine(id, code, name) {       
+        $("#mySchedule").modal({ show: true, backdrop: false });
+        $("#idAsetGlobal").val(id);
+        $("#namaTr").val(name);
+    }
+
+    function viewSchedule(id, code, name) {        
+        $("#infoGlobal").val(code);
+        $("#infoprd").val(code);        
+        $("#idAsetGlobal").val(id);
+        $('#mainPM').hide();
+        $('#layarSchedule').show();
+        $('#tblschedule').DataTable().destroy();
+        $('#tbodytblschedule').empty();
+    }
+
+    function BackSchedule() {
+        $('#mainPM').show();
+        $('#layarSchedule').hide();
+    }
+
+    function crudPM(code) {
+        var assetobj = {
+            cINVCOde: code
+        };
+
+        $.ajax({
+            url: urlKPI + "/insPM",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "PM telah ditambahkan.."
+                    });
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan PM.."
+                    });
+                }
+                $("#generated").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    $('#generated').click(function () {
+        var code;
+        $("#utamaTable input[name='checkasset']:checked").each(function () {
+            var data = $(this).parents('tr:eq(0)');
+            harga = $(data).find('td:eq(9)').text();
+            code = $(data).find('td:eq(0)').text();
+            console.log(code);
+            crudPM(code);
+        });        
+        alert("Generated Success");
+    }); 
+
+    $('#createJOB').click(function () {
+        var assetobj = {
+            idHdr: $("#idHdrGlobal").val(),
+            JobDesc: $("#jobdesc").val(),
+            Cost: $("#jobcost").val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/insJOB",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Job Activity telah ditambahkan.."
+                    });
+                   
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan Job Activity.."
+                    });
+                }
+                viewJOBActivity($("#idHdrGlobal").val(), 0);
+                $("#createJOB").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+    
+
+    $('#createSchedule').click(function () {
+        var assetobj = {
+            idtAsset: $("#idAsetGlobal").val(),
+            count: $('#cbschedule option:selected').val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/insSchedule",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Schedule telah ditambahkan.."
+                    });
+
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan Schedule.."
+                    });
+                }
+                $("#createSchedule").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    function getMesin() {
+        var tr;
+        $('#tblmesin').DataTable().destroy();
+        $('#tbodytblmesin').empty();
+       
+        $.ajax({
+            url: urlKPI + "/viewSelectPM/",
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td  style='display: none'>" + item.id + "</td>");
+                    tr.append("<td style='width: 25%'>" + item.cINVCOde + "</td>");
+                    tr.append("<td style='width: 60%'>" + item.cinvname + "</td>");
+                    tr.append('<td style="width: 15%"><p class="text-center"><input type="checkbox" id="checkasset" name="checkasset" ></p></td>');
+                    tr.append('<div class="checkbox"' > +
+                        '<label><input type="checkbox"><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Checked</label></div>');
+                    $('#tbodytblmesin').append(tr);
+                });
+                $('#tblmesin').DataTable(
+                    {
+                        "bPaginate": false
+                    }
+
+                ).draw();
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'GET', dataType: 'json'
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function myTrim(x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    }
+
+</script>

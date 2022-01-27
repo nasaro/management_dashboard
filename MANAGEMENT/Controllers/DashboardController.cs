@@ -17,6 +17,7 @@ namespace MANAGEMENT.Controllers
         DBhrd kpiHRD = new DBhrd();
         DBppic kpiPPIC = new DBppic();
         MixDB kpiMix = new MixDB();
+
         // GET: Dashboard
         public ActionResult Index()
         {
@@ -198,6 +199,11 @@ namespace MANAGEMENT.Controllers
             return Json(kpiDB.GraphAIRAct(year), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GraphCSIAct(int year)
+        {
+            return Json(kpiDB.GraphCSIAct(year), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GraphRejCastAct(int year)
         {
             return Json(kpiDB.GraphRejCastAct(year), JsonRequestBehavior.AllowGet);
@@ -218,7 +224,7 @@ namespace MANAGEMENT.Controllers
         
         public JsonResult GraphIsCapAct(int year)
         {
-            return Json(kpiHRD.GraphIsCapAct(year), JsonRequestBehavior.AllowGet);
+            return Json(kpiDB.GraphIsCapAct(year), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GraphTrainingAct(int year)
@@ -232,7 +238,7 @@ namespace MANAGEMENT.Controllers
         }
         public JsonResult GraphMotAct(int year)
         {
-            return Json(kpiHRD.GraphMotAct(year), JsonRequestBehavior.AllowGet);
+            return Json(kpiDB.GraphMotAct(year), JsonRequestBehavior.AllowGet);
         }
         public JsonResult GraphImpAct(int year)
         {
@@ -878,5 +884,37 @@ namespace MANAGEMENT.Controllers
         {
             return Json(kpiMix.RptFOHDetail(bln, thn), JsonRequestBehavior.AllowGet);
         }
+
+        #region Fixed Asset
+        public ActionResult vAsset()
+        {
+            return View();
+        }
+
+        public ActionResult vListAsset()
+        {
+            return View();
+        }
+        #endregion
+        #region Maintenance
+        public ActionResult vPreventiveMaintenance()
+        {
+            return View();
+        }
+        public ActionResult vCurativeMaintenance()
+        {
+            return View();
+        }
+        public ActionResult VCalendarColorPM()
+        {
+            return View();
+        }
+        public ActionResult VCalendarColorCM()
+        {
+            return View();
+        }
+        #endregion
+
+
     }
 }

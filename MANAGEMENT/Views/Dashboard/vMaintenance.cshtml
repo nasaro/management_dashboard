@@ -577,6 +577,8 @@
     function getMonthView(thn, bln) {
         PicScrTotMonth = 0;
         PicScrSafSum = 0;
+        var nmbulan = valMonth(bln);
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
 
         var kpiObj = {
             id: thn,

@@ -1,9 +1,12 @@
 ﻿<style>
-    
-    th { background-color: #d2e0e0; }
+
+    th {
+        background-color: #d2e0e0;
+    }
+
     tr:hover {
-          background-color: #d6f5f5;
-     }
+        background-color: #d6f5f5;
+    }
 
     .loader {
         position: fixed;
@@ -42,7 +45,10 @@
                 <button id="periode" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="View" onclick="GetPeriode();">Preview</button>
             </div>
             <div class="col-sm-3">
-                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to XLS" onclick="javascript: xport.toCSV('table-basic');">Export to XLS</button>
+                <button id="btnExport" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Export to CSV" onclick="javascript: xport.toCSV('table-basic');">Export to CSV</button>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnExport" type="button" class="btn btn-success btn-md" data-toggle="tooltip" title="Export to XLS" onclick="exportToExcel('table-basic', 'user-data')">Export to XLS</button>
             </div>
         </div>
         <br />
@@ -114,6 +120,7 @@
 
 @Scripts.Render("~/Scripts/freeze-table.js")
 
+
 <script>
     var urlKPI = "@Url.Content("~/Dashboard")";
     $(document).ready(function() {
@@ -182,7 +189,7 @@
                 $('#table-basic tbody').on('click', 'tr', function () {
                     var idx;
                     var namex;
-                     var $row = $(this).closest("tr"),        // Finds the closest row <tr> 
+                     var $row = $(this).closest("tr"),        // Finds the closest row <tr>
                      $tds = $row.find("td:nth-child(2)");
                      $.each($tds, function() {
                         idx = $(this).text();
@@ -341,5 +348,37 @@
               .join("\r\n");
         }
     };
+
+
+    function exportToExcel(tableID, filename = 'tblbsc') {
+        var downloadurl;
+        var dataFileType = 'application/vnd.ms-excel';
+        var tableSelect = document.getElementById(tableID);
+        var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+
+        // Specify file name
+        filename = filename ? filename + '.xls' : 'export_excel_data.xls';
+
+        // Create download link element
+        downloadurl = document.createElement("a");
+
+        document.body.appendChild(downloadurl);
+
+        if (navigator.msSaveOrOpenBlob) {
+            var blob = new Blob(['\ufeff', tableHTMLData], {
+                type: dataFileType
+            });
+            navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            // Create a link to the file
+            downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+
+            // Setting the file name
+            downloadurl.download = filename;
+
+            //triggering the function
+            downloadurl.click();
+        }
+    }
 
 </script>

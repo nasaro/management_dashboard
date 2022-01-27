@@ -1,0 +1,349 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .container {
+        /*overflow: scroll;
+        height: 700px;*/
+        background-color: #fff;
+    }
+
+    .hidethis {
+        display: none;
+    }
+
+    .fc-event-title {
+        color: black
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    #calendar .fc-day-sun, #calendar .fc-day-sat {
+        background-color: #ffcce6;
+    }
+
+
+
+    .popper,
+    .tooltip {
+        position: absolute;
+        z-index: 9999;
+        background: #FFC107;
+        color: black;
+        width: 150px;
+        border-radius: 3px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        padding: 10px;
+        text-align: center;
+    }
+
+    .style5 .tooltip {
+        background: #1E252B;
+        color: #FFFFFF;
+        max-width: 200px;
+        width: auto;
+        font-size: .8rem;
+        padding: .5em 1em;
+    }
+
+    .popper .popper__arrow,
+    .tooltip .tooltip-arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+        margin: 5px;
+    }
+
+    .tooltip .tooltip-arrow,
+    .popper .popper__arrow {
+        border-color: #FFC107;
+    }
+
+    .style5 .tooltip .tooltip-arrow {
+        border-color: #1E252B;
+    }
+
+    .popper[x-placement^="top"],
+    .tooltip[x-placement^="top"] {
+        margin-bottom: 5px;
+    }
+
+        .popper[x-placement^="top"] .popper__arrow,
+        .tooltip[x-placement^="top"] .tooltip-arrow {
+            border-width: 5px 5px 0 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            bottom: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+    .popper[x-placement^="bottom"],
+    .tooltip[x-placement^="bottom"] {
+        margin-top: 5px;
+    }
+
+        .tooltip[x-placement^="bottom"] .tooltip-arrow,
+        .popper[x-placement^="bottom"] .popper__arrow {
+            border-width: 0 5px 5px 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            top: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+    .tooltip[x-placement^="right"],
+    .popper[x-placement^="right"] {
+        margin-left: 5px;
+    }
+
+        .popper[x-placement^="right"] .popper__arrow,
+        .tooltip[x-placement^="right"] .tooltip-arrow {
+            border-width: 5px 5px 5px 0;
+            border-left-color: transparent;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            left: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+    .popper[x-placement^="left"],
+    .tooltip[x-placement^="left"] {
+        margin-right: 5px;
+    }
+
+        .popper[x-placement^="left"] .popper__arrow,
+        .tooltip[x-placement^="left"] .tooltip-arrow {
+            border-width: 5px 0 5px 5px;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            right: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+
+
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h4>Report Preventive Maintenance</h4>
+            <p id="idArrGlobal" style="display:none">test</p>
+        </div>
+        <br />
+        <div class="loader"></div>
+        <div id='calendar'></div>
+        <hr />
+        <div id="mainPM">
+            <h4 id="TglPM"></h4>
+            <h5 id="Asset"></h5>
+            <h5 id="TglActual"></h5>
+            <br />
+            <table id="tblJOB" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th style="display:none">IDDtl</th>
+                        <th style="width:60%">Job Description</th>
+                        <th style="width:40%">Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblJOB"></tbody>
+            </table>
+            <br />
+            <h5 id="total"></h5>
+        </div>
+        <br />
+        <br />
+        <br />
+    </section>
+</body>
+
+<script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+<script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+
+<script>
+    var urlKPI = "@Url.Content("~/Wip")";
+    const dateObj = new Date();
+    const mmonth = dateObj.getMonth() + 1;
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    const output = year + '-' + mmonth + '-' + day;
+
+    $(document).ready(function () {
+        $('a[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+        });
+
+
+        getLoad();
+    });
+
+
+    function LoadHeader(thn) {
+        var assetobj = {
+            thn: thn
+        };
+
+        $.ajax({
+            url: urlKPI + "/InfoCalendarPM",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                document.getElementById("TglPM").innerHTML = "Schedule = " + result.tglPM;
+                document.getElementById("Asset").innerHTML = "Aset = " + result.cInvName + " - " + result.cAreaName + " - " + result.cUrut;
+                document.getElementById("TglActual").innerHTML = "TgL Actual PM = " + result.tglActualPM;
+
+                var tr, total=0;
+                $('#tblJOB').DataTable().destroy();
+                $('#tbodytblJOB').empty();
+
+                document.getElementById("total").innerHTML = "Total Cost = " + formatNumber(total);
+
+                $.ajax({
+                    url: urlKPI + "/InfoDetailCalendarPM",
+                    data: JSON.stringify(assetobj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (ress) {
+                        $.each(ress, function (key, item) {
+                            tr = $('<tr/>');
+                            tr.append("<td style='display: none'>" + item.idDtl + "</td>");
+                            tr.append("<td>" + item.JobDesc + "</td>");
+                            tr.append("<td align='right'>" + formatNumber(item.Cost) + "</td>");
+                            $('#tbodytblJOB').append(tr);
+                            total = total + item.Cost;
+                            document.getElementById("total").innerHTML = "Total Cost = " + formatNumber(total);
+                        });
+                        $('#tblJOB').DataTable().draw();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    },
+                    beforeSend: function () { $(".loader").show(); },
+                    complete: function () { $(".loader").hide(); },
+                    dataType: 'json'
+                });
+
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: 'json'
+        });
+
+    }
+
+
+    function getLoad() {
+        $.ajax({
+         url: urlKPI + "/ViewColorPM/",
+         contentType: "application/json;charset=utf-8",
+         success: function (result) {
+             //document.getElementById("idArrGlobal").innerHTML = result;
+             //console.log(document.getElementById("idArrGlobal").textContent);
+             var arrCalendar = Array.from(result);
+
+             var calendarEl = document.getElementById('calendar');
+
+             var calendar = new FullCalendar.Calendar(calendarEl, {
+                 headerToolbar: {
+                     left: 'prev,next',
+                     center: 'title',
+                     right: ''
+                 },
+                 initialDate: output,
+                 navLinks: false, // can click day/week names to navigate views
+                 editable: true,
+                 businessHours: true,
+
+                 eventClick: function (info) {
+                     // change the border color just for fun
+                     info.el.style.borderColor = 'red';
+                     LoadHeader(info.event.id);
+                 },
+
+                 //eventDidMount: function (calEvent, jsEvent) {
+                 //    var tooltip = '<div class="tooltipevent" style="width:100px;height:100px;background:#ccc;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
+                 //    var $tooltip = $(tooltip).appendTo('body');
+
+                 //    $(this).mouseover(function (e) {
+                 //        $(this).css('z-index', 10000);
+                 //        $tooltip.fadeIn('500');
+                 //        $tooltip.fadeTo('10', 1.9);
+                 //    }).mousemove(function (e) {
+                 //        $tooltip.css('top', e.pageY + 10);
+                 //        $tooltip.css('left', e.pageX + 20);
+                 //    });
+                 //},
+
+
+
+                 eventDidMount: function (info) {
+                     console.log('test');
+                     var tooltip = new Tooltip(info.el, {
+                         title: info.event.extendedProps.title,
+                         placement: 'top',
+                         trigger: 'hover',
+                         container: 'body'
+                     });
+                 },
+
+                 events: arrCalendar //pass array here
+             });
+
+             calendar.render();
+
+         },
+         error: function (errormessage) {
+            alert(errormessage.responseText);
+         },
+         beforeSend: function () { $(".loader").show(); },
+         complete: function () { $(".loader").hide(); },
+         type: 'GET', dataType: 'json'
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+
+</script>

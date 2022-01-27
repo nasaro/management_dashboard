@@ -1,0 +1,204 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .container {
+        /*overflow: scroll;
+        height: 700px;*/
+        background-color: #fff;
+    }
+
+    .hidethis {
+        display: none;
+    }
+
+    .fc-event-title {
+        color: black
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;      
+    }
+
+    #calendar .fc-day-sun, #calendar .fc-day-sat {
+        background-color: #ffcce6;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h4>Report Corrective Maintenance</h4>
+            <p id="idArrGlobal" style="display:none">test</p>
+        </div>
+        <br />
+        <div class="loader"></div>
+        <div id='calendar'></div>
+        <hr />
+        <div id="mainPM">
+            <h4 id="Info"></h4>
+            <h5 id="Request"></h5>
+            <h5 id="TglFollow"></h5>
+            <br />
+            <table id="tblJOB" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th style="display:none">IDDtl</th>
+                        <th style="width:40%">Problem</th>
+                        <th style="width:40%">Follow Up</th>
+                        <th style="width:20%">Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblJOB"></tbody>
+            </table>
+            <br />
+            <h5 id="total"></h5>
+        </div>
+        <br />
+        <br />
+        <br />
+    </section>
+</body>
+
+<script>
+    var urlKPI = "@Url.Content("~/Wip")";
+    const dateObj = new Date();
+    const mmonth = dateObj.getMonth() + 1;
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    const output = year + '-' + mmonth + '-' + day;
+
+    $(document).ready(function () {
+        getLoad();
+      
+    });
+
+
+    function LoadHeader(thn) {
+        var assetobj = {
+            thn: thn
+        };
+
+        $.ajax({
+            url: urlKPI + "/InfoCalendarCM",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                document.getElementById("Info").innerHTML = "Info = " + result.cmno + " - " + result.tglCM + " - " +  result.cInvName + " - " + result.cAreaName + " - " + result.cUrut;
+                document.getElementById("Request").innerHTML = "Request By = " + result.userCM;
+                document.getElementById("TglFollow").innerHTML = "TgL Follow Up = " + result.tglFollowUp;
+
+                var tr, total=0;
+                $('#tblJOB').DataTable().destroy();
+                $('#tbodytblJOB').empty();
+
+                document.getElementById("total").innerHTML = "Total Cost = " + formatNumber(total);
+
+                $.ajax({
+                    url: urlKPI + "/InfoDetailCalendarCM",
+                    data: JSON.stringify(assetobj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (ress) {
+                        $.each(ress, function (key, item) {
+                            tr = $('<tr/>');
+                            tr.append("<td style='display: none'>" + item.idDtl + "</td>");
+                            tr.append("<td>" + item.Problem + "</td>");
+                            tr.append("<td>" + item.FollowUp + "</td>");
+                            tr.append("<td align='right'>" + formatNumber(item.Cost) + "</td>");
+                            $('#tbodytblJOB').append(tr);
+                            total = total + item.Cost;
+                            document.getElementById("total").innerHTML = "Total Cost = " + formatNumber(total);
+                        });
+                        $('#tblJOB').DataTable().draw();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    },
+                    beforeSend: function () { $(".loader").show(); },
+                    complete: function () { $(".loader").hide(); },
+                    dataType: 'json'
+                });
+
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: 'json'
+        });
+
+    }
+
+
+    function getLoad() {
+        $.ajax({
+         url: urlKPI + "/ViewColorCM/",
+         contentType: "application/json;charset=utf-8",
+         success: function (result) {
+             var arrCalendar = Array.from(result);
+
+             var calendarEl = document.getElementById('calendar');
+
+             var calendar = new FullCalendar.Calendar(calendarEl, {
+                 headerToolbar: {
+                     left: 'prev,next',
+                     center: 'title',
+                     right: 'dayGridMonth'
+                 },
+                 initialDate: output,
+                 navLinks: false, // can click day/week names to navigate views
+                 editable: true,
+                 businessHours: true,
+
+                 eventClick: function (info) {
+                     // change the border color just for fun
+                     info.el.style.borderColor = 'red';
+                     LoadHeader(info.event.id);
+                 },
+
+
+
+                 events: arrCalendar //pass array here
+             });
+
+             calendar.render();
+
+         },
+         error: function (errormessage) {
+            alert(errormessage.responseText);
+         },
+         beforeSend: function () { $(".loader").show(); },
+         complete: function () { $(".loader").hide(); },
+         type: 'GET', dataType: 'json'
+        });
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+
+</script>

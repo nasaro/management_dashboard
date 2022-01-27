@@ -122,15 +122,15 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="14" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
-                        <td><span id="RevTitle">Revenue</span></td>
+                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
+                        <td style="font-size:x-small"><span id="RevTitle">Revenue</span></td>
                         <td><span id="CasGrdRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrRev" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr id="trhdr" style="display:none">
+                    <tr id="trhdr" style="display:none;">
                         <td><span id="OutTitle">Output Pouring</span></td>
                         <td><span id="CasGrdOut" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtOut" class="pull-right" style="color:blue"></span></td>
@@ -139,15 +139,15 @@
                         <td><span id="CasScrOut" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="PdaTitle">Production Output PDA</span></td>
+                        <td style="font-size:x-small"><span id="PdaTitle">Production Output PDA</span></td>
                         <td><span id="CasGrdPda" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtPda" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActPda" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchPda" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrPda" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="DrmTitle">DRM Average</span></td>
+                    <tr id="trhdrdrm">
+                        <td style="font-size:x-small"><span id="DrmTitle">DRM Average</span></td>
                         <td><span id="CasGrdDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtDrm" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActDrm" class="pull-right" style="color:blue"></span></td>
@@ -155,7 +155,7 @@
                         <td><span id="CasScrDrm" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RejTitle">Reject Rate at mfg.site(5%)</span></td>
+                        <td style="font-size:x-small"><span id="RejTitle">Reject Rate at mfg.site(%)</span></td>
                         <td><span id="CasGrdRej" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRej" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRej" class="pull-right" style="color:blue"></span></td>
@@ -163,15 +163,87 @@
                         <td><span id="CasScrRej" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RatTitle">Reject Rate at Cust.site(1%)</span></td>
+                        <td style="font-size:xx-small"><span id="BadTitle">Reject Rate at mfg.site-Bad Casting(%)</span></td>
+                        <td><span id="CasGrdBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchBad" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrBad" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ScpTitle">Budget - Konstanta Scrap Used(%) of PDA</span></td>
+                        <td><span id="CasGrdScp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtScp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActScp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchScp" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrScp" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="AlyTitle">Budget - Konstanta Alloys Used(%) of PDA</span></td>
+                        <td><span id="CasGrdAly" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtAly" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActAly" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchAly" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrAly" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="SilTitle">Budget - Konstanta Colloidal Silica Used(%) of PDA</span></td>
+                        <td><span id="CasGrdSil" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtSil" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActSil" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchSil" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrSil" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZifTitle">Budget - Konstanta Zircon Flour 325 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZif" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZif" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZif" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZif" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZif" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZisTitle">Budget - Konstanta Zircon Sands 110 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZis" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZis" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZis" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZis" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZis" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="MufTitle">Budget - Konstanta Mullite Flour 200 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMuf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMuf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMuf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMuf" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMuf" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu3Title">Budget - Konstanta Mullite Sands 30-80 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu3" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu3" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu3" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu3" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu3" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu1Title">Budget - Konstanta Mullite Sands 15-30 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu1" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu1" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu1" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu1" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu1" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr id="trhdrrat">
+                        <td style="font-size:x-small"><span id="RatTitle">Reject Rate at Cust.site(%)</span></td>
                         <td><span id="CasGrdRat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchRat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrRat" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="MatTitle">Prod. Cost Control - Material</span></td>
+                    <tr id="trhdrmat">
+                        <td style="font-size:x-small"><span id="MatTitle">Prod. Cost Control - Material</span></td>
                         <td><span id="CasGrdMat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtMat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActMat" class="pull-right" style="color:blue"></span></td>
@@ -179,7 +251,7 @@
                         <td><span id="CasScrMat" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitle">Prod. Cost Control - Consumables</span></td>
+                        <td style="font-size:x-small"><span id="ConTitle">Prod. Cost Control - Consumables</span></td>
                         <td><span id="CasGrdCon" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtCon" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActCon" class="pull-right" style="color:blue"></span></td>
@@ -187,7 +259,7 @@
                         <td><span id="CasScrCon" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitle">Prod. Cost Control - FOH Electricity</span></td>
+                        <td style="font-size:x-small"><span id="FohTitle">Prod. Cost Control - FOH Electricity</span></td>
                         <td><span id="CasGrdFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtFoh" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActFoh" class="pull-right" style="color:blue"></span></td>
@@ -195,15 +267,23 @@
                         <td><span id="CasScrFoh" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="LabTitle">Prod. Cost Control - Labor Cost</span></td>
+                        <td style="font-size:x-small"><span id="NonTitle">Prod. Cost Control - FOH Non Electricity(Fixed)</span></td>
+                        <td><span id="CasGrdNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchNon" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrNon" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:x-small"><span id="LabTitle">Prod. Cost Control - Labor Cost</span></td>
                         <td><span id="CasGrdLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchLab" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrLab" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="RedTitle">Cost Reduction</span></td>
+                    <tr id="trhdrred">
+                        <td style="font-size:x-small"><span id="RedTitle">Cost Reduction</span></td>
                         <td><span id="CasGrdRed" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRed" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRed" class="pull-right" style="color:blue"></span></td>
@@ -211,23 +291,21 @@
                         <td><span id="CasScrRed" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="WipTitle">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitle">WIP Control - Wax - Ceramic</span></td>
                         <td><span id="CasGrdWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrWip" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="SafTitle">Safety at production workplace</span></td>
+                    <tr id="trhdrsaf">
+                        <td style="font-size:x-small"><span id="SafTitle">Safety at production workplace</span></td>
                         <td><span id="CasGrdSaf" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtSaf" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActSaf" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchSaf" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrSaf" class="pull-right" style="color:blue"></span></td>
                     </tr>
-
-
                     <tr>
                         <td><span class="pull-right" style="color:blue"><b>Total Weight</b></span></td>
                         <td><span id="PicGrdTot" class="pull-right" style="color:blue;font-weight:bold"></span></td>
@@ -259,8 +337,8 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="14" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>CASTING</b></a></th>
-                        <td><span id="RevTitleMonth">Revenue</span></td>
+                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>CASTING</b></a></th>
+                        <td style="font-size:x-small"><span id="RevTitleMonth">Revenue</span></td>
                         <td><span id="CasGrdRevMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRevMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRevMonth" class="pull-right" style="color:blue"></span></td>
@@ -276,15 +354,15 @@
                         <td><span id="CasScrOutMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="PdaTitleMonth">Production Output PDA</span></td>
+                        <td style="font-size:x-small"><span id="PdaTitleMonth">Production Output PDA</span></td>
                         <td><span id="CasGrdPdaMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtPdaMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActPdaMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchPdaMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrPdaMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="DrmTitleMonth">DRM Average</span></td>
+                    <tr id="trhdrdrmMonth">
+                        <td style="font-size:x-small"><span id="DrmTitleMonth">DRM Average</span></td>
                         <td><span id="CasGrdDrmMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtDrmMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActDrmMonth" class="pull-right" style="color:blue"></span></td>
@@ -292,7 +370,7 @@
                         <td><span id="CasScrDrmMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RejTitleMonth">Reject Rate at mfg.site(5%)</span></td>
+                        <td style="font-size:x-small"><span id="RejTitleMonth">Reject Rate at mfg.site(%)</span></td>
                         <td><span id="CasGrdRejMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRejMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRejMonth" class="pull-right" style="color:blue"></span></td>
@@ -300,15 +378,88 @@
                         <td><span id="CasScrRejMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RatTitleMonth">Reject Rate at Cust.site(1%)</span></td>
+                        <td style="font-size:xx-small"><span id="BadTitleMonth">Reject Rate at mfg.site-Bad Casting(%)</span></td>
+                        <td><span id="CasGrdBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchBadMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrBadMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ScpTitleMonth">Budget - Konstanta Scrap Used(%) of PDA</span></td>
+                        <td><span id="CasGrdScpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtScpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActScpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchScpMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrScpMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="AlyTitleMonth">Budget - Konstanta Alloys Used(%) of PDA</span></td>
+                        <td><span id="CasGrdAlyMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtAlyMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActAlyMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchAlyMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrAlyMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="SilTitleMonth">Budget - Konstanta Colloidal Silica Used(%) of PDA</span></td>
+                        <td><span id="CasGrdSilMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtSilMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActSilMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchSilMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrSilMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZifTitleMonth">Budget - Konstanta Zircon Flour 325 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZifMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZifMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZifMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZifMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZifMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZisTitleMonth">Budget - Konstanta Zircon Sands 110 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZisMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZisMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZisMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZisMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZisMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="MufTitleMonth">Budget - Konstanta Mullite Flour 200 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMufMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMufMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMufMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMufMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMufMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu3TitleMonth">Budget - Konstanta Mullite Sands 30-80 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu3Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu3Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu3Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu3Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu3Month" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu1TitleMonth">Budget - Konstanta Mullite Sands 15-30 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu1Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu1Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu1Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu1Month" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu1Month" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trhdrratMonth">
+                        <td style="font-size:x-small"><span id="RatTitleMonth">Reject Rate at Cust.site(%)</span></td>
                         <td><span id="CasGrdRatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchRatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrRatMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="MatTitleMonth">Prod. Cost Control - Material</span></td>
+                    <tr id="trhdrmatMonth">
+                        <td style="font-size:x-small"><span id="MatTitleMonth">Prod. Cost Control - Material</span></td>
                         <td><span id="CasGrdMatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtMatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActMatMonth" class="pull-right" style="color:blue"></span></td>
@@ -316,7 +467,7 @@
                         <td><span id="CasScrMatMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitleMonth">Prod. Cost Control - Consumables</span></td>
+                        <td style="font-size:x-small"><span id="ConTitleMonth">Prod. Cost Control - Consumables</span></td>
                         <td><span id="CasGrdConMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtConMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActConMonth" class="pull-right" style="color:blue"></span></td>
@@ -324,7 +475,7 @@
                         <td><span id="CasScrConMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitleMonth">Prod. Cost Control - FOH Electricity</span></td>
+                        <td style="font-size:x-small"><span id="FohTitleMonth">Prod. Cost Control - FOH Electricity</span></td>
                         <td><span id="CasGrdFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtFohMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActFohMonth" class="pull-right" style="color:blue"></span></td>
@@ -332,15 +483,24 @@
                         <td><span id="CasScrFohMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="LabTitleMonth">Prod. Cost Control - Labor Cost</span></td>
+                        <td style="font-size:x-small"><span id="NonTitleMonth">Prod. Cost Control - FOH Non Electricity</span></td>
+                        <td><span id="CasGrdNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchNonMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrNonMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="font-size:x-small"><span id="LabTitleMonth">Prod. Cost Control - Labor Cost</span></td>
                         <td><span id="CasGrdLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchLabMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrLabMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="RedTitleMonth">Cost Reduction</span></td>
+                    <tr id="trhdrredMonth">
+                        <td style="font-size:x-small"><span id="RedTitleMonth">Cost Reduction</span></td>
                         <td><span id="CasGrdRedMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRedMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRedMonth" class="pull-right" style="color:blue"></span></td>
@@ -348,15 +508,15 @@
                         <td><span id="CasScrRedMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="WipTitleMonth">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitleMonth">WIP Control - Wax - Ceramic</span></td>
                         <td><span id="CasGrdWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrWipMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="SafTitleMonth">Safety at production workplace</span></td>
+                    <tr id="trhdrsafMonth">
+                        <td style="font-size:x-small"><span id="SafTitleMonth">Safety at production workplace</span></td>
                         <td><span id="CasGrdSafMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtSafMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActSafMonth" class="pull-right" style="color:blue"></span></td>
@@ -396,8 +556,8 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="14" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
-                        <td><span id="RevTitleSum">Revenue</span></td>
+                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
+                        <td style="font-size:x-small"><span id="RevTitleSum">Revenue</span></td>
                         <td><span id="CasGrdRevSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRevSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRevSum" class="pull-right" style="color:blue"></span></td>
@@ -413,15 +573,15 @@
                         <td><span id="CasScrOutSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="PdaTitleSum">Production Output PDA</span></td>
+                        <td style="font-size:x-small"><span id="PdaTitleSum">Production Output PDA</span></td>
                         <td><span id="CasGrdPdaSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtPdaSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActPdaSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchPdaSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrPdaSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="DrmTitleSum">DRM Average</span></td>
+                    <tr id="trhdrdrmSum">
+                        <td style="font-size:x-small"><span id="DrmTitleSum">DRM Average</span></td>
                         <td><span id="CasGrdDrmSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtDrmSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActDrmSum" class="pull-right" style="color:blue"></span></td>
@@ -429,7 +589,7 @@
                         <td><span id="CasScrDrmSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RejTitleSum">Reject Rate at mfg.site(5%)</span></td>
+                        <td style="font-size:x-small"><span id="RejTitleSum">Reject Rate at mfg.site(%)</span></td>
                         <td><span id="CasGrdRejSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRejSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRejSum" class="pull-right" style="color:blue"></span></td>
@@ -437,15 +597,88 @@
                         <td><span id="CasScrRejSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="RatTitleSum">Reject Rate at Cust.site(1%)</span></td>
+                        <td style="font-size:xx-small"><span id="BadTitleSum">Reject Rate at mfg.site-Bad Casting(%)</span></td>
+                        <td><span id="CasGrdBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchBadSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrBadSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ScpTitleSum">Budget - Konstanta Scrap Used(%) of PDA</span></td>
+                        <td><span id="CasGrdScpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtScpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActScpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchScpSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrScpSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="AlyTitleSum">Budget - Konstanta Alloys Used(%) of PDA</span></td>
+                        <td><span id="CasGrdAlySum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtAlySum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActAlySum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchAlySum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrAlySum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="SilTitleSum">Budget - Konstanta Colloidal Silica Used(%) of PDA</span></td>
+                        <td><span id="CasGrdSilSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtSilSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActSilSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchSilSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrSilSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZifTitleSum">Budget - Konstanta Zircon Flour 325 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZifSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZifSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZifSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZifSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZifSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="ZisTitleSum">Budget - Konstanta Zircon Sands 110 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdZisSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtZisSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActZisSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchZisSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrZisSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="MufTitleSum">Budget - Konstanta Mullite Flour 200 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMufSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMufSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMufSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMufSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMufSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu3TitleSum">Budget - Konstanta Mullite Sands 30-80 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu3Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu3Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu3Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu3Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu3Sum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:xx-small"><span id="Mu1TitleSum">Budget - Konstanta Mullite Sands 15-30 Used(%) of PDA</span></td>
+                        <td><span id="CasGrdMu1Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtMu1Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActMu1Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchMu1Sum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrMu1Sum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr id="trhdrratSum">
+                        <td style="font-size:x-small"><span id="RatTitleSum">Reject Rate at Cust.site(%)</span></td>
                         <td><span id="CasGrdRatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchRatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrRatSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="MatTitleSum">Prod. Cost Control - Material</span></td>
+                    <tr id="trhdrmatSum">
+                        <td style="font-size:x-small"><span id="MatTitleSum">Prod. Cost Control - Material</span></td>
                         <td><span id="CasGrdMatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtMatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActMatSum" class="pull-right" style="color:blue"></span></td>
@@ -453,7 +686,7 @@
                         <td><span id="CasScrMatSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="ConTitleSum">Prod. Cost Control - Consumables</span></td>
+                        <td style="font-size:x-small"><span id="ConTitleSum">Prod. Cost Control - Consumables</span></td>
                         <td><span id="CasGrdConSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtConSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActConSum" class="pull-right" style="color:blue"></span></td>
@@ -461,7 +694,7 @@
                         <td><span id="CasScrConSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="FohTitleSum">Prod. Cost Control - FOH Electricity</span></td>
+                        <td style="font-size:x-small"><span id="FohTitleSum">Prod. Cost Control - FOH Electricity</span></td>
                         <td><span id="CasGrdFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtFohSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActFohSum" class="pull-right" style="color:blue"></span></td>
@@ -469,15 +702,24 @@
                         <td><span id="CasScrFohSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="LabTitleSum">Prod. Cost Control - Labor Cost</span></td>
+                        <td style="font-size:x-small"><span id="NonTitleSum">Prod. Cost Control - FOH Non Electricity</span></td>
+                        <td><span id="CasGrdNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasTgtNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasActNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasAchNonSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="CasScrNonSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="font-size:x-small"><span id="LabTitleSum">Prod. Cost Control - Labor Cost</span></td>
                         <td><span id="CasGrdLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchLabSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrLabSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="RedTitleSum">Cost Reduction</span></td>
+                    <tr id="trhdrredSum">
+                        <td style="font-size:x-small"><span id="RedTitleSum">Cost Reduction</span></td>
                         <td><span id="CasGrdRedSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRedSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActRedSum" class="pull-right" style="color:blue"></span></td>
@@ -485,15 +727,15 @@
                         <td><span id="CasScrRedSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="WipTitleSum">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitleSum">WIP Control - Wax - Ceramic</span></td>
                         <td><span id="CasGrdWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasAchWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasScrWipSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
-                        <td><span id="SafTitleSum">Safety at production workplace</span></td>
+                    <tr id="trhdrsafSum">
+                        <td style="font-size:x-small"><span id="SafTitleSum">Safety at production workplace</span></td>
                         <td><span id="CasGrdSafSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtSafSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActSafSum" class="pull-right" style="color:blue"></span></td>
@@ -713,25 +955,147 @@
                         PicScrTot = PicScrTot + item.PicScrRev;
                         PicTotGrade = PicTotGrade + item.PicGrdRev;
                     }
-                    /*------------reject rate at cust---------*/
-                    $("#CasGrdRat").text(formatNumber(item.PicGrdRjt));
-                    $("#CasTgtRat").text(formatNumber(item.PicTgtRjt));
-                    $("#CasActRat").text(formatNumber(item.PicActRjt));
-                    $("#CasAchRat").text(formatNumber(item.PicAchRjt.toFixed(2)));
-                    $("#CasScrRat").text(formatNumber(item.PicScrRjt.toFixed(2)));
-                    var PicGrdRjt = item.PicGrdRjt;
-                    var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
-                        $("#RatTitle").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor11 >= 0 && item.PicTgtRjt > 0)
-                            $("#RatTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RatTitle").css({ "color": "red", "font-weight": "bold" });
+                    if (thn < 2022) {
+                        $('#trhdrrat').show();
+                        $('#trhdrdrm').show();
+                        $('#trhdrmat').show();
+                        $('#trhdrred').show();
+                        $('#trhdrsaf').show();
+
+                        /*------------reject rate at cust---------*/
+                        $("#CasGrdRat").text(formatNumber(item.PicGrdRjt));
+                        $("#CasTgtRat").text(formatNumber(item.PicTgtRjt));
+                        $("#CasActRat").text(formatNumber(item.PicActRjt));
+                        $("#CasAchRat").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#CasScrRat").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        var PicTgtRjt = item.PicTgtRjt;
+                        if (PicGrdRjt == 0)
+                            $("#RatTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor11 >= 0 && item.PicTgtRjt > 0)
+                                $("#RatTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RatTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+
+                        PicScrTot = PicScrTot + item.PicScrRjt;
+                        PicTotGrade = PicTotGrade + item.PicGrdRjt;
+
+                        /*------------Drm---------*/
+                        $("#CasGrdDrm").text(formatNumber(item.PicGrdAir));
+                        $("#CasTgtDrm").text(formatNumber(item.PicTgtAir));
+                        $("#CasActDrm").text(formatNumber(item.PicActAir));
+                        $("#CasAchDrm").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#CasScrDrm").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        var PicTgtAir = item.PicTgtAir;
+                        if (PicGrdAir == 0)
+                            $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor3 >= 0 && item.PicTgtAir > 0)
+                                $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTot = PicScrTot + item.PicScrAir;
+                        PicTotGrade = PicTotGrade + item.PicGrdAir;
+
+                        /*------------prod.cost control material---------*/
+                        $("#CasGrdMat").text(formatNumber(item.PicGrdMus));
+                        $("#CasTgtMat").text(formatNumber(item.PicTgtMus));
+                        $("#CasActMat").text(formatNumber(item.PicActMus));
+                        $("#CasAchMat").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#CasScrMat").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicGrdMus == 0)
+                            $("#MatTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor10 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor10 >= 0 && item.PicTgtMus > 0)
+                                $("#MatTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MatTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTot = PicScrTot + item.PicScrMus;
+                        PicTotGrade = PicTotGrade + item.PicGrdMus;
+
+                        //----REDUCTION
+                        $("#CasGrdRed").text(formatNumber(item.PicGrdEme));
+                        $("#CasTgtRed").text(formatNumber(item.PicTgtEme));
+                        $("#CasActRed").text(formatNumber(item.PicActEme));
+                        $("#CasAchRed").text(formatNumber(item.PicAchEme.toFixed(2)));
+                        $("#CasScrRed").text(formatNumber(item.PicScrEme.toFixed(2)));
+                        var PicGrdEme = item.PicGrdEme;
+                        var PicTgtEme = item.PicTgtEme;
+                        if (PicGrdEme == 0)
+                            $("#RedTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            //item.PicScrEme - item.PicScrEme;  ganti di sini
+                            var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                            if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                                $("#RedTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RedTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTot = PicScrTot + item.PicScrEme;
+                        PicTotGrade = PicTotGrade + item.PicGrdEme;
+                        //----Safety Index
+                        $("#CasGrdSaf").text(formatNumber(item.PicGrdSaf));
+                        $("#CasTgtSaf").text(formatNumber(item.PicTgtSaf));
+                        TempGradeSaf = item.PicGrdSaf;
+                        TempTargetSaf = item.PicTgtSaf;
+                        PicTotGrade = PicTotGrade + item.PicGrdSaf;
+
+                        var kpiHRD = {
+                            id: thn,
+                            bln: iMonth,
+                            ch: 'D'
+                        }
+                        $.ajax({
+                            url: urlKPI + "/CastingDept/",
+                            data: JSON.stringify(kpiHRD),
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                $.each(result, function (key, item) {
+                                    /*-- safety index -----------*/
+                                    var MacActSaf = item.ibpActSafe;
+                                    $("#CasActSaf").text(formatNumber(MacActSaf.toFixed(2)));
+                                    $("#CasAchSaf").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                    $("#CasScrSaf").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                    console.log(MacActSaf);
+                                    if (TempGradeSaf == 0)
+                                        $("#SafTitle").css({ "color": "black", "font-weight": "normal" });
+                                    else {
+                                        if (MacActSaf == 0)
+                                            $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
+                                    }
+                                    PicScrTot = PicScrTot + item.PicScrSaf;
+                                    /*----------- TOTAL  ------------*/
+                                    //$("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+                                    //$("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
+
+                                });
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            beforeSend: function () { $(".loader").show(); },
+                            complete: function () { $(".loader").hide(); },
+                            type: 'POST', dataType: 'json'
+                        });
+
+
+                    } else {
+                        $('#trhdrrat').hide();
+                        $('#trhdrdrm').hide();
+                        $('#trhdrmat').hide();
+                        $('#trhdrred').hide();
+                        $('#trhdrsaf').hide();
+
                     }
 
-                    PicScrTot = PicScrTot + item.PicScrRjt;
-                    PicTotGrade = PicTotGrade + item.PicGrdRjt;
 
                     /*------------output pouring---------*/
                     if (thn < 2020) {
@@ -754,6 +1118,7 @@
                         }
                         PicScrTot = PicScrTot + item.PicScrTvb;
                         PicTotGrade = PicTotGrade + item.PicGrdTvb;
+
                     }
                     else {
                         $("#trhdr").hide();
@@ -796,43 +1161,6 @@
                     }
                     PicScrTot = PicScrTot + item.PicScrPdc;
                     PicTotGrade = PicTotGrade + item.PicGrdPdc;
-                    /*------------Drm---------*/
-                    $("#CasGrdDrm").text(formatNumber(item.PicGrdAir));
-                    $("#CasTgtDrm").text(formatNumber(item.PicTgtAir));
-                    $("#CasActDrm").text(formatNumber(item.PicActAir));
-                    $("#CasAchDrm").text(formatNumber(item.PicAchAir.toFixed(2)));
-                    $("#CasScrDrm").text(formatNumber(item.PicScrAir.toFixed(2)));
-                    var PicGrdAir = item.PicGrdAir;
-                    var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
-                        $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor3 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor3 >= 0 && item.PicTgtAir > 0)
-                            $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTot = PicScrTot + item.PicScrAir;
-                    PicTotGrade = PicTotGrade + item.PicGrdAir;
-
-                    /*------------prod.cost control material---------*/
-                    $("#CasGrdMat").text(formatNumber(item.PicGrdMus));
-                    $("#CasTgtMat").text(formatNumber(item.PicTgtMus));
-                    $("#CasActMat").text(formatNumber(item.PicActMus));
-                    $("#CasAchMat").text(formatNumber(item.PicAchMus.toFixed(2)));
-                    $("#CasScrMat").text(formatNumber(item.PicScrMus.toFixed(2)));
-                    var PicGrdMus = item.PicGrdMus;
-                    var PicTgtMus = item.PicTgtMus;
-                    if (PicGrdMus == 0 )
-                        $("#MatTitle").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor10 = item.PicScrMus - item.PicGrdMus;
-                        if (newcolor10 >= 0 && item.PicTgtMus > 0)
-                            $("#MatTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MatTitle").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTot = PicScrTot + item.PicScrMus;
-                    PicTotGrade = PicTotGrade + item.PicGrdMus;
                     //---- reject rate casting
                     $("#CasGrdRej").text(formatNumber(item.PicGrdOth));
                     $("#CasTgtRej").text(formatNumber(item.PicTgtOth));
@@ -905,73 +1233,191 @@
                     }
                     PicScrTot = PicScrTot + item.PicScrDpp;
                     PicTotGrade = PicTotGrade + item.PicGrdDpp;
-                    //----REDUCTION
-                    $("#CasGrdRed").text(formatNumber(item.PicGrdEme));
-                    $("#CasTgtRed").text(formatNumber(item.PicTgtEme));
-                    $("#CasActRed").text(formatNumber(item.PicActEme));
-                    $("#CasAchRed").text(formatNumber(item.PicAchEme.toFixed(2)));
-                    $("#CasScrRed").text(formatNumber(item.PicScrEme.toFixed(2)));
-                    var PicGrdEme = item.PicGrdEme;
-                    var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdEme == 0 )
-                        $("#RedTitle").css({ "color": "black", "font-weight": "normal" });
+
+                    //---- FOH Non
+                    $("#CasGrdNon").text(formatNumber(item.PicGrdNon));
+                    $("#CasTgtNon").text(formatNumber(item.PicTgtNon));
+                    $("#CasActNon").text(formatNumber(item.PicActNon));
+                    $("#CasAchNon").text(formatNumber(item.PicAchNon.toFixed(2)));
+                    $("#CasScrNon").text(formatNumber(item.PicScrNon.toFixed(2)));
+                    var PicGrdNon = item.PicGrdNon;
+                    if (PicGrdNon == 0)
+                        $("#NonTitle").css({ "color": "black", "font-weight": "normal" });
                     else {
-                        var newcolor8 = item.PicScrEme - item.PicScrEme;
-                        if (newcolor8 >= 0 && item.PicTgtEme > 0)
-                            $("#RedTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RedTitle").css({ "color": "red", "font-weight": "bold" });
+                        var newcolorNon = item.PicScrNon - item.PicGrdNon;
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                            $("#NonTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#NonTitle").css({ "color": "red", "font-weight": "bold" });
                     }
-                    PicScrTot = PicScrTot + item.PicScrEme;
-                    PicTotGrade = PicTotGrade + item.PicGrdEme;
-                    //----Safety Index
-                    $("#CasGrdSaf").text(formatNumber(item.PicGrdSaf));
-                    $("#CasTgtSaf").text(formatNumber(item.PicTgtSaf));
-                    TempGradeSaf = item.PicGrdSaf;
-                    TempTargetSaf = item.PicTgtSaf;
-                    PicTotGrade = PicTotGrade + item.PicGrdSaf;
+                    PicScrTot = PicScrTot + item.PicScrNon;
+                    PicTotGrade = PicTotGrade + item.PicGrdNon;
 
-                    //--$("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
-                    //--$("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
-
-                    var kpiHRD = {
-                        id: thn,
-                        bln: iMonth,
-                        ch: 'D'
+                    //---- Bad Casting
+                    $("#CasGrdBad").text(formatNumber(item.PicGrdBad));
+                    $("#CasTgtBad").text(formatNumber(item.PicTgtBad));
+                    $("#CasActBad").text(formatNumber(item.PicActBad));
+                    $("#CasAchBad").text(formatNumber(item.PicAchBad.toFixed(2)));
+                    $("#CasScrBad").text(formatNumber(item.PicScrBad.toFixed(2)));
+                    var PicGrdBad = item.PicGrdBad;
+                    if (PicGrdBad == 0)
+                        $("#BadTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorBad = item.PicScrBad - item.PicGrdBad;
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                            $("#BadTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
                     }
-                    $.ajax({
-                        url: urlKPI + "/CastingDept/",
-                        data: JSON.stringify(kpiHRD),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                /*-- safety index -----------*/
-                                var MacActSaf = item.ibpActSafe;
-                                $("#CasActSaf").text(formatNumber(MacActSaf.toFixed(2)));
-                                $("#CasAchSaf").text(formatNumber(item.PicAchSaf.toFixed(2)));
-                                $("#CasScrSaf").text(formatNumber(item.PicScrSaf.toFixed(2)));
-                                console.log(MacActSaf);
-                                if (TempGradeSaf == 0)
-                                    $("#SafTitle").css({ "color": "black", "font-weight": "normal" });
-                                else {
-                                    if (MacActSaf == 0)
-                                        $("#SafTitle").css({ "color": "black", "font-weight": "bold" });
-                                    else $("#SafTitle").css({ "color": "red", "font-weight": "bold" });
-                                }
-                                PicScrTot = PicScrTot + item.PicScrSaf;
-                                /*----------- TOTAL  ------------*/
-                                $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
-                                $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+                    PicScrTot = PicScrTot + item.PicScrBad;
+                    PicTotGrade = PicTotGrade + item.PicGrdBad;
 
+                    //---- Scrap
+                    $("#CasGrdScp").text(formatNumber(item.PicGrdScp));
+                    $("#CasTgtScp").text(formatNumber(item.PicTgtScp));
+                    $("#CasActScp").text(formatNumber(item.PicActScp));
+                    $("#CasAchScp").text(formatNumber(item.PicAchScp.toFixed(2)));
+                    $("#CasScrScp").text(formatNumber(item.PicScrScp.toFixed(2)));
+                    var PicGrdScp = item.PicGrdScp;
+                    if (PicGrdScp == 0)
+                        $("#ScpTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorScp = item.PicScrScp - item.PicGrdScp;
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                            $("#ScpTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ScpTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrScp;
+                    PicTotGrade = PicTotGrade + item.PicGrdScp;
 
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
+                    //---- Alloy
+                    $("#CasGrdAly").text(formatNumber(item.PicGrdAly));
+                    $("#CasTgtAly").text(formatNumber(item.PicTgtAly));
+                    $("#CasActAly").text(formatNumber(item.PicActAly));
+                    $("#CasAchAly").text(formatNumber(item.PicAchAly.toFixed(2)));
+                    $("#CasScrAly").text(formatNumber(item.PicScrAly.toFixed(2)));
+                    var PicGrdAly = item.PicGrdAly;
+                    if (PicGrdAly == 0)
+                        $("#AlyTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorAly = item.PicScrAly - item.PicGrdAly;
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                            $("#AlyTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AlyTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrAly;
+                    PicTotGrade = PicTotGrade + item.PicGrdAly;
+
+                    //---- Silica
+                    $("#CasGrdSil").text(formatNumber(item.PicGrdSil));
+                    $("#CasTgtSil").text(formatNumber(item.PicTgtSil));
+                    $("#CasActSil").text(formatNumber(item.PicActSil));
+                    $("#CasAchSil").text(formatNumber(item.PicAchSil.toFixed(2)));
+                    $("#CasScrSil").text(formatNumber(item.PicScrSil.toFixed(2)));
+                    var PicGrdSil = item.PicGrdSil;
+                    if (PicGrdSil == 0)
+                        $("#SilTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorSil = item.PicScrSil - item.PicGrdSil;
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                            $("#SilTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SilTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrSil;
+                    PicTotGrade = PicTotGrade + item.PicGrdSil;
+
+                    //---- Zircon Flour
+                    $("#CasGrdZif").text(formatNumber(item.PicGrdZif));
+                    $("#CasTgtZif").text(formatNumber(item.PicTgtZif));
+                    $("#CasActZif").text(formatNumber(item.PicActZif));
+                    $("#CasAchZif").text(formatNumber(item.PicAchZif.toFixed(2)));
+                    $("#CasScrZif").text(formatNumber(item.PicScrZif.toFixed(2)));
+                    var PicGrdZif = item.PicGrdZif;
+                    if (PicGrdZif == 0)
+                        $("#ZifTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZif = item.PicScrZif - item.PicGrdZif;
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                            $("#ZifTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZifTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrZif;
+                    PicTotGrade = PicTotGrade + item.PicGrdZif;
+
+                    //---- Zircon Sads
+                    $("#CasGrdZis").text(formatNumber(item.PicGrdZis));
+                    $("#CasTgtZis").text(formatNumber(item.PicTgtZis));
+                    $("#CasActZis").text(formatNumber(item.PicActZis));
+                    $("#CasAchZis").text(formatNumber(item.PicAchZis.toFixed(2)));
+                    $("#CasScrZis").text(formatNumber(item.PicScrZis.toFixed(2)));
+                    var PicGrdZis = item.PicGrdZis;
+                    if (PicGrdZis == 0)
+                        $("#ZisTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZis = item.PicScrZis - item.PicGrdZis;
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                            $("#ZisTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZisTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrZis;
+                    PicTotGrade = PicTotGrade + item.PicGrdZis;
+
+                    //---- Mullite Flour
+                    $("#CasGrdMuf").text(formatNumber(item.PicGrdMuf));
+                    $("#CasTgtMuf").text(formatNumber(item.PicTgtMuf));
+                    $("#CasActMuf").text(formatNumber(item.PicActMuf));
+                    $("#CasAchMuf").text(formatNumber(item.PicAchMuf.toFixed(2)));
+                    $("#CasScrMuf").text(formatNumber(item.PicScrMuf.toFixed(2)));
+                    var PicGrdMuf = item.PicGrdMuf;
+                    if (PicGrdMuf == 0)
+                        $("#MufTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                            $("#MufTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#MufTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrMuf;
+                    PicTotGrade = PicTotGrade + item.PicGrdMuf;
+
+                    //---- Mullite Sands 30-80
+                    $("#CasGrdMu3").text(formatNumber(item.PicGrdMu3));
+                    $("#CasTgtMu3").text(formatNumber(item.PicTgtMu3));
+                    $("#CasActMu3").text(formatNumber(item.PicActMu3));
+                    $("#CasAchMu3").text(formatNumber(item.PicAchMu3.toFixed(2)));
+                    $("#CasScrMu3").text(formatNumber(item.PicScrMu3.toFixed(2)));
+                    var PicGrdMu3 = item.PicGrdMu3;
+                    if (PicGrdMu3 == 0)
+                        $("#Mu3Title").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                            $("#Mu3Title").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu3Title").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrMu3;
+                    PicTotGrade = PicTotGrade + item.PicGrdMu3;
+
+                    //---- Mullite Sands 15-30
+                    $("#CasGrdMu1").text(formatNumber(item.PicGrdMu1));
+                    $("#CasTgtMu1").text(formatNumber(item.PicTgtMu1));
+                    $("#CasActMu1").text(formatNumber(item.PicActMu1));
+                    $("#CasAchMu1").text(formatNumber(item.PicAchMu1.toFixed(2)));
+                    $("#CasScrMu1").text(formatNumber(item.PicScrMu1.toFixed(2)));
+                    var PicGrdMu1 = item.PicGrdMu1;
+                    if (PicGrdMu1 == 0)
+                        $("#Mu1Title").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                            $("#Mu1Title").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu1Title").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTot = PicScrTot + item.PicScrMu1;
+                    PicTotGrade = PicTotGrade + item.PicGrdMu1;
+
+                    /*----------- TOTAL  ------------*/
+                    $("#PicGrdTot").text(formatNumber(PicTotGrade.toFixed(2)));
+                    $("#PicScrTot").text(formatNumber(PicScrTot.toFixed(2)));
+
 
                 });
             },
@@ -991,6 +1437,10 @@
         PicScrTotSum = 0;
         PicTotGradeMonth = 0;
         PicTotGradeSum = 0;
+        //ini belum
+        var nmbulan = valMonth(bln);
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+
         var userAu = $('#authorid').val();
         var kpiObj = {
             id: thn,
@@ -1022,24 +1472,145 @@
                         PicScrTotMonth = PicScrTotMonth + item.PicScrRev;
                         PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRev;
                     }
-                    /*------------reject rate at cust---------*/
-                    $("#CasGrdRatMonth").text(formatNumber(item.PicGrdRjt));
-                    $("#CasTgtRatMonth").text(formatNumber(item.PicTgtRjt));
-                    $("#CasActRatMonth").text(formatNumber(item.PicActRjt));
-                    $("#CasAchRatMonth").text(formatNumber(item.PicAchRjt.toFixed(2)));
-                    $("#CasScrRatMonth").text(formatNumber(item.PicScrRjt.toFixed(2)));
-                    var PicGrdRjt = item.PicGrdRjt;
-                    var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
-                        $("#RatTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor11 >= 0 && item.PicTgtRjt > 0)
-                            $("#RatTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    if (thn < 2022) {
+                        $('#trhdrratMonth').show();
+                        $('#trhdrdrmMonth').show();
+                        $('#trhdrmatMonth').show();
+                        $('#trhdrredMonth').show();
+                        $('#trhdrsafMonth').show();
+                        /*------------reject rate at cust---------*/
+                        $("#CasGrdRatMonth").text(formatNumber(item.PicGrdRjt));
+                        $("#CasTgtRatMonth").text(formatNumber(item.PicTgtRjt));
+                        $("#CasActRatMonth").text(formatNumber(item.PicActRjt));
+                        $("#CasAchRatMonth").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#CasScrRatMonth").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        var PicTgtRjt = item.PicTgtRjt;
+                        if (PicGrdRjt == 0)
+                            $("#RatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor11 >= 0 && item.PicTgtRjt > 0)
+                                $("#RatTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotMonth = PicScrTotMonth + item.PicScrRjt;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRjt;
+
+                        /*------------Drm---------*/
+                        $("#CasGrdDrmMonth").text(formatNumber(item.PicGrdAir));
+                        $("#CasTgtDrmMonth").text(formatNumber(item.PicTgtAir));
+                        $("#CasActDrmMonth").text(formatNumber(item.PicActAir));
+                        $("#CasAchDrmMonth").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#CasScrDrmMonth").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        var PicTgtAir = item.PicTgtAir;
+                        if (PicGrdAir == 0)
+                            $("#DrmTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor3 >= 0 && item.PicTgtAir > 0)
+                                $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotMonth = PicScrTotMonth + item.PicScrAir;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdAir;
+
+                        /*------------prod.cost control material---------*/
+                        $("#CasGrdMatMonth").text(formatNumber(item.PicGrdMus));
+                        $("#CasTgtMatMonth").text(formatNumber(item.PicTgtMus));
+                        $("#CasActMatMonth").text(formatNumber(item.PicActMus));
+                        $("#CasAchMatMonth").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#CasScrMatMonth").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicGrdMus == 0)
+                            $("#MatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor10 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor10 >= 0 && item.PicTgtMus > 0)
+                                $("#MatTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotMonth = PicScrTotMonth + item.PicScrMus;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMus;
+
+                        //----REDUCTION
+                        $("#CasGrdRedMonth").text(formatNumber(item.PicGrdEme));
+                        $("#CasTgtRedMonth").text(formatNumber(item.PicTgtEme));
+                        $("#CasActRedMonth").text(formatNumber(item.PicActEme));
+                        $("#CasAchRedMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
+                        $("#CasScrRedMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
+                        var PicGrdEme = item.PicGrdEme;
+                        var PicTgtEme = item.PicTgtEme;
+                        if (PicGrdEme == 0)
+                            $("#RedTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                            if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                                $("#RedTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RedTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotMonth = PicScrTotMonth + item.PicScrEme;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdEme;
+                        //----Safety Index
+                        $("#CasGrdSafMonth").text(formatNumber(item.PicGrdSaf));
+                        $("#CasTgtSafMonth").text(formatNumber(item.PicTgtSaf));
+                        TempGradeSafMonth = item.PicGrdSaf;
+                        TempTargetSafMonth = item.PicTgtSaf;
+                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSaf;
+
+                        $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
+                        $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
+
+                        var kpiHRD = {
+                            id: thn,
+                            bln: bln,
+                            ch: "M"
+                        }
+                        $.ajax({
+                            url: urlKPI + "/CastingDept/",
+                            data: JSON.stringify(kpiHRD),
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                $.each(result, function (key, item) {
+                                    /*-- safety index -----------*/
+                                    var MacActSaf = item.ibpActSafe;
+                                    $("#CasActSafMonth").text(formatNumber(MacActSaf.toFixed(2)));
+                                    $("#CasAchSafMonth").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                    $("#CasScrSafMonth").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                    console.log(MacActSaf);
+                                    if (TempGradeSafMonth == 0)
+                                        $("#SafTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                                    else {
+                                        if (MacActSaf == 0)
+                                            $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                    }
+
+
+                                    PicScrTotMonth = PicScrTotMonth + item.PicScrSaf;
+
+
+                                });
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            beforeSend: function () { $(".loader").show(); },
+                            complete: function () { $(".loader").hide(); },
+                            type: 'POST', dataType: 'json'
+                        });
+
+                    } else {
+                        $('#trhdrratMonth').hide();
+                        $('#trhdrdrmMonth').hide();
+                        $('#trhdrmatMonth').hide();
+                        $('#trhdrredMonth').hide();
+                        $('#trhdrsafMonth').hide();
+
                     }
-                    PicScrTotMonth = PicScrTotMonth + item.PicScrRjt;
-                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRjt;
+
                     /*------------output pouring---------*/
                     if (thn < 2020) {
                         $("#trdtl").show();
@@ -1061,7 +1632,6 @@
                         }
                         PicScrTotMonth = PicScrTotMonth + item.PicScrTvb;
                         PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
-
                     }
                     else {
                         $("#trdtl").hide();
@@ -1102,24 +1672,6 @@
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrPdc;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPdc;
-                    /*------------Drm---------*/
-                    $("#CasGrdDrmMonth").text(formatNumber(item.PicGrdAir));
-                    $("#CasTgtDrmMonth").text(formatNumber(item.PicTgtAir));
-                    $("#CasActDrmMonth").text(formatNumber(item.PicActAir));
-                    $("#CasAchDrmMonth").text(formatNumber(item.PicAchAir.toFixed(2)));
-                    $("#CasScrDrmMonth").text(formatNumber(item.PicScrAir.toFixed(2)));
-                    var PicGrdAir = item.PicGrdAir;
-                    var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
-                        $("#DrmTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor3 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor3 >= 0 && item.PicTgtAir > 0)
-                            $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotMonth = PicScrTotMonth + item.PicScrAir;
-                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdAir;
                     //---- reject rate casting
                     $("#CasGrdRejMonth").text(formatNumber(item.PicGrdOth));
                     $("#CasTgtRejMonth").text(formatNumber(item.PicTgtOth));
@@ -1177,24 +1729,6 @@
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrInv;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdInv;
-                    /*------------prod.cost control material---------*/
-                    $("#CasGrdMatMonth").text(formatNumber(item.PicGrdMus));
-                    $("#CasTgtMatMonth").text(formatNumber(item.PicTgtMus));
-                    $("#CasActMatMonth").text(formatNumber(item.PicActMus));
-                    $("#CasAchMatMonth").text(formatNumber(item.PicAchMus.toFixed(2)));
-                    $("#CasScrMatMonth").text(formatNumber(item.PicScrMus.toFixed(2)));
-                    var PicGrdMus = item.PicGrdMus;
-                    var PicTgtMus = item.PicTgtMus;
-                    if (PicGrdMus == 0 )
-                        $("#MatTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor10 = item.PicScrMus - item.PicGrdMus;
-                        if (newcolor10 >= 0 && item.PicTgtMus > 0)
-                            $("#MatTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MatTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotMonth = PicScrTotMonth + item.PicScrMus;
-                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMus;
                     //---- FOH
                     $("#CasGrdFohMonth").text(formatNumber(item.PicGrdDpp));
                     $("#CasTgtFohMonth").text(formatNumber(item.PicTgtDpp));
@@ -1213,75 +1747,191 @@
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrDpp;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
-                    //----REDUCTION
-                    $("#CasGrdRedMonth").text(formatNumber(item.PicGrdEme));
-                    $("#CasTgtRedMonth").text(formatNumber(item.PicTgtEme));
-                    $("#CasActRedMonth").text(formatNumber(item.PicActEme));
-                    $("#CasAchRedMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
-                    $("#CasScrRedMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
-                    var PicGrdEme = item.PicGrdEme;
-                    var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdEme == 0 )
-                        $("#RedTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor8 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor8 >= 0 && item.PicTgtEme > 0)
-                            $("#RedTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RedTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotMonth = PicScrTotMonth + item.PicScrEme;
-                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdEme;
-                    //----Safety Index
-                    $("#CasGrdSafMonth").text(formatNumber(item.PicGrdSaf));
-                    $("#CasTgtSafMonth").text(formatNumber(item.PicTgtSaf));
-                    TempGradeSafMonth = item.PicGrdSaf;
-                    TempTargetSafMonth = item.PicTgtSaf;
-                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSaf;
 
+                    //---- FOH Non
+                    $("#CasGrdNonMonth").text(formatNumber(item.PicGrdNon));
+                    $("#CasTgtNonMonth").text(formatNumber(item.PicTgtNon));
+                    $("#CasActNonMonth").text(formatNumber(item.PicActNon));
+                    $("#CasAchNonMonth").text(formatNumber(item.PicAchNon.toFixed(2)));
+                    $("#CasScrNonMonth").text(formatNumber(item.PicScrNon.toFixed(2)));
+                    var PicGrdNon = item.PicGrdNon;
+                    if (PicGrdNon == 0)
+                        $("#NonTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorNon = item.PicScrNon - item.PicGrdNon;
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                            $("#NonTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#NonTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrNon;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdNon;
+
+                    //---- Bad Casting
+                    $("#CasGrdBadMonth").text(formatNumber(item.PicGrdBad));
+                    $("#CasTgtBadMonth").text(formatNumber(item.PicTgtBad));
+                    $("#CasActBadMonth").text(formatNumber(item.PicActBad));
+                    $("#CasAchBadMonth").text(formatNumber(item.PicAchBad.toFixed(2)));
+                    $("#CasScrBadMonth").text(formatNumber(item.PicScrBad.toFixed(2)));
+                    var PicGrdBad = item.PicGrdBad;
+                    if (PicGrdBad == 0)
+                        $("#BadTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorBad = item.PicScrBad - item.PicGrdBad;
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                            $("#BadTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrBad;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdBad;
+
+                    //---- Scrap
+                    $("#CasGrdScpMonth").text(formatNumber(item.PicGrdScp));
+                    $("#CasTgtScpMonth").text(formatNumber(item.PicTgtScp));
+                    $("#CasActScpMonth").text(formatNumber(item.PicActScp));
+                    $("#CasAchScpMonth").text(formatNumber(item.PicAchScp.toFixed(2)));
+                    $("#CasScrScpMonth").text(formatNumber(item.PicScrScp.toFixed(2)));
+                    var PicGrdScp = item.PicGrdScp;
+                    if (PicGrdScp == 0)
+                        $("#ScpTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorScp = item.PicScrScp - item.PicGrdScp;
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                            $("#ScpTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ScpTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrScp;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdScp;
+
+                    //---- Alloy
+                    $("#CasGrdAlyMonth").text(formatNumber(item.PicGrdAly));
+                    $("#CasTgtAlyMonth").text(formatNumber(item.PicTgtAly));
+                    $("#CasActAlyMonth").text(formatNumber(item.PicActAly));
+                    $("#CasAchAlyMonth").text(formatNumber(item.PicAchAly.toFixed(2)));
+                    $("#CasScrAlyMonth").text(formatNumber(item.PicScrAly.toFixed(2)));
+                    var PicGrdAly = item.PicGrdAly;
+                    if (PicGrdAly == 0)
+                        $("#AlyTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorAly = item.PicScrAly - item.PicGrdAly;
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                            $("#AlyTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AlyTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrAly;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdAly;
+
+                    //---- Silica
+                    $("#CasGrdSilMonth").text(formatNumber(item.PicGrdSil));
+                    $("#CasTgtSilMonth").text(formatNumber(item.PicTgtSil));
+                    $("#CasActSilMonth").text(formatNumber(item.PicActSil));
+                    $("#CasAchSilMonth").text(formatNumber(item.PicAchSil.toFixed(2)));
+                    $("#CasScrSilMonth").text(formatNumber(item.PicScrSil.toFixed(2)));
+                    var PicGrdSil = item.PicGrdSil;
+                    if (PicGrdSil == 0)
+                        $("#SilTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorSil = item.PicScrSil - item.PicGrdSil;
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                            $("#SilTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SilTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrSil;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSil;
+
+                    //---- Zircon Flour
+                    $("#CasGrdZifMonth").text(formatNumber(item.PicGrdZif));
+                    $("#CasTgtZifMonth").text(formatNumber(item.PicTgtZif));
+                    $("#CasActZifMonth").text(formatNumber(item.PicActZif));
+                    $("#CasAchZifMonth").text(formatNumber(item.PicAchZif.toFixed(2)));
+                    $("#CasScrZifMonth").text(formatNumber(item.PicScrZif.toFixed(2)));
+                    var PicGrdZif = item.PicGrdZif;
+                    if (PicGrdZif == 0)
+                        $("#ZifTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZif = item.PicScrZif - item.PicGrdZif;
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                            $("#ZifTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZifTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrZif;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdZif;
+
+                    //---- Zircon Sands
+                    $("#CasGrdZisMonth").text(formatNumber(item.PicGrdZis));
+                    $("#CasTgtZisMonth").text(formatNumber(item.PicTgtZis));
+                    $("#CasActZisMonth").text(formatNumber(item.PicActZis));
+                    $("#CasAchZisMonth").text(formatNumber(item.PicAchZis.toFixed(2)));
+                    $("#CasScrZisMonth").text(formatNumber(item.PicScrZis.toFixed(2)));
+                    var PicGrdZis = item.PicGrdZis;
+                    if (PicGrdZis == 0)
+                        $("#ZisTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZis = item.PicScrZis - item.PicGrdZis;
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                            $("#ZisTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZisTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrZis;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdZis;
+
+                    //---- Mullite Flour
+                    $("#CasGrdMufMonth").text(formatNumber(item.PicGrdMuf));
+                    $("#CasTgtMufMonth").text(formatNumber(item.PicTgtMuf));
+                    $("#CasActMufMonth").text(formatNumber(item.PicActMuf));
+                    $("#CasAchMufMonth").text(formatNumber(item.PicAchMuf.toFixed(2)));
+                    $("#CasScrMufMonth").text(formatNumber(item.PicScrMuf.toFixed(2)));
+                    var PicGrdMuf = item.PicGrdMuf;
+                    if (PicGrdMuf == 0)
+                        $("#MufTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                            $("#MufTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#MufTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrMuf;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMuf;
+
+                    //---- Mullite Sands 30-80
+                    $("#CasGrdMu3Month").text(formatNumber(item.PicGrdMu3));
+                    $("#CasTgtMu3Month").text(formatNumber(item.PicTgtMu3));
+                    $("#CasActMu3Month").text(formatNumber(item.PicActMu3));
+                    $("#CasAchMu3Month").text(formatNumber(item.PicAchMu3.toFixed(2)));
+                    $("#CasScrMu3Month").text(formatNumber(item.PicScrMu3.toFixed(2)));
+                    var PicGrdMu3 = item.PicGrdMu3;
+                    if (PicGrdMu3 == 0)
+                        $("#Mu3TitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                            $("#Mu3TitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu3TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrMu3;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMu3;
+
+                    //---- Mullite Sands 15-30
+                    $("#CasGrdMu1Month").text(formatNumber(item.PicGrdMu1));
+                    $("#CasTgtMu1Month").text(formatNumber(item.PicTgtMu1));
+                    $("#CasActMu1Month").text(formatNumber(item.PicActMu1));
+                    $("#CasAchMu1Month").text(formatNumber(item.PicAchMu1.toFixed(2)));
+                    $("#CasScrMu1Month").text(formatNumber(item.PicScrMu1.toFixed(2)));
+                    var PicGrdMu1 = item.PicGrdMu1;
+                    if (PicGrdMu1 == 0)
+                        $("#Mu1TitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                            $("#Mu1TitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu1TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotMonth = PicScrTotMonth + item.PicScrMu1;
+                    PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMu1;
+
+
+                    /*---------------Grand Total---------------------*/
                     $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
                     $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
-
-                    var kpiHRD = {
-                        id: thn,
-                        bln: bln,
-                        ch: "M"
-                    }
-                    $.ajax({
-                        url: urlKPI + "/CastingDept/",
-                        data: JSON.stringify(kpiHRD),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                /*-- safety index -----------*/
-                                var MacActSaf = item.ibpActSafe;
-                                $("#CasActSafMonth").text(formatNumber(MacActSaf.toFixed(2)));
-                                $("#CasAchSafMonth").text(formatNumber(item.PicAchSaf.toFixed(2)));
-                                $("#CasScrSafMonth").text(formatNumber(item.PicScrSaf.toFixed(2)));
-                                console.log(MacActSaf);
-                                if (TempGradeSafMonth == 0)
-                                    $("#SafTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                                else {
-                                    if (MacActSaf == 0)
-                                        $("#SafTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                                    else $("#SafTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                                }
-
-
-                                PicScrTotMonth = PicScrTotMonth + item.PicScrSaf;
-
-                                /*---------------Grand Total---------------------*/
-                                $("#PicScrTotMonth").text(formatNumber(PicScrTotMonth.toFixed(2)));
-                                $("#PicGrdTotMonth").text(formatNumber(PicTotGradeMonth.toFixed(2)));
-
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
 
                 });
             },
@@ -1326,24 +1976,149 @@
                         PicScrTotSum = PicScrTotSum + item.PicScrRev;
                         PicTotGradeSum = PicTotGradeSum + item.PicGrdRev;
                     }
-                    /*------------reject rate at cust---------*/
-                    $("#CasGrdRatSum").text(formatNumber(item.PicGrdRjt));
-                    $("#CasTgtRatSum").text(formatNumber(item.PicTgtRjt));
-                    $("#CasActRatSum").text(formatNumber(item.PicActRjt));
-                    $("#CasAchRatSum").text(formatNumber(item.PicAchRjt.toFixed(2)));
-                    $("#CasScrRatSum").text(formatNumber(item.PicScrRjt.toFixed(2)));
-                    var PicGrdRjt = item.PicGrdRjt;
-                    var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
-                        $("#RatTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor11 >= 0 && item.PicTgtRjt > 0)
-                            $("#RatTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RatTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                    if (thn < 2022) {
+                        $('#trhdrratSum').show();
+                        $('#trhdrdrmSum').show();
+                        $('#trhdrmatSum').show();
+                        $('#trhdrredSum').show();
+                        $('#trhdrsafSum').show();
+
+                        /*------------reject rate at cust---------*/
+                        $("#CasGrdRatSum").text(formatNumber(item.PicGrdRjt));
+                        $("#CasTgtRatSum").text(formatNumber(item.PicTgtRjt));
+                        $("#CasActRatSum").text(formatNumber(item.PicActRjt));
+                        $("#CasAchRatSum").text(formatNumber(item.PicAchRjt.toFixed(2)));
+                        $("#CasScrRatSum").text(formatNumber(item.PicScrRjt.toFixed(2)));
+                        var PicGrdRjt = item.PicGrdRjt;
+                        var PicTgtRjt = item.PicTgtRjt;
+                        if (PicGrdRjt == 0)
+                            $("#RatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor11 = item.PicScrRjt - item.PicGrdRjt;
+                            if (newcolor11 >= 0 && item.PicTgtRjt > 0)
+                                $("#RatTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotSum = PicScrTotSum + item.PicScrRjt;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdRjt;
+
+                        /*------------Drm---------*/
+                        $("#CasGrdDrmSum").text(formatNumber(item.PicGrdAir));
+                        $("#CasTgtDrmSum").text(formatNumber(item.PicTgtAir));
+                        $("#CasActDrmSum").text(formatNumber(item.PicActAir));
+                        $("#CasAchDrmSum").text(formatNumber(item.PicAchAir.toFixed(2)));
+                        $("#CasScrDrmSum").text(formatNumber(item.PicScrAir.toFixed(2)));
+                        var PicGrdAir = item.PicGrdAir;
+                        var PicTgtAir = item.PicTgtAir;
+                        if (PicGrdAir == 0)
+                            $("#DrmTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor3 = item.PicScrAir - item.PicGrdAir;
+                            if (newcolor3 >= 0 && item.PicTgtAir > 0)
+                                $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotSum = PicScrTotSum + item.PicScrAir;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdAir;
+
+                        /*------------prod.cost control material---------*/
+                        $("#CasGrdMatSum").text(formatNumber(item.PicGrdMus));
+                        $("#CasTgtMatSum").text(formatNumber(item.PicTgtMus));
+                        $("#CasActMatSum").text(formatNumber(item.PicActMus));
+                        $("#CasAchMatSum").text(formatNumber(item.PicAchMus.toFixed(2)));
+                        $("#CasScrMatSum").text(formatNumber(item.PicScrMus.toFixed(2)));
+                        var PicGrdMus = item.PicGrdMus;
+                        var PicTgtMus = item.PicTgtMus;
+                        if (PicGrdMus == 0)
+                            $("#MatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor10 = item.PicScrMus - item.PicGrdMus;
+                            if (newcolor10 >= 0 && item.PicTgtMus > 0)
+                                $("#MatTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#MatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotSum = PicScrTotSum + item.PicScrMus;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdMus;
+
+                        //----REDUCTION
+                        $("#CasGrdRedSum").text(formatNumber(item.PicGrdEme));
+                        $("#CasTgtRedSum").text(formatNumber(item.PicTgtEme));
+                        $("#CasActRedSum").text(formatNumber(item.PicActEme));
+                        $("#CasAchRedSum").text(formatNumber(item.PicAchEme.toFixed(2)));
+                        $("#CasScrRedSum").text(formatNumber(item.PicScrEme.toFixed(2)));
+                        var PicGrdEme = item.PicGrdEme;
+                        var PicTgtEme = item.PicTgtEme;
+                        if (PicGrdDpp == 0)
+                            $("#RedTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor8 = item.PicScrEme - item.PicGrdEme;
+                            if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                                $("#RedTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#RedTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
+                        PicScrTotSum = PicScrTotSum + item.PicScrEme;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdEme;
+                        //----Safety Index
+                        $("#CasGrdSafSum").text(formatNumber(item.PicGrdSaf));
+                        $("#CasTgtSafSum").text(formatNumber(item.PicTgtSaf));
+                        TempGradeSafSum = item.PicGrdSaf;
+                        TempTargetSafSum = item.PicTgtSaf;
+                        PicTotGradeSum = PicTotGradeSum + item.PicGrdSaf;
+
+                        $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
+                        $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
+
+                        var kpiHRD = {
+                            id: thn,
+                            bln: bln,
+                            ch: "Y"
+                        }
+                        $.ajax({
+                            url: urlKPI + "/CastingDept/",
+                            data: JSON.stringify(kpiHRD),
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                $.each(result, function (key, item) {
+                                    /*-- safety index -----------*/
+                                    var MacActSaf = item.ibpActSafe;
+                                    $("#CasActSafSum").text(formatNumber(MacActSaf.toFixed(2)));
+                                    $("#CasAchSafSum").text(formatNumber(item.PicAchSaf.toFixed(2)));
+                                    $("#CasScrSafSum").text(formatNumber(item.PicScrSaf.toFixed(2)));
+                                    console.log(MacActSaf);
+                                    if (TempGradeSafSum == 0)
+                                        $("#SafTitleSum").css({ "color": "black", "font-weight": "normal" });
+                                    else {
+                                        if (MacActSaf == 0)
+                                            $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
+                                        else $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                    }
+                                    PicScrTotSum = PicScrTotSum + item.PicScrSaf;
+
+                                   
+
+
+                                });
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            beforeSend: function () { $(".loader").show(); },
+                            complete: function () { $(".loader").hide(); },
+                            type: 'POST', dataType: 'json'
+                        });
+
+
+
+                    } else {
+                        $('#trhdrratSum').hide();
+                        $('#trhdrdrmSum').hide();
+                        $('#trhdrmatSum').hide();
+                        $('#trhdrredSum').hide();
+                        $('#trhdrsafSum').hide();
                     }
-                    PicScrTotSum = PicScrTotSum + item.PicScrRjt;
-                    PicTotGradeSum = PicTotGradeSum + item.PicGrdRjt;
+
+                  
                     /*------------output pouring---------*/
                     if (thn < 2020) {
                         $("#trsubdtl").show();
@@ -1404,24 +2179,6 @@
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrPdc;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
-                    /*------------Drm---------*/
-                    $("#CasGrdDrmSum").text(formatNumber(item.PicGrdAir));
-                    $("#CasTgtDrmSum").text(formatNumber(item.PicTgtAir));
-                    $("#CasActDrmSum").text(formatNumber(item.PicActAir));
-                    $("#CasAchDrmSum").text(formatNumber(item.PicAchAir.toFixed(2)));
-                    $("#CasScrDrmSum").text(formatNumber(item.PicScrAir.toFixed(2)));
-                    var PicGrdAir = item.PicGrdAir;
-                    var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
-                        $("#DrmTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor3 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor3 >= 0 && item.PicTgtAir > 0)
-                            $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotSum = PicScrTotSum + item.PicScrAir;
-                    PicTotGradeSum = PicTotGradeSum + item.PicGrdAir;
                     //---- reject rate casting
                     $("#CasGrdRejSum").text(formatNumber(item.PicGrdOth));
                     $("#CasTgtRejSum").text(formatNumber(item.PicTgtOth));
@@ -1476,24 +2233,6 @@
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrInv;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdInv;
-                    /*------------prod.cost control material---------*/
-                    $("#CasGrdMatSum").text(formatNumber(item.PicGrdMus));
-                    $("#CasTgtMatSum").text(formatNumber(item.PicTgtMus));
-                    $("#CasActMatSum").text(formatNumber(item.PicActMus));
-                    $("#CasAchMatSum").text(formatNumber(item.PicAchMus.toFixed(2)));
-                    $("#CasScrMatSum").text(formatNumber(item.PicScrMus.toFixed(2)));
-                    var PicGrdMus = item.PicGrdMus;
-                    var PicTgtMus = item.PicTgtMus;
-                    if (PicGrdMus == 0 )
-                        $("#MatTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor10 = item.PicScrMus - item.PicGrdMus;
-                        if (newcolor10 >= 0 && item.PicTgtMus > 0)
-                            $("#MatTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MatTitleSum").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotSum = PicScrTotSum + item.PicScrMus;
-                    PicTotGradeSum = PicTotGradeSum + item.PicGrdMus;
                     //---- FOH
                     $("#CasGrdFohSum").text(formatNumber(item.PicGrdDpp));
                     $("#CasTgtFohSum").text(formatNumber(item.PicTgtDpp));
@@ -1512,75 +2251,192 @@
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrDpp;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
-                    //----REDUCTION
-                    $("#CasGrdRedSum").text(formatNumber(item.PicGrdEme));
-                    $("#CasTgtRedSum").text(formatNumber(item.PicTgtEme));
-                    $("#CasActRedSum").text(formatNumber(item.PicActEme));
-                    $("#CasAchRedSum").text(formatNumber(item.PicAchEme.toFixed(2)));
-                    $("#CasScrRedSum").text(formatNumber(item.PicScrEme.toFixed(2)));
-                    var PicGrdEme = item.PicGrdEme;
-                    var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdDpp == 0 )
-                        $("#RedTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor8 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor8 >= 0 && item.PicTgtEme > 0)
-                            $("#RedTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RedTitleSum").css({ "color": "red", "font-weight": "bold" });
-                    }
-                    PicScrTotSum = PicScrTotSum + item.PicScrEme;
-                    PicTotGradeSum = PicTotGradeSum + item.PicGrdEme;
-                    //----Safety Index
-                    $("#CasGrdSafSum").text(formatNumber(item.PicGrdSaf));
-                    $("#CasTgtSafSum").text(formatNumber(item.PicTgtSaf));
-                    TempGradeSafSum = item.PicGrdSaf;
-                    TempTargetSafSum = item.PicTgtSaf;
-                    PicTotGradeSum = PicTotGradeSum + item.PicGrdSaf;
 
+                    //---- FOH Non
+                    $("#CasGrdNonSum").text(formatNumber(item.PicGrdNon));
+                    $("#CasTgtNonSum").text(formatNumber(item.PicTgtNon));
+                    $("#CasActNonSum").text(formatNumber(item.PicActNon));
+                    $("#CasAchNonSum").text(formatNumber(item.PicAchNon.toFixed(2)));
+                    $("#CasScrNonSum").text(formatNumber(item.PicScrNon.toFixed(2)));
+                    var PicGrdNon = item.PicGrdNon;
+                    if (PicGrdNon == 0)
+                        $("#NonTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorNon = item.PicScrNon - item.PicGrdNon;
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                            $("#NonTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#NonTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrNon;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdNon;
+
+                    //---- Bad Casting
+                    $("#CasGrdBadSum").text(formatNumber(item.PicGrdBad));
+                    $("#CasTgtBadSum").text(formatNumber(item.PicTgtBad));
+                    $("#CasActBadSum").text(formatNumber(item.PicActBad));
+                    $("#CasAchBadSum").text(formatNumber(item.PicAchBad.toFixed(2)));
+                    $("#CasScrBadSum").text(formatNumber(item.PicScrBad.toFixed(2)));
+                    var PicGrdBad = item.PicGrdBad;
+                    if (PicGrdBad == 0)
+                        $("#BadTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorBad = item.PicScrBad - item.PicGrdBad;
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                            $("#BadTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrBad;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdBad;
+
+                    //---- Scrap
+                    $("#CasGrdScpSum").text(formatNumber(item.PicGrdScp));
+                    $("#CasTgtScpSum").text(formatNumber(item.PicTgtScp));
+                    $("#CasActScpSum").text(formatNumber(item.PicActScp));
+                    $("#CasAchScpSum").text(formatNumber(item.PicAchScp.toFixed(2)));
+                    $("#CasScrScpSum").text(formatNumber(item.PicScrScp.toFixed(2)));
+                    var PicGrdScp = item.PicGrdScp;
+                    if (PicGrdScp == 0)
+                        $("#ScpTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorScp = item.PicScrScp - item.PicGrdScp;
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                            $("#ScpTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ScpTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrScp;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdScp;
+
+                    //---- Alloy
+                    $("#CasGrdAlySum").text(formatNumber(item.PicGrdAly));
+                    $("#CasTgtAlySum").text(formatNumber(item.PicTgtAly));
+                    $("#CasActAlySum").text(formatNumber(item.PicActAly));
+                    $("#CasAchAlySum").text(formatNumber(item.PicAchAly.toFixed(2)));
+                    $("#CasScrAlySum").text(formatNumber(item.PicScrAly.toFixed(2)));
+                    var PicGrdAly = item.PicGrdAly;
+                    if (PicGrdAly == 0)
+                        $("#AlyTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorAly = item.PicScrAly - item.PicGrdAly;
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                            $("#AlyTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AlyTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrAly;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdAly;
+
+                    //---- Silica
+                    $("#CasGrdSilSum").text(formatNumber(item.PicGrdSil));
+                    $("#CasTgtSilSum").text(formatNumber(item.PicTgtSil));
+                    $("#CasActSilSum").text(formatNumber(item.PicActSil));
+                    $("#CasAchSilSum").text(formatNumber(item.PicAchSil.toFixed(2)));
+                    $("#CasScrSilSum").text(formatNumber(item.PicScrSil.toFixed(2)));
+                    var PicGrdSil = item.PicGrdSil;
+                    if (PicGrdSil == 0)
+                        $("#SilTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorSil = item.PicScrSil - item.PicGrdSil;
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                            $("#SilTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#SilTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrSil;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdSil;
+
+                    //---- Zircon Flour
+                    $("#CasGrdZifSum").text(formatNumber(item.PicGrdZif));
+                    $("#CasTgtZifSum").text(formatNumber(item.PicTgtZif));
+                    $("#CasActZifSum").text(formatNumber(item.PicActZif));
+                    $("#CasAchZifSum").text(formatNumber(item.PicAchZif.toFixed(2)));
+                    $("#CasScrZifSum").text(formatNumber(item.PicScrZif.toFixed(2)));
+                    var PicGrdZif = item.PicGrdZif;
+                    if (PicGrdZif == 0)
+                        $("#ZifTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZif = item.PicScrZif - item.PicGrdZif;
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                            $("#ZifTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZifTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrZif;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdZif;
+
+                    //---- Zircon Sads
+                    $("#CasGrdZisSum").text(formatNumber(item.PicGrdZis));
+                    $("#CasTgtZisSum").text(formatNumber(item.PicTgtZis));
+                    $("#CasActZisSum").text(formatNumber(item.PicActZis));
+                    $("#CasAchZisSum").text(formatNumber(item.PicAchZis.toFixed(2)));
+                    $("#CasScrZisSum").text(formatNumber(item.PicScrZis.toFixed(2)));
+                    var PicGrdZis = item.PicGrdZis;
+                    if (PicGrdZis == 0)
+                        $("#ZisTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorZis = item.PicScrZis - item.PicGrdZis;
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                            $("#ZisTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#ZisTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrZis;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdZis;
+
+                    //---- Mullite Flour
+                    $("#CasGrdMufSum").text(formatNumber(item.PicGrdMuf));
+                    $("#CasTgtMufSum").text(formatNumber(item.PicTgtMuf));
+                    $("#CasActMufSum").text(formatNumber(item.PicActMuf));
+                    $("#CasAchMufSum").text(formatNumber(item.PicAchMuf.toFixed(2)));
+                    $("#CasScrMufSum").text(formatNumber(item.PicScrMuf.toFixed(2)));
+                    var PicGrdMuf = item.PicGrdMuf;
+                    if (PicGrdMuf == 0)
+                        $("#MufTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                            $("#MufTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#MufTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrMuf;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdMuf;
+
+                    //---- Mullite Sands 30-80
+                    $("#CasGrdMu3Sum").text(formatNumber(item.PicGrdMu3));
+                    $("#CasTgtMu3Sum").text(formatNumber(item.PicTgtMu3));
+                    $("#CasActMu3Sum").text(formatNumber(item.PicActMu3));
+                    $("#CasAchMu3Sum").text(formatNumber(item.PicAchMu3.toFixed(2)));
+                    $("#CasScrMu3Sum").text(formatNumber(item.PicScrMu3.toFixed(2)));
+                    var PicGrdMu3 = item.PicGrdMu3;
+                    if (PicGrdMu3 == 0)
+                        $("#Mu3TitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                            $("#Mu3TitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu3TitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrMu3;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdMu3;
+
+                    //---- Mullite Sands 15-30
+                    $("#CasGrdMu1Sum").text(formatNumber(item.PicGrdMu1));
+                    $("#CasTgtMu1Sum").text(formatNumber(item.PicTgtMu1));
+                    $("#CasActMu1Sum").text(formatNumber(item.PicActMu1));
+                    $("#CasAchMu1Sum").text(formatNumber(item.PicAchMu1.toFixed(2)));
+                    $("#CasScrMu1Sum").text(formatNumber(item.PicScrMu1.toFixed(2)));
+                    var PicGrdMu1 = item.PicGrdMu1;
+                    if (PicGrdMu1 == 0)
+                        $("#Mu1TitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                            $("#Mu1TitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#Mu1TitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+                    PicScrTotSum = PicScrTotSum + item.PicScrMu1;
+                    PicTotGradeSum = PicTotGradeSum + item.PicGrdMu1;
+
+
+
+                    /*--------------total-----------------------*/
                     $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
                     $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
-
-                    var kpiHRD = {
-                        id: thn,
-                        bln: bln,
-                        ch: "Y"
-                    }
-                    $.ajax({
-                        url: urlKPI + "/CastingDept/",
-                        data: JSON.stringify(kpiHRD),
-                        contentType: "application/json;charset=utf-8",
-                        success: function (result) {
-                            $.each(result, function (key, item) {
-                                /*-- safety index -----------*/
-                                var MacActSaf = item.ibpActSafe;
-                                $("#CasActSafSum").text(formatNumber(MacActSaf.toFixed(2)));
-                                $("#CasAchSafSum").text(formatNumber(item.PicAchSaf.toFixed(2)));
-                                $("#CasScrSafSum").text(formatNumber(item.PicScrSaf.toFixed(2)));
-                                console.log(MacActSaf);
-                                if (TempGradeSafSum == 0)
-                                    $("#SafTitleSum").css({ "color": "black", "font-weight": "normal" });
-                                else {
-                                    if (MacActSaf == 0)
-                                        $("#SafTitleSum").css({ "color": "black", "font-weight": "bold" });
-                                    else $("#SafTitleSum").css({ "color": "red", "font-weight": "bold" });
-                                }
-                                PicScrTotSum = PicScrTotSum + item.PicScrSaf;
-
-                                /*--------------total-----------------------*/
-                                $("#PicScrTotSum").text(formatNumber(PicScrTotSum.toFixed(2)));
-                                $("#PicGrdTotSum").text(formatNumber(PicTotGradeSum.toFixed(2)));
-
-
-                            });
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        beforeSend: function () { $(".loader").show(); },
-                        complete: function () { $(".loader").hide(); },
-                        type: 'POST', dataType: 'json'
-                    });
-
                 });
             },
             error: function (errormessage) {

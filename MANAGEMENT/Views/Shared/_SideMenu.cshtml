@@ -14,35 +14,41 @@
            var author = Session["UserType"];
            <input type="hidden" class="form-control" id="authorid" placeholder="YYYY" value=@author />
         }
-        <ul class="list-unstyled components">
-            <li><center><h5>CORPORATE</h5></center></li>                       
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Department</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu">
-                        </ul>
-                </li>
-                <li>
-                    <a href="#masterSubmenu" data-toggle="collapse" aria-expanded="false">Master</a>
-                        <ul class="collapse list-unstyled" id="masterSubmenu">
-                        </ul>
-                </li>
-                <li>
-                    <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false">Report</a>
-                        <ul class="collapse list-unstyled" id="reportSubmenu"></ul>
-                </li>
-            <li>
-                <a href="#notulenSubmenu" data-toggle="collapse" aria-expanded="false">Notulen</a>
-                <ul class="collapse list-unstyled" id="notulenSubmenu"></ul>
-            </li>
-            <li>
-                <a href="#graphprodSubmenu" data-toggle="collapse" aria-expanded="false">Production Graph</a>
-                <ul class="collapse list-unstyled" id="graphprodSubmenu"></ul>
-            </li>
-            <li>
-                <a href="#surveySubmenu" data-toggle="collapse" aria-expanded="false">Survey</a>
-                <ul class="collapse list-unstyled" id="surveySubmenu"></ul>
-            </li>
-        </ul>
+           <ul class="list-unstyled components">
+               <li><center><h5>CORPORATE</h5></center></li>
+               <li class="active">
+                   <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Department</a>
+                   <ul class="collapse list-unstyled" id="homeSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#masterSubmenu" data-toggle="collapse" aria-expanded="false">Master</a>
+                   <ul class="collapse list-unstyled" id="masterSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false">Report</a>
+                   <ul class="collapse list-unstyled" id="reportSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#notulenSubmenu" data-toggle="collapse" aria-expanded="false">Notulen</a>
+                   <ul class="collapse list-unstyled" id="notulenSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#graphprodSubmenu" data-toggle="collapse" aria-expanded="false">Production Graph</a>
+                   <ul class="collapse list-unstyled" id="graphprodSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#surveySubmenu" data-toggle="collapse" aria-expanded="false">Survey</a>
+                   <ul class="collapse list-unstyled" id="surveySubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#fixedAssetSubmenu" data-toggle="collapse" aria-expanded="false">Fixed Asset</a>
+                   <ul class="collapse list-unstyled" id="fixedAssetSubmenu"></ul>
+               </li>
+               <li>
+                   <a href="#maintenanceFASubmenu" data-toggle="collapse" aria-expanded="false">Maintenance</a>
+                   <ul class="collapse list-unstyled" id="maintenanceFASubmenu"></ul>
+               </li>
+           </ul>
         <ul class="list-unstyled CTAs">
             @*<li>
                 <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
@@ -333,11 +339,27 @@
             $("#reportSubmenu").append('<li>@Html.ActionLink("FOH", "vFOHRpt", "Dashboard")</li>');
             $("#reportSubmenu").append('<li>@Html.ActionLink("Score TDTI", "vTDTIScore", "Wip")</li>');
             $("#reportSubmenu").append('<li>@Html.ActionLink("Finish Cost ABD", "vFinishCostABD", "Wip")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("Fixed Asset", "vAsset", "Dashboard")</li>');
+            $("#reportSubmenu").append('<li>@Html.ActionLink("List Fixed Asset", "vListAsset", "Dashboard")</li>');
 
             $("#graphprodSubmenu").append('<li>@Html.ActionLink("Production Graph", "vGraphPouring", "Dashboard")</li>');
 
             $("#surveySubmenu").append('<li>@Html.ActionLink("Report Survey Customer", "vRptSurvey", "Dashboard")</li>');
 
+
+            
+        }
+        if (userAu == "ACC") {
+            $("#fixedAssetSubmenu").append('<li>@Html.ActionLink("Mutasi Fixed Asset", "vAsset", "Dashboard")</li>');
+            $("#fixedAssetSubmenu").append('<li>@Html.ActionLink("List Fixed Asset", "vListAsset", "Dashboard")</li>');
+            
+
+        }
+        if (userAu == "MAI") {
+            $("#maintenanceFASubmenu").append('<li>@Html.ActionLink("Preventive Maintenance", "vPreventiveMaintenance", "Dashboard")</li>');
+            $("#maintenanceFASubmenu").append('<li>@Html.ActionLink("Corrective Maintenance", "vCurativeMaintenance", "Dashboard")</li>');
+            $("#maintenanceFASubmenu").append('<li>@Html.ActionLink("Report PM", "VCalendarColorPM", "Dashboard")</li>');
+            $("#maintenanceFASubmenu").append('<li>@Html.ActionLink("Report CM", "VCalendarColorCM", "Dashboard")</li>');
         }
     });
 

@@ -107,6 +107,9 @@ namespace MANAGEMENT.Models
         public int cusGrdDrm { get; set; }
         public decimal cusTgtDrm { get; set; }
         public decimal cusActDrm { get; set; }
+        public int cusGrdCsi { get; set; }
+        public decimal cusTgtCsi { get; set; }
+        public decimal cusActCsi { get; set; }
         public int cusGrdAir { get; set; }
         public decimal cusTgtAir { get; set; }
         public decimal cusActAir { get; set; }
@@ -260,6 +263,78 @@ namespace MANAGEMENT.Models
         public decimal PicActRjt { get; set; }
         public decimal PicAchRjt { get; set; }
         public decimal PicScrRjt { get; set; }
+
+        public decimal PicGrdNon { get; set; }
+        public decimal PicTgtNon { get; set; }
+        public decimal PicActNon { get; set; }
+        public decimal PicAchNon { get; set; }
+        public decimal PicScrNon { get; set; }
+
+        public decimal PicGrdBad { get; set; }
+        public decimal PicTgtBad { get; set; }
+        public decimal PicActBad { get; set; }
+        public decimal PicAchBad { get; set; }
+        public decimal PicScrBad { get; set; }
+
+        public decimal PicGrdScp { get; set; }
+        public decimal PicTgtScp { get; set; }
+        public decimal PicActScp { get; set; }
+        public decimal PicAchScp { get; set; }
+        public decimal PicScrScp { get; set; }
+
+        public decimal PicGrdAly { get; set; }
+        public decimal PicTgtAly { get; set; }
+        public decimal PicActAly { get; set; }
+        public decimal PicAchAly { get; set; }
+        public decimal PicScrAly { get; set; }
+
+        public decimal PicGrdSil { get; set; }
+        public decimal PicTgtSil { get; set; }
+        public decimal PicActSil { get; set; }
+        public decimal PicAchSil { get; set; }
+        public decimal PicScrSil { get; set; }
+
+        public decimal PicGrdZif { get; set; }
+        public decimal PicTgtZif { get; set; }
+        public decimal PicActZif { get; set; }
+        public decimal PicAchZif { get; set; }
+        public decimal PicScrZif { get; set; }
+
+        public decimal PicGrdZis { get; set; }
+        public decimal PicTgtZis { get; set; }
+        public decimal PicActZis { get; set; }
+        public decimal PicAchZis { get; set; }
+        public decimal PicScrZis { get; set; }
+
+        public decimal PicGrdMuf { get; set; }
+        public decimal PicTgtMuf { get; set; }
+        public decimal PicActMuf { get; set; }
+        public decimal PicAchMuf { get; set; }
+        public decimal PicScrMuf { get; set; }
+
+        public decimal PicGrdMu3 { get; set; }
+        public decimal PicTgtMu3 { get; set; }
+        public decimal PicActMu3 { get; set; }
+        public decimal PicAchMu3 { get; set; }
+        public decimal PicScrMu3 { get; set; }
+
+        public decimal PicGrdMu1 { get; set; }
+        public decimal PicTgtMu1 { get; set; }
+        public decimal PicActMu1 { get; set; }
+        public decimal PicAchMu1 { get; set; }
+        public decimal PicScrMu1 { get; set; }
+
+        public decimal MktGrdDrm { get; set; }
+        public decimal MktTgtDrm { get; set; }
+        public decimal MktActDrm { get; set; }
+        public decimal MktAchDrm { get; set; }
+        public decimal MktScrDrm { get; set; }
+
+        public decimal MktGrdAir { get; set; }
+        public decimal MktTgtAir { get; set; }
+        public decimal MktActAir { get; set; }
+        public decimal MktAchAir { get; set; }
+        public decimal MktScrAir { get; set; }
 
         public decimal TotGrade { get; set; }
         public decimal TotScore { get; set; }
@@ -697,6 +772,111 @@ namespace MANAGEMENT.Models
         public decimal beratpda { get; set; }
         public decimal cost { get; set; }
     }
+    public class PrevJOB
+    {
+        public int idDtl { get; set; }
+        public int idHdr { get; set; }
+        public string JobDesc { get; set; }
+        public int Cost { get; set; }
+        public string sts { get; set; }
+    }
 
-   
+    public class calendarColor
+    {
+
+        public int id { get; set; }
+        public string title { get; set; }
+        public string start { get; set; }
+        public string color { get; set; }
+
+    }
+
+    public class InfoPM
+    {
+        public int idHdr { get; set; }
+        public int idtAsset { get; set; }
+        public string cInvName { get; set; }
+        public string cAreaName { get; set; }
+        public string cUrut { get; set; }
+        public string tglPM { get; set; }
+        public string tglActualPM { get; set; }
+
+    }
+
+    public class InfoCM
+    {
+        public int idHdr { get; set; }
+        public int idtAsset { get; set; }
+        public string cInvName { get; set; }
+        public string cAreaName { get; set; }
+        public string userCM { get; set; }
+        public string cUrut { get; set; }
+        public string tglCM { get; set; }
+        public string cmno { get; set; }
+        public string tglFollowUp { get; set; }
+
+    }
+    public class PrevHdr
+    {
+        public int idHdr { get; set; }
+        public int idtAsset { get; set; }
+        public int count { get; set; }
+        public string tgl { get; set; }
+        public string tglActual { get; set; }
+        public byte status { get; set; }
+        public string sts { get; set; }
+    }
+
+    public class CuraDtl
+    {
+        public int idHdr { get; set; }
+        public int idDtl { get; set; }
+        public string Problem { get; set; }
+        public string FollowUp { get; set; }
+        public int Cost { get; set; }
+        public byte status { get; set; }
+        public string sts { get; set; }
+    }
+    public class CuraHdr
+    {
+        public int idHdr { get; set; }
+        public int idtAsset { get; set; }
+        public string cUrut { get; set; }        
+        public string cm { get; set; }
+        public string tgl { get; set; }
+        public string user { get; set; }
+        public string tglFollow { get; set; }
+        public byte status { get; set; }
+        public string sts { get; set; }
+    }
+    public class MMRFixedAsset
+    {
+        public int id { get; set; }
+        public string cketerangan { get; set; }
+        public string cMMRCOde { get; set; }
+        public string dMMRDate { get; set; }
+        public string cINVCOde { get; set; }
+        public string cInvTypeKode { get; set; }
+        public Int32 iQty { get; set; }
+        public string cDescription { get; set; }
+        public double ihargabelirp { get; set; }
+        public double Rate { get; set; }
+        public bool isMachine { get; set; }
+        public string cinvname { get; set; }
+        public string cArea { get; set; }
+        public string Area { get; set; }
+        public bool isDelete { get; set; }
+        public string dDelete { get; set; }
+        public string cBuktiDelete { get; set; }
+        public string cUrut { get; set; }
+
+    }
+
+    public class Area
+    {
+        public string cArea { get; set; }
+        public string cAreaName { get; set; }
+    }
+
+
 }

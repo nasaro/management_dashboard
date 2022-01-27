@@ -1,0 +1,1643 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="1">
+      <server Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>server</Alias>
+        <ConnectionStringEncrypted>+WCViUZLciH5CE2JYw01Kt5wcUjFTPOQ7Fr1hGost4+VasEpYln7nWFa0MloHGJm3zqzw00F+9V8BrmAYRjj541U2eNPXELFYRWlxE1c4T/VOGXrZ0wBgeIaofBhbHcqxNp3YE9KMc3DRFH05dDh</ConnectionStringEncrypted>
+        <Name>server</Name>
+      </server>
+    </Databases>
+    <DataSources isList="true" count="1">
+      <DataSource1 Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>DataSource1</Alias>
+        <Columns isList="true" count="25">
+          <value>cinvcode,System.String</value>
+          <value>cInvName,System.String</value>
+          <value>dMMRDate,System.String</value>
+          <value>iQty,System.Int32</value>
+          <value>iRate,System.Decimal</value>
+          <value>SAWAL_COST,System.Decimal</value>
+          <value>SAdd_Cost,System.Decimal</value>
+          <value>DeprByMonth,System.Decimal</value>
+          <value>Deprsummonth,System.Int32</value>
+          <value>DeprAccum,System.Decimal</value>
+          <value>ReplDeprAccum,System.Decimal</value>
+          <value>DeprUntilMonth,System.Decimal</value>
+          <value>fisDelete,System.Boolean</value>
+          <value>cinvgroup,System.String</value>
+          <value>cKeterangan,System.String</value>
+          <value>cUrut,System.String</value>
+          <value>Tgl,System.DateTime</value>
+          <value>stsDispose,System.Boolean</value>
+          <value>DisposeDeprAccum,System.Decimal</value>
+          <value>cArea,System.String</value>
+          <value>cAreaName,System.String</value>
+          <value>endsummonth,System.Int32</value>
+          <value>cekThn,System.Boolean</value>
+          <value>endmonth,System.Int32</value>
+          <value>endmonthValue,System.Decimal</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>DataSource1</Name>
+        <NameInSource>server</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>parA,,22,10</value>
+        </Parameters>
+        <SqlCommand>execute Extranet_sp_procedure @parA</SqlCommand>
+      </DataSource1>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="1">
+      <value>,Variable1,Variable1,System.String,,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="18">
+        <ReportTitleBand1 Ref="5" type="ReportTitleBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.2,16.99,0.9</ClientRectangle>
+          <Components isList="true" count="4">
+            <Text1 Ref="6" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.2,0.2,1.7,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,12,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>List Fixed Asset</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text1>
+            <Image1 Ref="7" type="Image" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,0.1,0.7,0.7</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Image>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</Image>
+              <Name>Image1</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+            </Image1>
+            <Text4 Ref="8" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,0.5,2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,12,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>{Variable1}</Text>
+              <TextBrush>Black</TextBrush>
+            </Text4>
+            <Text5 Ref="9" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.2,0.5,0.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,12,Bold</Font>
+              <Guid>5c5a69f4385f4da8b5f8e25f08831396</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Periode</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text5>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>ReportTitleBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </ReportTitleBand1>
+        <HeaderBand1 Ref="10" type="HeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,1.5,16.99,0.6</ClientRectangle>
+          <Components isList="true" count="40">
+            <Text9 Ref="11" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.6,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text9</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Saldo Awal</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text9>
+            <Text10 Ref="12" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.8,0,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>ebb2236e7528463582da6a857b2987c0</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Asset at cost</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+            <Text11 Ref="13" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>aec87100ed204d2fb39959a43acc93a3</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Pengurangan</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text11>
+            <Text13 Ref="14" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,0.2,2.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>be79b05751204c4eaf273cb06289acce</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Keterangan</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text13>
+            <Text14 Ref="15" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.3,0.2,0.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>99b4021e3cd342beb09155151f70bbd3</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text14</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>MMR Date</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text14>
+            <Text15 Ref="16" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.1,0.2,0.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>28b49ee0b43d4090b646ab70a05d47ed</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Rate</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text15>
+            <Text17 Ref="17" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.7,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>31bdf8cf34fc40418260891301023dc1</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Penambahan</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text17>
+            <Text18 Ref="18" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>8.9,0.2,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>f0671ca96e504c86b675006b278926c9</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Saldo Akhir</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text18>
+            <Text19 Ref="19" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.7,0,2.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>5cd60db0a0c14010b14c81da54400bb1</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Accumulated Depreciation</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+            <Text20 Ref="20" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.1,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>35c554397f4a4cad853a65abf533a01d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Saldo Awal</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text20>
+            <Text21 Ref="21" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>bff4fa2b08804ccc855d86a44d803a5b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text21</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Penambahan</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text21>
+            <Text22 Ref="22" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>12.3,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>8ca61daf30084802b32ec719889499b0</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text22</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Pengurangan</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text22>
+            <Text23 Ref="23" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>13.4,0.2,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>9d0d4ee10e3f454fbeea9bbcdee83351</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text23</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Saldo Akhir</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text23>
+            <Text24 Ref="24" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>14.5,0.2,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>4190692845034f41a9d7f19824bb9037</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text24</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Nilai Buku</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text24>
+            <Text26 Ref="25" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.5,0.2,0.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>5a102e369fc44ef29356fa3752280a64</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text26</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>No Urut</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text26>
+            <Text45 Ref="26" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>15.8,0,0.8,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>dff7eedb057c458ebe511191d4a4521b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text45</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Beban depresiasi bulanan</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
+              <Type>Expression</Type>
+            </Text45>
+            <HorizontalLinePrimitive1 Ref="27" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0.1,0.5,15.6,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="28" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Name>HorizontalLinePrimitive1</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <StartCap Ref="29" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive1>
+            <HorizontalLinePrimitive2 Ref="30" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0.1,0,15.6,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="31" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>fc14676332334440808a9ff387e44ae7</Guid>
+              <Name>HorizontalLinePrimitive2</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <StartCap Ref="32" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive2>
+            <StartPointPrimitive1 Ref="33" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>15.7,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive1</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>c4064ae1c5d54f89ba3c71d0d07aaa65</ReferenceToGuid>
+            </StartPointPrimitive1>
+            <EndPointPrimitive1 Ref="34" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>15.7,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive1</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>c4064ae1c5d54f89ba3c71d0d07aaa65</ReferenceToGuid>
+            </EndPointPrimitive1>
+            <StartPointPrimitive2 Ref="35" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>14.5,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive2</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>ccb952bf402c4b56997b6806732ff348</ReferenceToGuid>
+            </StartPointPrimitive2>
+            <EndPointPrimitive2 Ref="36" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>14.5,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive2</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>ccb952bf402c4b56997b6806732ff348</ReferenceToGuid>
+            </EndPointPrimitive2>
+            <StartPointPrimitive4 Ref="37" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>10.1,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive4</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>ec60a7cdc15d45e498467bd8f5c8435e</ReferenceToGuid>
+            </StartPointPrimitive4>
+            <EndPointPrimitive4 Ref="38" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>10.1,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive4</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>ec60a7cdc15d45e498467bd8f5c8435e</ReferenceToGuid>
+            </EndPointPrimitive4>
+            <StartPointPrimitive5 Ref="39" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>5.6,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive5</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>412256fcb04b48948b91c1d0e25a5c6e</ReferenceToGuid>
+            </StartPointPrimitive5>
+            <EndPointPrimitive5 Ref="40" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>5.6,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive5</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>412256fcb04b48948b91c1d0e25a5c6e</ReferenceToGuid>
+            </EndPointPrimitive5>
+            <StartPointPrimitive6 Ref="41" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>5.1,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive6</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>9e3f128fd22f4caa8db72ccec67de732</ReferenceToGuid>
+            </StartPointPrimitive6>
+            <EndPointPrimitive6 Ref="42" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>5.1,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive6</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>9e3f128fd22f4caa8db72ccec67de732</ReferenceToGuid>
+            </EndPointPrimitive6>
+            <StartPointPrimitive7 Ref="43" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>4.2,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive7</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>b4f71053c4d8416b83d4d68d22ab0894</ReferenceToGuid>
+            </StartPointPrimitive7>
+            <EndPointPrimitive7 Ref="44" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>4.2,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive7</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>b4f71053c4d8416b83d4d68d22ab0894</ReferenceToGuid>
+            </EndPointPrimitive7>
+            <StartPointPrimitive8 Ref="45" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>3.1,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive8</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>8dc73dea62684a8c8df3e9ef3567a25d</ReferenceToGuid>
+            </StartPointPrimitive8>
+            <StartPointPrimitive9 Ref="46" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>0.1,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive9</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>d8c1a22bb8a34c81bb9a2f007ea11a15</ReferenceToGuid>
+            </StartPointPrimitive9>
+            <EndPointPrimitive9 Ref="47" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>0.1,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive9</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>d8c1a22bb8a34c81bb9a2f007ea11a15</ReferenceToGuid>
+            </EndPointPrimitive9>
+            <StartPointPrimitive3 Ref="48" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>15.8,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive3</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>b266217ac8bf4a96b937d30e0bb2d133</ReferenceToGuid>
+            </StartPointPrimitive3>
+            <EndPointPrimitive3 Ref="49" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>15.8,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive3</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>b266217ac8bf4a96b937d30e0bb2d133</ReferenceToGuid>
+            </EndPointPrimitive3>
+            <StartPointPrimitive10 Ref="50" type="Stimulsoft.Report.Components.StiStartPointPrimitive" isKey="true">
+              <ClientRectangle>16.6,0,0,0</ClientRectangle>
+              <Name>StartPointPrimitive10</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>a431eab6310c49abace17051805616d5</ReferenceToGuid>
+            </StartPointPrimitive10>
+            <EndPointPrimitive10 Ref="51" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>16.6,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive10</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>a431eab6310c49abace17051805616d5</ReferenceToGuid>
+            </EndPointPrimitive10>
+            <HorizontalLinePrimitive4 Ref="52" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>15.8,0,0.8,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="53" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Name>HorizontalLinePrimitive4</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <StartCap Ref="54" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive4>
+            <HorizontalLinePrimitive5 Ref="55" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>15.8,0.5,0.8,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="56" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>aa7bcaea842b4d16b04e635098394815</Guid>
+              <Name>HorizontalLinePrimitive5</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <StartCap Ref="57" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive5>
+            <EndPointPrimitive8 Ref="58" type="Stimulsoft.Report.Components.StiEndPointPrimitive" isKey="true">
+              <ClientRectangle>3.1,0.5,0,0</ClientRectangle>
+              <Name>EndPointPrimitive8</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <ReferenceToGuid>8dc73dea62684a8c8df3e9ef3567a25d</ReferenceToGuid>
+            </EndPointPrimitive8>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>HeaderBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </HeaderBand1>
+        <GroupHeaderBand2 Ref="59" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.5,16.99,0.2</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text3 Ref="60" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0.1,0,3.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>9e696a321f684d4bab2bda118690211b</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="59" />
+              <Text>{DataSource1.cKeterangan}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
+              <Type>Expression</Type>
+            </Text3>
+          </Components>
+          <Condition>{DataSource1.cinvgroup}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeaderBand2</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupHeaderBand2>
+        <GroupHeaderBand1 Ref="61" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.1,16.99,0</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Condition>{DataSource1.cArea}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeaderBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupHeaderBand1>
+        <DataBand1 Ref="62" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,3.5,16.99,0</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>DataSource1</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>DataBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="2">
+            <value>ASC</value>
+            <value>cUrut</value>
+          </Sort>
+        </DataBand1>
+        <GroupFooterBand1 Ref="63" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.9,16.99,0.3</ClientRectangle>
+          <Components isList="true" count="12">
+            <Text12 Ref="64" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.6,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>820a4ff590d242a58b160fbcf489fcd1</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{SumRunning(GroupHeaderBand1,DataSource1.SAWAL_COST)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="65" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text12>
+            <Text34 Ref="66" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.7,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>fa3da86136434812953d308ed23a8a4e</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text34</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{SumRunning(GroupHeaderBand1,DataSource1.SAdd_Cost)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="67" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text34>
+            <Text35 Ref="68" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>2ca011db9e924c1eb2bb861020f61892</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text35</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{SumRunning(GroupHeaderBand1, IIF(DataSource1.stsDispose, IIF(DataSource1.SAWAL_COST==0, DataSource1.SAdd_Cost, DataSource1.SAWAL_COST), 0))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="69" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text35>
+            <Text36 Ref="70" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>8.9,0,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>d9c2ba16780e470c912c302aa3077f9b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text36</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{SumRunning(GroupHeaderBand1, IIF(DataSource1.stsDispose, 0, (DataSource1.SAWAL_COST+DataSource1.SAdd_Cost)))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="71" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text36>
+            <Text37 Ref="72" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.1,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>9767a58ecde247c0b88410827cf725ec</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text37</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{Format("{0:N0}", SumRunning(GroupHeaderBand1,IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.SAWAL_COST-DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.SAWAL_COST,DataSource1.ReplDeprAccum-DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="73" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text37>
+            <Text38 Ref="74" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>941686d2221941c28a69a7bdc18fca01</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text38</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{Format("{0:N0}", SumRunning(GroupHeaderBand1, IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="75" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text38>
+            <Text39 Ref="76" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>12.3,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>666cb3756aae4578887a89f120f54bb0</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text39</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand1, IIF(DataSource1.stsDispose, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.ReplDeprAccum, DataSource1.DeprAccum), 0)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="77" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text39>
+            <Text40 Ref="78" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>13.4,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>b53683cf997e4bd4909c0ec60719f262</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text40</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand1, IIF(DataSource1.stsDispose, 0, DataSource1.ReplDeprAccum)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="79" type="CurrencyFormat" isKey="true">
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text40>
+            <Text41 Ref="80" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.4,0,0.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>9be01b1e497346aaa8ac0730b4a4c29f</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text41</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text41>
+            <Text42 Ref="81" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>14.5,0,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>fdab3fc4feb84729a09ea1c98dc8263f</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text42</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand1 , IIF(DataSource1.stsDispose, 0, DataSource1.SAWAL_COST+DataSource1.SAdd_Cost-DataSource1.ReplDeprAccum) ))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="82" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text42>
+            <Text43 Ref="83" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>1.8,0,3.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text43</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{DataSource1.cArea +'-'+DataSource1.cAreaName}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
+              <Type>Expression</Type>
+            </Text43>
+            <Text46 Ref="84" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.7,0,0.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>16a42cd7a7764db39feaa363968041f4</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text46</Name>
+              <Page isRef="4" />
+              <Parent isRef="63" />
+              <Text>{SumRunning(GroupHeaderBand1,IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprByMonth))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="85" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text46>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>GroupFooterBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupFooterBand1>
+        <GroupFooterBand2 Ref="86" type="GroupFooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,4.6,16.99,0.5</ClientRectangle>
+          <Components isList="true" count="14">
+            <Text2 Ref="87" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>1.5,0.1,3.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>45ab1c57be4b433cbdaa9d43f08fa744</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{DataSource1.cKeterangan}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
+              <Type>Expression</Type>
+            </Text2>
+            <Text6 Ref="88" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.4,0.1,0.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>f472273329e14887a4b53a3c304dafd0</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text6>
+            <Text7 Ref="89" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.6,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>2451113f760b4ebe957e32d176066935</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{SumRunning(GroupHeaderBand2,DataSource1.SAWAL_COST)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="90" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text7>
+            <Text8 Ref="91" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.7,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>549346f0b1c84a0b97674e3c99dee3b6</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{SumRunning(GroupHeaderBand2,DataSource1.SAdd_Cost)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="92" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text8>
+            <Text16 Ref="93" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>0e1ff68ed780475e808b804a41056727</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{SumRunning(GroupHeaderBand2, IIF(DataSource1.stsDispose, IIF(DataSource1.SAWAL_COST==0, DataSource1.SAdd_Cost, DataSource1.SAWAL_COST), 0))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="94" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text16>
+            <Text25 Ref="95" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>8.9,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>8677d13f9f7844ba84f92f1369940451</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text25</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{SumRunning(GroupHeaderBand2, IIF(DataSource1.stsDispose, 0, (DataSource1.SAWAL_COST+DataSource1.SAdd_Cost)))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="96" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text25>
+            <Text27 Ref="97" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.1,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>a5b0d1a29ab24e57ad700c233450d37c</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text27</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{Format("{0:N0}", SumRunning(GroupHeaderBand2,IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.SAWAL_COST-DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.SAWAL_COST,DataSource1.ReplDeprAccum-DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="98" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text27>
+            <Text28 Ref="99" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>072e765cdaec486eb9d32fbd3af75518</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text28</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{Format("{0:N0}", SumRunning(GroupHeaderBand2, IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="100" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text28>
+            <Text29 Ref="101" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>12.3,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>6354de62c2ea4f5e97576c12c06fcfda</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text29</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand2, IIF(DataSource1.stsDispose, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.ReplDeprAccum, DataSource1.DeprAccum), 0)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="102" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text29>
+            <Text30 Ref="103" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>13.4,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>a85caec421f942be80525787646db943</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text30</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand2, IIF(DataSource1.stsDispose, 0, DataSource1.ReplDeprAccum)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="104" type="CurrencyFormat" isKey="true">
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text30>
+            <Text31 Ref="105" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>14.5,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>57a27402d7324ea6a9595aa0ad25d698</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text31</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{Format("{0:N0}",SumRunning(GroupHeaderBand2 , IIF(DataSource1.stsDispose, 0, DataSource1.SAWAL_COST+DataSource1.SAdd_Cost-DataSource1.ReplDeprAccum) ))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="106" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text31>
+            <Text32 Ref="107" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.7,0.1,0.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>6f159a08305d4f2097bc1ff1da34cdb9</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text32</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <Text>{SumRunning(GroupHeaderBand2,IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprByMonth))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="108" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text32>
+            <HorizontalLinePrimitive6 Ref="109" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0,0.4,16.6,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="110" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>c820318b6abc4a2382803a4bc44bea00</Guid>
+              <Name>HorizontalLinePrimitive6</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <StartCap Ref="111" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive6>
+            <HorizontalLinePrimitive3 Ref="112" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>5.5,0,11,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="113" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>1ff36edfd5a140038c695c73adc17005</Guid>
+              <Name>HorizontalLinePrimitive3</Name>
+              <Page isRef="4" />
+              <Parent isRef="86" />
+              <StartCap Ref="114" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive3>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>GroupFooterBand2</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupFooterBand2>
+        <ReportSummaryBand1 Ref="115" type="ReportSummaryBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,5.5,16.99,0.5</ClientRectangle>
+          <Components isList="true" count="14">
+            <Text44 Ref="116" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.6,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>ea52ace0a1ae43329639459c38d4618b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text44</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{SumRunning(DataSource1.SAWAL_COST)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="117" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text44>
+            <Text47 Ref="118" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.8,0.1,1.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>2c41fc07d32441faad719c6fe24ffea3</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text47</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>TOTAL</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text47>
+            <Text48 Ref="119" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.7,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>e16637a285094ae190eb2632590ddf12</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text48</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{SumRunning(DataSource1.SAdd_Cost)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="120" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text48>
+            <Text49 Ref="121" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>6c49126d0e3443ec83bfe505d173eb9c</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text49</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{SumRunning(IIF(DataSource1.stsDispose, IIF(DataSource1.SAWAL_COST==0, DataSource1.SAdd_Cost, DataSource1.SAWAL_COST), 0))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="122" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text49>
+            <Text50 Ref="123" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>8.9,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>c748ea529de742d88c3335d3f07cc348</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text50</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{SumRunning(IIF(DataSource1.stsDispose, 0, (DataSource1.SAWAL_COST+DataSource1.SAdd_Cost)))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="124" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text50>
+            <Text51 Ref="125" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.1,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>97f65fc97f524887a6eda4e6826a5f19</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text51</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{Format("{0:N0}", SumRunning(IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.SAWAL_COST-DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.SAWAL_COST,DataSource1.ReplDeprAccum-DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="126" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text51>
+            <Text52 Ref="127" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>1a703aef39b54939aec724124b288f88</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text52</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{Format("{0:N0}", SumRunning(IIF(DataSource1.cekThn &amp;&amp; (DataSource1.Deprsummonth&gt;=DataSource1.endsummonth) &amp;&amp; (DataSource1.endmonth&lt;12), DataSource1.endmonthValue, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprUntilMonth))))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="128" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text52>
+            <Text53 Ref="129" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>12.3,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>ba907712bd8f48729e68a44779cf1686</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text53</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{Format("{0:N0}",SumRunning(IIF(DataSource1.stsDispose, IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, DataSource1.ReplDeprAccum, DataSource1.DeprAccum), 0)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="130" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text53>
+            <Text54 Ref="131" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>13.4,0.1,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>65636b57062b4d1f863f271cd71a204d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text54</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{Format("{0:N0}",SumRunning(IIF(DataSource1.stsDispose, 0, DataSource1.ReplDeprAccum)))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="132" type="CurrencyFormat" isKey="true">
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text54>
+            <Text55 Ref="133" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>14.5,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>5c5bffaf18a543329f1cb25b4ca8281f</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text55</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{Format("{0:N0}",SumRunning(IIF(DataSource1.stsDispose, 0, DataSource1.SAWAL_COST+DataSource1.SAdd_Cost-DataSource1.ReplDeprAccum) ))}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="134" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text55>
+            <Text56 Ref="135" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.7,0.1,0.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>b6281d55fab24dd5ad33c5c98801f518</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text56</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>{SumRunning(IIF(DataSource1.DeprAccum&gt;DataSource1.ReplDeprAccum, 0, DataSource1.DeprByMonth))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="136" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text56>
+            <Text33 Ref="137" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.4,0.1,0.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>4b1027c94d1e455bb984094deae3d911</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text33</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text33>
+            <HorizontalLinePrimitive7 Ref="138" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0,0,16.6,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="139" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>544fecf0ded145a0aad90f581a35c0bc</Guid>
+              <Name>HorizontalLinePrimitive7</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <StartCap Ref="140" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive7>
+            <HorizontalLinePrimitive8 Ref="141" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0,0.4,16.6,0.01</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="142" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Guid>a472f3bb112c4094921e2ea143cf546f</Guid>
+              <Name>HorizontalLinePrimitive8</Name>
+              <Page isRef="4" />
+              <Parent isRef="115" />
+              <StartCap Ref="143" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive8>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>ReportSummaryBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </ReportSummaryBand1>
+        <VerticalLinePrimitive1 Ref="144" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>15.7,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="145" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>c4064ae1c5d54f89ba3c71d0d07aaa65</Guid>
+          <Name>VerticalLinePrimitive1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="146" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive1>
+        <VerticalLinePrimitive2 Ref="147" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>14.5,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="148" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>ccb952bf402c4b56997b6806732ff348</Guid>
+          <Name>VerticalLinePrimitive2</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="149" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive2>
+        <VerticalLinePrimitive4 Ref="150" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>10.1,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="151" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>ec60a7cdc15d45e498467bd8f5c8435e</Guid>
+          <Name>VerticalLinePrimitive4</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="152" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive4>
+        <VerticalLinePrimitive5 Ref="153" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>5.6,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="154" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>412256fcb04b48948b91c1d0e25a5c6e</Guid>
+          <Name>VerticalLinePrimitive5</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="155" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive5>
+        <VerticalLinePrimitive6 Ref="156" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>5.1,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="157" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>9e3f128fd22f4caa8db72ccec67de732</Guid>
+          <Name>VerticalLinePrimitive6</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="158" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive6>
+        <VerticalLinePrimitive7 Ref="159" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>4.2,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="160" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>b4f71053c4d8416b83d4d68d22ab0894</Guid>
+          <Name>VerticalLinePrimitive7</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="161" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive7>
+        <VerticalLinePrimitive8 Ref="162" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>3.1,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="163" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>8dc73dea62684a8c8df3e9ef3567a25d</Guid>
+          <Name>VerticalLinePrimitive8</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="164" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive8>
+        <VerticalLinePrimitive9 Ref="165" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>0.1,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="166" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>d8c1a22bb8a34c81bb9a2f007ea11a15</Guid>
+          <Name>VerticalLinePrimitive9</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="167" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive9>
+        <VerticalLinePrimitive3 Ref="168" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>15.8,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="169" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>b266217ac8bf4a96b937d30e0bb2d133</Guid>
+          <Name>VerticalLinePrimitive3</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="170" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive3>
+        <VerticalLinePrimitive10 Ref="171" type="VerticalLinePrimitive" isKey="true">
+          <ClientRectangle>16.6,1.5,0.01,0.5</ClientRectangle>
+          <Color>Black</Color>
+          <EndCap Ref="172" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </EndCap>
+          <Guid>a431eab6310c49abace17051805616d5</Guid>
+          <Name>VerticalLinePrimitive10</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <StartCap Ref="173" type="Cap" isKey="true">
+            <Color>Black</Color>
+          </StartCap>
+        </VerticalLinePrimitive10>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>c15703ff258b4f88803c1a65c693217e</Guid>
+      <Margins>0.01,0.01,0.39,0.39</Margins>
+      <Name>Page1</Name>
+      <Orientation>Landscape</Orientation>
+      <PageHeight>11.69</PageHeight>
+      <PageWidth>17.01</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="174" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="175" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>10/11/2021 5:03:13 PM</ReportChanged>
+  <ReportCreated>5/20/2019 10:49:51 AM</ReportCreated>
+  <ReportFile>D:\ASP MVC\MANAGEMENT\MANAGEMENT\Report\AssetRekap.mrt</ReportFile>
+  <ReportGuid>1fa099f0a06744c6877fb9a4c6cbc0ae</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2014.1.1900</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

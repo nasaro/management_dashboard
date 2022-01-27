@@ -1,0 +1,628 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .container {
+        overflow: scroll;
+        height: 700px;
+        background-color: #eee;
+    }
+
+    .hidethis {
+        display: none;
+    }
+
+    /* chekbox=> bootsnipp.com/snippets/oPgeG */
+    .checkbox label:after,
+    .radio label:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    .checkbox .cr,
+    .radio .cr {
+        position: relative;
+        display: inline-block;
+        border: 1px solid #a9a9a9;
+        border-radius: .25em;
+        width: 1.3em;
+        height: 1.3em;
+        float: left;
+        margin-right: .5em;
+    }
+
+    .radio .cr {
+        border-radius: 50%;
+    }
+
+    .checkbox .cr .cr-icon,
+    .radio .cr .cr-icon {
+        position: absolute;
+        font-size: .8em;
+        line-height: 0;
+        top: 50%;
+        left: 20%;
+    }
+
+    .radio .cr .cr-icon {
+        margin-left: 0.04em;
+    }
+
+    .checkbox label input[type="checkbox"],
+    .radio label input[type="radio"] {
+        display: none;
+    }
+
+    .checkbox label input[type="checkbox"] + .cr > .cr-icon,
+    .radio label input[type="radio"] + .cr > .cr-icon {
+        transform: scale(3) rotateZ(-20deg);
+        opacity: 0;
+        transition: all .3s ease-in;
+    }
+
+    .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+    .radio label input[type="radio"]:checked + .cr > .cr-icon {
+        transform: scale(1) rotateZ(0deg);
+        opacity: 1;
+    }
+
+    .checkbox label input[type="checkbox"]:disabled + .cr,
+    .radio label input[type="radio"]:disabled + .cr {
+        opacity: .5;
+    }
+
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Mutasi Fixed Asset</h2>
+            @*<div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-lg btn-block" onclick="addCost();">Add New Fixed Asset</button>
+                </div>
+            </div>*@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Periode</label>
+                        <div class="btn-group btn-group-sm">
+                            <div class="input-group date datetimepicker">
+                                <input type="text" class="form-control" id="prd" placeholder="DD-YYYY" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success btn-sm" onclick="getLoad()">View</button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info btn-sm" id="manual" onclick="manualAsset();">Input manual</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" id="generated">Generated</button>
+                </div>
+                <div class="col-md-2">
+
+                    <div class="checkbox pull-right">
+                        <label style="font-size: 2em">
+                            <input type="checkbox" id="cbox">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            All
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <br />
+            <div id="utamaTable">
+                <table id="tblCost" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th>Keterangan</th>
+                            <th>MMRCode</th>
+                            <th>MMRDate</th>
+                            <th>InvCode</th>
+                            <th>InvName</th>
+                            <th>Desc</th>
+                            <th>InvTypeCode</th>
+                            <th>Qty</th>
+                            <th>HargaBeli</th>
+                            <th class="hidethis">Hargadasar</th>
+                            <th>Akuisisi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblCost"></tbody>
+                </table>
+            </div>
+        </div> <!--Form utama-->
+        <hr>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Tambah Akuisisi</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="tglmmr">dMMRDate</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" readonly="readonly" class="form-control" id="tglmmr" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="invcode">INVCOde</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" readonly="readonly" class="form-control" id="invcode" />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" readonly="readonly" class="form-control" id="invname" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="qty">iQty</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="number" readonly="readonly" class="form-control" id="qty" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="hrgbeli">ihargabelirp</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="hidden" class="form-control" id="hrgbeli" />
+                                        <input type="hidden" class="form-control" id="typecode" />
+                                        <input type="text" readonly="readonly" class="form-control" id="hrgbeliview" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="ratetype">Rate</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="ratetype">
+                                            <option value="0.05">0.05</option>
+                                            <option value="0.13">0.125</option>
+                                            <option value="0.25">0.25</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label for="mchtype">Is Machine</label>
+                                    </div>
+                                    <label class="col-sm-2 checkbox-inline">
+                                        <input id="mchtype" type="checkbox">No
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAdd" onclick="crudAsset();">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitBtn();">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="myModalAsset" tabindex="-1" role="dialog" aria-labelledby="myModalAssetLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalAssetLabel">Tambah Akuisisi</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="tglasset">Date</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" id="tglasset" placeholder="Date"></>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="invnameasset">Nama Asset</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="invnameasset" placeholder="Nama Asset" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="hrgasset">Harga Asset</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="hrgasset" placeholder="Harga Asset" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="ratetypeasset">Rate</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="ratetypeasset">
+                                            <option value="0">0</option>
+                                            <option value="0.05">0.05</option>
+                                            <option value="0.13">0.125</option>
+                                            <option value="0.25">0.25</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="cmbgroup">Group</label>
+                                    </div>
+                                    <label class="col-sm-9">
+                                        <select class="form-control" name="cmbgroup" id="cmbgroup"></select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="cmbgroup">Area</label>
+                                    </div>
+                                    <label class="col-sm-9">
+                                        <select class="form-control" id="cmbarea"></select>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAddNew" onclick="NewManualAsset();">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitBtnNew();">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+    </section>
+
+</body>
+
+
+
+<script>
+    var urlKPI = "@Url.Content("~/Wip")";
+    $(document).ready(function () {
+        
+        $('#prd').datetimepicker({
+            useCurrent: false,
+            format: "MM-YYYY",
+        });
+
+        $('#tglasset').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        loadGroup();
+        loadArea();
+        $(".loader").hide(); 
+
+        var myContainer = $('.container')
+
+        $(myContainer).on('click', 'a', function () {
+            var scrollTo = $(this);
+            myContainer.animate({
+                scrollTop: scrollTo.offset().top - myContainer.offset().top + myContainer.scrollTop()
+            });
+        })
+       
+    });
+
+    function manualAsset() {
+        $("#myModalAsset").modal({ show: true, backdrop: false })       
+    }
+
+    function loadArea() {
+        $.ajax({
+            url: urlKPI + "/ViewArea",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<option value=' + item.cArea.trim() + '>' + item.cAreaName + '</option>';
+                });
+                $('#cmbarea').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function loadGroup() {
+        $.ajax({
+            url: urlKPI + "/ViewGroup",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<option value=' + item.cArea.trim() + '>' + item.cAreaName + '</option>';
+                });
+                $('#cmbgroup').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    $('#cbox').click(function () {
+        var $table = $('#tblCost'); // table selector 
+        var $tdCheckbox = $table.find('tbody input:checkbox'); // checboxes inside table body
+        var $tdCheckboxChecked = []; // checked checbox arr        });
+        $("#cbox").is(':checked') ? $tdCheckbox.prop('checked', true) : $tdCheckbox.prop('checked', false);
+    });
+
+
+    $('#generated').click(function () {
+        var harga, qty = 0;
+        var tgl, code, typecode, name = '';
+        $("#utamaTable input[name='checkasset']:checked").each(function () {
+            var data = $(this).parents('tr:eq(0)');
+            harga = $(data).find('td:eq(9)').text();
+            qty = $(data).find('td:eq(7)').text();
+            tgl = $(data).find('td:eq(2)').text();
+            code = $(data).find('td:eq(3)').text();          
+            typecode = $(data).find('td:eq(6)').text();
+            console.log(harga + '-' + qty + '-'+tgl+'-'+code+'-'+typecode);            
+            crudAsset(tgl, code, typecode, qty, harga);
+        });
+        alert("Generated Success");
+    });    
+
+   
+    function getLoad() {
+        var tr;
+        $('#tblCost').DataTable().destroy();
+        $('#tbodytblCost').empty();
+        var kpiOBJ = {
+            prd: $('#prd').val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/viewMMRAsset/",
+            data: JSON.stringify(kpiOBJ),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + item.cketerangan + "</td>");
+                    tr.append("<td>" + item.cMMRCOde + "</td>");
+                    tr.append("<td>" + item.dMMRDate + "</td>");
+                    tr.append("<td>" + item.cINVCOde + "</td>");
+                    tr.append("<td>" + item.cinvname + "</td>");
+                    tr.append("<td>" + item.cDescription + "</td>");
+                    tr.append("<td>" + item.cInvTypeKode + "</td>");
+                    tr.append("<td align='right'>" + item.iQty + "</td>");
+                    tr.append("<td align='right'>" + formatNumber(item.ihargabelirp) + "</td>");
+                    tr.append("<td class='hidethis'>" + item.ihargabelirp + "</td>");
+                    //tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Akuisisi"   onclick="addCost(' + item.ihargabelirp + ',' + item.iQty + ',\'' + item.dMMRDate + '\',\'' + item.cINVCOde + '\',\'' + item.cInvTypeKode + '\',\'' +item.cinvname.replace(/"/g, ' inch') + '\');"><span class="glyphicon glyphicon-plus" style="color:red"></span></a></td>');
+                    tr.append('<td><input type="checkbox" id="checkasset" name="checkasset" ></td>');
+                    tr.append('<div class="checkbox"' > +
+                        '<label><input type="checkbox"><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Checked</label></div>');
+                    $('#tbodytblCost').append(tr);
+                });
+                $('#tblCost').DataTable(
+                    {
+                        "bPaginate": false
+                    }
+
+                ).draw();
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'POST', dataType: 'json'
+        });
+    }
+
+    
+
+    function addCost(hrg, qty, tgl, code, typecode, name) {
+       
+        $("#myModal").modal({ show: true, backdrop: false })    
+        $("#tglmmr").val(tgl);
+        $("#invcode").val(code);
+        $("#qty").val(qty);
+        $("#hrgbeli").val(hrg);
+        $("#typecode").val(typecode);
+        
+         
+        $("#hrgbeliview").val(formatNumber(hrg));        
+        $("#invname").val(name);
+        
+      
+    }
+
+
+    function NewManualAsset() {
+        var assetobj = {
+            dMMRDate: $('#tglasset').val(),
+            cINVCOde:  $('#invnameasset').val(),
+            cInvTypeKode: $('#cmbgroup').val(),
+            Rate: $('#ratetypeasset').val(),
+            ihargabelirp: $('#hrgasset').val(),
+            cArea: $('#cmbarea').val(),
+            cDescription: $("select[name='cmbgroup'] option:selected").text()
+
+        };
+
+        if ($('#tglasset').val() !== '' && $('#invnameasset').val() !== '' && $('#hrgasset').val() !== '') {
+            $.ajax({
+                url: urlKPI + "/insManualAsset",
+                data: JSON.stringify(assetobj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                beforeSend: function () { $(".loader").show(); },
+                complete: function () { $(".loader").hide();; },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result > 0) {
+                        BootstrapAlert.success({
+                            title: "Message",
+                            message: "Asset telah ditambahkan.."
+                        });
+
+                        $("#btnAddNew").prop("disabled", true);
+                    } else {
+                        BootstrapAlert.alert({
+                            title: "Message",
+                            message: "Gagal saat menambahkan asset.."
+                        });
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        } else {
+            BootstrapAlert.alert({
+                title: "Message ",
+                message: "Lengkapi isian asset.."
+            });
+
+        }
+
+    }
+
+
+    function crudAsset(tgl, code, typecode, qty, harga) {
+        var assetobj = {
+            dMMRDate: tgl,
+            cINVCOde: code,
+            cInvTypeKode: typecode,
+            iQty: qty,
+            ihargabelirp: harga
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/insMMRAsset",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result>0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Asset telah ditambahkan.."
+                    });
+                    
+                    $("#btnAdd").prop("disabled", true);
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan asset.."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function exitBtn() {
+        $("#btnAdd").prop("disabled", false);
+    }
+    function exitBtnNew() {
+        $("#btnAddNew").prop("disabled", false);
+    }
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+   
+</script>

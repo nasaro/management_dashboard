@@ -1,0 +1,732 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+
+    .container {
+        overflow: scroll;
+        height: 700px;
+        background-color: #eee;
+    }
+
+    .hidethis {
+        display: none;
+    }
+</style>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizonta">
+            <h2>Corrective Maintenance</h2>
+            <input type="hidden" class="form-control" id="idHdrGlobal" />
+            <input type="hidden" class="form-control" id="idDtlGlobal" />
+            <input type="hidden" class="form-control" id="idAsetGlobal" />
+            <input type="hidden" class="form-control" id="infoGlobal" />
+            <div id="mainActiva">
+                <table id="tblactiva" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">ID</th>
+                            <th style="width:15%">InvCode</th>
+                            <th style="width:45%">InvName</th>
+                            <th class='hidethis'>cArea</th>
+                            <th style="width:20%">Area</th>
+                            <th style="width:10%">cUrut</th>
+                            <th style="width:20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblactiva"></tbody>
+                </table>
+            </div>
+            <div id="layarCM">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-info btn-sm" onclick="addCM()">Add CM</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="backCM()">Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label class="control-label">Inventory</label>
+                    </div>
+                    <div class="col-md-11">
+                        <input type="text" class="form-control" id="infoprd" readonly />
+                    </div>
+                </div>
+                <br />
+                <table id="tblcm" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">ID</th>
+                            <th style="width:15%">CM#</th>
+                            <th style="width:15%">CM Issued Date</th>
+                            <th style="width:20%">Request By User</th>
+                            <th style="display:none">ID ASSET</th>
+                            <th style="width:20%">No. Aset</th>
+                            <th style="width:15%">Tgl Follow Up</th>
+                            <th style="width:15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblcm"></tbody>
+                </table>
+            </div>
+            @*sedang di buat*@
+            <div id="layarDetailCM">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-info btn-sm" onclick="addDetail()">Add Detail CM</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="backDetail()">Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="control-label">CM Issued Date</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" id="infotglDtl" readonly />
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="infoprdDtl" readonly />
+                    </div>
+                </div>
+                <br />
+                <table id="tbldetailcm" class="table table-bordered  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="display:none">ID Dtl</th>
+                            <th style="display:none">ID Hdr</th>
+                            <th style="width:40%">Problem</th>
+                            <th style="width:40%">Follow Up</th>
+                            <th style="width:15%">Cost</th>
+                            <th style="width:5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytbldetailcm"></tbody>
+                </table>
+            </div>
+
+        </div>
+        <hr>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+
+        <div class="modal fade" id="myMainCM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Add Corrective Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Inventory</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label id="lblinfo"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tgl">Tgl CM</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group date datetimepicker">
+                                        <input type="text" class="form-control" id="tgl" placeholder="Tanggal CM"></>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Request by user</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="usercm" maxlength="100" style="resize:none;" placeholder="Request by user"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveMain">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitMain();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myUpdateCM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Edit Corrective Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Inventory</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label id="lblinfoUpdate"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>CM#</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label id="lblcm"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="tgl">Tgl CM</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly="readonly" class="form-control" id="editTgl" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Request by user</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="editusercm" maxlength="100" style="resize:none;" placeholder="Request by user"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateMain">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitEditmain();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myDetailCM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Add detail Corrective Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Inventory</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label id="lblinfodetail"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Problem</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="problemcm" maxlength="100" style="resize:none;" placeholder="Problem"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Follow Up</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control"  readonly id="followupcm" maxlength="100" style="resize:none;" placeholder="Follow Up"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Cost</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" placeholder="Entry Cost" id="Costcm" readonly />
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveDetailCM">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitDetailCM();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myUpdateDetailCM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Edit Detail Corrective Maintenance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Inventory</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <label id="editlblinfodetail"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Problem</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="editproblemcm" readonly maxlength="100" style="resize:none;" placeholder="Problem"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Follow Up</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control" id="editfollowupcm" maxlength="100" style="resize:none;" placeholder="Follow Up"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Cost</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" placeholder="Entry Cost" id="editCost" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateDetailCM">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitUpdateDetailCM();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</body>
+<script>
+    var urlKPI = "@Url.Content("~/Wip")";
+    $(document).ready(function () {
+        $(".loader").hide();
+        $('#mainActiva').show();
+        $('#layarCM').hide();
+        $('#layarDetailCM').hide();
+
+        $('#tgl').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        getLoad();
+
+        var myContainer = $('.container')
+
+        $(myContainer).on('click', 'a', function () {
+            var scrollTo = $(this);
+            myContainer.animate({
+                scrollTop: scrollTo.offset().top - myContainer.offset().top + myContainer.scrollTop()
+            });
+        })
+
+    });
+
+    function getLoad() {
+        var tr;
+        $('#tblactiva').DataTable().destroy();
+        $('#tbodytblactiva').empty();
+
+        $.ajax({
+            url: urlKPI + "/viewCurativeMaintenance/",
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td style='display: none'>" + item.id + "</td>");
+                    tr.append("<td>" + item.cINVCOde + "</td>");
+                    tr.append("<td>" + item.cinvname + "</td>");
+                    tr.append("<td class='hidethis'>" + item.cArea + "</td>");
+                    tr.append("<td>" + item.Area + "</td>");
+                    tr.append("<td>" + item.cUrut + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="View CM"   onclick="viewCM(' + item.id + ',\'' + item.cinvname +  ' - ' + myTrim(item.Area) + ' - ' + item.cUrut + '\',\'' + item.cinvname + '\');"><span class="glyphicon glyphicon-list-alt text-center" style="color:red"></span></a>  </td>');
+                    $('#tbodytblactiva').append(tr);
+                });
+                $('#tblactiva').DataTable().draw();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            type: 'GET', dataType: 'json'
+        });
+
+    }
+
+    function viewCM(id, code, name) {
+        $("#idAsetGlobal").val(id);
+        $("#infoglobal").val(code);
+        $("#infoprd").val(code);        
+        $('#mainActiva').hide();
+        $('#layarCM').show(); 
+        getCM();        
+    }
+
+    function backCM() {
+        $('#mainActiva').show();
+        $('#layarCM').hide(); 
+    }
+
+    function exitMain() {       
+        $("#saveMain").prop("disabled", false);
+    }
+    function exitEditmain() {
+        $("#updateMain").prop("disabled", false);
+    }
+    function exitDetailCM() {
+        $("#saveDetailCM").prop("disabled", false);
+    }
+    
+    function exitUpdateDetailCM() {
+        $("#updateDetailCM").prop("disabled", false);
+    }
+
+    function getCM() {
+        var tr;
+        $('#tblcm').DataTable().destroy();
+        $('#tbodytblcm').empty();
+        var assetobj = {
+            id: $("#idAsetGlobal").val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/ViewCM/",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td style='display: none'>" + item.idHdr + "</td>");
+                    tr.append("<td>" + item.cm + "</td>");
+                    tr.append("<td>" + item.tgl + "</td>");
+                    tr.append("<td>" + item.user + "</td>");
+                    tr.append("<td style='display: none'>" + item.idtAsset + "</td>");
+                    tr.append("<td>" + item.cUrut + "</td>");
+                    tr.append("<td>" + item.tglFollow + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit CM"   onclick="editCM(' + item.idHdr + ',\'' + item.cm + '\',\'' + item.tgl + '\',\'' + item.user.replace("\n", "\\n") + '\');"><span class="glyphicon glyphicon-pencil text-center" style="color:red"></span></a> <a href="javascript:void(0);"  data-toggle="tooltip" title="View Detail"   onclick="viewDetailCM(' + item.idHdr + ',\'' + item.tgl  + '\');"><span class="glyphicon glyphicon-list-alt text-center" style="color:red"></span></a>  </td>');
+                    $('#tbodytblcm').append(tr);
+                });
+                $('#tblcm').DataTable().draw();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+        });
+
+    }
+
+    function addDetail() {        
+        var lblinfo = $("#infoprd").val();
+        $("#myDetailCM").modal({ show: true, backdrop: false });
+        $("#lblinfodetail").text(lblinfo);
+        $("#idInfoGlobal").val(lblinfo);
+
+    }
+
+    function editCMDetail(id, hdr, cost, problem, follow) {
+        var lblinfo = $("#infoprd").val();
+        $("#myUpdateDetailCM").modal({ show: true, backdrop: false });
+        $("#editlblinfodetail").text(lblinfo);
+        $("#idInfoGlobal").val(lblinfo);
+        $("#idDtlGlobal").val(id);
+        $("#idHdrglobal").val(hdr);
+        $("#editproblemcm").val(problem);
+        $("#editfollowupcm").val(follow);
+        $("#editCost").val(cost);
+
+    }
+
+    function addCM() {
+        var lblinfo = $("#infoprd").val();
+        $("#myMainCM").modal({ show: true, backdrop: false });
+        $("#lblinfo").text(lblinfo);
+        $("#infoGlobal").val(lblinfo);
+        
+    }
+
+    function editCM(id, cm, tgl, user) {
+        $("#idHdrGlobal").val(id);
+        $("#editTgl").val(tgl);
+        $("#editusercm").val(user);        
+        $("#lblcm").text(cm);
+        var lblinfo = $("#infoprd").val();
+        $("#myUpdateCM").modal({ show: true, backdrop: false });
+        $("#lblinfoUpdate").text(lblinfo);
+        $("#idHdrGlobal").val(lblinfo);
+
+    }
+
+    function viewDetailCM(idHdr, tgl) {
+        var lblinfo = $("#infoprd").val();
+        $('#layarCM').hide();
+        $('#layarDetailCM').show();
+        $("#idHdrGlobal").val(idHdr);
+        $("#infotglDtl").val(tgl);        
+        $("#infoprdDtl").val(lblinfo);        
+        getCMDetail();
+    }
+    
+    function backDetail() {
+        $('#layarCM').show();
+        $('#layarDetailCM').hide();
+    }
+
+    $('#saveMain').click(function () {
+        var assetobj = {
+            tgl: $('#tgl').val(),
+            user: $('#usercm').val(),
+            idtAsset: $('#idAsetGlobal').val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/insCM",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "CM telah ditambahkan.."
+                    });
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan CM.."
+                    });
+                }
+                getCM();
+                $("#saveMain").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    $('#updateMain').click(function () {
+        var assetobj = {
+            idHdr: $('#idHdrGlobal').val(),
+            user: $('#editusercm').val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/updateCM",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "CM telah diupdate.."
+                    });
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat update CM.."
+                    });
+                }
+                getCM();
+                $("#updateMain").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+    
+    function getCMDetail() {
+        var tr;
+        $('#tbldetailcm').DataTable().destroy();
+        $('#tbodytbldetailcm').empty();
+        var assetobj = {
+            idHdr: $("#idHdrGlobal").val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/ViewCMDetail/",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            success: function (result) {
+                $.each(result, function (key, item) {
+                    tr = $('<tr/>');
+                    tr.append("<td style='display: none'>" + item.idDtl + "</td>");
+                    tr.append("<td style='display: none'>" + item.idHdr + "</td>");
+                    tr.append("<td>" + item.Problem + "</td>");
+                    tr.append("<td>" + item.FollowUp + "</td>");
+                    tr.append("<td>" + formatNumber(item.Cost) + "</td>");
+                    tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Edit Detail"   onclick="editCMDetail(' + item.idDtl + ',' + item.idHdr + ',' + item.Cost + ',\'' + item.Problem.replace("\n", "\\n") + '\',\'' + item.FollowUp.replace("\n", "\\n") + '\');"><span class="glyphicon glyphicon-pencil text-center" style="color:red"></span></a> </td>');
+                    $('#tbodytbldetailcm').append(tr);
+                });
+                $('#tbldetailcm').DataTable().draw();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+        });
+
+    }
+
+    $('#updateDetailCM').click(function () {
+        var assetobj = {
+            idDtl: $('#idDtlGlobal').val(),
+            idHdr: $('#idHdrGlobal').val(),
+            FollowUp: $('#editfollowupcm').val(),
+            Cost: $('#editCost').val(),
+
+        };
+
+        $.ajax({
+            url: urlKPI + "/UpdateCMDetail",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Detail CM telah di update.."
+                    });
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat edit Detail CM.."
+                    });
+                }
+                getCMDetail();
+                $("#updateDetailCM").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    $('#saveDetailCM').click(function () {
+        var assetobj = {         
+            idHdr: $('#idHdrGlobal').val(),
+            Problem: $('#problemcm').val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/InsCMDetail",
+            data: JSON.stringify(assetobj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide(); },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Detail CM telah ditambahkan.."
+                    });
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menambahkan Detail CM.."
+                    });
+                }
+                getCMDetail();
+                $("#saveDetailCM").prop("disabled", true);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+
+    function myTrim(x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    }
+
+</script>
+

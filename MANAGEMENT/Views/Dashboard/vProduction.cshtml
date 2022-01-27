@@ -737,6 +737,9 @@
         PicScrSafThn = 0;
         PicScrTotMonth = 0;
         PicScrTotSum = 0;
+        var nmbulan = valMonth(bln);
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+
         var userAu = $('#authorid').val();
         var kpiRpt = {
             Bulan: $('#monthkpi').val(),

@@ -951,6 +951,9 @@
         PicScrSafMonth = 0;
         PicScrSafSum = 0;
         PicScrTotSum = 0;
+        var nmbulan = valMonth(bln);
+        $('#blnnan').text('MONTH : ' + nmbulan + '-' + thn);
+
         var userAu = $('#authorid').val();
         var kpiObj = {
             id: thn,

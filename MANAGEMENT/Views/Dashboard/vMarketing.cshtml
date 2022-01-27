@@ -124,8 +124,8 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="7"  class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>MARKETING</b></a></th>
-                        <td><span id="RevTitle" >Revenue</span></td>
+                        <th rowspan="7" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>MARKETING</b></a></th>
+                        <td><span id="RevTitle">Revenue</span></td>
                         <td><span id="MktGrdRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktTgtRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktActRev" class="pull-right" style="color:blue"></span></td>
@@ -133,12 +133,28 @@
                         <td><span id="MktScrRev" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="AquTitle">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="AquTitle">New Customer Acquitition (Min 0.5 Bio p.a)</span></td>
                         <td><span id="MktGrdAqu" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktTgtAqu" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktActAqu" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktAchAqu" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktScrAqu" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DrmTitle">Delivery Reliability Measurement - AVE</span></td>
+                        <td><span id="MktGrdDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchDrm" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrDrm" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitle">Air Freight & Customer Claim</span></td>
+                        <td><span id="MktGrdAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAir" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAir" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
                         <td><span id="SatTitle">Customer Satisfaction Index</span></td>
@@ -188,12 +204,28 @@
                         <td><span id="MktScrRevMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="AquTitleMonth">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="AquTitleMonth">New Customer Acquitition (Min 0.5 Bio p.a)</span></td>
                         <td><span id="MktGrdAquMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktTgtAquMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktActAquMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktAchAquMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktScrAquMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DrmTitleMonth">Delivery Reliability Measurement - AVE</span></td>
+                        <td><span id="MktGrdDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchDrmMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrDrmMonth" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitleMonth">Air Freight & Customer Claim</span></td>
+                        <td><span id="MktGrdAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAirMonth" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAirMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
                         <td><span id="SatTitleMonth">Customer Satisfaction Index</span></td>
@@ -244,12 +276,28 @@
                         <td><span id="MktScrRevSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="AquTitleSum">New Customer Acquitition (Min 1 Bio p.a)</span></td>
+                        <td><span id="AquTitleSum">New Customer Acquitition (Min 0.5 Bio p.a)</span></td>
                         <td><span id="MktGrdAquSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktTgtAquSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktActAquSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktAchAquSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="MktScrAquSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="DrmTitleSum">Delivery Reliability Measurement - AVE</span></td>
+                        <td><span id="MktGrdDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchDrmSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrDrmSum" class="pull-right" style="color:blue"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span id="AirTitleSum">Air Freight & Customer Claim</span></td>
+                        <td><span id="MktGrdAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktTgtAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktActAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktAchAirSum" class="pull-right" style="color:blue"></span></td>
+                        <td><span id="MktScrAirSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
                         <td><span id="SatTitleSum">Customer Satisfaction Index</span></td>
@@ -285,6 +333,8 @@
     var MktScrRev = 0;
     var MktScrAqu = 0;
     var MktScrSat = 0;
+    var MktScrDrm = 0;
+    var MktScrAir = 0;
     var MktScrTot = 0;
     var MktScrTotMonth = 0;
     var MktScrTotSum = 0;
@@ -293,6 +343,8 @@
         $('.datetimepicker').datetimepicker({
             format: 'YYYY'
         });
+
+
         $('#month').hide();
         $('#monthlyForm').hide();
         $('#childForm').hide();
@@ -437,6 +489,44 @@
                     MktScrTot = MktScrTot + item.PicScrAqu;
                     MktTotGrade = MktTotGrade + item.PicGrdAqu;
 
+                    // DRM
+                    $("#MktGrdDrm").text(formatNumber(item.MktGrdDrm));
+                    $("#MktTgtDrm").text(formatNumber(item.MktTgtDrm));
+                    $("#MktActDrm").text(formatNumber(item.MktActDrm));
+                    $("#MktAchDrm").text(formatNumber(item.MktAchDrm.toFixed(2)));
+                    $("#MktScrDrm").text(formatNumber(item.MktScrDrm.toFixed(2)));
+                    var MktGrdDrm = item.MktGrdDrm;
+                    if (MktGrdDrm == 0)
+                        $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTot = MktScrTot + item.MktScrDrm;
+                    MktTotGrade = MktTotGrade + item.MktGrdDrm;
+
+                    // AIR
+                    $("#MktGrdAir").text(formatNumber(item.MktGrdAir));
+                    $("#MktTgtAir").text(formatNumber(item.MktTgtAir));
+                    $("#MktActAir").text(formatNumber(item.MktActAir));
+                    $("#MktAchAir").text(formatNumber(item.MktAchAir.toFixed(2)));
+                    $("#MktScrAir").text(formatNumber(item.MktScrAir.toFixed(2)));
+                    var MktGrdAir = item.MktGrdAir;
+                    if (MktGrdAir === 0)
+                        $("#AirTitle").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrAir - item.MktGrdAir;
+                        if (newcolor3 >= 0)
+                            $("#AirTitle").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitle").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTot = MktScrTot + item.MktScrAir;
+                    MktTotGrade = MktTotGrade + item.MktGrdAir;
+
                     // Customer Satisfaction Index
                     $("#MktGrdSat").text(formatNumber(item.PicGrdSat));
                     $("#MktTgtSat").text(formatNumber(item.PicTgtSat));
@@ -539,6 +629,44 @@
                     MktScrTotMonth = MktScrTotMonth + item.PicScrAqu;
                     MktTotGradeMonth = MktTotGradeMonth + item.PicGrdAqu;
 
+                    // DRM
+                    $("#MktGrdDrmMonth").text(formatNumber(item.MktGrdDrm));
+                    $("#MktTgtDrmMonth").text(formatNumber(item.MktTgtDrm));
+                    $("#MktActDrmMonth").text(formatNumber(item.MktActDrm));
+                    $("#MktAchDrmMonth").text(formatNumber(item.MktAchDrm.toFixed(2)));
+                    $("#MktScrDrmMonth").text(formatNumber(item.MktScrDrm.toFixed(2)));
+                    var MktGrdDrm = item.MktGrdDrm;
+                    if (MktGrdDrm == 0)
+                        $("#DrmTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotMonth = MktScrTotMonth + item.MktScrDrm;
+                    MktTotGradeMonth = MktTotGradeMonth + item.MktGrdDrm;
+
+                    // AIR
+                    $("#MktGrdAirMonth").text(formatNumber(item.MktGrdAir));
+                    $("#MktTgtAirMonth").text(formatNumber(item.MktTgtAir));
+                    $("#MktActAirMonth").text(formatNumber(item.MktActAir));
+                    $("#MktAchAirMonth").text(formatNumber(item.MktAchAir.toFixed(2)));
+                    $("#MktScrAirMonth").text(formatNumber(item.MktScrAir.toFixed(2)));
+                    var MktGrdAir = item.MktGrdAir;
+                    if (MktGrdAir === 0)
+                        $("#AirTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrAir - item.MktGrdAir;
+                        if (newcolor3 >= 0)
+                            $("#AirTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotMonth = MktScrTotMonth + item.MktScrAir;
+                    MktTotGradeMonth = MktTotGradeMonth + item.MktGrdAir;
+
                     // Customer Satisfaction Index
                     $("#MktGrdSatMonth").text(formatNumber(item.PicGrdSat));
                     $("#MktTgtSatMonth").text(formatNumber(item.PicTgtSat));
@@ -625,6 +753,44 @@
 
                     MktScrTotSum = MktScrTotSum + item.PicScrAqu;
                     MktTotGradeSum = MktTotGradeSum + item.PicGrdAqu;
+
+                    // DRM
+                    $("#MktGrdDrmSum").text(formatNumber(item.MktGrdDrm));
+                    $("#MktTgtDrmSum").text(formatNumber(item.MktTgtDrm));
+                    $("#MktActDrmSum").text(formatNumber(item.MktActDrm));
+                    $("#MktAchDrmSum").text(formatNumber(item.MktAchDrm.toFixed(2)));
+                    $("#MktScrDrmSum").text(formatNumber(item.MktScrDrm.toFixed(2)));
+                    var MktGrdDrm = item.MktGrdDrm;
+                    if (MktGrdDrm == 0)
+                        $("#DrmTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
+                        if (newcolor3 >= 0)
+                            $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotSum = MktScrTotSum + item.MktScrDrm;
+                    MktTotGradeSum = MktTotGradeSum + item.MktGrdDrm;
+
+                    // AIR
+                    $("#MktGrdAirSum").text(formatNumber(item.MktGrdAir));
+                    $("#MktTgtAirSum").text(formatNumber(item.MktTgtAir));
+                    $("#MktActAirSum").text(formatNumber(item.MktActAir));
+                    $("#MktAchAirSum").text(formatNumber(item.MktAchAir.toFixed(2)));
+                    $("#MktScrAirSum").text(formatNumber(item.MktScrAir.toFixed(2)));
+                    var MktGrdAir = item.MktGrdAir;
+                    if (MktGrdAir === 0)
+                        $("#AirTitleSum").css({ "color": "black", "font-weight": "normal" });
+                    else {
+                        var newcolor3 = item.MktScrAir - item.MktGrdAir;
+                        if (newcolor3 >= 0)
+                            $("#AirTitleSum").css({ "color": "black", "font-weight": "bold" });
+                        else $("#AirTitleSum").css({ "color": "red", "font-weight": "bold" });
+                    }
+
+                    MktScrTotSum = MktScrTotSum + item.MktScrAir;
+                    MktTotGradeSum = MktTotGradeSum + item.MktGrdAir;
 
                     // Customer Satisfaction Index
                     $("#MktGrdSatSum").text(formatNumber(item.PicGrdSat));

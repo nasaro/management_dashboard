@@ -1,0 +1,576 @@
+﻿<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: Url("/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    hr {
+        background-color: red;
+        height: 1px;
+        border: 0;
+    }
+    .container {
+        overflow: scroll;
+        height: 700px;
+        background-color: #eee;
+    }
+    .hidethis {
+        display: none;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <section class="container">
+        <div id="utamaFrm" class="form-horizontal">
+            <h2>Fixed Asset</h2>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Periode</label>
+                        <div class="btn-group btn-group-sm">
+                            <div class="input-group date datetimepicker">
+                                <input type="text" class="form-control" id="prd" placeholder="DD-YYYY" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success  btn-sm" onclick="getLoad()">View</button>
+                        <button type="button" class="btn btn-info btn-sm" onclick="getPrint()">Print</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="getRekap()">Rekap Print</button>
+                        <button type="button" class="btn btn-warning btn-sm" onclick="getDispose()">Dispose</button>
+                        <div class="btn-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="option" id="opt1" checked="checked">Monthly</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="option" id="opt2">Yearly</label>                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <br />
+            <table id="tblCost" class="table table-bordered  table-hover">
+                <thead>
+                    <tr>
+                        <th style="display:none">ID</th>
+                        <th>MMRDate</th>
+                        <th>InvCode</th>
+                        <th>InvName</th>
+                        <th>Qty</th>
+                        <th>HargaPerPcs</th>
+                        <th>Rate</th>
+                        <th class='hidethis'>cArea</th>
+                        <th>Area</th>
+                        <th style="display:none">GroupCode</th>
+                        <th>Group</th>
+                        <th>cUrut</th>
+                        <th>dateDelete</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodytblCost"></tbody>
+            </table>
+        </div> <!--Form utama-->
+        <hr>
+
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="loader"></div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Delete Akuisisi</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div id="atas">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="tglmmr">dMMRDate</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="hidden" readonly="readonly" class="form-control" id="id" />
+                                            <input type="text" readonly="readonly" class="form-control" id="tglmmr" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="invcode">INVCOde</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly="readonly" class="form-control" id="invcode" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly="readonly" class="form-control" id="invname" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="hrgbeli">Harga beli</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly="readonly" class="form-control" id="hrgbeliview" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="ratetype">Rate</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly="readonly" class="form-control" id="ratetype" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="prd">Date delete</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date datetimepicker">
+                                                <input type="text" class="form-control" id="tglhapus" placeholder="Date Delete"></>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label for="ref">Reference</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="ref" placeholder="Isikan reference" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="bawah">
+                                <p style="font-weight:700; color:red;">Apakah anda yakin untuk menghapus Asset ini?</p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div id="footatas">
+                            <button type="button" class="btn btn-primary" id="btnDelete" onclick="askYes();">Delete</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="exitBtn();">Close</button>
+                        </div>
+                        <div id="footbawah">
+                            <button type="button" class="btn btn-primary" id="btnYes" onclick="crudAsset();">Yes</button>
+                            <button type="button" class="btn btn-default" id="btnNo" onclick="askNo();">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Edit Area</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="hidden" readonly="readonly" class="form-control" id="idTr" />
+                                    <input type="text" readonly="readonly" class="form-control" id="dMMRTr" />
+                                    <input type="text" readonly="readonly" class="form-control" id="invcodeTr" />
+                                    <input type="text" readonly="readonly" class="form-control" id="groupTr" />
+                                    <label>Area</label>
+                                    <select class="form-control" id="cmbarea"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUbah"  onclick="crudArea();">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="quitBtn();" >Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+
+</body>
+
+<script>
+     var urlKPI = "@Url.Content("~/Wip")";
+    $(document).ready(function () {
+        $(".loader").hide();
+        $("#footbawah").hide();
+        $("#bawah").hide();
+        loadArea();
+        $('#prd').datetimepicker({
+            useCurrent: false,
+            format: "MM-YYYY",
+        });
+
+        $('#tglhapus').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        var myContainer = $('.container')
+
+        $(myContainer).on('click', 'a', function () {
+            var scrollTo = $(this);
+            myContainer.animate({
+                scrollTop: scrollTo.offset().top - myContainer.offset().top + myContainer.scrollTop()
+            });
+        })
+    });
+
+    function askYes() {
+        if ($('#ref').val() === '') {
+            BootstrapAlert.alert({
+                title: "Message: ",
+                message: "Mohon diisi referensinya..!"
+            });
+        } else {
+            $("#footbawah").show();
+            $("#bawah").show();
+            $("#footatas").hide();
+            $("#atas").hide();
+        }
+    }
+
+    function askNo() {
+        $("#footbawah").hide();
+        $("#bawah").hide();
+        $("#footatas").show();
+        $("#atas").show();
+    }
+
+
+    function getPrint() {
+        var ppicObj = {
+            id: $('#prd').val(),
+            type: 'DTL',
+            choice: 'A'
+        };
+        $.ajax({
+            url: urlKPI + "/passPrintAsset/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result == 1) {
+                    window.open('../Report/WebRptForm.aspx');
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+    function getRekap() {
+        var ppicObj = {
+            id: $('#prd').val(),
+            type: 'RKP',
+            choice: 'A'
+        };
+        $.ajax({
+            url: urlKPI + "/passPrintAsset/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result == 1) {
+                    window.open('../Report/WebRptForm.aspx');
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+    function getDispose() {
+        var bcheck1 = $("input[id='opt1']:checked").val();
+        var choiceChk;
+        if (bcheck1==='on') 
+            choiceChk = 'A';
+        else 
+            choiceChk = 'B';
+
+        var ppicObj = {
+            id: $('#prd').val(),
+            type: 'DIS',
+            choice: choiceChk
+        };
+
+        if ($('#prd').val() !== '') {
+            $.ajax({
+                url: urlKPI + "/passPrintAsset/",
+                data: JSON.stringify(ppicObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                beforeSend: function () { $(".loader").show(); },
+                complete: function () { $(".loader").hide();; },
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        window.open('../Report/WebRptForm.aspx');
+                    }
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+    }
+
+
+    function loadArea() {
+        $.ajax({
+            url: urlKPI + "/ViewArea",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<option value=' + item.cArea.trim() + '>' + item.cAreaName + '</option>';
+                });
+                $('#cmbarea').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function getLoad() {
+        if ($('#prd').val() == '') {
+            BootstrapAlert.alert({
+                title: "Message",
+                message: "Isi periode.."
+            });
+        } else {
+            var tr;
+            $('#tblCost').DataTable().destroy();
+            $('#tbodytblCost').empty();
+            var kpiOBJ = {
+                prd: $('#prd').val()
+            };
+           
+            $.ajax({
+                url: urlKPI + "/viewListAsset/",
+                data: JSON.stringify(kpiOBJ),
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    $.each(result, function (key, item) {
+                        tr = $('<tr/>');
+                        tr.append("<td style='display: none'>" + item.id + "</td>");
+                        tr.append("<td>" + item.dMMRDate + "</td>");
+                        tr.append("<td>" + item.cINVCOde + "</td>");
+                        tr.append("<td>" + item.cinvname + "</td>");
+                        tr.append("<td align='right'>" + formatNumber(item.iQty) + "</td>");
+                        tr.append("<td align='right'>" + formatNumber(item.ihargabelirp) + "</td>");
+                        tr.append("<td align='right'>" + formatNumber(item.Rate) + "</td>");
+                        tr.append("<td class='hidethis'>" + item.cArea + "</td>");                        
+                        tr.append("<td>" + item.Area + "</td>");        
+                        tr.append("<td style='display: none'>" + item.cInvTypeKode + "</td>"); 
+                        tr.append("<td>" + item.cketerangan + "</td>");        
+                        tr.append("<td>" + item.cUrut + "</td>");        
+                        //if (item.isMachine===true)
+                        //    tr.append("<td style='text-align:center'> <i class='fa fa-check fa-2x' aria-hidden='true'></i></td>");
+                        //else 
+                        //    tr.append("<td></td>");
+
+                        if (item.isDelete === true)
+                            tr.append("<td align='right'>" + item.dDelete + "</td>");
+                        else
+                            tr.append("<td></td>");
+                        tr.append('<td><a href="javascript:void(0);"  data-toggle="tooltip" title="Delete"   onclick="deleteFA(' + item.id + ',' + item.Rate + ',' + item.ihargabelirp + ',' + item.iQty + ',\'' + item.dMMRDate + '\',\'' + item.cINVCOde + '\',\'' + item.cinvname.replace(/"/g, ' inch') + '\');"><span class="glyphicon glyphicon-remove" style="color:red"></span></a> <a href="javascript:void(0);"  data-toggle="tooltip" title="Edit Area" onclick="editArea(' + item.id + ',\'' + item.dMMRDate + '\'' + ',\'' + item.cINVCOde + '\'' + ',\'' + item.cInvTypeKode + '\',\'' + item.cArea + '\',\'' + item.cUrut + '\')" ><span class="glyphicon glyphicon-pencil" style="color:blue"></span></a>  </td>');
+                        $('#tbodytblCost').append(tr);
+                    });
+                    $('#tblCost').DataTable().draw();
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                beforeSend: function () { $(".loader").show(); },
+                complete: function () { $(".loader").hide(); },
+                type: 'POST', dataType: 'json'
+            });
+        }
+    }
+
+    function crudAsset() {
+        var acc = {
+            id: $('#id').val(),
+            dDelete: $('#tglhapus').val(),
+            cBuktiDelete: $('#ref').val()
+        };
+        //console.log(acc);
+        $.ajax({
+            url: urlKPI + "/delAsset/",
+            data: JSON.stringify(acc),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Asset telah dihapus.."
+                    });
+                    $("#btnYes").prop("disabled", true);
+                    askNo();
+                    $('#myModal').modal('hide');
+                    $(".loader").show();
+                    getLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat menghapus asset.."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function crudArea() {
+        var acc = {
+            id: $('#idTr').val(),
+            cArea: $('#cmbarea').val(),
+            dMMRDate: $("#dMMRTr").val(),
+            cINVCOde: $("#invcodeTr").val(),
+            cInvTypeKode: $("#groupTr").val()
+        };
+
+        $.ajax({
+            url: urlKPI + "/updAssetArea/",
+            data: JSON.stringify(acc),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result > 0) {
+                    BootstrapAlert.success({
+                        title: "Message",
+                        message: "Area telah diubah.."
+                    });
+                    $("#btnUbah").prop("disabled", true);
+                    getLoad();
+                } else {
+                    BootstrapAlert.alert({
+                        title: "Message",
+                        message: "Gagal saat ubah area.."
+                    });
+
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function deleteFA(id, rate, hrg, qty, tgl, code, name) {      
+        $("#myModal").modal({ show: true, backdrop: false })
+        $("#id").val(id);
+        $("#tglmmr").val(tgl);
+        $("#invcode").val(code);
+        $("#invname").val(name);
+        $("#qty").val(qty);
+        $("#ratetype").val(rate);
+
+        $("#hrgbeliview").val(formatNumber(hrg));
+    }
+
+    function editArea(id, dmmr, inv, group, nilcmb, nilUrut) {         
+        $("#myEdit").modal({ show: true, backdrop: false });
+        $("#idTr").val(id);
+        $("#cmbarea").val(nilcmb.trim());  
+        $("#dMMRTr").val(dmmr);
+        $("#invcodeTr").val(inv)
+        $("#groupTr").val(group);
+
+        
+        if (nilUrut !== '') {
+            $("#btnUbah").prop("disabled", true);
+        } else {
+            $("#btnUbah").prop("disabled", false);
+        }
+
+    }
+        
+    function exitBtn() {
+        $("#btnYes").prop("disabled", false);
+    }
+
+    function quitBtn() {
+        $("#btnUbah").prop("disabled", false);
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+</script>

@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Notulen ~ Management Control</title>
+    <title>Report ~ Management Control</title>
 </head>
 <body>
     <form id="form1" runat="server">

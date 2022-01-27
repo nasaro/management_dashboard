@@ -148,7 +148,7 @@
                         <td><span id="PicAchPdc" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrPdc" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trhdrtvb" style="display:none">
                         <td><span id="TvbTitle">Delivery Reliability Measurement - TVB</span></td>
                         <td><span id="PicGrdTvb" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtTvb" class="pull-right" style="color:blue"></span></td>
@@ -156,7 +156,7 @@
                         <td><span id="PicAchTvb" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrTvb" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trhdrdpp" style="display:none">
                         <td><span id="DppTitle">Delivery Reliability Measurement - DP PUMPS</span></td>
                         <td><span id="PicGrdDpp" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtDpp" class="pull-right" style="color:blue"></span></td>
@@ -268,7 +268,7 @@
                         <td><span id="PicAchPdcMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrPdcMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trdtltvb" style="display:none">
                         <td><span id="TvbTitleMonth">Delivery Reliability Measurement - TVB</span></td>
                         <td><span id="PicGrdTvbMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtTvbMonth" class="pull-right" style="color:blue"></span></td>
@@ -276,7 +276,7 @@
                         <td><span id="PicAchTvbMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrTvbMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trdtldpp" style="display:none">
                         <td><span id="DppTitleMonth">Delivery Reliability Measurement - DP PUMPS</span></td>
                         <td><span id="PicGrdDppMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtDppMonth" class="pull-right" style="color:blue"></span></td>
@@ -388,7 +388,7 @@
                         <td><span id="PicAchPdcSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrPdcSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trsubdtltvb" style="display:none">
                         <td><span id="TvbTitleSum">Delivery Reliability Measurement - TVB</span></td>
                         <td><span id="PicGrdTvbSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtTvbSum" class="pull-right" style="color:blue"></span></td>
@@ -396,7 +396,7 @@
                         <td><span id="PicAchTvbSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicScrTvbSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trsubdtldpp" style="display:none">
                         <td><span id="DppTitleSum">Delivery Reliability Measurement - DP PUMPS</span></td>
                         <td><span id="PicGrdDppSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="PicTgtDppSum" class="pull-right" style="color:blue"></span></td>
@@ -658,6 +658,7 @@
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
                             $("#PicAchRev").text(formatNumber(PicAchRev.toFixed(2)));
+                            /*--
                             if (PicAchRev > 110)
                                 PicAchRev = 120;
                             else if (PicAchRev > 103 && PicAchRev <= 110)
@@ -670,6 +671,18 @@
                                 PicAchRev = 60;
                             else
                                 PicAchRev = 0;
+                            --*/
+                            if (PicAchRev >= 103)
+                                PicAchRev = 110;
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;
+                            else
+                                PicAchRev = 0;
+
 
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
@@ -696,6 +709,7 @@
                         if (PicAchPda < 0)
                             PicAchPda = 0;
                         $("#PicAchPda").text(formatNumber(PicAchPda.toFixed(2)));
+                        /*----
                         if (PicAchPda > 110)
                             PicAchPda = 120;
                         else if (PicAchPda > 102 && PicAchPda <= 110)
@@ -708,6 +722,19 @@
                             PicAchPda = 60;
                         else
                             PicAchPda = 0;
+                        ---*/
+                        if (PicAchPda >= 103)
+                            PicAchPda = 110;
+                        else if (PicAchPda >= 97 && PicAchPda < 103)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 91 && PicAchPda < 97)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 91)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+
+
                         PicScrPda = item.PicGrdPda * PicAchPda / 100;
                         var newcolor = PicScrPda - item.PicGrdPda;
                         if (newcolor >= 0)
@@ -733,6 +760,7 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#PicAchPdc").text(formatNumber(PicAchPdc.toFixed(2)));
+                        /*---
                         if (PicAchPdc > 110)
                             PicAchPdc = 120;
                         else if (PicAchPdc > 102 && PicAchPdc <= 110)
@@ -745,6 +773,18 @@
                             PicAchPdc = 60;
                         else
                             PicAchPdc = 0;
+                        ---*/
+                        if (PicAchPdc >= 103)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 91)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
                         if (newcolor >= 0)
@@ -755,81 +795,16 @@
                         $("#PicScrPdc").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
 
-                    //-------tvb
-                    $("#PicGrdTvb").text(formatNumber(item.PicGrdTvb));
-                    $("#PicTgtTvb").text(formatNumber(item.PicTgtTvb));
-                    $("#PicActTvb").text(formatNumber(item.PicActTvb));
-                    var PicTgtTvb = item.PicTgtTvb;
-                    var PicGrdTvb = item.PicGrdTvb;
-                    if (PicGrdTvb == 0) {
-                        $("#PicAchTvb").text(0);
-                        $("#PicScrTvb").text(0);
-                        $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (PicAchTvb < 0)
-                            PicAchTvb = 0;
-                        $("#PicAchTvb").text(formatNumber(PicAchTvb.toFixed(2)));
-                        if (PicAchTvb > 100)
-                            PicAchTvb = 110;
-                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
-                            PicAchTvb = 100;
-                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
-                            PicAchTvb = 90;
-                        else if (PicAchTvb < 85)
-                            PicAchTvb = 60;
-                        else
-                            PicAchTvb = 0;
-                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
-                        var newcolor = PicScrTvb - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
-                        PicScrTot = PicScrTot + PicScrTvb;
-                        PicTotGrade = PicTotGrade + item.PicGrdTvb;
-                        $("#PicScrTvb").text(formatNumber(PicScrTvb.toFixed(2)));
-                    }
-
-                    //-------dpp pump
-                    $("#PicGrdDpp").text(formatNumber(item.PicGrdDpp));
-                    $("#PicTgtDpp").text(formatNumber(item.PicTgtDpp));
-                    $("#PicActDpp").text(formatNumber(item.PicActDpp));
-                    var PicTgtDpp = item.PicTgtDpp;
-                    var PicGrdDpp = item.PicGrdDpp;
-                    if (PicGrdDpp == 0) {
-                        $("#PicAchDpp").text(0);
-                        $("#PicScrDpp").text(0);
-                        $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
-                        if (PicAchDpp < 0)
-                            PicAchDpp = 0;
-                        $("#PicAchDpp").text(formatNumber(PicAchDpp.toFixed(2)));
-                        if (PicAchDpp > 100)
-                            PicAchDpp = 110;
-                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
-                            PicAchDpp = 100;
-                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
-                            PicAchDpp = 90;
-                        else if (PicAchDpp < 85)
-                            PicAchDpp = 60;
-                        else
-                            PicAchDpp = 0;
-                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
-                        var newcolor = PicScrDpp - item.PicGrdDpp;
-                        if (newcolor >= 0)
-                            $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
-                        PicScrTot = PicScrTot + PicScrDpp;
-                        PicTotGrade = PicTotGrade + item.PicGrdDpp;
-                        $("#PicScrDpp").text(formatNumber(PicScrDpp.toFixed(2)));
-                    }
+                    
 
                     if (thn < 2020) {
                         //-------Emerson
                         $("#trhdreme").show();
                         $("#trhdrsca").show();
                         $("#trhdrmus").show();
+                        $("#trhdrdpp").show();
+                        $("#trhdrtvb").show();
+
                         $("#PicGrdEme").text(formatNumber(item.PicGrdEme));
                         $("#PicTgtEme").text(formatNumber(item.PicTgtEme));
                         $("#PicActEme").text(formatNumber(item.PicActEme));
@@ -931,11 +906,159 @@
                             PicTotGrade = PicTotGrade + item.PicGrdMus;
                             $("#PicScrMus").text(formatNumber(PicScrMus.toFixed(2)));
                         }
+
+                        //-------tvb
+                        $("#PicGrdTvb").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvb").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvb").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        var PicGrdTvb = item.PicGrdTvb;
+                        if (PicGrdTvb == 0) {
+                            $("#PicAchTvb").text(0);
+                            $("#PicScrTvb").text(0);
+                            $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvb").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrTvb;
+                            PicTotGrade = PicTotGrade + item.PicGrdTvb;
+                            $("#PicScrTvb").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDpp").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDpp").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDpp").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        var PicGrdDpp = item.PicGrdDpp;
+                        if (PicGrdDpp == 0) {
+                            $("#PicAchDpp").text(0);
+                            $("#PicScrDpp").text(0);
+                            $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDpp").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrDpp;
+                            PicTotGrade = PicTotGrade + item.PicGrdDpp;
+                            $("#PicScrDpp").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
+                        
+
+                    }
+                    else if (thn > 2019 && thn < 2022) {
+                        $("#trhdrdpp").show();
+                        $("#trhdrtvb").show();
+
+                        //-------tvb
+                        $("#PicGrdTvb").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvb").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvb").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        var PicGrdTvb = item.PicGrdTvb;
+                        if (PicGrdTvb == 0) {
+                            $("#PicAchTvb").text(0);
+                            $("#PicScrTvb").text(0);
+                            $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvb").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrTvb;
+                            PicTotGrade = PicTotGrade + item.PicGrdTvb;
+                            $("#PicScrTvb").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDpp").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDpp").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDpp").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        var PicGrdDpp = item.PicGrdDpp;
+                        if (PicGrdDpp == 0) {
+                            $("#PicAchDpp").text(0);
+                            $("#PicScrDpp").text(0);
+                            $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDpp").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTot = PicScrTot + PicScrDpp;
+                            PicTotGrade = PicTotGrade + item.PicGrdDpp;
+                            $("#PicScrDpp").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
                     }
                     else {
                         $("#trhdreme").hide();
                         $("#trhdrsca").hide();
                         $("#trhdrmus").hide();
+                        $("#trhdrdpp").hide();
+                        $("#trhdrtvb").hide();
                     }
 
                     //-------Others
@@ -958,6 +1081,7 @@
                         if (PicAchOth < 0)
                             PicAchOth = 0;
                         $("#PicAchOth").text(formatNumber(PicAchOth.toFixed(2)));
+                        /*---
                         if (PicAchOth > 100)
                             PicAchOth = 110;
                         else if (PicAchOth > 95 && PicAchOth <= 100)
@@ -968,6 +1092,18 @@
                             PicAchOth = 60;
                         else
                             PicAchOth = 0;
+                         ---*/
+                        if (PicAchOth > 102)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 102)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+
                         PicScrOth = item.PicGrdOth * PicAchOth / 100;
                         var newcolor = PicScrOth - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -989,11 +1125,13 @@
                         $("#PicScrAir").text(0);
                         $("#AirTitle").css({ "color": "black", "font-weight": "normal" });
                     } else {
-                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        //var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicAchAir =  item.PicActAir / item.PicTgtAir * 100;
                         var PicActAir = item.PicActAir;
                         if (PicAchAir < 0)
                             PicAchAir = 0;
                         $("#PicAchAir").text(formatNumber(PicAchAir.toFixed(2)));
+                        /*---
                         if (PicActAir < 0.2)
                             PicActAir = 120;
                         else if (PicActAir >= 0.2 && PicActAir <= 0.25)
@@ -1004,8 +1142,18 @@
                             PicActAir = 90;
                         else if (PicActAir > 0.35)
                             PicActAir = 60;
+                         --*/
+                        if (PicAchAir < 95)
+                            PicAchAir = 110;
+                        else if (PicAchAir >= 95 && PicAchAir <= 99)
+                            PicAchAir = 100;
+                        else if (PicAchAir > 99 && PicAchAir <= 102)
+                            PicAchAir = 90;
+                        else if (PicAchAir > 102)
+                            PicAchAir = 60;
 
-                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+
+                        PicScrAir = item.PicGrdAir * PicAchAir / 100;
                         var newcolor = PicScrAir - item.PicGrdAir;
                         if (newcolor >= 0)
                             $("#AirTitle").css({ "color": "black", "font-weight": "bold" });
@@ -1042,6 +1190,7 @@
                                 PicScrInv = item.PicGrdInv - (item.PicGrdInv - ((item.PicTgtInv / item.PicActInv) * item.PicGrdInv));
                         } else {
                             var PicAchInvTmp = 0;
+                            /*----
                             if (PicAchInv < 50)
                                 PicAchInvTmp = 60;
                             else if (PicAchInv >= 50 && PicAchInv <= 90)
@@ -1052,6 +1201,16 @@
                                 PicAchInvTmp = 110;
                             else if (PicAchInv > 125)
                                 PicAchInvTmp = 120;
+                            ----*/
+                            if (PicAchInv < 95 )
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv >= 95 && PicAchInv <= 99)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 99 && PicAchInv <= 102)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 102)
+                                PicAchInvTmp = 60;
+
                             PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
                             var newcolor = PicScrInv - item.PicGrdInv;
                             if (newcolor >= 0)
@@ -1117,6 +1276,7 @@
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
                             $("#PicAchRevMonth").text(formatNumber(PicAchRev.toFixed(2)));
+                            /*---
                             if (PicAchRev > 110)
                                 PicAchRev = 120;
                             else if (PicAchRev > 103 && PicAchRev <= 110)
@@ -1128,6 +1288,18 @@
                             else if (PicAchRev < 90)
                                 PicAchRev = 60;
                             else PicAchRev = 0;
+                            --*/
+                            if (PicAchRev >= 103)
+                                PicAchRev = 110;
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;
+                            else
+                                PicAchRev = 0;
+
 
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
@@ -1155,6 +1327,7 @@
                         if (PicAchPda < 0)
                             PicAchPda = 0;
                         $("#PicAchPdaMonth").text(formatNumber(PicAchPda.toFixed(2)));
+                        /*-----
                         if (PicAchPda > 110)
                             PicAchPda = 120;
                         else if (PicAchPda > 103 && PicAchPda <= 110)
@@ -1167,6 +1340,18 @@
                             PicAchPda = 60;
                         else
                             PicAchPda = 0;
+                        ---*/
+                        if (PicAchPda >= 103)
+                            PicAchPda = 110;
+                        else if (PicAchPda >= 97 && PicAchPda < 103)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 91 && PicAchPda < 97)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 91)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+
                         PicScrPda = item.PicGrdPda * PicAchPda / 100;
                         var newcolor = PicScrPda - item.PicGrdPda;
                         if (newcolor >= 0)
@@ -1193,6 +1378,7 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#PicAchPdcMonth").text(formatNumber(PicAchPdc.toFixed(2)));
+                        /*---
                         if (PicAchPdc > 110)
                             PicAchPdc = 120;
                         else if (PicAchPdc > 102 && PicAchPdc <= 110)
@@ -1205,6 +1391,18 @@
                             PicAchPdc = 60;
                         else
                             PicAchPdc = 0;
+                        ---*/
+                        if (PicAchPdc >= 103)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 91)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
                         if (newcolor >= 0)
@@ -1216,80 +1414,13 @@
                         $("#PicScrPdcMonth").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
 
-                    //-------tvb
-                    $("#PicGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
-                    $("#PicTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
-                    $("#PicActTvbMonth").text(formatNumber(item.PicActTvb));
-                    var PicTgtTvb = item.PicTgtTvb;
-                    var PicGrdTvb = item.PicGrdTvb;
-                    if (PicGrdTvb == 0) {
-                        $("#PicAchTvbMonth").text(0);
-                        $("#PicScrTvbMonth").text(0);
-                        $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (PicAchTvb < 0)
-                            PicAchTvb = 0;
-                        $("#PicAchTvbMonth").text(formatNumber(PicAchTvb.toFixed(2)));
-                        if (PicAchTvb > 100)
-                            PicAchTvb = 110;
-                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
-                            PicAchTvb = 100;
-                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
-                            PicAchTvb = 90;
-                        else if (PicAchTvb < 85)
-                            PicAchTvb = 60;
-                        else
-                            PicAchTvb = 0;
-                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
-                        var newcolor = PicScrTvb - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                        PicScrTotMonth = PicScrTotMonth + PicScrTvb;
-                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
-                        $("#PicScrTvbMonth").text(formatNumber(PicScrTvb.toFixed(2)));
-                    }
-
-                    //-------dpp pump
-                    $("#PicGrdDppMonth").text(formatNumber(item.PicGrdDpp));
-                    $("#PicTgtDppMonth").text(formatNumber(item.PicTgtDpp));
-                    $("#PicActDppMonth").text(formatNumber(item.PicActDpp));
-                    var PicTgtDpp = item.PicTgtDpp;
-                    var PicGrdDpp = item.PicGrdDpp;
-                    if (PicGrdDpp == 0) {
-                        $("#PicAchDppMonth").text(0);
-                        $("#PicScrDppMonth").text(0);
-                        $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
-                        if (PicAchDpp < 0)
-                            PicAchDpp = 0;
-                        $("#PicAchDppMonth").text(formatNumber(PicAchDpp.toFixed(2)));
-                        if (PicAchDpp > 100)
-                            PicAchDpp = 110;
-                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
-                            PicAchDpp = 100;
-                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
-                            PicAchDpp = 90;
-                        else if (PicAchDpp < 85)
-                            PicAchDpp = 60;
-                        else
-                            PicAchDpp = 0;
-                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
-                        var newcolor = PicScrDpp - item.PicGrdDpp;
-                        if (newcolor >= 0)
-                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
-                        PicScrTotMonth = PicScrTotMonth + PicScrDpp;
-                        PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
-                        $("#PicScrDppMonth").text(formatNumber(PicScrDpp.toFixed(2)));
-                    }
 
                     if (thn < 2020) {
                         $("#trdtleme").show();
                         $("#trdtlsca").show();
                         $("#trdtlmus").show();
+                        $("#trdtltvb").show();
+                        $("#trdtldpp").show();
                         //-------Emerson
                         $("#PicGrdEmeMonth").text(formatNumber(item.PicGrdEme));
                         $("#PicTgtEmeMonth").text(formatNumber(item.PicTgtEme));
@@ -1392,11 +1523,159 @@
                             PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMus;
                             $("#PicScrMusMonth").text(formatNumber(PicScrMus.toFixed(2)));
                         }
+
+                        //-------tvb
+                        $("#PicGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvbMonth").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        var PicGrdTvb = item.PicGrdTvb;
+                        if (PicGrdTvb == 0) {
+                            $("#PicAchTvbMonth").text(0);
+                            $("#PicScrTvbMonth").text(0);
+                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvbMonth").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + PicScrTvb;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
+                            $("#PicScrTvbMonth").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDppMonth").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDppMonth").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDppMonth").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        var PicGrdDpp = item.PicGrdDpp;
+                        if (PicGrdDpp == 0) {
+                            $("#PicAchDppMonth").text(0);
+                            $("#PicScrDppMonth").text(0);
+                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDppMonth").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + PicScrDpp;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
+                            $("#PicScrDppMonth").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
+
+                    }
+                    else if (thn > 2019 && thn < 2022) {
+                        $("#trdtltvb").show();
+                        $("#trdtldpp").show();
+
+                        //-------tvb
+                        $("#PicGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvbMonth").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvbMonth").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        var PicGrdTvb = item.PicGrdTvb;
+                        if (PicGrdTvb == 0) {
+                            $("#PicAchTvbMonth").text(0);
+                            $("#PicScrTvbMonth").text(0);
+                            $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvbMonth").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + PicScrTvb;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdTvb;
+                            $("#PicScrTvbMonth").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDppMonth").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDppMonth").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDppMonth").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        var PicGrdDpp = item.PicGrdDpp;
+                        if (PicGrdDpp == 0) {
+                            $("#PicAchDppMonth").text(0);
+                            $("#PicScrDppMonth").text(0);
+                            $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDppMonth").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            PicScrTotMonth = PicScrTotMonth + PicScrDpp;
+                            PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
+                            $("#PicScrDppMonth").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
+
                     }
                     else {
                         $("#trdtleme").hide();
                         $("#trdtlsca").hide();
                         $("#trdtlmus").hide();
+                        $("#trdtltvb").hide();
+                        $("#trdtldpp").hide();
                     }
 
                     //-------Others
@@ -1418,6 +1697,7 @@
                         if (PicAchOth < 0)
                             PicAchOth = 0;
                         $("#PicAchOthMonth").text(formatNumber(PicAchOth.toFixed(2)));
+                        /*---
                         if (PicAchOth > 100)
                             PicAchOth = 110;
                         else if (PicAchOth > 95 && PicAchOth <= 100)
@@ -1428,6 +1708,18 @@
                             PicAchOth = 60;
                         else
                             PicAchOth = 0;
+                        ---*/
+                        if (PicAchOth > 102)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 102)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+
                         PicScrOth = item.PicGrdOth * PicAchOth / 100;
                         var newcolor = PicScrOth - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -1448,11 +1740,13 @@
                         $("#PicScrAirMonth").text(0);
                         $("#AirTitleMonth").css({ "color": "black", "font-weight": "normal" });
                     } else {
-                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        //--var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicAchAir = item.PicActAir / item.PicTgtAir * 100;
                         var PicActAir = item.PicActAir;
                         if (PicAchAir < 0)
                             PicAchAir = 0;
                         $("#PicAchAirMonth").text(formatNumber(PicAchAir.toFixed(2)));
+                        /*--
                         if (PicActAir < 0.2)
                             PicActAir = 120;
                         else if (PicActAir >= 0.2 && PicActAir <= 0.25)
@@ -1463,8 +1757,18 @@
                             PicActAir = 90;
                         else if (PicActAir > 0.35)
                             PicActAir = 60;
+                        --*/
+                        if (PicAchAir < 95)
+                            PicAchAir = 110;
+                        else if (PicAchAir >= 95 && PicAchAir <= 99)
+                            PicAchAir = 100;
+                        else if (PicAchAir > 99 && PicAchAir <= 102)
+                            PicAchAir = 90;
+                        else if (PicAchAir > 102)
+                            PicAchAir = 60;
 
-                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+
+                        PicScrAir = item.PicGrdAir * PicAchAir / 100;
                         var newcolor = PicScrAir - item.PicGrdAir;
                         if (newcolor >= 0)
                             $("#AirTitleMonth").css({ "color": "black", "font-weight": "bold" });
@@ -1500,6 +1804,7 @@
                                 PicScrInv = item.PicGrdInv - (item.PicGrdInv - ((item.PicTgtInv / item.PicActInv) * item.PicGrdInv));
                         } else {
                             var PicAchInvTmp = 0;
+                            /*----
                             if (PicAchInv < 50)
                                 PicAchInvTmp = 60;
                             else if (PicAchInv >= 50 && PicAchInv <= 90)
@@ -1510,6 +1815,16 @@
                                 PicAchInvTmp = 110;
                             else if (PicAchInv > 125)
                                 PicAchInvTmp = 120;
+                            ---*/
+                            if (PicAchInv < 95)
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv >= 95 && PicAchInv <= 99)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 99 && PicAchInv <= 102)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 102)
+                                PicAchInvTmp = 60;
+
                             PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
                             var newcolor = PicScrInv - item.PicGrdInv;
                             if (newcolor >= 0)
@@ -1563,6 +1878,7 @@
                             if (PicAchRev < 0)
                                 PicAchRev = 0;
                             $("#PicAchRevSum").text(formatNumber(PicAchRev.toFixed(2)));
+                            /*----
                             if (PicAchRev > 110)
                                 PicAchRev = 120;
                             else if (PicAchRev > 103 && PicAchRev <= 110)
@@ -1575,6 +1891,18 @@
                                 PicAchRev = 60;
                             else
                                 PicAchRev = 0;
+                            ----*/
+                            if (PicAchRev >= 103)
+                                PicAchRev = 110;
+                            else if (PicAchRev >= 97 && PicAchRev < 103)
+                                PicAchRev = 100;
+                            else if (PicAchRev >= 91 && PicAchRev < 97)
+                                PicAchRev = 90;
+                            else if (PicAchRev < 91)
+                                PicAchRev = 60;
+                            else
+                                PicAchRev = 0;
+
                             PicScrRev = item.PicGrdRev * PicAchRev / 100;
                             var newcolor = PicScrRev - item.PicGrdRev;
                             if (newcolor >= 0)
@@ -1600,6 +1928,7 @@
                         if (PicActPda < 0)
                             PicActPda = 0;
                         $("#PicAchPdaSum").text(formatNumber(PicAchPda.toFixed(2)));
+                        /*----
                         if (PicAchPda > 110)
                             PicAchPda = 120;
                         else if (PicAchPda > 103 && PicAchPda <= 110)
@@ -1609,6 +1938,17 @@
                         else if (PicAchPda >= 94 && PicAchPda <= 98)
                             PicAchPda = 90;
                         else if (PicAchPda < 94)
+                            PicAchPda = 60;
+                        else
+                            PicAchPda = 0;
+                        ---*/
+                        if (PicAchPda >= 103)
+                            PicAchPda = 110;
+                        else if (PicAchPda >= 97 && PicAchPda < 103)
+                            PicAchPda = 100;
+                        else if (PicAchPda >= 91 && PicAchPda < 97)
+                            PicAchPda = 90;
+                        else if (PicAchPda < 91)
                             PicAchPda = 60;
                         else
                             PicAchPda = 0;
@@ -1638,6 +1978,7 @@
                         if (PicAchPdc < 0)
                             PicAchPdc = 0;
                         $("#PicAchPdcSum").text(formatNumber(PicAchPdc.toFixed(2)));
+                        /*---
                         if (PicAchPdc > 110)
                             PicAchPdc = 120;
                         else if (PicAchPdc > 102 && PicAchPdc <= 110)
@@ -1650,6 +1991,18 @@
                             PicAchPdc = 60;
                         else
                             PicAchPdc = 0;
+                        --*/
+                        if (PicAchPdc >= 103)
+                            PicAchPdc = 110;
+                        else if (PicAchPdc >= 97 && PicAchPdc < 103)
+                            PicAchPdc = 100;
+                        else if (PicAchPdc >= 91 && PicAchPdc < 97)
+                            PicAchPdc = 90;
+                        else if (PicAchPdc < 91)
+                            PicAchPdc = 60;
+                        else
+                            PicAchPdc = 0;
+
                         PicScrPdc = item.PicGrdPdc * PicAchPdc / 100;
                         var newcolor = PicScrPdc - item.PicGrdPdc;
                         if (newcolor >= 0)
@@ -1660,80 +2013,13 @@
                         PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
                         $("#PicScrPdcSum").text(formatNumber(PicScrPdc.toFixed(2)));
                     }
-                    //-------tvb
-                    $("#PicGrdTvbSum").text(formatNumber(item.PicGrdTvb));
-                    $("#PicTgtTvbSum").text(formatNumber(item.PicTgtTvb));
-                    $("#PicActTvbSum").text(formatNumber(item.PicActTvb));
-                    var PicTgtTvb = item.PicTgtTvb;
-                    if (PicTgtTvb == 0) {
-                        $("#PicAchTvbSum").text(0);
-                        $("#PicScrTvbSum").text(0);
-                        $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
-                        if (PicAchTvb < 0)
-                            PicAchTvb = 0;
-                        $("#PicAchTvbSum").text(formatNumber(PicAchTvb.toFixed(2)));
-                        if (PicAchTvb > 100)
-                            PicAchTvb = 110;
-                        else if (PicAchTvb > 95 && PicAchTvb <= 100)
-                            PicAchTvb = 100;
-                        else if (PicAchTvb >= 85 && PicAchTvb <= 95)
-                            PicAchTvb = 90;
-                        else if (PicAchTvb < 85)
-                            PicAchTvb = 60;
-                        else
-                            PicAchTvb = 0;
-                        PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
-                        var newcolor = PicScrTvb - item.PicGrdTvb;
-                        if (newcolor >= 0)
-                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
-
-                        PicScrTotSum = PicScrTotSum + PicScrTvb;
-                        PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
-                        $("#PicScrTvbSum").text(formatNumber(PicScrTvb.toFixed(2)));
-                    }
-
-                    //-------dpp pump
-                    $("#PicGrdDppSum").text(formatNumber(item.PicGrdDpp));
-                    $("#PicTgtDppSum").text(formatNumber(item.PicTgtDpp));
-                    $("#PicActDppSum").text(formatNumber(item.PicActDpp));
-                    var PicTgtDpp = item.PicTgtDpp;
-                    if (PicTgtDpp == 0) {
-                        $("#PicAchDppSum").text(0);
-                        $("#PicScrDppSum").text(0);
-                        $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    } else {
-                        var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
-                        if (PicAchDpp < 0)
-                            PicAchDpp = 0;
-                        $("#PicAchDppSum").text(formatNumber(PicAchDpp.toFixed(2)));
-                        if (PicAchDpp > 100)
-                            PicAchDpp = 110;
-                        else if (PicAchDpp > 95 && PicAchDpp <= 100)
-                            PicAchDpp = 100;
-                        else if (PicAchDpp >= 85 && PicAchDpp <= 95)
-                            PicAchDpp = 90;
-                        else if (PicAchDpp < 85)
-                            PicAchDpp = 60;
-                        else
-                            PicAchDpp = 0;
-                        PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
-                        var newcolor = PicScrDpp - item.PicGrdDpp;
-                        if (newcolor >= 0)
-                            $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
-
-                        PicScrTotSum = PicScrTotSum + PicScrDpp;
-                        PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
-                        $("#PicScrDppSum").text(formatNumber(PicScrDpp.toFixed(2)));
-                    }
 
                     if (thn < 2020) {
                         $("#trsubdtleme").show();
                         $("#trsubdtlsca").show();
                         $("#trsubdtlmus").show();
+                        $("#trsubdtltvb").show();
+                        $("#trsubdtldpp").show();
 
                         //-------Emerson
                         $("#PicGrdEmeSum").text(formatNumber(item.PicGrdEme));
@@ -1837,11 +2123,159 @@
                             PicTotGradeSum = PicTotGradeSum + item.PicGrdMus;
                             $("#PicScrMusSum").text(formatNumber(PicScrMus.toFixed(2)));
                         }
+
+                        //-------tvb
+                        $("#PicGrdTvbSum").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvbSum").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvbSum").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        if (PicTgtTvb == 0) {
+                            $("#PicAchTvbSum").text(0);
+                            $("#PicScrTvbSum").text(0);
+                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvbSum").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrTvb;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
+                            $("#PicScrTvbSum").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDppSum").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDppSum").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDppSum").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        if (PicTgtDpp == 0) {
+                            $("#PicAchDppSum").text(0);
+                            $("#PicScrDppSum").text(0);
+                            $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDppSum").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrDpp;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
+                            $("#PicScrDppSum").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
+
+
+                    }
+                    else if (thn > 2019 && thn < 2022) {
+                        $("#trsubdtltvb").show();
+                        $("#trsubdtldpp").show();
+                        //-------tvb
+                        $("#PicGrdTvbSum").text(formatNumber(item.PicGrdTvb));
+                        $("#PicTgtTvbSum").text(formatNumber(item.PicTgtTvb));
+                        $("#PicActTvbSum").text(formatNumber(item.PicActTvb));
+                        var PicTgtTvb = item.PicTgtTvb;
+                        if (PicTgtTvb == 0) {
+                            $("#PicAchTvbSum").text(0);
+                            $("#PicScrTvbSum").text(0);
+                            $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchTvb = item.PicActTvb / item.PicTgtTvb * 100;
+                            if (PicAchTvb < 0)
+                                PicAchTvb = 0;
+                            $("#PicAchTvbSum").text(formatNumber(PicAchTvb.toFixed(2)));
+                            if (PicAchTvb > 100)
+                                PicAchTvb = 110;
+                            else if (PicAchTvb > 95 && PicAchTvb <= 100)
+                                PicAchTvb = 100;
+                            else if (PicAchTvb >= 85 && PicAchTvb <= 95)
+                                PicAchTvb = 90;
+                            else if (PicAchTvb < 85)
+                                PicAchTvb = 60;
+                            else
+                                PicAchTvb = 0;
+                            PicScrTvb = item.PicGrdTvb * PicAchTvb / 100;
+                            var newcolor = PicScrTvb - item.PicGrdTvb;
+                            if (newcolor >= 0)
+                                $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrTvb;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdTvb;
+                            $("#PicScrTvbSum").text(formatNumber(PicScrTvb.toFixed(2)));
+                        }
+
+                        //-------dpp pump
+                        $("#PicGrdDppSum").text(formatNumber(item.PicGrdDpp));
+                        $("#PicTgtDppSum").text(formatNumber(item.PicTgtDpp));
+                        $("#PicActDppSum").text(formatNumber(item.PicActDpp));
+                        var PicTgtDpp = item.PicTgtDpp;
+                        if (PicTgtDpp == 0) {
+                            $("#PicAchDppSum").text(0);
+                            $("#PicScrDppSum").text(0);
+                            $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        } else {
+                            var PicAchDpp = item.PicActDpp / item.PicTgtDpp * 100;
+                            if (PicAchDpp < 0)
+                                PicAchDpp = 0;
+                            $("#PicAchDppSum").text(formatNumber(PicAchDpp.toFixed(2)));
+                            if (PicAchDpp > 100)
+                                PicAchDpp = 110;
+                            else if (PicAchDpp > 95 && PicAchDpp <= 100)
+                                PicAchDpp = 100;
+                            else if (PicAchDpp >= 85 && PicAchDpp <= 95)
+                                PicAchDpp = 90;
+                            else if (PicAchDpp < 85)
+                                PicAchDpp = 60;
+                            else
+                                PicAchDpp = 0;
+                            PicScrDpp = item.PicGrdDpp * PicAchDpp / 100;
+                            var newcolor = PicScrDpp - item.PicGrdDpp;
+                            if (newcolor >= 0)
+                                $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                            PicScrTotSum = PicScrTotSum + PicScrDpp;
+                            PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
+                            $("#PicScrDppSum").text(formatNumber(PicScrDpp.toFixed(2)));
+                        }
+
                     }
                     else {
                         $("#trsubdtleme").hide();
                         $("#trsubdtlsca").hide();
                         $("#trsubdtlmus").hide();
+                        $("#trsubdtltvb").hide();
+                        $("#trsubdtldpp").hide();
 
                     }
                     //-------Others
@@ -1863,6 +2297,7 @@
                         if (PicAchOth < 0)
                             PicAchOth = 0;
                         $("#PicAchOthSum").text(formatNumber(PicAchOth.toFixed(2)));
+                        /*---
                         if (PicAchOth > 100)
                             PicAchOth = 110;
                         else if (PicAchOth > 95 && PicAchOth <= 100)
@@ -1873,6 +2308,18 @@
                             PicAchOth = 60;
                         else
                             PicAchOth = 0;
+                        ---*/
+                        if (PicAchOth > 102)
+                            PicAchOth = 110;
+                        else if (PicAchOth > 95 && PicAchOth <= 102)
+                            PicAchOth = 100;
+                        else if (PicAchOth >= 85 && PicAchOth <= 95)
+                            PicAchOth = 90;
+                        else if (PicAchOth < 85)
+                            PicAchOth = 60;
+                        else
+                            PicAchOth = 0;
+
                         PicScrOth = item.PicGrdOth * PicAchOth / 100;
                         var newcolor = PicScrOth - item.PicGrdOth;
                         if (newcolor >= 0)
@@ -1893,11 +2340,13 @@
                         $("#PicScrAirSum").text(0);
                         $("#AirTitleSum").css({ "color": "black", "font-weight": "normal" });
                     } else {
-                        var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        //--var PicAchAir = (1 + ((item.PicTgtAir - item.PicActAir) / item.PicTgtAir)) * 100;
+                        var PicAchAir = item.PicActAir / item.PicTgtAir * 100;
                         var PicActAir = item.PicActAir;
                         if (PicAchAir < 0)
                             PicAchAir = 0;
                         $("#PicAchAirSum").text(formatNumber(PicAchAir.toFixed(2)));
+                        /*---
                         if (PicActAir < 0.2)
                             PicActAir = 120;
                         else if (PicActAir >= 0.2 && PicActAir <= 0.25)
@@ -1908,8 +2357,17 @@
                             PicActAir = 90;
                         else if (PicActAir > 0.35)
                             PicActAir = 60;
+                        ---*/
+                        if (PicAchAir < 95)
+                            PicAchAir = 110;
+                        else if (PicAchAir >= 95 && PicAchAir <= 99)
+                            PicAchAir = 100;
+                        else if (PicAchAir > 99 && PicAchAir <= 102)
+                            PicAchAir = 90;
+                        else if (PicAchAir > 102)
+                            PicAchAir = 60;
 
-                        PicScrAir = item.PicGrdAir * PicActAir / 100;
+                        PicScrAir = item.PicGrdAir * PicAchAir / 100;
                         var newcolor = PicScrAir - item.PicGrdAir;
                         if (newcolor >= 0)
                             $("#AirTitleSum").css({ "color": "black", "font-weight": "bold" });
@@ -1947,6 +2405,7 @@
 
                         } else {
                             var PicAchInvTmp = 0;
+                            /*----
                             if (PicAchInv < 50)
                                 PicAchInvTmp = 60;
                             else if (PicAchInv >= 50 && PicAchInv <= 90)
@@ -1957,6 +2416,16 @@
                                 PicAchInvTmp = 110;
                             else if (PicAchInv > 125)
                                 PicAchInvTmp = 120;
+                            ---*/
+                            if (PicAchInv < 95)
+                                PicAchInvTmp = 110;
+                            else if (PicAchInv >= 95 && PicAchInv <= 99)
+                                PicAchInvTmp = 100;
+                            else if (PicAchInv > 99 && PicAchInv <= 102)
+                                PicAchInvTmp = 90;
+                            else if (PicAchInv > 102)
+                                PicAchInvTmp = 60;
+
                             PicScrInv = item.PicGrdInv * PicAchInvTmp / 100;
                             var newcolor = PicScrInv - item.PicGrdInv;
                             if (newcolor >= 0)
