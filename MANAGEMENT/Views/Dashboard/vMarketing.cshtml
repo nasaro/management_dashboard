@@ -456,13 +456,20 @@
                         $("#MktAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#MktScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#MktActRev").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRev").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRev").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
 
                         MktScrTot = MktScrTot + item.PicScrRev;;
@@ -477,13 +484,21 @@
                     var PicGrdAqu = item.PicGrdAqu;
 					if (thn == 2020)
 						$("#AquTitle").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");
-                    if (PicGrdAqu == 0) 
-						$("#AquTitle").css({ "color": "black", "font-weight": "normal" });					   
+                    if (PicGrdAqu == 0) {
+                        $("#AquTitle").css({ "color": "black", "font-weight": "normal" });	
+                        $("#MktActAqu").css({ "color": "black", "font-weight": "normal" });	
+                    }
                     else {
                         var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
-                        if (newcolor2 >= 0 )
+                        if (newcolor2 >= 0) {
                             $("#AquTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AquTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAqu").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#AquTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAqu").css({ "color": "red", "font-weight": "bold" });
+                        } 
                     }
 
                     MktScrTot = MktScrTot + item.PicScrAqu;
@@ -496,13 +511,20 @@
                     $("#MktAchDrm").text(formatNumber(item.MktAchDrm.toFixed(2)));
                     $("#MktScrDrm").text(formatNumber(item.MktScrDrm.toFixed(2)));
                     var MktGrdDrm = item.MktGrdDrm;
-                    if (MktGrdDrm == 0)
+                    if (MktGrdDrm == 0) {
                         $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActDrm").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrm").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrm").css({ "color": "red", "font-weight": "bold" });
+                        }                        
                     }
 
                     MktScrTot = MktScrTot + item.MktScrDrm;
@@ -515,13 +537,20 @@
                     $("#MktAchAir").text(formatNumber(item.MktAchAir.toFixed(2)));
                     $("#MktScrAir").text(formatNumber(item.MktScrAir.toFixed(2)));
                     var MktGrdAir = item.MktGrdAir;
-                    if (MktGrdAir === 0)
+                    if (MktGrdAir === 0) {
                         $("#AirTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActAir").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.MktScrAir - item.MktGrdAir;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#AirTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AirTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAir").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AirTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAir").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTot = MktScrTot + item.MktScrAir;
@@ -534,13 +563,21 @@
                     $("#MktAchSat").text(formatNumber(item.PicAchSat.toFixed(2)));
                     $("#MktScrSat").text(formatNumber(item.PicScrSat.toFixed(2)));
                     var PicGrdSat = item.PicGrdSat;
-                    if (PicGrdSat == 0)
+                    if (PicGrdSat == 0) {
                         $("#SatTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActSat").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.PicScrSat - item.PicGrdSat;
-                        if (newcolor3 >= 0 )
+                        if (newcolor3 >= 0) {
                             $("#SatTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SatTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSat").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#SatTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSat").css({ "color": "red", "font-weight": "bold" });
+                        } 
                     }
 
                     MktScrTot = MktScrTot + item.PicScrSat;
@@ -595,13 +632,22 @@
                         $("#MktAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#MktScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                            $("#MktActRevMonth").css({ "color": "black", "font-weight": "normal" });
+
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRevMonth").css({ "color": "black", "font-weight": "bold" });
+
+                            }
+                            else {
+                                $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRevMonth").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
 
                         MktScrTotMonth = MktScrTotMonth + item.PicScrRev;;
@@ -617,13 +663,20 @@
 					if (thn == 2020)
 						$("#AquTitleMonth").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");				
 					
-                    if (PicGrdAqu == 0)
+                    if (PicGrdAqu == 0) {
                         $("#AquTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActAquMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
-                        if (newcolor2 >= 0)
+                        if (newcolor2 >= 0) {
                             $("#AquTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AquTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAquMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AquTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAquMonth").css({ "color": "red", "font-weight": "bold" });
+                        } 
                     }
 
                     MktScrTotMonth = MktScrTotMonth + item.PicScrAqu;
@@ -636,13 +689,20 @@
                     $("#MktAchDrmMonth").text(formatNumber(item.MktAchDrm.toFixed(2)));
                     $("#MktScrDrmMonth").text(formatNumber(item.MktScrDrm.toFixed(2)));
                     var MktGrdDrm = item.MktGrdDrm;
-                    if (MktGrdDrm == 0)
+                    if (MktGrdDrm == 0) {
                         $("#DrmTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActDrmMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#DrmTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrmMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DrmTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrmMonth").css({ "color": "red", "font-weight": "bold" });
+                        } 
                     }
 
                     MktScrTotMonth = MktScrTotMonth + item.MktScrDrm;
@@ -655,13 +715,22 @@
                     $("#MktAchAirMonth").text(formatNumber(item.MktAchAir.toFixed(2)));
                     $("#MktScrAirMonth").text(formatNumber(item.MktScrAir.toFixed(2)));
                     var MktGrdAir = item.MktGrdAir;
-                    if (MktGrdAir === 0)
+                    if (MktGrdAir === 0) {
                         $("#AirTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActAirMonth").css({ "color": "black", "font-weight": "normal" });
+
+                    }
                     else {
                         var newcolor3 = item.MktScrAir - item.MktGrdAir;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#AirTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AirTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAirMonth").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#AirTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAirMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTotMonth = MktScrTotMonth + item.MktScrAir;
@@ -674,13 +743,20 @@
                     $("#MktAchSatMonth").text(formatNumber(item.PicAchSat.toFixed(2)));
                     $("#MktScrSatMonth").text(formatNumber(item.PicScrSat.toFixed(2)));
                     var PicGrdSat = item.PicGrdSat;
-                    if (PicGrdSat == 0)
+                    if (PicGrdSat == 0) {
                         $("#SatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActSatMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.PicScrSat - item.PicGrdSat;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#SatTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSatMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSatMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTotMonth = MktScrTotMonth + item.PicScrSat;
@@ -720,13 +796,22 @@
                         $("#MktAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#MktScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#MktActRevSum").css({ "color": "black", "font-weight": "normal" });
+
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRevSum").css({ "color": "black", "font-weight": "bold" });
+
+                            }
+                            else {
+                                $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#MktActRevSum").css({ "color": "red", "font-weight": "bold" });
+                            } 
                         }
 
                         MktScrTotSum = MktScrTotSum + item.PicScrRev;;
@@ -742,13 +827,22 @@
 					if (thn == 2020)
 						$("#AquTitleSum").text("New Customer Acquitition medium strategic (min IDR 0.5 Bio p.a)");				
 
-                    if (PicGrdAqu == 0)
+                    if (PicGrdAqu == 0) {
                         $("#AquTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActAquSum").css({ "color": "black", "font-weight": "normal" });
+
+                    }
                     else {
                         var newcolor2 = item.PicScrAqu - item.PicGrdAqu;
-                        if (newcolor2 >= 0)
+                        if (newcolor2 >= 0) {
                             $("#AquTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AquTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAquSum").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#AquTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAquSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTotSum = MktScrTotSum + item.PicScrAqu;
@@ -761,13 +855,20 @@
                     $("#MktAchDrmSum").text(formatNumber(item.MktAchDrm.toFixed(2)));
                     $("#MktScrDrmSum").text(formatNumber(item.MktScrDrm.toFixed(2)));
                     var MktGrdDrm = item.MktGrdDrm;
-                    if (MktGrdDrm == 0)
+                    if (MktGrdDrm == 0) {
                         $("#DrmTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActDrmSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.MktScrDrm - item.MktGrdDrm;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#DrmTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrmSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DrmTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActDrmSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTotSum = MktScrTotSum + item.MktScrDrm;
@@ -780,13 +881,22 @@
                     $("#MktAchAirSum").text(formatNumber(item.MktAchAir.toFixed(2)));
                     $("#MktScrAirSum").text(formatNumber(item.MktScrAir.toFixed(2)));
                     var MktGrdAir = item.MktGrdAir;
-                    if (MktGrdAir === 0)
+                    if (MktGrdAir === 0) {
                         $("#AirTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActAirSum").css({ "color": "black", "font-weight": "normal" });
+
+                    }
                     else {
                         var newcolor3 = item.MktScrAir - item.MktGrdAir;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#AirTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AirTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAirSum").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#AirTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActAirSum").css({ "color": "red", "font-weight": "bold" });
+                        } 
                     }
 
                     MktScrTotSum = MktScrTotSum + item.MktScrAir;
@@ -799,13 +909,22 @@
                     $("#MktAchSatSum").text(formatNumber(item.PicAchSat.toFixed(2)));
                     $("#MktScrSatSum").text(formatNumber(item.PicScrSat.toFixed(2)));
                     var PicGrdSat = item.PicGrdSat;
-                    if (PicGrdSat == 0)
+                    if (PicGrdSat == 0) {
                         $("#SatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#MktActSatSum").css({ "color": "black", "font-weight": "normal" });
+
+                    }
                     else {
                         var newcolor3 = item.PicScrSat - item.PicGrdSat;
-                        if (newcolor3 >= 0)
+                        if (newcolor3 >= 0) {
                             $("#SatTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSatSum").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#SatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#MktActSatSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     MktScrTotSum = MktScrTotSum + item.PicScrSat;

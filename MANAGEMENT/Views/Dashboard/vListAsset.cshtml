@@ -47,12 +47,15 @@
                         <button type="button" class="btn btn-success  btn-sm" onclick="getLoad()">View</button>
                         <button type="button" class="btn btn-info btn-sm" onclick="getPrint()">Print</button>
                         <button type="button" class="btn btn-danger btn-sm" onclick="getRekap()">Rekap Print</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="getExport()">Export</button>
                         <button type="button" class="btn btn-warning btn-sm" onclick="getDispose()">Dispose</button>
                         <div class="btn-group">
                             <label class="radio-inline">
-                                <input type="radio" name="option" id="opt1" checked="checked">Monthly</label>
+                                <input type="radio" name="option" id="opt1" checked="checked">Monthly
+                            </label>
                             <label class="radio-inline">
-                                <input type="radio" name="option" id="opt2">Yearly</label>                            
+                                <input type="radio" name="option" id="opt2">Yearly
+                            </label>
                         </div>
 
                     </div>
@@ -286,6 +289,33 @@
         var ppicObj = {
             id: $('#prd').val(),
             type: 'DTL',
+            choice: 'A'
+        };
+        $.ajax({
+            url: urlKPI + "/passPrintAsset/",
+            data: JSON.stringify(ppicObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function () { $(".loader").show(); },
+            complete: function () { $(".loader").hide();; },
+            dataType: "json",
+            success: function (result) {
+                if (result == 1) {
+                    window.open('../Report/WebRptForm.aspx');
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+    function getExport() {
+        var ppicObj = {
+            id: $('#prd').val(),
+            type: 'EXP',
             choice: 'A'
         };
         $.ajax({
@@ -553,7 +583,7 @@
         $("#invcodeTr").val(inv)
         $("#groupTr").val(group);
 
-        
+        //jika sudah terbentuk no urut tidak bisa diedit
         if (nilUrut !== '') {
             $("#btnUbah").prop("disabled", true);
         } else {

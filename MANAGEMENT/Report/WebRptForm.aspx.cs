@@ -33,6 +33,8 @@ namespace MANAGEMENT.Report
                 report.Load(Server.MapPath("~/Report/AssetDetail.mrt"));
             else if (typePrint == "RKP")
                 report.Load(Server.MapPath("~/Report/AssetRekap.mrt"));
+            else if (typePrint == "EXP")
+                report.Load(Server.MapPath("~/Report/AssetDetailExport.mrt"));
             else if (typePrint == "DIS")
                 report.Load(Server.MapPath("~/Report/AssetDisposal.mrt"));
 
@@ -41,7 +43,7 @@ namespace MANAGEMENT.Report
             {
                 report["parA"] = codeid;
             }
-            else if (typePrint == "DTL" || typePrint == "RKP")
+            else if (typePrint == "DTL" || typePrint == "RKP" || typePrint == "EXP")
             {
                 report["parA"] = typeOption;
                 report["Variable1"] = typeOption;

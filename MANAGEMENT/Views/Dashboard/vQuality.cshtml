@@ -145,7 +145,7 @@
                     </tr>
 
                     <tr>
-                        <td><span id="CasTitle">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="CasTitle">Reject Rate at mfg-site(%)-Casting</span></td>
                         <td><span id="QuaGrdCas" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCas" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCas" class="pull-right" style="color:blue"></span></td>
@@ -153,7 +153,7 @@
                         <td><span id="QuaScrCas" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="BadTitle">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="BadTitle">Reject Rate at mfg-site(%)-Bad MC</span></td>
                         <td><span id="QuaGrdBad" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtBad" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActBad" class="pull-right" style="color:blue"></span></td>
@@ -193,7 +193,7 @@
                         <td><span id="QuaScrOth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CcnTitle">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="CcnTitle">Customer Complaint Credit Note</span></td>
                         <td><span id="QuaGrdCcn" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCcn" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCcn" class="pull-right" style="color:blue"></span></td>
@@ -282,7 +282,7 @@
                     </tr>
 
                     <tr>
-                        <td><span id="CasTitleMonth">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="CasTitleMonth">Reject Rate at mfg-site(%)-Casting</span></td>
                         <td><span id="QuaGrdCasMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCasMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCasMonth" class="pull-right" style="color:blue"></span></td>
@@ -290,7 +290,7 @@
                         <td><span id="QuaScrCasMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="BadTitleMonth">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="BadTitleMonth">Reject Rate at mfg-site(%)-Bad MC</span></td>
                         <td><span id="QuaGrdBadMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtBadMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActBadMonth" class="pull-right" style="color:blue"></span></td>
@@ -330,7 +330,7 @@
                         <td><span id="QuaScrOthMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CcnTitleMonth">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="CcnTitleMonth">Customer Complaint Credit Note</span></td>
                         <td><span id="QuaGrdCcnMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCcnMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCcnMonth" class="pull-right" style="color:blue"></span></td>
@@ -420,7 +420,7 @@
                     </tr>
 
                     <tr>
-                        <td><span id="CasTitleSum">Reject Rate at mfg-site(5%)-Casting</span></td>
+                        <td><span id="CasTitleSum">Reject Rate at mfg-site(%)-Casting</span></td>
                         <td><span id="QuaGrdCasSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCasSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCasSum" class="pull-right" style="color:blue"></span></td>
@@ -428,7 +428,7 @@
                         <td><span id="QuaScrCasSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="BadTitleSum">Reject Rate at mfg-site(1%)-Bad MC</span></td>
+                        <td><span id="BadTitleSum">Reject Rate at mfg-site(%)-Bad MC</span></td>
                         <td><span id="QuaGrdBadSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtBadSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActBadSum" class="pull-right" style="color:blue"></span></td>
@@ -468,7 +468,7 @@
                         <td><span id="QuaScrOthSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td><span id="CcnTitleSum">Customer Complaint Credit Note(1%)</span></td>
+                        <td><span id="CcnTitleSum">Customer Complaint Credit Note</span></td>
                         <td><span id="QuaGrdCcnSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaTgtCcnSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="QuaActCcnSum" class="pull-right" style="color:blue"></span></td>
@@ -657,13 +657,20 @@
                         $("#QuaScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#QuaActRev").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRev").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRev").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     }
                     if (thn < 2020) {
@@ -713,13 +720,20 @@
                     $("#QuaScrCas").text(formatNumber(item.PicScrRjt.toFixed(2)));
                     var PicGrdRjt = item.PicGrdRjt;
                     var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
+                    if (PicGrdRjt == 0) {
                         $("#CasTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCas").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0) {
                             $("#CasTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CasTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCas").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CasTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCas").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Reject Machining
                     $("#QuaGrdBad").text(formatNumber(item.PicGrdAir));
@@ -729,13 +743,20 @@
                     $("#QuaScrBad").text(formatNumber(item.PicScrAir.toFixed(2)));
                     var PicGrdAir = item.PicGrdAir;
                     var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
+                    if (PicGrdAir == 0) {
                         $("#BadTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActBad").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0) {
                             $("#BadTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBad").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBad").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Tvb
                     $("#QuaGrdTvb").text(formatNumber(item.PicGrdTvb));
@@ -745,13 +766,20 @@
                     $("#QuaScrTvb").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
                     var PicTgtTvb = item.PicTgtTvb;
-                    if (PicGrdTvb == 0 )
+                    if (PicGrdTvb == 0) {
                         $("#TvbTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActTvb").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0) {
                             $("#TvbTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvb").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#TvbTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvb").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Dpp
                     $("#QuaGrdDpp").text(formatNumber(item.PicGrdDpp));
@@ -761,13 +789,20 @@
                     $("#QuaScrDpp").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#DppTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActDpp").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0) {
                             $("#DppTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDpp").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DppTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDpp").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Emerson
                     $("#QuaGrdEme").text(formatNumber(item.PicGrdEme));
@@ -777,13 +812,20 @@
                     $("#QuaScrEme").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
                     var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdEme == 0 )
+                    if (PicGrdEme == 0) {
                         $("#EmeTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActEme").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0) {
                             $("#EmeTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#EmeTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEme").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#EmeTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEme").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Other
                     $("#QuaGrdOth").text(formatNumber(item.PicGrdOth));
@@ -793,13 +835,20 @@
                     $("#QuaScrOth").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#OthTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActOth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0) {
                             $("#OthTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#OthTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#OthTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Customer Complaint CN
                     $("#QuaGrdCcn").text(formatNumber(item.PicGrdSca));
@@ -809,13 +858,20 @@
                     $("#QuaScrCcn").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#CcnTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCcn").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor9 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0) {
                             $("#CcnTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CcnTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcn").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CcnTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcn").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     if (thn < 2020) {
                         $("#trhdrPED").show();
@@ -868,12 +924,19 @@
                     var PicGrdSaf = item.PicGrdSaf;
                     var PicAchSaf = item.PicAchSaf;
                     console.log(PicGrdSaf);
-                    if (PicGrdSaf == 0)
+                    if (PicGrdSaf == 0) {
                         $("#LabTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActLab").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
-                        if (PicAchSaf >= 100)
+                        if (PicAchSaf >= 100) {
                             $("#LabTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLab").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLab").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
 
@@ -975,13 +1038,20 @@
                         $("#QuaScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                            $("#QuaActRevMonth").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRevMonth").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRevMonth").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     }
                     if (thn < 2020) {
@@ -1034,13 +1104,20 @@
                     $("#QuaScrCasMonth").text(formatNumber(item.PicScrRjt.toFixed(2)));
                     var PicGrdRjt = item.PicGrdRjt;
                     var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
+                    if (PicGrdRjt == 0) {
                         $("#CasTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCasMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0) {
                             $("#CasTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CasTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCasMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CasTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCasMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Reject Machining
                     $("#QuaGrdBadMonth").text(formatNumber(item.PicGrdAir));
@@ -1050,13 +1127,20 @@
                     $("#QuaScrBadMonth").text(formatNumber(item.PicScrAir.toFixed(2)));
                     var PicGrdAir = item.PicGrdAir;
                     var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
+                    if (PicGrdAir == 0) {
                         $("#BadTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActBadMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0) {
                             $("#BadTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBadMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBadMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Tvb
                     $("#QuaGrdTvbMonth").text(formatNumber(item.PicGrdTvb));
@@ -1066,13 +1150,21 @@
                     $("#QuaScrTvbMonth").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
                     var PicTgtTvb = item.PicTgtTvb;
-                    if (PicGrdTvb == 0 )
+                    if (PicGrdTvb == 0) {
                         $("#TvbTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActTvbMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0) {
                             $("#TvbTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvbMonth").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#TvbTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvbMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Dpp
                     $("#QuaGrdDppMonth").text(formatNumber(item.PicGrdDpp));
@@ -1082,13 +1174,20 @@
                     $("#QuaScrDppMonth").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#DppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActDppMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0) {
                             $("#DppTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDppMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDppMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Emerson
                     $("#QuaGrdEmeMonth").text(formatNumber(item.PicGrdEme));
@@ -1098,13 +1197,20 @@
                     $("#QuaScrEmeMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
                     var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdEme == 0 )
+                    if (PicGrdEme == 0) {
                         $("#EmeTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActEmeMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0) {
                             $("#EmeTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#EmeTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEmeMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#EmeTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEmeMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Other
                     $("#QuaGrdOthMonth").text(formatNumber(item.PicGrdOth));
@@ -1114,13 +1220,20 @@
                     $("#QuaScrOthMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#OthTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActOthMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0) {
                             $("#OthTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#OthTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOthMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#OthTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOthMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Customer Complaint CN
                     $("#QuaGrdCcnMonth").text(formatNumber(item.PicGrdSca));
@@ -1130,13 +1243,20 @@
                     $("#QuaScrCcnMonth").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#CcnTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCcnMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor9 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0) {
                             $("#CcnTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CcnTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcnMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CcnTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcnMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     if (thn < 2020) {
                         $("#trdtlPED").show();
@@ -1188,12 +1308,20 @@
                     var PicGrdSafMonth = item.PicGrdSaf;
                     var PicAchSafMonth = item.PicAchSaf;
                     console.log(PicGrdSafMonth);
-                    if (PicGrdSafMonth == 0)
+                    if (PicGrdSafMonth == 0) {
                         $("#LabTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActLabMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
-                        if (PicAchSafMonth >= 100)
+                        if (PicAchSafMonth >= 100) {
                             $("#LabTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLabMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+
+                        else {
+                            $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLabMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     //--TempGradeSafMonth = item.PicGrdSaf;
@@ -1286,13 +1414,20 @@
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
                         console.log(PicGrdRev);
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#QuaActRevSum").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRevSum").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActRevSum").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     }
                     if (thn < 2020) {
@@ -1306,13 +1441,20 @@
                         $("#QuaScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
                         var PicGrdPda = item.PicGrdPda;
                         var PicTgtPda = item.PicTgtPda;
-                        if (PicGrdPda == 0)
+                        if (PicGrdPda == 0) {
                             $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#QuaActPdaSum").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                            if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                            if (newcolor1 >= 0 && item.PicTgtPda > 0) {
                                 $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActPdaSum").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActPdaSum").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         /*------------pdc---------*/
                         $("#QuaGrdPdcSum").text(formatNumber(item.PicGrdPdc));
@@ -1322,13 +1464,20 @@
                         $("#QuaScrPdcSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
                         var PicGrdPdc = item.PicGrdPdc;
                         var PicTgtPdc = item.PicTgtPdc;
-                        if (PicGrdPdc == 0)
+                        if (PicGrdPdc == 0) {
                             $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#QuaActPdcSum").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
-                            if (newcolor2 >= 0 && item.PicTgtPdc > 0)
+                            if (newcolor2 >= 0 && item.PicTgtPdc > 0) {
                                 $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActPdcSum").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#QuaActPdcSum").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     } else {
                         $("#trsubdtlPDA").hide();
@@ -1342,13 +1491,20 @@
                     $("#QuaScrCasSum").text(formatNumber(item.PicScrRjt.toFixed(2)));
                     var PicGrdRjt = item.PicGrdRjt;
                     var PicTgtRjt = item.PicTgtRjt;
-                    if (PicGrdRjt == 0 )
+                    if (PicGrdRjt == 0) {
                         $("#CasTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCasSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor3 = item.PicScrRjt - item.PicGrdRjt;
-                        if (newcolor3 >= 0 && item.PicTgtRjt > 0)
+                        if (newcolor3 >= 0 && item.PicTgtRjt > 0) {
                             $("#CasTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CasTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCasSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CasTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCasSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     //----Reject Machining
@@ -1359,13 +1515,20 @@
                     $("#QuaScrBadSum").text(formatNumber(item.PicScrAir.toFixed(2)));
                     var PicGrdAir = item.PicGrdAir;
                     var PicTgtAir = item.PicTgtAir;
-                    if (PicGrdAir == 0 )
+                    if (PicGrdAir == 0) {
                         $("#BadTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActBadSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrAir - item.PicGrdAir;
-                        if (newcolor4 >= 0 && item.PicTgtAir > 0)
+                        if (newcolor4 >= 0 && item.PicTgtAir > 0) {
                             $("#BadTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBadSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActBadSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Tvb
                     $("#QuaGrdTvbSum").text(formatNumber(item.PicGrdTvb));
@@ -1375,13 +1538,20 @@
                     $("#QuaScrTvbSum").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
                     var PicTgtTvb = item.PicTgtTvb;
-                    if (PicGrdTvb == 0 )
+                    if (PicGrdTvb == 0) {
                         $("#TvbTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActTvbSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 && item.PicTgtTvb > 0)
+                        if (newcolor5 >= 0 && item.PicTgtTvb > 0) {
                             $("#TvbTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvbSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#TvbTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActTvbSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Dpp
                     $("#QuaGrdDppSum").text(formatNumber(item.PicGrdDpp));
@@ -1391,13 +1561,20 @@
                     $("#QuaScrDppSum").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#DppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActDppSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor6 >= 0 && item.PicTgtDpp > 0) {
                             $("#DppTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDppSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#DppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActDppSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Emerson
                     $("#QuaGrdEmeSum").text(formatNumber(item.PicGrdEme));
@@ -1407,29 +1584,43 @@
                     $("#QuaScrEmeSum").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
                     var PicTgtEme = item.PicTgtEme;
-                    if (PicGrdEme == 0 )
+                    if (PicGrdEme == 0) {
                         $("#EmeTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActEmeSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 && item.PicTgtEme > 0)
+                        if (newcolor7 >= 0 && item.PicTgtEme > 0) {
                             $("#EmeTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#EmeTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEmeSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#EmeTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActEmeSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Other
                     $("#QuaGrdOthSum").text(formatNumber(item.PicGrdOth));
                     $("#QuaTgtOthSum").text(formatNumber(item.PicTgtOth));
                     $("#QuaActOthSum").text(formatNumber(item.PicActOth));
                     $("#QuaAchOthSum").text(formatNumber(item.PicAchOth.toFixed(2)));
-                    $("#QuaScrOthSum").text(formatNumber(item.PicScrOth));
+                    $("#QuaScrOthSum").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#OthTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActOthSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor8 >= 0 && item.PicTgtOth > 0) {
                             $("#OthTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#OthTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOthSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#OthTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActOthSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Customer Complaint CN
                     $("#QuaGrdCcnSum").text(formatNumber(item.PicGrdSca));
@@ -1439,13 +1630,20 @@
                     $("#QuaScrCcnSum").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#CcnTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActCcnSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor9 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor9 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor9 >= 0 && item.PicTgtSca > 0) {
                             $("#CcnTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#CcnTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcnSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#CcnTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActCcnSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     if (thn < 2020) {
@@ -1497,12 +1695,19 @@
                     var PicGrdSafSum = item.PicGrdSaf;
                     var PicAchSafSum = item.PicAchSaf;
                     console.log(PicGrdSafSum);
-                    if (PicGrdSafSum == 0)
+                    if (PicGrdSafSum == 0) {
                         $("#LabTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#QuaActLabSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
-                        if (PicAchSafSum >= 100)
+                        if (PicAchSafSum >= 100) {
                             $("#LabTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLabSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#QuaActLabSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //--TempGradeSafSum   = item.PicGrdSaf;
                     //--TempTargetSafSum  = item.PicTgtSaf;

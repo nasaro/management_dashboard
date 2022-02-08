@@ -185,7 +185,7 @@
                         <td><span id="EngAchApp" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngScrApp" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trheadGat">
                         <td><span id="GatTitle">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
                         <td><span id="EngGrdGat" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngTgtGat" class="pull-right" style="color:blue"></span></td>
@@ -314,7 +314,7 @@
                         <td><span id="EngAchAppMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngScrAppMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trheadGatMonth">
                         <td><span id="GatTitleMonth">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
                         <td><span id="EngGrdGatMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngTgtGatMonth" class="pull-right" style="color:blue"></span></td>
@@ -444,7 +444,7 @@
                         <td><span id="EngAchAppSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngScrAppSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
-                    <tr>
+                    <tr id="trheadGatSum">
                         <td><span id="GatTitleSum">New Product - ZENGATE+ 100mm,150mm, 200mm</span></td>
                         <td><span id="EngGrdGatSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="EngTgtGatSum" class="pull-right" style="color:blue"></span></td>
@@ -632,13 +632,20 @@
                         $("#EngAchRev").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#EngScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#EngActRev").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRev").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRev").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
 
                     }
@@ -649,13 +656,20 @@
                     $("#EngAchPda").text(formatNumber(item.PicAchPda.toFixed(2)));
                     $("#EngScrPda").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
-                    if (PicGrdPda == 0)
+                    if (PicGrdPda == 0) {
                         $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPda").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0)
+                        if (newcolor1 >= 0) {
                             $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPda").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPda").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     /*------------pdc---------*/
@@ -665,13 +679,20 @@
                     $("#EngAchPdc").text(formatNumber(item.PicAchPdc.toFixed(2)));
                     $("#EngScrPdc").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
-                    if (PicGrdPdc == 0)
+                    if (PicGrdPdc == 0) {
                         $("#PdcTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPdc").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolor2 >= 0)
+                        if (newcolor2 >= 0) {
                             $("#PdcTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdc").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdcTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdc").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                   
@@ -722,13 +743,20 @@
                     $("#EngAchYie").text(formatNumber(item.PicAchTvb.toFixed(2)));
                     $("#EngScrYie").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
-                    if (PicGrdTvb == 0)
+                    if (PicGrdTvb == 0) {
                         $("#YieTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActYie").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 )
+                        if (newcolor5 >= 0) {
                             $("#YieTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#YieTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYie").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#YieTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYie").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Submission
                     $("#EngGrdSub").text(formatNumber(item.PicGrdDpp));
@@ -737,13 +765,20 @@
                     $("#EngAchSub").text(formatNumber(item.PicAchDpp.toFixed(2)));
                     $("#EngScrSub").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
-                    if (PicGrdDpp == 0)
+                    if (PicGrdDpp == 0) {
                         $("#SubTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActSub").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0)
+                        if (newcolor6 >= 0) {
                             $("#SubTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SubTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSub").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SubTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSub").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Sample Approval
                     $("#EngGrdApp").text(formatNumber(item.PicGrdEme));
@@ -752,13 +787,20 @@
                     $("#EngAchApp").text(formatNumber(item.PicAchEme.toFixed(2)));
                     $("#EngScrApp").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
-                    if (PicGrdEme == 0)
+                    if (PicGrdEme == 0) {
                         $("#AppTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActApp").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 )
+                        if (newcolor7 >= 0) {
                             $("#AppTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AppTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActApp").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AppTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActApp").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     //----ZENGATE
@@ -767,20 +809,27 @@
                     } else {
                         $("#GatTitle").text('New Product Innovation - 2 items');
                     }
-                    $("#EngGrdGat").text(formatNumber(item.PicGrdOth));
-                    $("#EngTgtGat").text(formatNumber(item.PicTgtOth));
-                    $("#EngActGat").text(formatNumber(item.PicActOth));
-                    $("#EngAchGat").text(formatNumber(item.PicAchOth.toFixed(2)));
-                    $("#EngScrGat").text(formatNumber(item.PicScrOth.toFixed(2)));
-                    var PicGrdOth = item.PicGrdOth;
-                    if (PicGrdOth == 0)
-                        $("#GatTitle").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 )
-                            $("#GatTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#GatTitle").css({ "color": "red", "font-weight": "bold" });
+
+                    if (thn > 2021) {
+                        $("#trheadGat").hide();
+                    } else {
+                        $("#trheadGat").show();
+                        $("#EngGrdGat").text(formatNumber(item.PicGrdOth));
+                        $("#EngTgtGat").text(formatNumber(item.PicTgtOth));
+                        $("#EngActGat").text(formatNumber(item.PicActOth));
+                        $("#EngAchGat").text(formatNumber(item.PicAchOth.toFixed(2)));
+                        $("#EngScrGat").text(formatNumber(item.PicScrOth.toFixed(2)));
+                        var PicGrdOth = item.PicGrdOth;
+                        if (PicGrdOth == 0)
+                            $("#GatTitle").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                            if (newcolor8 >= 0)
+                                $("#GatTitle").css({ "color": "black", "font-weight": "bold" });
+                            else $("#GatTitle").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
+
 
                     if (thn < 2020) {
                         $("#trheadCe").show();
@@ -887,13 +936,20 @@
                         $("#EngAchRevMonth").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#EngScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                            $("#EngActRevMonth").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRevMonth").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRevMonth").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     }
                     /*------------pda---------*/
@@ -903,13 +959,20 @@
                     $("#EngAchPdaMonth").text(formatNumber(item.PicAchPda.toFixed(2)));
                     $("#EngScrPdaMonth").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
-                    if (PicGrdPda == 0)
+                    if (PicGrdPda == 0) {
                         $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPdaMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0 )
+                        if (newcolor1 >= 0) {
                             $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdaMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdaMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     /*------------pdc---------*/
                     $("#EngGrdPdcMonth").text(formatNumber(item.PicGrdPdc));
@@ -918,13 +981,20 @@
                     $("#EngAchPdcMonth").text(formatNumber(item.PicAchPdc.toFixed(2)));
                     $("#EngScrPdcMonth").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
-                    if (PicGrdPdc == 0)
+                    if (PicGrdPdc == 0) {
                         $("#PdcTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPdcMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolor2 >= 0 )
+                        if (newcolor2 >= 0) {
                             $("#PdcTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdcMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdcTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdcMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     if (thn < 2020) {
@@ -973,13 +1043,20 @@
                     $("#EngAchYieMonth").text(formatNumber(item.PicAchTvb.toFixed(2)));
                     $("#EngScrYieMonth").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
-                    if (PicGrdTvb == 0)
+                    if (PicGrdTvb == 0) {
                         $("#YieTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActYieMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 )
+                        if (newcolor5 >= 0) {
                             $("#YieTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#YieTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYieMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#YieTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYieMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     //----Submission
@@ -989,13 +1066,20 @@
                     $("#EngAchSubMonth").text(formatNumber(item.PicAchDpp.toFixed(2)));
                     $("#EngScrSubMonth").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
-                    if (PicGrdDpp == 0)
+                    if (PicGrdDpp == 0) {
                         $("#SubTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActSubMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0)
+                        if (newcolor6 >= 0) {
                             $("#SubTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SubTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSubMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SubTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSubMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     //----Sample Approval
@@ -1005,13 +1089,20 @@
                     $("#EngAchAppMonth").text(formatNumber(item.PicAchEme.toFixed(2)));
                     $("#EngScrAppMonth").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
-                    if (PicGrdEme == 0)
+                    if (PicGrdEme == 0) {
                         $("#AppTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActAppMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 )
+                        if (newcolor7 >= 0) {
                             $("#AppTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActAppMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AppTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActAppMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     if (thn < 2020) {
@@ -1020,21 +1111,27 @@
                         $("#GatTitleMonth").text('New Product Innovation - 2 items');
                     }
 
-                    //----ZENGATE
-                    $("#EngGrdGatMonth").text(formatNumber(item.PicGrdOth));
-                    $("#EngTgtGatMonth").text(formatNumber(item.PicTgtOth));
-                    $("#EngActGatMonth").text(formatNumber(item.PicActOth));
-                    $("#EngAchGatMonth").text(formatNumber(item.PicAchOth.toFixed(2)));
-                    $("#EngScrGatMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
-                    var PicGrdOth = item.PicGrdOth;
-                    if (PicGrdOth == 0)
-                        $("#GatTitleMonth").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 )
-                            $("#GatTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#GatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                    if (thn > 2021) {
+                        $("#trheadGatMonth").hide();
+                    } else {
+                        $("#trheadGatMonth").show();
+                        //----ZENGATE
+                        $("#EngGrdGatMonth").text(formatNumber(item.PicGrdOth));
+                        $("#EngTgtGatMonth").text(formatNumber(item.PicTgtOth));
+                        $("#EngActGatMonth").text(formatNumber(item.PicActOth));
+                        $("#EngAchGatMonth").text(formatNumber(item.PicAchOth.toFixed(2)));
+                        $("#EngScrGatMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
+                        var PicGrdOth = item.PicGrdOth;
+                        if (PicGrdOth == 0)
+                            $("#GatTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                            if (newcolor8 >= 0)
+                                $("#GatTitleMonth").css({ "color": "black", "font-weight": "bold" });
+                            else $("#GatTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
+
 
                     if (thn < 2020) {
                         $("#trdtlCe").show();
@@ -1133,13 +1230,20 @@
                         $("#EngAchRevSum").text(formatNumber(item.PicAchRev.toFixed(2)));
                         $("#EngScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#EngActRevSum").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0)
+                            if (newcolor >= 0) {
                                 $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRevSum").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#EngActRevSum").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                     }
                     /*------------pda---------*/
@@ -1149,13 +1253,20 @@
                     $("#EngAchPdaSum").text(formatNumber(item.PicAchPda.toFixed(2)));
                     $("#EngScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
-                    if (PicGrdPda == 0)
+                    if (PicGrdPda == 0) {
                         $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPdaSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0 )
+                        if (newcolor1 >= 0) {
                             $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdaSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdaSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     /*------------pdc---------*/
                     $("#EngGrdPdcSum").text(formatNumber(item.PicGrdPdc));
@@ -1164,13 +1275,20 @@
                     $("#EngAchPdcSum").text(formatNumber(item.PicAchPdc.toFixed(2)));
                     $("#EngScrPdcSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
-                    if (PicGrdPdc == 0)
+                    if (PicGrdPdc == 0) {
                         $("#PdcTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActPdcSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor2 = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolor2 >= 0 )
+                        if (newcolor2 >= 0) {
                             $("#PdcTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdcSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdcTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActPdcSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     if (thn < 2020) {
@@ -1221,13 +1339,20 @@
                     $("#EngAchYieSum").text(formatNumber(item.PicAchTvb.toFixed(2)));
                     $("#EngScrYieSum").text(formatNumber(item.PicScrTvb.toFixed(2)));
                     var PicGrdTvb = item.PicGrdTvb;
-                    if (PicGrdTvb == 0)
+                    if (PicGrdTvb == 0) {
                         $("#YieTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActYieSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrTvb - item.PicGrdTvb;
-                        if (newcolor5 >= 0 )
+                        if (newcolor5 >= 0) {
                             $("#YieTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#YieTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYieSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#YieTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActYieSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Submission
                     $("#EngGrdSubSum").text(formatNumber(item.PicGrdDpp));
@@ -1236,13 +1361,20 @@
                     $("#EngAchSubSum").text(formatNumber(item.PicAchDpp.toFixed(2)));
                     $("#EngScrSubSum").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
-                    if (PicGrdDpp == 0)
+                    if (PicGrdDpp == 0) {
                         $("#SubTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActSubSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor6 >= 0)
+                        if (newcolor6 >= 0) {
                             $("#SubTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SubTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSubSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SubTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActSubSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     //----Sample Approval
                     $("#EngGrdAppSum").text(formatNumber(item.PicGrdEme));
@@ -1251,13 +1383,20 @@
                     $("#EngAchAppSum").text(formatNumber(item.PicAchEme.toFixed(2)));
                     $("#EngScrAppSum").text(formatNumber(item.PicScrEme.toFixed(2)));
                     var PicGrdEme = item.PicGrdEme;
-                    if (PicGrdEme == 0)
+                    if (PicGrdEme == 0) {
                         $("#AppTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#EngActAppSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrEme - item.PicGrdEme;
-                        if (newcolor7 >= 0 )
+                        if (newcolor7 >= 0) {
                             $("#AppTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActAppSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AppTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#EngActAppSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
 
                     if (thn < 2020) {
@@ -1265,21 +1404,28 @@
                     } else {
                         $("#GatTitleSum").text('New Product Innovation - 2 items');
                     }
-                    //----ZENGATE
-                    $("#EngGrdGatSum").text(formatNumber(item.PicGrdOth));
-                    $("#EngTgtGatSum").text(formatNumber(item.PicTgtOth));
-                    $("#EngActGatSum").text(formatNumber(item.PicActOth));
-                    $("#EngAchGatSum").text(formatNumber(item.PicAchOth.toFixed(2)));
-                    $("#EngScrGatSum").text(formatNumber(item.PicScrOth.toFixed(2)));
-                    var PicGrdOth = item.PicGrdOth;
-                    if (PicGrdOth == 0)
-                        $("#GatTitleSum").css({ "color": "black", "font-weight": "normal" });
-                    else {
-                        var newcolor8 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor8 >= 0 )
-                            $("#GatTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#GatTitleSum").css({ "color": "red", "font-weight": "bold" });
+
+                    if (thn > 2021) {
+                        $("#trheadGatSum").hide();
+                    } else {
+                        $("#trheadGatSum").show();
+                        //----ZENGATE
+                        $("#EngGrdGatSum").text(formatNumber(item.PicGrdOth));
+                        $("#EngTgtGatSum").text(formatNumber(item.PicTgtOth));
+                        $("#EngActGatSum").text(formatNumber(item.PicActOth));
+                        $("#EngAchGatSum").text(formatNumber(item.PicAchOth.toFixed(2)));
+                        $("#EngScrGatSum").text(formatNumber(item.PicScrOth.toFixed(2)));
+                        var PicGrdOth = item.PicGrdOth;
+                        if (PicGrdOth == 0)
+                            $("#GatTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        else {
+                            var newcolor8 = item.PicScrOth - item.PicGrdOth;
+                            if (newcolor8 >= 0)
+                                $("#GatTitleSum").css({ "color": "black", "font-weight": "bold" });
+                            else $("#GatTitleSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
+
 
                     if (thn < 2020) {
                         $("#trsubdtlCe").show();

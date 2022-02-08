@@ -122,7 +122,7 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
+                        <th rowspan="23" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
                         <td style="font-size:x-small"><span id="RevTitle">Revenue</span></td>
                         <td><span id="CasGrdRev" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRev" class="pull-right" style="color:blue"></span></td>
@@ -291,7 +291,7 @@
                         <td><span id="CasScrRed" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td style="font-size:x-small"><span id="WipTitle">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitle">WIP Control</span></td>
                         <td><span id="CasGrdWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWip" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWip" class="pull-right" style="color:blue"></span></td>
@@ -337,7 +337,7 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>CASTING</b></a></th>
+                        <th rowspan="23" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Yearly()"><b>CASTING</b></a></th>
                         <td style="font-size:x-small"><span id="RevTitleMonth">Revenue</span></td>
                         <td><span id="CasGrdRevMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRevMonth" class="pull-right" style="color:blue"></span></td>
@@ -508,7 +508,7 @@
                         <td><span id="CasScrRedMonth" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td style="font-size:x-small"><span id="WipTitleMonth">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitleMonth">WIP Control</span></td>
                         <td><span id="CasGrdWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWipMonth" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWipMonth" class="pull-right" style="color:blue"></span></td>
@@ -556,7 +556,7 @@
                         <th style="background-color: #4d79ff;color: white;"><span class="pull-right"><b>SCORE</b></span></th>
                     </tr>
                     <tr>
-                        <th rowspan="18" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
+                        <th rowspan="23" class="text-center"><a href="javascript:void(0)" data-toggle="tooltip" title="Monthly" onclick="Monthly()"><b>CASTING</b></a></th>
                         <td style="font-size:x-small"><span id="RevTitleSum">Revenue</span></td>
                         <td><span id="CasGrdRevSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtRevSum" class="pull-right" style="color:blue"></span></td>
@@ -727,7 +727,7 @@
                         <td><span id="CasScrRedSum" class="pull-right" style="color:blue"></span></td>
                     </tr>
                     <tr>
-                        <td style="font-size:x-small"><span id="WipTitleSum">WIP Control - Wax - Ceramic</span></td>
+                        <td style="font-size:x-small"><span id="WipTitleSum">WIP Control</span></td>
                         <td><span id="CasGrdWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasTgtWipSum" class="pull-right" style="color:blue"></span></td>
                         <td><span id="CasActWipSum" class="pull-right" style="color:blue"></span></td>
@@ -944,13 +944,20 @@
                         $("#CasScrRev").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActRev").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRev").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRev").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTot = PicScrTot + item.PicScrRev;
                         PicTotGrade = PicTotGrade + item.PicGrdRev;
@@ -990,13 +997,20 @@
                         $("#CasScrDrm").text(formatNumber(item.PicScrAir.toFixed(2)));
                         var PicGrdAir = item.PicGrdAir;
                         var PicTgtAir = item.PicTgtAir;
-                        if (PicGrdAir == 0)
+                        if (PicGrdAir == 0) {
                             $("#DrmTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActDrm").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor3 = item.PicScrAir - item.PicGrdAir;
-                            if (newcolor3 >= 0 && item.PicTgtAir > 0)
+                            if (newcolor3 >= 0 && item.PicTgtAir > 0) {
                                 $("#DrmTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActDrm").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#DrmTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActDrm").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTot = PicScrTot + item.PicScrAir;
                         PicTotGrade = PicTotGrade + item.PicGrdAir;
@@ -1009,13 +1023,20 @@
                         $("#CasScrMat").text(formatNumber(item.PicScrMus.toFixed(2)));
                         var PicGrdMus = item.PicGrdMus;
                         var PicTgtMus = item.PicTgtMus;
-                        if (PicGrdMus == 0)
+                        if (PicGrdMus == 0) {
                             $("#MatTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActMat").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor10 = item.PicScrMus - item.PicGrdMus;
-                            if (newcolor10 >= 0 && item.PicTgtMus > 0)
+                            if (newcolor10 >= 0 && item.PicTgtMus > 0) {
                                 $("#MatTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#MatTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActMat").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#MatTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActMat").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTot = PicScrTot + item.PicScrMus;
                         PicTotGrade = PicTotGrade + item.PicGrdMus;
@@ -1028,14 +1049,22 @@
                         $("#CasScrRed").text(formatNumber(item.PicScrEme.toFixed(2)));
                         var PicGrdEme = item.PicGrdEme;
                         var PicTgtEme = item.PicTgtEme;
-                        if (PicGrdEme == 0)
+                        if (PicGrdEme == 0) {
                             $("#RedTitle").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActRed").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             //item.PicScrEme - item.PicScrEme;  ganti di sini
                             var newcolor8 = item.PicScrEme - item.PicGrdEme;
-                            if (newcolor8 >= 0 && item.PicTgtEme > 0)
+                            if (newcolor8 >= 0 && item.PicTgtEme > 0) {
                                 $("#RedTitle").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RedTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRed").css({ "color": "black", "font-weight": "bold" });
+
+                            }
+                            else {
+                                $("#RedTitle").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRed").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTot = PicScrTot + item.PicScrEme;
                         PicTotGrade = PicTotGrade + item.PicGrdEme;
@@ -1132,13 +1161,20 @@
                     $("#CasScrPda").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
                     var PicTgtPda = item.PicTgtPda;
-                    if (PicGrdPda == 0 )
+                    if (PicGrdPda == 0) {
                         $("#PdaTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActPda").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                        if (newcolor1 >= 0 && item.PicTgtPda > 0) {
                             $("#PdaTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPda").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPda").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrPda;
                     PicTotGrade = PicTotGrade + item.PicGrdPda;
@@ -1151,13 +1187,20 @@
                     $("#CasScrLab").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
                     var PicTgtPdc = item.PicTgtPdc;
-                    if (PicGrdPdc == 0 )
+                    if (PicGrdPdc == 0) {
                         $("#LabTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActLab").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorLab = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolorLab >= 0)
+                        if (newcolorLab >= 0) {
                             $("#LabTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLab").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#LabTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLab").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrPdc;
                     PicTotGrade = PicTotGrade + item.PicGrdPdc;
@@ -1169,13 +1212,20 @@
                     $("#CasScrRej").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#RejTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActRej").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor4 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor4 >= 0 && item.PicTgtOth > 0) {
                             $("#RejTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RejTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRej").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#RejTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRej").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrOth;
                     PicTotGrade = PicTotGrade + item.PicGrdOth;
@@ -1187,13 +1237,20 @@
                     $("#CasScrWip").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#WipTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActWip").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor5 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor5 >= 0 && item.PicTgtSca > 0) {
                             $("#WipTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#WipTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWip").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#WipTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWip").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrSca;
                     PicTotGrade = PicTotGrade + item.PicGrdSca;
@@ -1205,13 +1262,21 @@
                     $("#CasScrCon").text(formatNumber(item.PicScrInv.toFixed(2)));
                     var PicGrdInv = item.PicGrdInv;
                     var PicTgtInv = item.PicTgtInv;
-                    if (PicGrdInv == 0 )
+                    if (PicGrdInv == 0) {
                         $("#ConTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActCon").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrInv - item.PicGrdInv;
-                        if (newcolor6 >= 0 && item.PicTgtInv > 0)
+                        if (newcolor6 >= 0 && item.PicTgtInv > 0) {
                             $("#ConTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ConTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActCon").css({ "color": "black", "font-weight": "bold" });
+
+                        }
+                        else {
+                            $("#ConTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActCon").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrInv;
                     PicTotGrade = PicTotGrade + item.PicGrdInv;
@@ -1223,13 +1288,20 @@
                     $("#CasScrFoh").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#FohTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActFoh").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor7 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor7 >= 0 && item.PicTgtDpp > 0) {
                             $("#FohTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#FohTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFoh").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#FohTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFoh").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrDpp;
                     PicTotGrade = PicTotGrade + item.PicGrdDpp;
@@ -1241,13 +1313,20 @@
                     $("#CasAchNon").text(formatNumber(item.PicAchNon.toFixed(2)));
                     $("#CasScrNon").text(formatNumber(item.PicScrNon.toFixed(2)));
                     var PicGrdNon = item.PicGrdNon;
-                    if (PicGrdNon == 0)
+                    if (PicGrdNon == 0) {
                         $("#NonTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActNon").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorNon = item.PicScrNon - item.PicGrdNon;
-                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0) {
                             $("#NonTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#NonTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNon").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#NonTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNon").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrNon;
                     PicTotGrade = PicTotGrade + item.PicGrdNon;
@@ -1259,13 +1338,20 @@
                     $("#CasAchBad").text(formatNumber(item.PicAchBad.toFixed(2)));
                     $("#CasScrBad").text(formatNumber(item.PicScrBad.toFixed(2)));
                     var PicGrdBad = item.PicGrdBad;
-                    if (PicGrdBad == 0)
+                    if (PicGrdBad == 0) {
                         $("#BadTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActBad").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorBad = item.PicScrBad - item.PicGrdBad;
-                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0) {
                             $("#BadTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBad").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBad").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrBad;
                     PicTotGrade = PicTotGrade + item.PicGrdBad;
@@ -1277,13 +1363,20 @@
                     $("#CasAchScp").text(formatNumber(item.PicAchScp.toFixed(2)));
                     $("#CasScrScp").text(formatNumber(item.PicScrScp.toFixed(2)));
                     var PicGrdScp = item.PicGrdScp;
-                    if (PicGrdScp == 0)
+                    if (PicGrdScp == 0) {
                         $("#ScpTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActScp").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorScp = item.PicScrScp - item.PicGrdScp;
-                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0) {
                             $("#ScpTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ScpTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScp").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ScpTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScp").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrScp;
                     PicTotGrade = PicTotGrade + item.PicGrdScp;
@@ -1295,13 +1388,20 @@
                     $("#CasAchAly").text(formatNumber(item.PicAchAly.toFixed(2)));
                     $("#CasScrAly").text(formatNumber(item.PicScrAly.toFixed(2)));
                     var PicGrdAly = item.PicGrdAly;
-                    if (PicGrdAly == 0)
+                    if (PicGrdAly == 0) {
                         $("#AlyTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActAly").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorAly = item.PicScrAly - item.PicGrdAly;
-                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0) {
                             $("#AlyTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AlyTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAly").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AlyTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAly").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrAly;
                     PicTotGrade = PicTotGrade + item.PicGrdAly;
@@ -1313,13 +1413,20 @@
                     $("#CasAchSil").text(formatNumber(item.PicAchSil.toFixed(2)));
                     $("#CasScrSil").text(formatNumber(item.PicScrSil.toFixed(2)));
                     var PicGrdSil = item.PicGrdSil;
-                    if (PicGrdSil == 0)
+                    if (PicGrdSil == 0) {
                         $("#SilTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActSil").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorSil = item.PicScrSil - item.PicGrdSil;
-                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0) {
                             $("#SilTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SilTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSil").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SilTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSil").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrSil;
                     PicTotGrade = PicTotGrade + item.PicGrdSil;
@@ -1331,13 +1438,20 @@
                     $("#CasAchZif").text(formatNumber(item.PicAchZif.toFixed(2)));
                     $("#CasScrZif").text(formatNumber(item.PicScrZif.toFixed(2)));
                     var PicGrdZif = item.PicGrdZif;
-                    if (PicGrdZif == 0)
+                    if (PicGrdZif == 0) {
                         $("#ZifTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZif").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZif = item.PicScrZif - item.PicGrdZif;
-                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0) {
                             $("#ZifTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZifTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZif").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZifTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZif").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrZif;
                     PicTotGrade = PicTotGrade + item.PicGrdZif;
@@ -1349,13 +1463,20 @@
                     $("#CasAchZis").text(formatNumber(item.PicAchZis.toFixed(2)));
                     $("#CasScrZis").text(formatNumber(item.PicScrZis.toFixed(2)));
                     var PicGrdZis = item.PicGrdZis;
-                    if (PicGrdZis == 0)
+                    if (PicGrdZis == 0) {
                         $("#ZisTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZis").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZis = item.PicScrZis - item.PicGrdZis;
-                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0) {
                             $("#ZisTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZisTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZis").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZisTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZis").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrZis;
                     PicTotGrade = PicTotGrade + item.PicGrdZis;
@@ -1367,13 +1488,20 @@
                     $("#CasAchMuf").text(formatNumber(item.PicAchMuf.toFixed(2)));
                     $("#CasScrMuf").text(formatNumber(item.PicScrMuf.toFixed(2)));
                     var PicGrdMuf = item.PicGrdMuf;
-                    if (PicGrdMuf == 0)
+                    if (PicGrdMuf == 0) {
                         $("#MufTitle").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMuf").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
-                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0) {
                             $("#MufTitle").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MufTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMuf").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#MufTitle").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMuf").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrMuf;
                     PicTotGrade = PicTotGrade + item.PicGrdMuf;
@@ -1385,13 +1513,20 @@
                     $("#CasAchMu3").text(formatNumber(item.PicAchMu3.toFixed(2)));
                     $("#CasScrMu3").text(formatNumber(item.PicScrMu3.toFixed(2)));
                     var PicGrdMu3 = item.PicGrdMu3;
-                    if (PicGrdMu3 == 0)
+                    if (PicGrdMu3 == 0) {
                         $("#Mu3Title").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu3").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
-                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0) {
                             $("#Mu3Title").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu3Title").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu3Title").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrMu3;
                     PicTotGrade = PicTotGrade + item.PicGrdMu3;
@@ -1403,13 +1538,20 @@
                     $("#CasAchMu1").text(formatNumber(item.PicAchMu1.toFixed(2)));
                     $("#CasScrMu1").text(formatNumber(item.PicScrMu1.toFixed(2)));
                     var PicGrdMu1 = item.PicGrdMu1;
-                    if (PicGrdMu1 == 0)
+                    if (PicGrdMu1 == 0) {
                         $("#Mu1Title").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu1").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
-                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0) {
                             $("#Mu1Title").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu1Title").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu1Title").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTot = PicScrTot + item.PicScrMu1;
                     PicTotGrade = PicTotGrade + item.PicGrdMu1;
@@ -1461,13 +1603,20 @@
                         $("#CasScrRevMonth").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActRevMonth").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRevMonth").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRevMonth").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTotMonth = PicScrTotMonth + item.PicScrRev;
                         PicTotGradeMonth = PicTotGradeMonth + item.PicGrdRev;
@@ -1644,13 +1793,20 @@
                     $("#CasScrPdaMonth").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
                     var PicTgtPda = item.PicTgtPda;
-                    if (PicGrdPda == 0 )
+                    if (PicGrdPda == 0) {
                         $("#PdaTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActPdaMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                        if (newcolor1 >= 0 && item.PicTgtPda > 0) {
                             $("#PdaTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPdaMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPdaMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrPda;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPda;
@@ -1662,16 +1818,24 @@
                     $("#CasScrLabMonth").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
                     var PicTgtPdc = item.PicTgtPdc;
-                    if (PicGrdPdc == 0 )
+                    if (PicGrdPdc == 0) {
                         $("#LabTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActLabMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorLab1 = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolorLab1 >= 0)
+                        if (newcolorLab1 >= 0) {
                             $("#LabTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLabMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#LabTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLabMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrPdc;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdPdc;
+
                     //---- reject rate casting
                     $("#CasGrdRejMonth").text(formatNumber(item.PicGrdOth));
                     $("#CasTgtRejMonth").text(formatNumber(item.PicTgtOth));
@@ -1683,16 +1847,24 @@
                     $("#CasScrRejMonth").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#RejTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActRejMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor4 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor4 >= 0 && item.PicTgtOth > 0) {
                             $("#RejTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RejTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRejMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#RejTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRejMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrOth;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdOth;
+
                     //---- wip
                     $("#CasGrdWipMonth").text(formatNumber(item.PicGrdSca));
                     $("#CasTgtWipMonth").text(formatNumber(item.PicTgtSca));
@@ -1701,16 +1873,24 @@
                     $("#CasScrWipMonth").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#WipTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActWipMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor5 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor5 >= 0 && item.PicTgtSca > 0) {
                             $("#WipTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#WipTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWipMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#WipTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWipMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrSca;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSca;
+
                     //---- consumables
                     $("#CasGrdConMonth").text(formatNumber(item.PicGrdInv));
                     $("#CasTgtConMonth").text(formatNumber(item.PicTgtInv));
@@ -1719,13 +1899,20 @@
                     $("#CasScrConMonth").text(formatNumber(item.PicScrInv.toFixed(2)));
                     var PicGrdInv = item.PicGrdInv;
                     var PicTgtInv = item.PicTgtInv;
-                    if (PicGrdInv == 0 )
+                    if (PicGrdInv == 0) {
                         $("#ConTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActConMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrInv - item.PicGrdInv;
-                        if (newcolor6 >= 0 && item.PicTgtInv > 0)
+                        if (newcolor6 >= 0 && item.PicTgtInv > 0) {
                             $("#ConTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ConTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActConMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ConTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActConMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrInv;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdInv;
@@ -1737,13 +1924,20 @@
                     $("#CasScrFohMonth").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#FohTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActFohMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor7 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor7 >= 0 && item.PicTgtDpp > 0) {
                             $("#FohTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#FohTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFohMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#FohTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFohMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrDpp;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdDpp;
@@ -1755,13 +1949,20 @@
                     $("#CasAchNonMonth").text(formatNumber(item.PicAchNon.toFixed(2)));
                     $("#CasScrNonMonth").text(formatNumber(item.PicScrNon.toFixed(2)));
                     var PicGrdNon = item.PicGrdNon;
-                    if (PicGrdNon == 0)
+                    if (PicGrdNon == 0) {
                         $("#NonTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActNonMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorNon = item.PicScrNon - item.PicGrdNon;
-                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0) {
                             $("#NonTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#NonTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNonMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#NonTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNonMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrNon;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdNon;
@@ -1773,13 +1974,20 @@
                     $("#CasAchBadMonth").text(formatNumber(item.PicAchBad.toFixed(2)));
                     $("#CasScrBadMonth").text(formatNumber(item.PicScrBad.toFixed(2)));
                     var PicGrdBad = item.PicGrdBad;
-                    if (PicGrdBad == 0)
+                    if (PicGrdBad == 0) {
                         $("#BadTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActBadMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorBad = item.PicScrBad - item.PicGrdBad;
-                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0) {
                             $("#BadTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBadMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBadMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrBad;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdBad;
@@ -1791,13 +1999,20 @@
                     $("#CasAchScpMonth").text(formatNumber(item.PicAchScp.toFixed(2)));
                     $("#CasScrScpMonth").text(formatNumber(item.PicScrScp.toFixed(2)));
                     var PicGrdScp = item.PicGrdScp;
-                    if (PicGrdScp == 0)
+                    if (PicGrdScp == 0) {
                         $("#ScpTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActScpMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorScp = item.PicScrScp - item.PicGrdScp;
-                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0) {
                             $("#ScpTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ScpTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScpMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ScpTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScpMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrScp;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdScp;
@@ -1809,13 +2024,20 @@
                     $("#CasAchAlyMonth").text(formatNumber(item.PicAchAly.toFixed(2)));
                     $("#CasScrAlyMonth").text(formatNumber(item.PicScrAly.toFixed(2)));
                     var PicGrdAly = item.PicGrdAly;
-                    if (PicGrdAly == 0)
+                    if (PicGrdAly == 0) {
                         $("#AlyTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActAlyMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorAly = item.PicScrAly - item.PicGrdAly;
-                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0) {
                             $("#AlyTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AlyTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAlyMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AlyTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAlyMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrAly;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdAly;
@@ -1827,13 +2049,20 @@
                     $("#CasAchSilMonth").text(formatNumber(item.PicAchSil.toFixed(2)));
                     $("#CasScrSilMonth").text(formatNumber(item.PicScrSil.toFixed(2)));
                     var PicGrdSil = item.PicGrdSil;
-                    if (PicGrdSil == 0)
+                    if (PicGrdSil == 0) {
                         $("#SilTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActSilMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorSil = item.PicScrSil - item.PicGrdSil;
-                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0) {
                             $("#SilTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SilTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSilMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SilTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSilMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrSil;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdSil;
@@ -1845,13 +2074,20 @@
                     $("#CasAchZifMonth").text(formatNumber(item.PicAchZif.toFixed(2)));
                     $("#CasScrZifMonth").text(formatNumber(item.PicScrZif.toFixed(2)));
                     var PicGrdZif = item.PicGrdZif;
-                    if (PicGrdZif == 0)
+                    if (PicGrdZif == 0) {
                         $("#ZifTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZifMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZif = item.PicScrZif - item.PicGrdZif;
-                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0) {
                             $("#ZifTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZifTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZifMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZifTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZifMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrZif;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdZif;
@@ -1863,13 +2099,20 @@
                     $("#CasAchZisMonth").text(formatNumber(item.PicAchZis.toFixed(2)));
                     $("#CasScrZisMonth").text(formatNumber(item.PicScrZis.toFixed(2)));
                     var PicGrdZis = item.PicGrdZis;
-                    if (PicGrdZis == 0)
+                    if (PicGrdZis == 0) {
                         $("#ZisTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZisMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZis = item.PicScrZis - item.PicGrdZis;
-                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0) {
                             $("#ZisTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZisTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZisMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZisTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZisMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrZis;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdZis;
@@ -1881,13 +2124,20 @@
                     $("#CasAchMufMonth").text(formatNumber(item.PicAchMuf.toFixed(2)));
                     $("#CasScrMufMonth").text(formatNumber(item.PicScrMuf.toFixed(2)));
                     var PicGrdMuf = item.PicGrdMuf;
-                    if (PicGrdMuf == 0)
+                    if (PicGrdMuf == 0) {
                         $("#MufTitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMufMonth").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
-                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0) {
                             $("#MufTitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MufTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMufMonth").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#MufTitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMufMonth").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrMuf;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMuf;
@@ -1899,13 +2149,20 @@
                     $("#CasAchMu3Month").text(formatNumber(item.PicAchMu3.toFixed(2)));
                     $("#CasScrMu3Month").text(formatNumber(item.PicScrMu3.toFixed(2)));
                     var PicGrdMu3 = item.PicGrdMu3;
-                    if (PicGrdMu3 == 0)
+                    if (PicGrdMu3 == 0) {
                         $("#Mu3TitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu3Month").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
-                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0) {
                             $("#Mu3TitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu3TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3Month").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu3TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3Month").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrMu3;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMu3;
@@ -1917,13 +2174,20 @@
                     $("#CasAchMu1Month").text(formatNumber(item.PicAchMu1.toFixed(2)));
                     $("#CasScrMu1Month").text(formatNumber(item.PicScrMu1.toFixed(2)));
                     var PicGrdMu1 = item.PicGrdMu1;
-                    if (PicGrdMu1 == 0)
+                    if (PicGrdMu1 == 0) {
                         $("#Mu1TitleMonth").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu1Month").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
-                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0) {
                             $("#Mu1TitleMonth").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu1TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1Month").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu1TitleMonth").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1Month").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotMonth = PicScrTotMonth + item.PicScrMu1;
                     PicTotGradeMonth = PicTotGradeMonth + item.PicGrdMu1;
@@ -1965,13 +2229,20 @@
                         $("#CasScrRevSum").text(formatNumber(item.PicScrRev.toFixed(2)));
                         var PicGrdRev = item.PicGrdRev;
                         var PicTgtRev = item.PicTgtRev;
-                        if (PicGrdRev == 0)
+                        if (PicGrdRev == 0) {
                             $("#RevTitleSum").css({ "color": "black", "font-weight": "normal" });
+                            $("#CasActRevSum").css({ "color": "black", "font-weight": "normal" });
+                        }
                         else {
                             var newcolor = item.PicScrRev - item.PicGrdRev;
-                            if (newcolor >= 0 && item.PicTgtRev > 0)
+                            if (newcolor >= 0 && item.PicTgtRev > 0) {
                                 $("#RevTitleSum").css({ "color": "black", "font-weight": "bold" });
-                            else $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRevSum").css({ "color": "black", "font-weight": "bold" });
+                            }
+                            else {
+                                $("#RevTitleSum").css({ "color": "red", "font-weight": "bold" });
+                                $("#CasActRevSum").css({ "color": "red", "font-weight": "bold" });
+                            }
                         }
                         PicScrTotSum = PicScrTotSum + item.PicScrRev;
                         PicTotGradeSum = PicTotGradeSum + item.PicGrdRev;
@@ -2151,13 +2422,20 @@
                     $("#CasScrPdaSum").text(formatNumber(item.PicScrPda.toFixed(2)));
                     var PicGrdPda = item.PicGrdPda;
                     var PicTgtPda = item.PicTgtPda;
-                    if (PicGrdPda == 0 )
+                    if (PicGrdPda == 0) {
                         $("#PdaTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActPdaSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor1 = item.PicScrPda - item.PicGrdPda;
-                        if (newcolor1 >= 0 && item.PicTgtPda > 0)
+                        if (newcolor1 >= 0 && item.PicTgtPda > 0) {
                             $("#PdaTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPdaSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#PdaTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActPdaSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrPda;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdPda;
@@ -2169,13 +2447,20 @@
                     $("#CasScrLabSum").text(formatNumber(item.PicScrPdc.toFixed(2)));
                     var PicGrdPdc = item.PicGrdPdc;
                     var PicTgtPdc = item.PicTgtPdc;
-                    if (PicGrdPdc == 0 )
+                    if (PicGrdPdc == 0) {
                         $("#LabTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActLabSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorLab2 = item.PicScrPdc - item.PicGrdPdc;
-                        if (newcolorLab2 >= 0)
+                        if (newcolorLab2 >= 0) {
                             $("#LabTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLabSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#LabTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActLabSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrPdc;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdPdc;
@@ -2187,13 +2472,20 @@
                     $("#CasScrRejSum").text(formatNumber(item.PicScrOth.toFixed(2)));
                     var PicGrdOth = item.PicGrdOth;
                     var PicTgtOth = item.PicTgtOth;
-                    if (PicGrdOth == 0 )
+                    if (PicGrdOth == 0) {
                         $("#RejTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActRejSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor4 = item.PicScrOth - item.PicGrdOth;
-                        if (newcolor4 >= 0 && item.PicTgtOth > 0)
+                        if (newcolor4 >= 0 && item.PicTgtOth > 0) {
                             $("#RejTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#RejTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRejSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#RejTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActRejSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrOth;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdOth;
@@ -2205,13 +2497,20 @@
                     $("#CasScrWipSum").text(formatNumber(item.PicScrSca.toFixed(2)));
                     var PicGrdSca = item.PicGrdSca;
                     var PicTgtSca = item.PicTgtSca;
-                    if (PicGrdSca == 0 )
+                    if (PicGrdSca == 0) {
                         $("#WipTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActWipSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor5 = item.PicScrSca - item.PicGrdSca;
-                        if (newcolor5 >= 0 && item.PicTgtSca > 0)
+                        if (newcolor5 >= 0 && item.PicTgtSca > 0) {
                             $("#WipTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#WipTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWipSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#WipTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActWipSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrSca;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdSca;
@@ -2223,13 +2522,20 @@
                     $("#CasScrConSum").text(formatNumber(item.PicScrInv.toFixed(2)));
                     var PicGrdInv = item.PicGrdInv;
                     var PicTgtInv = item.PicTgtInv;
-                    if (PicGrdInv == 0 )
+                    if (PicGrdInv == 0) {
                         $("#ConTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActConSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor6 = item.PicScrInv - item.PicGrdInv;
-                        if (newcolor6 >= 0 && item.PicTgtInv > 0)
+                        if (newcolor6 >= 0 && item.PicTgtInv > 0) {
                             $("#ConTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ConTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActConSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ConTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActConSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrInv;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdInv;
@@ -2241,13 +2547,20 @@
                     $("#CasScrFohSum").text(formatNumber(item.PicScrDpp.toFixed(2)));
                     var PicGrdDpp = item.PicGrdDpp;
                     var PicTgtDpp = item.PicTgtDpp;
-                    if (PicGrdDpp == 0 )
+                    if (PicGrdDpp == 0) {
                         $("#FohTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActFohSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolor7 = item.PicScrDpp - item.PicGrdDpp;
-                        if (newcolor7 >= 0 && item.PicTgtDpp > 0)
+                        if (newcolor7 >= 0 && item.PicTgtDpp > 0) {
                             $("#FohTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#FohTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFohSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#FohTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActFohSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrDpp;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdDpp;
@@ -2259,13 +2572,20 @@
                     $("#CasAchNonSum").text(formatNumber(item.PicAchNon.toFixed(2)));
                     $("#CasScrNonSum").text(formatNumber(item.PicScrNon.toFixed(2)));
                     var PicGrdNon = item.PicGrdNon;
-                    if (PicGrdNon == 0)
+                    if (PicGrdNon == 0) {
                         $("#NonTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActNonSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorNon = item.PicScrNon - item.PicGrdNon;
-                        if (newcolorNon >= 0 && item.PicTgtNon > 0)
+                        if (newcolorNon >= 0 && item.PicTgtNon > 0) {
                             $("#NonTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#NonTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNonSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#NonTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActNonSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrNon;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdNon;
@@ -2277,13 +2597,20 @@
                     $("#CasAchBadSum").text(formatNumber(item.PicAchBad.toFixed(2)));
                     $("#CasScrBadSum").text(formatNumber(item.PicScrBad.toFixed(2)));
                     var PicGrdBad = item.PicGrdBad;
-                    if (PicGrdBad == 0)
+                    if (PicGrdBad == 0) {
                         $("#BadTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActBadSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorBad = item.PicScrBad - item.PicGrdBad;
-                        if (newcolorBad >= 0 && item.PicTgtBad > 0)
+                        if (newcolorBad >= 0 && item.PicTgtBad > 0) {
                             $("#BadTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBadSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#BadTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActBadSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrBad;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdBad;
@@ -2295,13 +2622,20 @@
                     $("#CasAchScpSum").text(formatNumber(item.PicAchScp.toFixed(2)));
                     $("#CasScrScpSum").text(formatNumber(item.PicScrScp.toFixed(2)));
                     var PicGrdScp = item.PicGrdScp;
-                    if (PicGrdScp == 0)
+                    if (PicGrdScp == 0) {
                         $("#ScpTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActScpSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorScp = item.PicScrScp - item.PicGrdScp;
-                        if (newcolorScp >= 0 && item.PicTgtScp > 0)
+                        if (newcolorScp >= 0 && item.PicTgtScp > 0) {
                             $("#ScpTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ScpTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScpSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ScpTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActScpSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrScp;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdScp;
@@ -2313,13 +2647,20 @@
                     $("#CasAchAlySum").text(formatNumber(item.PicAchAly.toFixed(2)));
                     $("#CasScrAlySum").text(formatNumber(item.PicScrAly.toFixed(2)));
                     var PicGrdAly = item.PicGrdAly;
-                    if (PicGrdAly == 0)
+                    if (PicGrdAly == 0) {
                         $("#AlyTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActAlySum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorAly = item.PicScrAly - item.PicGrdAly;
-                        if (newcolorAly >= 0 && item.PicTgtAly > 0)
+                        if (newcolorAly >= 0 && item.PicTgtAly > 0) {
                             $("#AlyTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#AlyTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAlySum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#AlyTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActAlySum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrAly;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdAly;
@@ -2331,13 +2672,20 @@
                     $("#CasAchSilSum").text(formatNumber(item.PicAchSil.toFixed(2)));
                     $("#CasScrSilSum").text(formatNumber(item.PicScrSil.toFixed(2)));
                     var PicGrdSil = item.PicGrdSil;
-                    if (PicGrdSil == 0)
+                    if (PicGrdSil == 0) {
                         $("#SilTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActSilSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorSil = item.PicScrSil - item.PicGrdSil;
-                        if (newcolorSil >= 0 && item.PicTgtSil > 0)
+                        if (newcolorSil >= 0 && item.PicTgtSil > 0) {
                             $("#SilTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#SilTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSilSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#SilTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActSilSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrSil;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdSil;
@@ -2349,13 +2697,20 @@
                     $("#CasAchZifSum").text(formatNumber(item.PicAchZif.toFixed(2)));
                     $("#CasScrZifSum").text(formatNumber(item.PicScrZif.toFixed(2)));
                     var PicGrdZif = item.PicGrdZif;
-                    if (PicGrdZif == 0)
+                    if (PicGrdZif == 0) {
                         $("#ZifTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZifSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZif = item.PicScrZif - item.PicGrdZif;
-                        if (newcolorZif >= 0 && item.PicTgtZif > 0)
+                        if (newcolorZif >= 0 && item.PicTgtZif > 0) {
                             $("#ZifTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZifTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZifSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZifTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZifSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrZif;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdZif;
@@ -2367,13 +2722,20 @@
                     $("#CasAchZisSum").text(formatNumber(item.PicAchZis.toFixed(2)));
                     $("#CasScrZisSum").text(formatNumber(item.PicScrZis.toFixed(2)));
                     var PicGrdZis = item.PicGrdZis;
-                    if (PicGrdZis == 0)
+                    if (PicGrdZis == 0) {
                         $("#ZisTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActZisSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorZis = item.PicScrZis - item.PicGrdZis;
-                        if (newcolorZis >= 0 && item.PicTgtZis > 0)
+                        if (newcolorZis >= 0 && item.PicTgtZis > 0) {
                             $("#ZisTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#ZisTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZisSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#ZisTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActZisSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrZis;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdZis;
@@ -2385,13 +2747,20 @@
                     $("#CasAchMufSum").text(formatNumber(item.PicAchMuf.toFixed(2)));
                     $("#CasScrMufSum").text(formatNumber(item.PicScrMuf.toFixed(2)));
                     var PicGrdMuf = item.PicGrdMuf;
-                    if (PicGrdMuf == 0)
+                    if (PicGrdMuf == 0) {
                         $("#MufTitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMufSum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMuf = item.PicScrMuf - item.PicGrdMuf;
-                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0)
+                        if (newcolorMuf >= 0 && item.PicTgtMuf > 0) {
                             $("#MufTitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#MufTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMufSum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#MufTitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMufSum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrMuf;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdMuf;
@@ -2403,13 +2772,21 @@
                     $("#CasAchMu3Sum").text(formatNumber(item.PicAchMu3.toFixed(2)));
                     $("#CasScrMu3Sum").text(formatNumber(item.PicScrMu3.toFixed(2)));
                     var PicGrdMu3 = item.PicGrdMu3;
-                    if (PicGrdMu3 == 0)
+                    if (PicGrdMu3 == 0) {
                         $("#Mu3TitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu3Sum").css({ "color": "black", "font-weight": "normal" });
+
+                    }
                     else {
                         var newcolorMu3 = item.PicScrMu3 - item.PicGrdMu3;
-                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0)
+                        if (newcolorMu3 >= 0 && item.PicTgtMu3 > 0) {
                             $("#Mu3TitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu3TitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3Sum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu3TitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu3Sum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrMu3;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdMu3;
@@ -2421,13 +2798,20 @@
                     $("#CasAchMu1Sum").text(formatNumber(item.PicAchMu1.toFixed(2)));
                     $("#CasScrMu1Sum").text(formatNumber(item.PicScrMu1.toFixed(2)));
                     var PicGrdMu1 = item.PicGrdMu1;
-                    if (PicGrdMu1 == 0)
+                    if (PicGrdMu1 == 0) {
                         $("#Mu1TitleSum").css({ "color": "black", "font-weight": "normal" });
+                        $("#CasActMu1Sum").css({ "color": "black", "font-weight": "normal" });
+                    }
                     else {
                         var newcolorMu1 = item.PicScrMu1 - item.PicGrdMu1;
-                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0)
+                        if (newcolorMu1 >= 0 && item.PicTgtMu1 > 0) {
                             $("#Mu1TitleSum").css({ "color": "black", "font-weight": "bold" });
-                        else $("#Mu1TitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1Sum").css({ "color": "black", "font-weight": "bold" });
+                        }
+                        else {
+                            $("#Mu1TitleSum").css({ "color": "red", "font-weight": "bold" });
+                            $("#CasActMu1Sum").css({ "color": "red", "font-weight": "bold" });
+                        }
                     }
                     PicScrTotSum = PicScrTotSum + item.PicScrMu1;
                     PicTotGradeSum = PicTotGradeSum + item.PicGrdMu1;
