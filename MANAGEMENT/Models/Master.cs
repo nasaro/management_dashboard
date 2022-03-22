@@ -336,6 +336,24 @@ namespace MANAGEMENT.Models
         public decimal MktAchAir { get; set; }
         public decimal MktScrAir { get; set; }
 
+        public decimal PicGrdZae { get; set; }
+        public decimal PicTgtZae { get; set; }
+        public decimal PicActZae { get; set; }
+        public decimal PicAchZae { get; set; }
+        public decimal PicScrZae { get; set; }
+
+        public decimal PicGrdTol { get; set; }
+        public decimal PicTgtTol { get; set; }
+        public decimal PicActTol { get; set; }
+        public decimal PicAchTol { get; set; }
+        public decimal PicScrTol { get; set; }
+
+        public decimal PicGrdImp { get; set; }
+        public decimal PicTgtImp { get; set; }
+        public decimal PicActImp { get; set; }
+        public decimal PicAchImp { get; set; }
+        public decimal PicScrImp { get; set; }
+
         public decimal TotGrade { get; set; }
         public decimal TotScore { get; set; }
 
@@ -467,6 +485,14 @@ namespace MANAGEMENT.Models
         public double? stokawalfinished { get; set; }
         public double? totpdefinished { get; set; }
         public double? totterkirim { get; set; }
+
+        public double? cnctime { get; set; }
+        public double? qtyInj { get; set; }
+        public double? qtyDip { get; set; }
+        public double? qtylost { get; set; }
+        public double? qtypour { get; set; }
+        public double? qtykirim { get; set; }
+
         public int? sisaPO { get; set; }
         public string edd { get; set; }
     }

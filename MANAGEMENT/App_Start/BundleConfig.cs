@@ -25,8 +25,9 @@ namespace MANAGEMENT.App_Start
             //--- trouble   "~/Scripts/jquery.validate*",   --//
 
             bundles.Add(new ScriptBundle("~/bundles/tools").Include(
-                                  //--"~/Content/ckeditor/ckeditor.js",
+                                  //--"~/Content/ckeditor/ckeditor.js"
                                   "~/Scripts/dataTables.min.js",
+                                   "~/Scripts/dataTables.fixedColumns.min.js",
                                   "~/Scripts/bootstrap-datetimepicker.min.js",
                                   "~/Scripts/bootstrapAlert.min.js",
                                   "~/Scripts/bootstrap-slider.min.js",

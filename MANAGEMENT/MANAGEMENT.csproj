@@ -338,6 +338,7 @@
     <Content Include="Scripts\bootstrapAlert.min.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\freeze-table.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

@@ -80,7 +80,8 @@
 <script>
     var urlKPI = "@Url.Content("~/Wip")";
     const dateObj = new Date();
-    const mmonth = dateObj.getMonth() + 1;
+    //--const mmonth = dateObj.getMonth() + 1;
+    const mmonth = String(dateObj.getMonth() + 1).padStart(2, '0');
     const day = String(dateObj.getDate()).padStart(2, '0');
     const year = dateObj.getFullYear();
     const output = year + '-' + mmonth + '-' + day;
@@ -168,7 +169,7 @@
                      center: 'title',
                      right: 'dayGridMonth'
                  },
-                 initialDate: output,
+                 initialDate: output,  //penyebab sering error getUTCFullYear  harus yyyy/mm/dd
                  navLinks: false, // can click day/week names to navigate views
                  editable: true,
                  businessHours: true,

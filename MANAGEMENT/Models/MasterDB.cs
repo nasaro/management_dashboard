@@ -4787,6 +4787,8 @@ namespace MANAGEMENT.Models
         {
             decimal PicRevGrd, PicRevTrg, PicRevAct, PicPdaGrd, PicPdaTrg, PicPdaAct, PicPdcGrd, PicPdcTrg, PicPdcAct, PicLabAct;
             decimal PicSafGrd, PicSafTrg, PicTraGrd, PicTraTrg, PicCapGrd, PicCapTrg, PicLabGrd, PicLabTrg, PicOveGrd, PicOveTrg;
+            decimal PicCapAct;
+            decimal PicZaeGrd, PicZaeTrg, PicZaeAct, PicImpGrd, PicImpTrg;
            List<corpdept> lst = new List<corpdept>();
             using (SqlConnection con = new SqlConnection(cs))
             {
@@ -4871,24 +4873,29 @@ namespace MANAGEMENT.Models
                         else
                             PicTraTrg = Convert.ToDecimal(rdr["PicDppTrg"]);
 
-                        // capability 
-                        if (id<2020)
-                        {
-                            if (rdr["PicEmeGrd"] == DBNull.Value)
-                                PicCapGrd = 0;
-                            else
-                                PicCapGrd = Math.Round(Convert.ToDecimal(rdr["PicEmeGrd"]) / 12, 2);
-
-                            if (rdr["PicEmeTrg"] == DBNull.Value)
-                                PicCapTrg = 0;
-                            else
-                                PicCapTrg = Convert.ToDecimal(rdr["PicEmeTrg"]);
-                        }
+                        //-capability 
+                        //if (id<2020)
+                        //{
+                        if (rdr["PicEmeGrd"] == DBNull.Value)
+                            PicCapGrd = 0;
                         else
-                        {
-                            PicCapGrd = 0; PicCapTrg = 0;
-                        }
-                       
+                            PicCapGrd = Math.Round(Convert.ToDecimal(rdr["PicEmeGrd"]) / 12, 2);
+
+                        if (rdr["PicEmeTrg"] == DBNull.Value)
+                            PicCapTrg = 0;
+                        else
+                            PicCapTrg = Convert.ToDecimal(rdr["PicEmeTrg"]);
+
+                        if (rdr["PicEmeAct"] == DBNull.Value)
+                            PicCapAct = 0;
+                        else
+                            PicCapAct = Convert.ToDecimal(rdr["PicEmeAct"]);
+                        //}
+                        //else
+                        //{
+                        //    PicCapGrd = 0; PicCapTrg = 0;
+                        //}
+
                         // labor
                         if (rdr["PicScaGrd"] == DBNull.Value)
                             PicLabGrd = 0;
@@ -4915,6 +4922,35 @@ namespace MANAGEMENT.Models
                             PicOveTrg = 0;
                         else
                             PicOveTrg = Convert.ToDecimal(rdr["PicMusTrg"]);
+
+                        // zae 
+                        if (rdr["PicZaeGrd"] == DBNull.Value)
+                            PicZaeGrd = 0;
+                        else
+                            PicZaeGrd = Math.Round(Convert.ToDecimal(rdr["PicZaeGrd"]) / 12, 2);
+
+                        if (rdr["PicZaeTrg"] == DBNull.Value)
+                            PicZaeTrg = 0;
+                        else
+                            PicZaeTrg = Convert.ToDecimal(rdr["PicZaeTrg"]);
+
+                        if (rdr["PicZaeAct"] == DBNull.Value)
+                            PicZaeAct = 0;
+                        else
+                            PicZaeAct = Convert.ToDecimal(rdr["PicZaeAct"]);
+
+                        // Implementasi 5s  
+                        if (rdr["PicImpGrd"] == DBNull.Value)
+                            PicImpGrd = 0;
+                        else
+                            PicImpGrd = Math.Round(Convert.ToDecimal(rdr["PicImpGrd"]) / 12, 2);
+
+                        if (rdr["PicImpTrg"] == DBNull.Value)
+                            PicImpTrg = 0;
+                        else
+                            PicImpTrg = Convert.ToDecimal(rdr["PicImpTrg"]);
+
+
                         //PicSafGrd, PicSafTrg, PicTraGrd, PicTraTrg, PicCapGrd, PicCapTrg, PicLabGrd, PicLabTrg, PicOveGrd, PicOveTrg
                         lst.Add(new corpdept
                         {
@@ -4933,11 +4969,19 @@ namespace MANAGEMENT.Models
                             PicTgtDpp = PicTraTrg,
                             PicGrdEme = PicCapGrd,
                             PicTgtEme = PicCapTrg,
+                            PicActEme = PicCapAct,
                             PicGrdSca = PicLabGrd,
                             PicTgtSca = PicLabTrg,
                             PicActSca = PicLabAct,
                             PicGrdMus = PicOveGrd,
-                            PicTgtMus = PicOveTrg
+                            PicTgtMus = PicOveTrg,
+                            PicGrdZae = PicZaeGrd,
+                            PicTgtZae = PicZaeTrg,
+                            PicActZae = PicZaeAct,
+                            PicGrdImp = PicImpGrd,
+                            PicTgtImp = PicImpTrg
+
+
 
                         });
                     }
@@ -4958,7 +5002,8 @@ namespace MANAGEMENT.Models
         public List<corpdept> vHrdGADeptSummary(int id, int bln, char ch)
         {
             decimal PicRevGrd, PicRevTrg, PicRevAct, PicPdaGrd, PicPdaTrg, PicPdaAct, PicPdcGrd, PicPdcTrg, PicPdcAct, PicLabAct;
-            decimal PicSafGrd, PicSafTrg, PicTraGrd, PicTraTrg, PicCapGrd, PicCapTrg, PicLabGrd, PicLabTrg, PicOveGrd, PicOveTrg;
+            decimal PicSafGrd, PicSafTrg, PicTraGrd, PicTraTrg, PicCapGrd, PicCapTrg, PicCapAct, PicLabGrd, PicLabTrg, PicOveGrd, PicOveTrg;
+            decimal PicZaeGrd, PicZaeTrg, PicZaeAct, PicImpGrd, PicImpTrg;
             List<corpdept> lst = new List<corpdept>();
             using (SqlConnection con = new SqlConnection(cs))
             {
@@ -5045,8 +5090,8 @@ namespace MANAGEMENT.Models
                             PicTraTrg = Convert.ToDecimal(rdr["PicDppTrg"]);
 
                         // capability 
-                        if (id < 2020)
-                        {
+                        //if (id < 2020)
+                        //{
                             if (rdr["PicEmeGrd"] == DBNull.Value)
                                 PicCapGrd = 0;
                             else
@@ -5056,11 +5101,17 @@ namespace MANAGEMENT.Models
                                 PicCapTrg = 0;
                             else
                                 PicCapTrg = Convert.ToDecimal(rdr["PicEmeTrg"]);
-                        }
-                        else
-                        {
-                            PicCapGrd = 0; PicCapTrg = 0;
-                        }
+
+                        if (rdr["PicEmeAct"] == DBNull.Value)
+                                PicCapAct = 0;
+                            else
+                                PicCapAct = Convert.ToDecimal(rdr["PicEmeAct"]);
+
+                        //}
+                        //else
+                        //{
+                        //   PicCapGrd = 0; PicCapTrg = 0;
+                        //}
 
 
                         // labor
@@ -5090,6 +5141,33 @@ namespace MANAGEMENT.Models
                         else
                             PicOveTrg = Convert.ToDecimal(rdr["PicMusTrg"]);
 
+                        // zae 
+                        if (rdr["PicZaeGrd"] == DBNull.Value)
+                            PicZaeGrd = 0;
+                        else
+                            PicZaeGrd = Math.Round(Convert.ToDecimal(rdr["PicZaeGrd"]), 2);
+
+                        if (rdr["PicZaeTrg"] == DBNull.Value)
+                            PicZaeTrg = 0;
+                        else
+                            PicZaeTrg = Convert.ToDecimal(rdr["PicZaeTrg"]);
+
+                        if (rdr["PicZaeAct"] == DBNull.Value)
+                            PicZaeAct = 0;
+                        else
+                            PicZaeAct = Convert.ToDecimal(rdr["PicZaeAct"]);
+
+                        // Implementasi 5s  
+                        if (rdr["PicImpGrd"] == DBNull.Value)
+                            PicImpGrd = 0;
+                        else
+                            PicImpGrd = Math.Round(Convert.ToDecimal(rdr["PicImpGrd"]), 2);
+
+                        if (rdr["PicImpTrg"] == DBNull.Value)
+                            PicImpTrg = 0;
+                        else
+                            PicImpTrg = Convert.ToDecimal(rdr["PicImpTrg"]);
+
                         lst.Add(new corpdept
                         {
                             PicGrdRev = PicRevGrd,
@@ -5107,11 +5185,17 @@ namespace MANAGEMENT.Models
                             PicTgtDpp = PicTraTrg,
                             PicGrdEme = PicCapGrd,
                             PicTgtEme = PicCapTrg,
+                            PicActEme = PicCapAct,                            
                             PicGrdSca = PicLabGrd,
                             PicTgtSca = PicLabTrg,
                             PicActSca = PicLabAct,
                             PicGrdMus = PicOveGrd,
-                            PicTgtMus = PicOveTrg
+                            PicTgtMus = PicOveTrg,
+                            PicGrdZae = PicZaeGrd,
+                            PicTgtZae = PicZaeTrg,
+                            PicActZae = PicZaeAct,
+                            PicGrdImp = PicImpGrd,
+                            PicTgtImp = PicImpTrg
 
                         });
                     }
@@ -5137,7 +5221,14 @@ namespace MANAGEMENT.Models
             decimal PicAchRev, PicScrRev, PicAchRevTmp, PicAchPda, PicScrPda, PicAchPdaTmp, PicAchPdc, PicScrPdc, PicAchPdcTmp;
             decimal PicAchInv, PicScrInv, PicActInvTmp, PicAchAir, PicScrAir, PicActAirTmp, PicAchDpp, PicScrDpp, PicActDppTmp;
             decimal PicAchEme, PicScrEme, PicActEmeTmp, PicAchSca, PicScrSca, PicAchScaTmp;
+            decimal PicMusAct, PicMusGrd, PicMusTrg, PicAchMus, PicScrMus, PicAchMusTmp;
+            decimal PicOthAct, PicOthGrd, PicOthTrg, PicAchOth, PicScrOth, PicAchOthTmp;
+            decimal PicTvbAct, PicTvbGrd, PicTvbTrg, PicAchTvb, PicScrTvb, PicActTvbTmp;
+            decimal PicZaeAct, PicZaeGrd, PicZaeTrg, PicAchZae, PicScrZae, PicActZaeTmp;
+            decimal PicTolAct, PicTolGrd, PicTolTrg, PicAchTol, PicScrTol, PicActTolTmp;
+            decimal PicImpAct, PicImpGrd, PicImpTrg, PicAchImp, PicScrImp, PicActImpTmp;
             double dPicInvAct, dPicAchRev, dPicAchPda, dPicAchPdc, dPicAirAct, dPicDppAct, dPicEmeAct, dPicScaAct;
+            double dPicMusAct, dPicOthAct, dPicTvbAct, dPicZaeAct, dPicTolAct, dPicImpAct;
             string date1 = Convert.ToString(id) + "-01" + "-01";
             string date2 = Convert.ToString(id) + "-12" + "-01";
             List<corpdept> lst = new List<corpdept>();
@@ -5179,6 +5270,7 @@ namespace MANAGEMENT.Models
                             PicAchRev = 0;
                         PicAchRevTmp = 0;
                         dPicAchRev = Convert.ToDouble(PicAchRev);
+                        /*--
                         if (dPicAchRev > 110)
                             PicAchRevTmp = 120;
                         else if (dPicAchRev > 103 && dPicAchRev <= 110)
@@ -5188,6 +5280,15 @@ namespace MANAGEMENT.Models
                         else if (dPicAchRev >= 90 && dPicAchRev <= 95)
                             PicAchRevTmp = 90;
                         else if (dPicAchRev < 90)
+                            PicAchRevTmp = 60;
+                        --*/
+                        if (dPicAchRev >= 103)
+                            PicAchRevTmp = 110;
+                        else if (dPicAchRev >= 97 && dPicAchRev < 103)
+                            PicAchRevTmp = 100;
+                        else if (dPicAchRev >= 91 && dPicAchRev < 97)
+                            PicAchRevTmp = 90;
+                        else if (dPicAchRev < 91)
                             PicAchRevTmp = 60;
                         PicScrRev = PicRevGrd * PicAchRevTmp / 100;
 
@@ -5215,6 +5316,7 @@ namespace MANAGEMENT.Models
                             PicAchPda = 0;
                         PicAchPdaTmp = 0;
                         dPicAchPda = Convert.ToDouble(PicAchPda);
+                        /*--
                         if (dPicAchPda > 110)
                             PicAchPdaTmp = 120;
                         else if (dPicAchPda > 102 && dPicAchPda <= 110)
@@ -5225,6 +5327,16 @@ namespace MANAGEMENT.Models
                             PicAchPdaTmp = 90;
                         else if (dPicAchPda < 94)
                             PicAchPdaTmp = 60;
+                        --*/
+                        if (dPicAchPda >= 103)
+                            PicAchPdaTmp = 110;
+                        else if (dPicAchPda >= 97 && dPicAchPda < 103)
+                            PicAchPdaTmp = 100;
+                        else if (dPicAchPda >= 91 && dPicAchPda < 97)
+                            PicAchPdaTmp = 90;
+                        else if (dPicAchPda < 91)
+                            PicAchPdaTmp = 60;
+
                         PicScrPda = PicPdaGrd * PicAchPdaTmp / 100;
 
                         // pdc
@@ -5249,6 +5361,7 @@ namespace MANAGEMENT.Models
                             PicAchPdc = 0;
                         PicAchPdcTmp = 0;
                         dPicAchPdc = Convert.ToDouble(PicAchPdc);
+                        /*---
                         if (dPicAchPdc > 110)
                             PicAchPdcTmp = 120;
                         else if (dPicAchPdc > 102 && dPicAchPdc <= 110)
@@ -5258,6 +5371,15 @@ namespace MANAGEMENT.Models
                         else if (dPicAchPdc >= 94 && dPicAchPdc <= 98)
                             PicAchPdcTmp = 90;
                         else if (dPicAchPdc < 94)
+                            PicAchPdcTmp = 60;
+                        --*/
+                        if (dPicAchPdc >= 103)
+                            PicAchPdcTmp = 110;
+                        else if (dPicAchPdc >= 97 && dPicAchPdc < 103)
+                            PicAchPdcTmp = 100;
+                        else if (dPicAchPdc >= 91 && dPicAchPdc < 97)
+                            PicAchPdcTmp = 90;
+                        else if (dPicAchPdc < 91)
                             PicAchPdcTmp = 60;
                         PicScrPdc = PicPdcGrd * PicAchPdcTmp / 100;
 
@@ -5284,12 +5406,23 @@ namespace MANAGEMENT.Models
                             PicAchInv = 0;
                         PicActInvTmp = 0;
                         dPicInvAct = Convert.ToDouble(PicInvAct);
+                        /*--
                         if (dPicInvAct < 33)
                             PicActInvTmp = 110;
                         else if (dPicInvAct >= 33 && dPicInvAct <= 38)
                             PicActInvTmp = 100;
                         else if (dPicInvAct > 38)
                             PicActInvTmp = 90;
+                        --*/
+                        if (dPicInvAct < 95)
+                            PicActInvTmp = 60;
+                        else if (dPicInvAct >= 95 && dPicInvAct <= 99)
+                            PicActInvTmp = 90;
+                        else if (dPicInvAct > 99 && dPicInvAct <= 102)
+                            PicActInvTmp = 100;
+                        else if (dPicInvAct > 102)
+                            PicActInvTmp = 110;
+
                         PicScrInv = PicInvGrd * PicActInvTmp / 100;
 
                         // drm
@@ -5314,12 +5447,23 @@ namespace MANAGEMENT.Models
                             PicAchAir = 0;
                         PicActAirTmp = 0;
                         dPicAirAct = Convert.ToDouble(PicAirAct);
+                        /*--
                         if (dPicAirAct > 97)
                             PicActAirTmp = 110;
                         else if (dPicAirAct >= 93 && dPicAirAct <= 97)
                             PicActAirTmp = 100;
                         else if (dPicAirAct < 93)
                             PicActAirTmp = 90;
+                        --*/
+                        if (dPicAirAct > 95)
+                            PicActAirTmp = 110;
+                        else if (dPicAirAct > 90 && dPicAirAct <= 95)
+                            PicActAirTmp = 100;
+                        else if (dPicAirAct >= 85 && dPicAirAct <= 90)
+                            PicActAirTmp = 90;
+                        else if (dPicAirAct < 85)
+                            PicActAirTmp = 60;
+
                         PicScrAir = PicAirGrd * PicActAirTmp / 100;
 
                         // qrm 
@@ -5344,12 +5488,23 @@ namespace MANAGEMENT.Models
                             PicAchDpp = 0;
                         PicActDppTmp = 0;
                         dPicDppAct = Convert.ToDouble(PicDppAct);
+                        /*--
                         if (dPicDppAct > 98)
                             PicActDppTmp = 110;
                         else if (dPicDppAct >= 95 && dPicDppAct <= 98)
                             PicActDppTmp = 100;
                         else if (dPicDppAct < 95)
                             PicActDppTmp = 90;
+                         */
+                        if (dPicDppAct > 98)
+                            PicActDppTmp = 110;
+                        else if (dPicDppAct > 95 && dPicDppAct <= 98)
+                            PicActDppTmp = 100;
+                        else if (dPicDppAct >= 92 && dPicDppAct <= 95)
+                            PicActDppTmp = 90;
+                        else if (dPicDppAct < 92)
+                            PicActDppTmp = 60;
+
                         PicScrDpp = PicDppGrd * PicActDppTmp / 100;
 
                         // reduction 
@@ -5374,6 +5529,7 @@ namespace MANAGEMENT.Models
                             PicAchEme = 0;
                         PicActEmeTmp = 0;
                         dPicEmeAct = Convert.ToDouble(PicEmeAct);
+                        /*--
                         if (dPicEmeAct > 50000000)
                             PicActEmeTmp = 120;
                         else if (dPicEmeAct > 30000000 && dPicEmeAct <= 50000000)
@@ -5383,6 +5539,15 @@ namespace MANAGEMENT.Models
                         else if (dPicEmeAct > 0 && dPicEmeAct <= 20000000)
                             PicActEmeTmp = 90;
                         else if (dPicEmeAct < 0)
+                            PicActEmeTmp = 60;
+                        --*/
+                        if (dPicEmeAct > 55000000)
+                            PicActEmeTmp = 110;
+                        else if (dPicEmeAct > 30000000 && dPicEmeAct <= 55000000)
+                            PicActEmeTmp = 100;
+                        else if (dPicEmeAct > 10000000 && dPicEmeAct <= 30000000)
+                            PicActEmeTmp = 90;
+                        else if (dPicEmeAct <= 10000000)
                             PicActEmeTmp = 60;
                         PicScrEme = PicEmeGrd * PicActEmeTmp / 100;
 
@@ -5408,6 +5573,7 @@ namespace MANAGEMENT.Models
                             PicAchSca = 0;
                         PicAchScaTmp = 0;
                         dPicScaAct = Convert.ToDouble(PicScaAct);
+                        /*--
                         if (dPicScaAct > 120)
                             PicAchScaTmp = 120;
                         else if (dPicScaAct > 80 && dPicScaAct <= 120)
@@ -5418,8 +5584,202 @@ namespace MANAGEMENT.Models
                             PicAchScaTmp = 90;
                         else if (dPicScaAct < 45 )
                             PicAchScaTmp = 60;
+                         --*/
+                        if (dPicScaAct > 80)
+                            PicAchScaTmp = 110;
+                        else if (dPicScaAct > 70 && dPicScaAct <= 80)
+                            PicAchScaTmp = 100;
+                        else if (dPicScaAct >= 45 && dPicScaAct <= 70)
+                            PicAchScaTmp = 90;
+                        else if (dPicScaAct < 45)
+                            PicAchScaTmp = 60;
                         PicScrSca = PicScaGrd * PicAchScaTmp / 100;
 
+                        //---Pr to PO repeat order 
+                        if (rdr["PicMusGrd"] == DBNull.Value)
+                            PicMusGrd = 0;
+                        else
+                            PicMusGrd = Math.Round(Convert.ToDecimal(rdr["PicMusGrd"]) / 12, 2);
+
+                        if (rdr["PicMusTrg"] == DBNull.Value)
+                            PicMusTrg = 0;
+                        else
+                            PicMusTrg = Convert.ToDecimal(rdr["PicMusTrg"]);
+
+                        if (rdr["PicMusAct"] == DBNull.Value)
+                            PicMusAct = 0;
+                        else
+                            PicMusAct = Convert.ToDecimal(rdr["PicMusAct"]);
+
+                        if (PicMusTrg > 0 && PicMusAct > 0)
+                            PicAchMus = PicMusAct / PicMusTrg * 100;
+                        else
+                            PicAchMus = 0;
+                        PicAchMusTmp = 0;
+                        dPicMusAct = Convert.ToDouble(PicMusAct);
+                        if (dPicMusAct == 1)
+                            PicAchMusTmp = 100;
+                        else if (dPicMusAct == 2)
+                            PicAchMusTmp = 90;
+                        else if (dPicMusAct > 2)
+                            PicAchMusTmp = 60;
+                        PicScrMus = PicMusGrd * PicAchMusTmp / 100;
+
+                        //---Pr to PO tooling & fixtures 
+                        if (rdr["PicOthGrd"] == DBNull.Value)
+                            PicOthGrd = 0;
+                        else
+                            PicOthGrd = Math.Round(Convert.ToDecimal(rdr["PicOthGrd"]) / 12, 2);
+
+                        if (rdr["PicOthTrg"] == DBNull.Value)
+                            PicOthTrg = 0;
+                        else
+                            PicOthTrg = Convert.ToDecimal(rdr["PicOthTrg"]);
+
+                        if (rdr["PicOthAct"] == DBNull.Value)
+                            PicOthAct = 0;
+                        else
+                            PicOthAct = Convert.ToDecimal(rdr["PicOthAct"]);
+
+                        if (PicOthTrg > 0 && PicOthAct > 0)
+                            PicAchOth = PicOthAct / PicOthTrg * 100;
+                        else
+                            PicAchOth = 0;
+                        PicAchOthTmp = 0;
+                        dPicOthAct = Convert.ToDouble(PicOthAct);
+                        if (dPicOthAct >= 1 && dPicOthAct <= 3)
+                            PicAchOthTmp = 100;
+                        else if (dPicOthAct > 3 && dPicOthAct <= 5)
+                            PicAchOthTmp = 90;
+                        else if (dPicOthAct > 5)
+                            PicAchOthTmp = 60;
+                        PicScrOth = PicOthGrd * PicAchOthTmp / 100;
+
+                        // ---Pr to PO New Items
+                        if (rdr["PicTvbGrd"] == DBNull.Value)
+                            PicTvbGrd = 0;
+                        else
+                            PicTvbGrd = Math.Round(Convert.ToDecimal(rdr["PicTvbGrd"]) / 12, 2);
+
+                        if (rdr["PicTvbTrg"] == DBNull.Value)
+                            PicTvbTrg = 0;
+                        else
+                            PicTvbTrg = Convert.ToDecimal(rdr["PicTvbTrg"]);
+
+                        if (rdr["PicTvbAct"] == DBNull.Value)
+                            PicTvbAct = 0;
+                        else
+                            PicTvbAct = Convert.ToDecimal(rdr["PicTvbAct"]);
+
+                        if (PicTvbTrg > 0 && PicTvbAct > 0)
+                            PicAchTvb = PicTvbAct / PicTvbTrg * 100;
+                        else
+                            PicAchTvb = 0;
+                        PicActTvbTmp = 0;
+                        dPicTvbAct = Convert.ToDouble(PicTvbAct);
+                        if (dPicTvbAct >= 1 && dPicTvbAct <= 5)
+                            PicActTvbTmp = 100;
+                        else if (dPicTvbAct > 5 && dPicTvbAct <= 7)
+                            PicActTvbTmp = 90;
+                        else if (dPicTvbAct > 7)
+                            PicActTvbTmp = 60;
+                        PicScrTvb = PicTvbGrd * PicActTvbTmp / 100;
+
+                        // ---Po to mrr local
+                        if (rdr["PicZaeGrd"] == DBNull.Value)
+                            PicZaeGrd = 0;
+                        else
+                            PicZaeGrd = Math.Round(Convert.ToDecimal(rdr["PicZaeGrd"]) / 12, 2);
+
+                        if (rdr["PicZaeTrg"] == DBNull.Value)
+                            PicZaeTrg = 0;
+                        else
+                            PicZaeTrg = Convert.ToDecimal(rdr["PicZaeTrg"]);
+
+                        if (rdr["PicZaeAct"] == DBNull.Value)
+                            PicZaeAct = 0;
+                        else
+                            PicZaeAct = Convert.ToDecimal(rdr["PicZaeAct"]);
+
+                        if (PicZaeTrg > 0 && PicZaeAct > 0)
+                            PicAchZae = PicZaeAct / PicZaeTrg * 100;
+                        else
+                            PicAchZae = 0;
+                        PicActZaeTmp = 0;
+                        dPicZaeAct = Convert.ToDouble(PicZaeAct);
+                        if (dPicZaeAct < 2 )
+                            PicActZaeTmp = 110;
+                        else if (dPicZaeAct >= 2 && dPicZaeAct <= 3)
+                            PicActZaeTmp = 100;
+                        else if (dPicZaeAct > 3 && dPicZaeAct <= 4)
+                            PicActZaeTmp = 90;
+                        else if (dPicZaeAct > 4)
+                            PicActZaeTmp = 60;
+                        PicScrZae = PicZaeGrd * PicActZaeTmp / 100;
+
+                        // ---Po to mrr tooling fixtures 
+                        if (rdr["PicTolGrd"] == DBNull.Value)
+                            PicTolGrd = 0;
+                        else
+                            PicTolGrd = Math.Round(Convert.ToDecimal(rdr["PicTolGrd"]) / 12, 2);
+
+                        if (rdr["PicTolTrg"] == DBNull.Value)
+                            PicTolTrg = 0;
+                        else
+                            PicTolTrg = Convert.ToDecimal(rdr["PicTolTrg"]);
+
+                        if (rdr["PicTolAct"] == DBNull.Value)
+                            PicTolAct = 0;
+                        else
+                            PicTolAct = Convert.ToDecimal(rdr["PicTolAct"]);
+
+                        if (PicTolTrg > 0 && PicTolAct > 0)
+                            PicAchTol = PicTolAct / PicTolTrg * 100;
+                        else
+                            PicAchTol = 0;
+                        PicActTolTmp = 0;
+                        dPicTolAct = Convert.ToDouble(PicTolAct);
+                        if (dPicTolAct < 10)
+                            PicActTolTmp = 110;
+                        else if (dPicTolAct >= 10 && dPicTolAct <= 20)
+                            PicActTolTmp = 100;
+                        else if (dPicTolAct > 20 && dPicTolAct <= 25)
+                            PicActTolTmp = 90;
+                        else if (dPicTolAct > 25)
+                            PicActTolTmp = 60;
+                        PicScrTol = PicTolGrd * PicActTolTmp / 100;
+
+                        // ---Po to mrr Import 
+                        if (rdr["PicImpGrd"] == DBNull.Value)
+                            PicImpGrd = 0;
+                        else
+                            PicImpGrd = Math.Round(Convert.ToDecimal(rdr["PicImpGrd"]) / 12, 2);
+
+                        if (rdr["PicImpTrg"] == DBNull.Value)
+                            PicImpTrg = 0;
+                        else
+                            PicImpTrg = Convert.ToDecimal(rdr["PicImpTrg"]);
+
+                        if (rdr["PicImpAct"] == DBNull.Value)
+                            PicImpAct = 0;
+                        else
+                            PicImpAct = Convert.ToDecimal(rdr["PicImpAct"]);
+
+                        if (PicImpTrg > 0 && PicImpAct > 0)
+                            PicAchImp = PicImpAct / PicImpTrg * 100;
+                        else
+                            PicAchImp = 0;
+                        PicActImpTmp = 0;
+                        dPicImpAct = Convert.ToDouble(PicImpAct);
+                        if (dPicImpAct < 30)
+                            PicActImpTmp = 110;
+                        else if (dPicImpAct >= 30 && dPicImpAct <= 45)
+                            PicActImpTmp = 100;
+                        else if (dPicImpAct > 45 && dPicImpAct <= 50)
+                            PicActImpTmp = 90;
+                        else if (dPicImpAct > 50)
+                            PicActImpTmp = 60;
+                        PicScrImp = PicImpGrd * PicActImpTmp / 100;
 
                         lst.Add(new corpdept
                         {
@@ -5469,7 +5829,43 @@ namespace MANAGEMENT.Models
                             PicTgtSca = PicScaTrg,
                             PicActSca = PicScaAct,
                             PicAchSca = PicAchSca,
-                            PicScrSca = PicScrSca
+                            PicScrSca = PicScrSca,
+
+                            PicGrdMus = PicMusGrd,
+                            PicTgtMus = PicMusTrg,
+                            PicActMus = PicMusAct,
+                            PicAchMus = PicAchMus,
+                            PicScrMus = PicScrMus,
+
+                            PicGrdOth = PicOthGrd,
+                            PicTgtOth = PicOthTrg,
+                            PicActOth = PicOthAct,
+                            PicAchOth = PicAchOth,
+                            PicScrOth = PicScrOth,
+
+                            PicGrdTvb = PicTvbGrd,
+                            PicTgtTvb = PicTvbTrg,
+                            PicActTvb = PicTvbAct,
+                            PicAchTvb = PicAchTvb,
+                            PicScrTvb = PicScrTvb,
+
+                            PicGrdZae = PicZaeGrd,
+                            PicTgtZae = PicZaeTrg,
+                            PicActZae = PicZaeAct,
+                            PicAchZae = PicAchZae,
+                            PicScrZae = PicScrZae,
+
+                            PicGrdTol = PicTolGrd,
+                            PicTgtTol = PicTolTrg,
+                            PicActTol = PicTolAct,
+                            PicAchTol = PicAchTol,
+                            PicScrTol = PicScrTol,
+
+                            PicGrdImp = PicImpGrd,
+                            PicTgtImp = PicImpTrg,
+                            PicActImp = PicImpAct,
+                            PicAchImp = PicAchImp,
+                            PicScrImp = PicScrImp
 
                         });
                     }
@@ -5496,6 +5892,13 @@ namespace MANAGEMENT.Models
             decimal PicAchInv, PicScrInv, PicActInvTmp, PicAchAir, PicScrAir, PicActAirTmp, PicAchDpp, PicScrDpp, PicActDppTmp;
             decimal PicAchEme, PicScrEme, PicActEmeTmp, PicAchSca, PicScrSca, PicAchScaTmp;
             double dPicInvAct, dPicAchRev, dPicAchPda, dPicAchPdc, dPicAirAct, dPicDppAct, dPicEmeAct, dPicScaAct;
+            decimal PicMusAct, PicMusGrd, PicMusTrg, PicAchMus, PicScrMus, PicAchMusTmp;
+            decimal PicOthAct, PicOthGrd, PicOthTrg, PicAchOth, PicScrOth, PicAchOthTmp;
+            decimal PicTvbAct, PicTvbGrd, PicTvbTrg, PicAchTvb, PicScrTvb, PicActTvbTmp;
+            decimal PicZaeAct, PicZaeGrd, PicZaeTrg, PicAchZae, PicScrZae, PicActZaeTmp;
+            decimal PicTolAct, PicTolGrd, PicTolTrg, PicAchTol, PicScrTol, PicActTolTmp;
+            decimal PicImpAct, PicImpGrd, PicImpTrg, PicAchImp, PicScrImp, PicActImpTmp;
+            double dPicMusAct, dPicOthAct, dPicTvbAct, dPicZaeAct, dPicTolAct, dPicImpAct;
             string date1 = Convert.ToString(id) + "-01" + "-01";
             string date2 = Convert.ToString(id) + "-12" + "-01";
 
@@ -5539,15 +5942,14 @@ namespace MANAGEMENT.Models
                             PicAchRev = 0;
                         PicAchRevTmp = 0;
                         dPicAchRev = Convert.ToDouble(PicAchRev);
-                        if (dPicAchRev > 110)
-                            PicAchRevTmp = 120;
-                        else if (dPicAchRev > 103 && dPicAchRev <= 110)
+
+                        if (dPicAchRev >= 103)
                             PicAchRevTmp = 110;
-                        else if (dPicAchRev > 95 && dPicAchRev <= 103)
+                        else if (dPicAchRev >= 97 && dPicAchRev < 103)
                             PicAchRevTmp = 100;
-                        else if (dPicAchRev >= 90 && dPicAchRev <= 95)
+                        else if (dPicAchRev >= 91 && dPicAchRev < 97)
                             PicAchRevTmp = 90;
-                        else if (dPicAchRev < 90)
+                        else if (dPicAchRev < 91)
                             PicAchRevTmp = 60;
                         PicScrRev = PicRevGrd * PicAchRevTmp / 100;
 
@@ -5575,15 +5977,13 @@ namespace MANAGEMENT.Models
                             PicAchPda = 0;
                         PicAchPdaTmp = 0;
                         dPicAchPda = Convert.ToDouble(PicAchPda);
-                        if (dPicAchPda > 110)
-                            PicAchPdaTmp = 120;
-                        else if (dPicAchPda > 102 && dPicAchPda <= 110)
+                        if (dPicAchPda >= 103)
                             PicAchPdaTmp = 110;
-                        else if (dPicAchPda > 98 && dPicAchPda <= 102)
+                        else if (dPicAchPda >= 97 && dPicAchPda < 103)
                             PicAchPdaTmp = 100;
-                        else if (dPicAchPda >= 94 && dPicAchPda <= 98)
+                        else if (dPicAchPda >= 91 && dPicAchPda < 97)
                             PicAchPdaTmp = 90;
-                        else if (dPicAchPda < 94)
+                        else if (dPicAchPda < 91)
                             PicAchPdaTmp = 60;
                         PicScrPda = PicPdaGrd * PicAchPdaTmp / 100;
 
@@ -5609,15 +6009,13 @@ namespace MANAGEMENT.Models
                             PicAchPdc = 0;
                         PicAchPdcTmp = 0;
                         dPicAchPdc = Convert.ToDouble(PicAchPdc);
-                        if (dPicAchPdc > 110)
-                            PicAchPdcTmp = 120;
-                        else if (dPicAchPdc > 102 && dPicAchPdc <= 110)
+                        if (dPicAchPdc >= 103)
                             PicAchPdcTmp = 110;
-                        else if (dPicAchPdc > 98 && dPicAchPdc <= 102)
+                        else if (dPicAchPdc >= 97 && dPicAchPdc < 103)
                             PicAchPdcTmp = 100;
-                        else if (dPicAchPdc >= 94 && dPicAchPdc <= 98)
+                        else if (dPicAchPdc >= 91 && dPicAchPdc < 97)
                             PicAchPdcTmp = 90;
-                        else if (dPicAchPdc < 94)
+                        else if (dPicAchPdc < 91)
                             PicAchPdcTmp = 60;
                         PicScrPdc = PicPdcGrd * PicAchPdcTmp / 100;
 
@@ -5644,12 +6042,14 @@ namespace MANAGEMENT.Models
                             PicAchInv = 0;
                         PicActInvTmp = 0;
                         dPicInvAct = Convert.ToDouble(PicInvAct);
-                        if (dPicInvAct < 33)
-                            PicActInvTmp = 110;
-                        else if (dPicInvAct >= 33 && dPicInvAct <= 38)
-                            PicActInvTmp = 100;
-                        else if (dPicInvAct > 38)
+                        if (dPicInvAct < 95)
+                            PicActInvTmp = 60;
+                        else if (dPicInvAct >= 95 && dPicInvAct <= 99)
                             PicActInvTmp = 90;
+                        else if (dPicInvAct > 99 && dPicInvAct <= 102)
+                            PicActInvTmp = 100;
+                        else if (dPicInvAct > 102)
+                            PicActInvTmp = 110;
                         PicScrInv = PicInvGrd * PicActInvTmp / 100;
 
                         // drm
@@ -5674,12 +6074,15 @@ namespace MANAGEMENT.Models
                             PicAchAir = 0;
                         PicActAirTmp = 0;
                         dPicAirAct = Convert.ToDouble(PicAirAct);
-                        if (dPicAirAct > 97)
+                        if (dPicAirAct > 95)
                             PicActAirTmp = 110;
-                        else if (dPicAirAct >= 93 && dPicAirAct <= 97)
+                        else if (dPicAirAct > 90 && dPicAirAct <= 95)
                             PicActAirTmp = 100;
-                        else if (dPicAirAct < 93)
+                        else if (dPicAirAct >= 85 && dPicAirAct <= 90)
                             PicActAirTmp = 90;
+                        else if (dPicAirAct < 85)
+                            PicActAirTmp = 60;
+
                         PicScrAir = PicAirGrd * PicActAirTmp / 100;
 
                         // qrm 
@@ -5706,10 +6109,12 @@ namespace MANAGEMENT.Models
                         dPicDppAct = Convert.ToDouble(PicDppAct);
                         if (dPicDppAct > 98)
                             PicActDppTmp = 110;
-                        else if (dPicDppAct >= 95 && dPicDppAct <= 98)
+                        else if (dPicDppAct > 95 && dPicDppAct <= 98)
                             PicActDppTmp = 100;
-                        else if (dPicDppAct < 95)
+                        else if (dPicDppAct >= 92 && dPicDppAct <= 95)
                             PicActDppTmp = 90;
+                        else if (dPicDppAct < 92)
+                            PicActDppTmp = 60;
                         PicScrDpp = PicDppGrd * PicActDppTmp / 100;
 
                         // reduction 
@@ -5734,15 +6139,13 @@ namespace MANAGEMENT.Models
                             PicAchEme = 0;
                         PicActEmeTmp = 0;
                         dPicEmeAct = Convert.ToDouble(PicEmeAct);
-                        if (dPicEmeAct > 50000000)
-                            PicActEmeTmp = 120;
-                        else if (dPicEmeAct > 30000000 && dPicEmeAct <= 50000000)
+                        if (dPicEmeAct > 55000000)
                             PicActEmeTmp = 110;
-                        else if (dPicEmeAct >= 20000000 && dPicEmeAct <= 30000000)
+                        else if (dPicEmeAct > 30000000 && dPicEmeAct <= 55000000)
                             PicActEmeTmp = 100;
-                        else if (dPicEmeAct > 0 && dPicEmeAct <= 20000000)
+                        else if (dPicEmeAct > 10000000 && dPicEmeAct <= 30000000)
                             PicActEmeTmp = 90;
-                        else if (dPicEmeAct < 0)
+                        else if (dPicEmeAct <= 10000000)
                             PicActEmeTmp = 60;
                         PicScrEme = PicEmeGrd * PicActEmeTmp / 100;
 
@@ -5768,9 +6171,7 @@ namespace MANAGEMENT.Models
                             PicAchSca = 0;
                         PicAchScaTmp = 0;
                         dPicScaAct = Convert.ToDouble(PicScaAct);
-                        if (dPicScaAct > 120)
-                            PicAchScaTmp = 120;
-                        else if (dPicScaAct > 80 && dPicScaAct <= 120)
+                        if (dPicScaAct > 80)
                             PicAchScaTmp = 110;
                         else if (dPicScaAct > 70 && dPicScaAct <= 80)
                             PicAchScaTmp = 100;
@@ -5779,6 +6180,192 @@ namespace MANAGEMENT.Models
                         else if (dPicScaAct < 45)
                             PicAchScaTmp = 60;
                         PicScrSca = PicScaGrd * PicAchScaTmp / 100;
+
+                        //---Pr to PO repeat order 
+                        if (rdr["PicMusGrd"] == DBNull.Value)
+                            PicMusGrd = 0;
+                        else
+                            PicMusGrd = Math.Round(Convert.ToDecimal(rdr["PicMusGrd"]), 2);
+
+                        if (rdr["PicMusTrg"] == DBNull.Value)
+                            PicMusTrg = 0;
+                        else
+                            PicMusTrg = Convert.ToDecimal(rdr["PicMusTrg"]);
+
+                        if (rdr["PicMusAct"] == DBNull.Value)
+                            PicMusAct = 0;
+                        else
+                            PicMusAct = Convert.ToDecimal(rdr["PicMusAct"]);
+
+                        if (PicMusTrg > 0 && PicMusAct > 0)
+                            PicAchMus = PicMusAct / PicMusTrg * 100;
+                        else
+                            PicAchMus = 0;
+                        PicAchMusTmp = 0;
+                        dPicMusAct = Convert.ToDouble(PicMusAct);
+                        if (dPicMusAct == 1)
+                            PicAchMusTmp = 100;
+                        else if (dPicMusAct == 2)
+                            PicAchMusTmp = 90;
+                        else if (dPicMusAct > 2)
+                            PicAchMusTmp = 60;
+                        PicScrMus = PicMusGrd * PicAchMusTmp / 100;
+
+                        //---Pr to PO tooling & fixtures 
+                        if (rdr["PicOthGrd"] == DBNull.Value)
+                            PicOthGrd = 0;
+                        else
+                            PicOthGrd = Math.Round(Convert.ToDecimal(rdr["PicOthGrd"]), 2);
+
+                        if (rdr["PicOthTrg"] == DBNull.Value)
+                            PicOthTrg = 0;
+                        else
+                            PicOthTrg = Convert.ToDecimal(rdr["PicOthTrg"]);
+
+                        if (rdr["PicOthAct"] == DBNull.Value)
+                            PicOthAct = 0;
+                        else
+                            PicOthAct = Convert.ToDecimal(rdr["PicOthAct"]);
+
+                        if (PicOthTrg > 0 && PicOthAct > 0)
+                            PicAchOth = PicOthAct / PicOthTrg * 100;
+                        else
+                            PicAchOth = 0;
+                        PicAchOthTmp = 0;
+                        dPicOthAct = Convert.ToDouble(PicOthAct);
+                        if (dPicOthAct >= 1 && dPicOthAct <= 3)
+                            PicAchOthTmp = 100;
+                        else if (dPicOthAct > 3 && dPicOthAct <= 5)
+                            PicAchOthTmp = 90;
+                        else if (dPicOthAct > 5)
+                            PicAchOthTmp = 60;
+                        PicScrOth = PicOthGrd * PicAchOthTmp / 100;
+
+                        // ---Pr to PO New Items
+                        if (rdr["PicTvbGrd"] == DBNull.Value)
+                            PicTvbGrd = 0;
+                        else
+                            PicTvbGrd = Math.Round(Convert.ToDecimal(rdr["PicTvbGrd"]), 2);
+
+                        if (rdr["PicTvbTrg"] == DBNull.Value)
+                            PicTvbTrg = 0;
+                        else
+                            PicTvbTrg = Convert.ToDecimal(rdr["PicTvbTrg"]);
+
+                        if (rdr["PicTvbAct"] == DBNull.Value)
+                            PicTvbAct = 0;
+                        else
+                            PicTvbAct = Convert.ToDecimal(rdr["PicTvbAct"]);
+
+                        if (PicTvbTrg > 0 && PicTvbAct > 0)
+                            PicAchTvb = PicTvbAct / PicTvbTrg * 100;
+                        else
+                            PicAchTvb = 0;
+                        PicActTvbTmp = 0;
+                        dPicTvbAct = Convert.ToDouble(PicTvbAct);
+                        if (dPicTvbAct >= 1 && dPicTvbAct <= 5)
+                            PicActTvbTmp = 100;
+                        else if (dPicTvbAct > 5 && dPicTvbAct <= 7)
+                            PicActTvbTmp = 90;
+                        else if (dPicTvbAct > 7)
+                            PicActTvbTmp = 60;
+                        PicScrTvb = PicTvbGrd * PicActTvbTmp / 100;
+
+                        // ---Po to mrr local
+                        if (rdr["PicZaeGrd"] == DBNull.Value)
+                            PicZaeGrd = 0;
+                        else
+                            PicZaeGrd = Math.Round(Convert.ToDecimal(rdr["PicZaeGrd"]), 2);
+
+                        if (rdr["PicZaeTrg"] == DBNull.Value)
+                            PicZaeTrg = 0;
+                        else
+                            PicZaeTrg = Convert.ToDecimal(rdr["PicZaeTrg"]);
+
+                        if (rdr["PicZaeAct"] == DBNull.Value)
+                            PicZaeAct = 0;
+                        else
+                            PicZaeAct = Convert.ToDecimal(rdr["PicZaeAct"]);
+
+                        if (PicZaeTrg > 0 && PicZaeAct > 0)
+                            PicAchZae = PicZaeAct / PicZaeTrg * 100;
+                        else
+                            PicAchZae = 0;
+                        PicActZaeTmp = 0;
+                        dPicZaeAct = Convert.ToDouble(PicZaeAct);
+                        if (dPicZaeAct < 2)
+                            PicActZaeTmp = 110;
+                        else if (dPicZaeAct >= 2 && dPicZaeAct <= 3)
+                            PicActZaeTmp = 100;
+                        else if (dPicZaeAct > 3 && dPicZaeAct <= 4)
+                            PicActZaeTmp = 90;
+                        else if (dPicZaeAct > 4)
+                            PicActZaeTmp = 60;
+                        PicScrZae = PicZaeGrd * PicActZaeTmp / 100;
+
+                        // ---Po to mrr tooling fixtures 
+                        if (rdr["PicTolGrd"] == DBNull.Value)
+                            PicTolGrd = 0;
+                        else
+                            PicTolGrd = Math.Round(Convert.ToDecimal(rdr["PicTolGrd"]), 2);
+
+                        if (rdr["PicTolTrg"] == DBNull.Value)
+                            PicTolTrg = 0;
+                        else
+                            PicTolTrg = Convert.ToDecimal(rdr["PicTolTrg"]);
+
+                        if (rdr["PicTolAct"] == DBNull.Value)
+                            PicTolAct = 0;
+                        else
+                            PicTolAct = Convert.ToDecimal(rdr["PicTolAct"]);
+
+                        if (PicTolTrg > 0 && PicTolAct > 0)
+                            PicAchTol = PicTolAct / PicTolTrg * 100;
+                        else
+                            PicAchTol = 0;
+                        PicActTolTmp = 0;
+                        dPicTolAct = Convert.ToDouble(PicTolAct);
+                        if (dPicTolAct < 10)
+                            PicActTolTmp = 110;
+                        else if (dPicTolAct >= 10 && dPicTolAct <= 20)
+                            PicActTolTmp = 100;
+                        else if (dPicTolAct > 20 && dPicTolAct <= 25)
+                            PicActTolTmp = 90;
+                        else if (dPicTolAct > 25)
+                            PicActTolTmp = 60;
+                        PicScrTol = PicTolGrd * PicActTolTmp / 100;
+
+                        // ---Po to mrr Import 
+                        if (rdr["PicImpGrd"] == DBNull.Value)
+                            PicImpGrd = 0;
+                        else
+                            PicImpGrd = Math.Round(Convert.ToDecimal(rdr["PicImpGrd"]), 2);
+
+                        if (rdr["PicImpTrg"] == DBNull.Value)
+                            PicImpTrg = 0;
+                        else
+                            PicImpTrg = Convert.ToDecimal(rdr["PicImpTrg"]);
+
+                        if (rdr["PicImpAct"] == DBNull.Value)
+                            PicImpAct = 0;
+                        else
+                            PicImpAct = Convert.ToDecimal(rdr["PicImpAct"]);
+
+                        if (PicImpTrg > 0 && PicImpAct > 0)
+                            PicAchImp = PicImpAct / PicImpTrg * 100;
+                        else
+                            PicAchImp = 0;
+                        PicActImpTmp = 0;
+                        dPicImpAct = Convert.ToDouble(PicImpAct);
+                        if (dPicImpAct < 30)
+                            PicActImpTmp = 110;
+                        else if (dPicImpAct >= 30 && dPicImpAct <= 45)
+                            PicActImpTmp = 100;
+                        else if (dPicImpAct > 45 && dPicImpAct <= 50)
+                            PicActImpTmp = 90;
+                        else if (dPicImpAct > 50)
+                            PicActImpTmp = 60;
+                        PicScrImp = PicImpGrd * PicActImpTmp / 100;
 
 
                         lst.Add(new corpdept
@@ -5829,7 +6416,44 @@ namespace MANAGEMENT.Models
                             PicTgtSca = PicScaTrg,
                             PicActSca = PicScaAct,
                             PicAchSca = PicAchSca,
-                            PicScrSca = PicScrSca
+                            PicScrSca = PicScrSca,
+
+                            PicGrdMus = PicMusGrd,
+                            PicTgtMus = PicMusTrg,
+                            PicActMus = PicMusAct,
+                            PicAchMus = PicAchMus,
+                            PicScrMus = PicScrMus,
+
+                            PicGrdOth = PicOthGrd,
+                            PicTgtOth = PicOthTrg,
+                            PicActOth = PicOthAct,
+                            PicAchOth = PicAchOth,
+                            PicScrOth = PicScrOth,
+
+                            PicGrdTvb = PicTvbGrd,
+                            PicTgtTvb = PicTvbTrg,
+                            PicActTvb = PicTvbAct,
+                            PicAchTvb = PicAchTvb,
+                            PicScrTvb = PicScrTvb,
+
+                            PicGrdZae = PicZaeGrd,
+                            PicTgtZae = PicZaeTrg,
+                            PicActZae = PicZaeAct,
+                            PicAchZae = PicAchZae,
+                            PicScrZae = PicScrZae,
+
+                            PicGrdTol = PicTolGrd,
+                            PicTgtTol = PicTolTrg,
+                            PicActTol = PicTolAct,
+                            PicAchTol = PicAchTol,
+                            PicScrTol = PicScrTol,
+
+                            PicGrdImp = PicImpGrd,
+                            PicTgtImp = PicImpTrg,
+                            PicActImp = PicImpAct,
+                            PicAchImp = PicAchImp,
+                            PicScrImp = PicScrImp
+
 
                         });
 
@@ -10388,7 +11012,7 @@ namespace MANAGEMENT.Models
             decimal PicAchEme,  PicScrEme, PicRjtGrd, PicRjtTrg, PicRjtAct, PicAchRjtTmp, PicScrRjt, PicAirGrd, PicAirTrg, PicAirAct, PicAchAirTmp, PicScrAir;
             decimal PicScaGrd, PicScaTrg, PicScaAct, PicAchSca, PicAchScaTmp, PicScrSca, PicInvGrd, PicInvTrg, PicInvAct, PicAchInv, PicAchInvTmp, PicScrInv, PicMusGrd, PicMusTrg, PicMusAct, PicAchMus, PicAchMusTmp, PicScrMus;
             double  PicAchRjt, PicAchAir, dPicRjtAct, dPicAirAct;
-            decimal PicAchEmeTmp, PicAchDppTmp, PicEmeScr;
+            decimal PicAchDppTmp, PicEmeScr;
             string parCom;
 
             List<corpdept> lst = new List<corpdept>();
@@ -10735,7 +11359,7 @@ namespace MANAGEMENT.Models
                             PicAchEme = 0;
                         if (PicAchEme < 0)
                             PicAchEme = 0;
-                        PicAchEmeTmp = 0;
+                        //PicAchEmeTmp = 0;
                         //if (PicAchEme > 2)
                         //    PicAchEmeTmp = 60;
                         //else if (PicAchEme == 2)
@@ -11027,7 +11651,7 @@ namespace MANAGEMENT.Models
             decimal PicAchEme, PicScrEme, PicRjtGrd, PicRjtTrg, PicRjtAct, PicAchRjtTmp, PicScrRjt, PicAirGrd, PicAirTrg, PicAirAct, PicAchAirTmp, PicScrAir;
             decimal PicScaGrd, PicScaTrg, PicScaAct, PicAchSca, PicAchScaTmp, PicScrSca, PicInvGrd, PicInvTrg, PicInvAct, PicAchInv, PicAchInvTmp, PicScrInv, PicMusGrd, PicMusTrg, PicMusAct, PicAchMus, PicAchMusTmp, PicScrMus;
             double PicAchRjt, PicAchAir, dPicRjtAct, dPicAirAct;
-            decimal PicAchEmeTmp, PicAchDppTmp, PicEmeScr;
+            decimal PicAchDppTmp, PicEmeScr;
             string parCom;
 
             List<corpdept> lst = new List<corpdept>();
@@ -11324,7 +11948,7 @@ namespace MANAGEMENT.Models
                         if (PicAchEme < 0)
                             PicAchEme = 0;
 
-                        PicAchEmeTmp = 0;
+                        //PicAchEmeTmp = 0;
                         //if (PicAchEme > 2)
                         //    PicAchEmeTmp = 60;
                         //else if (PicAchEme == 2)
@@ -14076,6 +14700,7 @@ namespace MANAGEMENT.Models
         public List<viewPpicControl> vRptWarehouseControl(int ch)
         {
             //double dberat, dwax, ddipping, dceramic, dfinishing, dstokawalcasting, dtotMR, dtotmach, dstokawalfinished, dtotterkirim, 
+            double cnctime;
             List<viewPpicControl> lst = new List<viewPpicControl>();
             using (SqlConnection con = new SqlConnection(cs))
             {
@@ -14094,10 +14719,10 @@ namespace MANAGEMENT.Models
                     SqlDataReader rdr = com.ExecuteReader();
                     while (rdr.Read())
                     {
-                        //if (rdr["igrossweight"] == DBNull.Value)
-                        //    dberat = 0;
-                        //else
-                        //    dberat = Math.Round(Convert.ToDecimal(rdr["igrossweight"]));
+                        if (rdr["cnctime"] == DBNull.Value)
+                            cnctime = 0;
+                        else
+                            cnctime = Convert.ToDouble(rdr["cnctime"]);
 
 
                         lst.Add(new viewPpicControl
@@ -14117,6 +14742,12 @@ namespace MANAGEMENT.Models
                             stokawalfinished = Convert.ToDouble(rdr["stokproduct"]),
                             totterkirim = Convert.ToDouble(rdr["qtypdb"]),
                             sisaPO = Convert.ToInt32(rdr["sisaPO"]),
+                            cnctime = cnctime,
+                            qtyInj = Convert.ToDouble(rdr["qtyInj"]),
+                            qtyDip = Convert.ToDouble(rdr["qtyDip"]),
+                            qtylost = Convert.ToDouble(rdr["qtylost"]),
+                            qtypour = Convert.ToDouble(rdr["qtypour"]),
+                            qtykirim = Convert.ToDouble(rdr["qtykirim"]),
                             edd = string.Format("{0:dd-MM-yyyy }", rdr["EDD"])
                         });
 
@@ -16357,7 +16988,7 @@ namespace MANAGEMENT.Models
 
         public List<corporate> HrdGADept(int thn, int bln, char ch)
         {
-            decimal kpidepSafe, kpidepTrain, kpidepSkill, kpidepSalary, kpidepOvertime;
+            decimal kpidepSafe, kpidepTrain, kpidepSkill, kpidepSalary, kpidepOvertime, kpidepImp;
             List<corporate> lst = new List<corporate>();
             using (SqlConnection con = new SqlConnection(cshrd))
             {
@@ -16410,13 +17041,20 @@ namespace MANAGEMENT.Models
                         else
                             kpidepOvertime = Convert.ToDecimal(rdr["ActOvertime"]);
 
+                        // Implementasi 5s 
+                        if (rdr["ActImp"] == DBNull.Value)
+                            kpidepImp = 0;
+                        else
+                            kpidepImp = Convert.ToDecimal(rdr["ActImp"]);
+
                         lst.Add(new corporate
                         {
                             ibpActSafe = Math.Round(kpidepSafe, 2),
                             lgActTrain = Math.Round(kpidepTrain, 2),
                             lgActSkill = Math.Round(kpidepSkill, 2),
                             finActCash = Math.Round(kpidepSalary, 2),
-                            finActRev = Math.Round(kpidepOvertime, 2)
+                            finActRev = Math.Round(kpidepOvertime, 2),
+                            lgActImp = Math.Round(kpidepImp, 2)
 
                         });
                     }

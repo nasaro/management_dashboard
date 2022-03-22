@@ -1,7 +1,4 @@
-﻿@using System.Web.Optimization
-@model MANAGEMENT.Models.FullNameViewModel
-
-<style>
+﻿<style>
     .loader {
         position: fixed;
         left: 0px;
@@ -13,40 +10,60 @@
         /*KHUSUS VIEW INI SAJA DI SERVER  background: Url("/MG/Content/images/pageLoader.gif") 50% 50% no-repeat rgb(249,249,249);*/
         opacity: .8;
     }
+
     th {
         font-size: 11px;
-        background-color:#00ff99;
-		color:black;
+        background-color: #00ff99;
+        color: black;
     }
 
     td {
         font-size: 11px;
-        background-color:#b3ffe0;
-		color:black;
+        background-color: #b3ffe0;
+        color: black;
     }
 
-     #myModalPPIC {
-      top:50%;
-      left:27%;
-      outline: none;
+    #myModalPPIC {
+        top: 10%;
+        left: 27%;
+        outline: none;
+    }
+
+
+
+    /* Ensure that the demo table scrolls */
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        width: 1000px;
+        margin: 0 auto;
     }
 </style>
 @{
     Layout = "~/Views/Shared/_Layout_Spc.cshtml";
 }
+@* class="table table-bordered  table-hover"  tanpa style width *@
+
 <body>
     <section class="container">
         <div id="utamaFrm" class="form-horizontal">
             <h3>Table PPIC Control</h3>
-            <table id="MasterInfo" class="table table-bordered  table-hover">
+            <table id="MasterInfo" class="stripe row-border order-column" style="width:100%">
                 <caption id="Judul" class="text-center" style="background-color: #b3ffe0;color: black;">PPIC Control - Non Assembly</caption>
                 <thead>
                     <tr>
-                        <th>PRODUCT CODE</th>
+                        <th>CODE</th>
                         <th>CUSTOMER</th>
                         <th>PRODUCT</th>
                         <th>MATERIAL</th>
                         <th>WEIGHT</th>
+                        <th><span class="pull-right">CNCtime</span></th>
+                        <th><span class="pull-right">Qty Inj</span></th>
+                        <th><span class="pull-right">Qty Dip</span></th>
+                        <th><span class="pull-right">Qty Lost</span></th>
+                        <th><span class="pull-right">Qty Pour</span></th>
                         <th><span class="pull-right">WIP WAX</span></th>
                         <th><span class="pull-right">WIP DIPPING</span></th>
                         <th><span class="pull-right">WIP CERAMIC</span></th>
@@ -56,6 +73,7 @@
                         <th><span class="pull-right">WIP MACHINING</span></th>
                         <th><span class="pull-right">STOCK PRODUK</span></th>
                         <th><span class="pull-right">PDB TODAY</span></th>
+                        <th><span class="pull-right">Qty Kirim</span></th>
                         <th><span class="pull-right">SISA ORDER</span></th>
                         <th>TGL EDD</th>
                     </tr>
@@ -63,7 +81,7 @@
                 <tbody id="tbodytblControl"></tbody>
             </table>
         </div> <!--Form utama-->
-        <br/>
+        <br />
         <br />
         <br />
         <br />
@@ -95,14 +113,14 @@
 
         <div class="loader"></div>
     </section>
-  </body>
+</body>
 
 <script>
     var urlKPI = "@Url.Content("~/Dashboard")";
     var datPar = "@Model.FirstName";
 
     $(document).ready(function () {
-        MainLoad();       
+        MainLoad();
     });
 
 
@@ -124,10 +142,15 @@
                 $.each(result, function (key, item) {
                     tr = $('<tr />');
                     tr.append("<td>" + item.prodcode + "</td>");
-                    tr.append("<td>" + item.cust + "</td>");
+                    tr.append("<td>" + item.cust.substring(0, 20) + "</td>");
                     tr.append("<td>" + item.item + "</td>");
                     tr.append("<td>" + item.material + "</td>");
                     tr.append("<td>" + item.berat + "</td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.cnctime) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.qtyInj) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.qtyDip) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.qtylost) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.qtypour) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.wax) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.dipping) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.ceramic) + "</span></td>");
@@ -137,16 +160,26 @@
                     tr.append('<td><span class="pull-right">' + formatNumber(item.totmach) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.stokawalfinished) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.totterkirim) + "</span></td>");
+                    tr.append('<td><span class="pull-right">' + formatNumber(item.qtykirim) + "</span></td>");
                     tr.append('<td><span class="pull-right">' + formatNumber(item.sisaPO) + "</span></td>");
                     tr.append('<td>' + item.edd + "</td>");
                     $('#MasterInfo').append(tr);
                 });
 
-               var  masterTable = $('#MasterInfo').DataTable({
+                var masterTable = $('#MasterInfo').DataTable({
+                    scrollY: "400px",
+                    scrollX: true,
+                    scrollCollapse: true,
+
+                    "autoWidth": false, 
+                    fixedColumns: {
+                        leftColumns: 3
+                    },
+
                     dom: 'Bfrtip',
                     lengthMenu: [
-                            [10, 25, 50, -1],
-                            ['10 rows', '25 rows', '50 rows', 'Show all']
+                            [10, 25],
+                            ['10 rows', '25 rows']
                     ],
                     buttons: ['pageLength', {
                         extend: 'excel',
@@ -177,7 +210,7 @@
                     {
                         "targets": [ 3, 4, 5, 6 ,7 ,8 , 9, 10, 11, 12],
                         "searchable": false
-                    },                    
+                    },
                     ]
                 });
 
@@ -201,7 +234,7 @@
         $('#myModalLabel').text('Product Info: '+ name);
         $('#tbodytblProdukInfo').empty();
         $("#myModalPPIC").modal({ show: true, backdrop: false });
-       
+
     }
 
     function ListProdCode(code) {

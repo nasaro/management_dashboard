@@ -1608,10 +1608,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/11/2021 5:03:13 PM</ReportChanged>
+  <ReportChanged>2/10/2022 5:01:08 PM</ReportChanged>
   <ReportCreated>5/20/2019 10:49:51 AM</ReportCreated>
   <ReportFile>D:\ASP MVC\MANAGEMENT\MANAGEMENT\Report\AssetRekap.mrt</ReportFile>
-  <ReportGuid>1fa099f0a06744c6877fb9a4c6cbc0ae</ReportGuid>
+  <ReportGuid>3e81942f98f745589be201a0982c04f3</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2014.1.1900</ReportVersion>

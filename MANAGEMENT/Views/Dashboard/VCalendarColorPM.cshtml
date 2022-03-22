@@ -195,7 +195,9 @@
 <script>
     var urlKPI = "@Url.Content("~/Wip")";
     const dateObj = new Date();
-    const mmonth = dateObj.getMonth() + 1;
+    //--const mmonth = dateObj.getMonth() + 1;
+    const mmonth = String(dateObj.getMonth() + 1).padStart(2, '0');
+
     const day = String(dateObj.getDate()).padStart(2, '0');
     const year = dateObj.getFullYear();
     const output = year + '-' + mmonth + '-' + day;
@@ -206,7 +208,7 @@
             placement: 'bottom',
         });
 
-
+        $(".loader").hide();
         getLoad();
     });
 
@@ -281,6 +283,7 @@
              //console.log(document.getElementById("idArrGlobal").textContent);
              var arrCalendar = Array.from(result);
 
+             //console.log(output);
              var calendarEl = document.getElementById('calendar');
 
              var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -289,7 +292,7 @@
                      center: 'title',
                      right: ''
                  },
-                 initialDate: output,
+                 initialDate: output,     //penyebab sering error getUTCFullYear  harus yyyy/mm/dd
                  navLinks: false, // can click day/week names to navigate views
                  editable: true,
                  businessHours: true,
@@ -299,21 +302,6 @@
                      info.el.style.borderColor = 'red';
                      LoadHeader(info.event.id);
                  },
-
-                 //eventDidMount: function (calEvent, jsEvent) {
-                 //    var tooltip = '<div class="tooltipevent" style="width:100px;height:100px;background:#ccc;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
-                 //    var $tooltip = $(tooltip).appendTo('body');
-
-                 //    $(this).mouseover(function (e) {
-                 //        $(this).css('z-index', 10000);
-                 //        $tooltip.fadeIn('500');
-                 //        $tooltip.fadeTo('10', 1.9);
-                 //    }).mousemove(function (e) {
-                 //        $tooltip.css('top', e.pageY + 10);
-                 //        $tooltip.css('left', e.pageX + 20);
-                 //    });
-                 //},
-
 
 
                  eventDidMount: function (info) {

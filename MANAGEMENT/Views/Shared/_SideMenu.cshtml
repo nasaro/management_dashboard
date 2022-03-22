@@ -259,7 +259,7 @@
             $("#notulenSubmenu").append('<li>@Html.ActionLink("PDCA", "vPDCA", "Dashboard")</li>');
         }
         if (userAu == "PRO" || userAu == "VST") {
-            $("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');
+            @*$("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');*@
             $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Actual)", "vMaterialReceiving", "Dashboard")</li>');
             $("#reportSubmenu").append('<li>@Html.ActionLink("Material Receiving (Forecasting)", "vMaterialForecasting", "Dashboard")</li>');
             $("#reportSubmenu").append('<li>@Html.ActionLink("Casting Cost Control", "vRptMaterialCostControl", "Dashboard")</li>');
@@ -311,7 +311,7 @@
             $("#homeSubmenu").append('<li>@Html.ActionLink("QUALITY", "vQuality", "Dashboard")</li>');
             $("#homeSubmenu").append('<li>@Html.ActionLink("MAINTENANCE", "vMaintenance", "Dashboard")</li>');
             $("#homeSubmenu").append('<li>@Html.ActionLink("INDUSTRIAL ENGINEERING", "vEngineering", "Dashboard")</li>');
-            $("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');
+            @*$("#homeSubmenu").append('<li>@Html.ActionLink("PRODUCTION OP & LEAN", "vProduction", "Dashboard")</li>');*@
             $("#homeSubmenu").append('<li>@Html.ActionLink("HRD & GA", "vHRDGA", "Dashboard")</li>');
 
             $("#notulenSubmenu").append('<li>@Html.ActionLink("Notulen", "vNotulen", "Dashboard")</li>');
